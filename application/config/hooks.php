@@ -10,6 +10,13 @@
 |
 */
 
+$hook['pre_controller'] = array(
+                                'class'    => '',
+                                'function' => 'GetSiteData',
+                                'filename' => 'main_helper.php',
+                                'filepath' => 'helpers',
+                                'params'   => array()
+                                );
 
 
 /* End of file hooks.php */

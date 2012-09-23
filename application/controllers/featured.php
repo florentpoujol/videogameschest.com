@@ -2,17 +2,31 @@
 
 class Featured extends CI_Controller {
     
-    public function __construct() {
-        parent::__construct();
-    }
-    
-    public function index()
+    function index()
     {
         
-        $data['infos'] = GetSiteData( true );
-        
+        $data = array();
+
         $this->layout
         ->AddView( 'bodyStart', 'menu_view', array('page'=>'featured'))
+        ->AddView( 'bodyStart', 'featured_view', $data )
+        ->Load();
+    }
+
+    function pagenotfound( $reason = "noreason" ) {
+        $data = array();
+        $reasons = preg_split("#:#", $reason);
+        $_404 = array();
+
+        switch( $reasons[0] ) {
+            case "gamenotfound": $_404['reason'] = 'The game with id or name ['.$reasons[1].'] was not found !';
+            break;
+        }
+        
+        
+        $this->layout
+        ->AddView( 'bodyStart', 'menu_view', array('page'=>'featured404'))
+        ->AddView( 'bodyStart', '404_view', $_404)
         ->AddView( 'bodyStart', 'featured_view', $data )
         ->Load();
     }

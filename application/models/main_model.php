@@ -2,32 +2,94 @@
 
 class Main_model extends CI_Model {
     
-    public function __construct() {
+    function __construct() {
         parent::__construct();
         $this->load->database();
-        $this->load->helper( 'file' );
     }
 
-    public function GetSiteData( $returnRawData = false ) {
-        $siteData = null;
-        $filePath = 'cache/siteData.json';
 
-        if( file_exists( APPPATH.$filePath ) )
-            $siteData = read_file( $filePath );
+    // ----------------------------------------------------------------------------------
 
-        if( !$siteData ) { // $siteData is false because the reding was not successful
-            $siteData = $this->db
-            ->select( 'data' )
-            ->from( 'items' )
-            ->where( 'type', 'sitedata' )
-            ->get()->row()->data;
-            
-            if( $returnRawData )
-                return $siteData;
-        }
+    /**
+     * Return the DB object related to several rows
+     *
+     * @param the table where to look
+     * @param an assoc array with where criteria or a single key (string)
+     * @param if the last parameter is a single key, this one is its value
+     * 
+     * @return the DB object or false if nothing is found
+     */
+    function GetRows( $table, $where, $value = null ) {
+        $this->db->from( $table );
 
-        return json_decode( $siteData );
+        if( $value != null )
+            $where = array( $where => $value );
+
+        foreach( $where as $field => $value )
+            $this->db->where( $field, $value );
+
+        /*if( is_numeric( $name ) )
+            $this->db->where( 'id', $name )->where( 'statut', 'public' );
+        else {
+
+            $this->db->where( 'name', title_url( $name ) )->where( 'statut', 'public' );
+        }*/
+
+        $result = $this->db->get();
+
+        if( $result->num_rows() <= 0 )
+            return false;
+
+        return $result;
     }
+
+
+    // ----------------------------------------------------------------------------------
+
+    /**
+     * Return the DB object related to one row
+     *
+     * @param the table where to look
+     * @param an assoc array with where criteria or a single key (string)
+     * @param if the last parameter is a single key, this one is its value
+     * @param the row id to be returned
+     * 
+     * @return the DB object or false if nothing is found
+     */
+    function GetRow( $table, $where, $value = null, $rowId = null ) {
+        $result = $this->GetRows( $table, $where, $value );
+
+        if( $result == false )
+            return false;
+        else 
+            return $result->row( $rowId );
+    }
+
+
+    // ----------------------------------------------------------------------------------
+
+    /**
+     *
+     */
+    function GetInfo( $table, $searched_field, $criteria, $value = null ) {
+        $this->db
+        ->select( $searched_field )
+        ->from( $table );
+
+        if( $value != null )
+            $criteria = array( $criteria => $value );
+
+        foreach( $criteria as $field => $value)
+            $this->db->where( $field, $value );
+
+        $result = $this->db->get();
+
+        if( $result->num_rows() <= 0 )
+            return false;
+
+        return $result->row()->$searched_field;
+    }
+
 }
 
 /* End of file main_model.php */

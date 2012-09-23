@@ -42,6 +42,8 @@ $route['default_controller'] = "featured";
 $route['404_override'] = 'errors/page_missing';
 $route['game/(:any)'] = 'game/index/$1';
 $route['developer/(:any)'] = 'developer/index/$1';
+$route['featured/404/(:any)'] = 'featured/pagenotfound/$1';
+
 
 
 /* End of file routes.php */

@@ -16,7 +16,7 @@
 		<!-- /Meta -->
 
 		<!-- CSS -->		
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo cssLink( 'vgdb' ); ?>" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo cssLink( 'main' ); ?>" />
 <?php foreach( $css as $url ): ?>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $url; ?>" />
 <?php endforeach; ?>

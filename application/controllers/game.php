@@ -2,9 +2,24 @@
 
 class Game extends CI_Controller {
     
-    public function index($name = null)
+    function index($nameOrId = null)
     {
-        $data['infos'] = GetSiteData( true );
+    	$data['siteData'] = GetSiteData();
+
+    	$where = array();
+    	if( is_numeric( $nameOrId ) )
+    		$where['id'] = $nameOrId;
+    	else
+    		$where['name'] = title_url( $nameOrId );
+
+        $DBInfos = $this->main_model->GetRow( 'games', $where );
+        if( $DBInfos == false )
+        	redirect( 'featured/404/gamenotfound:'.$nameOrId );
+        
+		$gameData = json_decode( $DBInfos->data );
+
+        $data['DBInfos'] = $DBInfos;
+        $data['gameData'] = $gameData;
         
         $this->layout
         ->AddView( 'bodyStart', 'menu_view', array('page'=>'game'))
@@ -13,5 +28,5 @@ class Game extends CI_Controller {
     }
 }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+/* End of file game.php */
+/* Location: ./application/controllers/game.php */
