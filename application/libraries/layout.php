@@ -22,15 +22,6 @@ class Layout
         $this->data['js'] = array();
         $this->data['bodyEnd'] = '';
 
-
-        // liste des page du site
-        /*$this->headerData['developpement_current'] = '';
-        $this->headerData['tutoriels_current'] = '';
-        $this->headerData['autre_sites_current'] = '';
-        $this->headerData['contact_current'] = '';*/
-
-        // set default header
-
         //	Le titre par défaut est composé du nom de la méthode et du nom du contrôleur.
         //	La fonction ucfirst permet d'ajouter une majuscule.
         $this->data['pageTitle'] = ucfirst( $this->CI->router->fetch_method() ).' - '.ucfirst( $this->CI->router->fetch_class() );
@@ -48,7 +39,7 @@ class Layout
     /**
      *
      */
-    public function SetData( $key, $value ) {
+    public function set_data( $key, $value ) {
         $this->data[$key] = $value;        
         return $this;
     }
@@ -58,7 +49,7 @@ class Layout
      * Set a custom title for the page
      * @param The page's title
      */
-    public function SetTitle( $title ) {
+    public function set_title( $title ) {
         $this->data['pageTitle'] = $title;
         return $this;
     }
@@ -68,7 +59,7 @@ class Layout
      * @param The meta tag's name
      * @param The meta tag's content
      */
-    public function SetMetas( $name, $content = null ) {
+    public function set_metas( $name, $content = null ) {
         if( is_string( $name ) )
             $this->data['metas'][] = array( 'name' => $name, 'content' => $content );
 
@@ -83,8 +74,8 @@ class Layout
      * Set the CSS files to be loaded on that page
      * @param the name of the file
      */
-    public function SetCSS( $file ) {
-        $this->data['css'][] = CSSLink( $file );
+    public function set_css( $file ) {
+        $this->data['css'][] = css_link( $file );
         return $this;
     }
 
@@ -93,8 +84,8 @@ class Layout
      * Set the JavaScript files to loaded on that page
      * @param the name of the file
      */
-    public function SetJS( $file ) {
-        $this->data['js'][] = JSLink( $file );
+    public function set_js( $file ) {
+        $this->data['js'][] = js_link( $file );
         return $this;
     }
 
@@ -107,7 +98,7 @@ class Layout
      *
      * @param the layout name
      */
-    public function SetLayout( $layout ) {
+    public function set_layout( $layout ) {
         if( is_string( $layout ) )
             $this->layout = $layout;
 
@@ -124,7 +115,7 @@ class Layout
      * @param The name of the view file
      * @param the date variable to pass to that view
      */
-    public function AddView( $hook, $viewName, $data = array() ) {
+    public function view( $hook, $viewName, $data = array() ) {
         $this->data[$hook] .= $this->CI->load->View( $viewName, $data, true ).'
         ';
         return $this;
@@ -135,7 +126,7 @@ class Layout
      * Load the layout
      * Call after all View() methods
      */
-    public function Load() {
+    public function load() {
         $this->CI->load->View( '../views/layout/'.$this->layout, $this->data );
     }
 

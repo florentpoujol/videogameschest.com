@@ -19,7 +19,7 @@ class Main_model extends CI_Model {
      * 
      * @return the DB object or false if nothing is found
      */
-    function GetRows( $table, $where, $value = null ) {
+    function get_rows( $table, $where, $value = null ) {
         $this->db->from( $table );
 
         if( $value != null )
@@ -56,7 +56,7 @@ class Main_model extends CI_Model {
      * 
      * @return the DB object or false if nothing is found
      */
-    function GetRow( $table, $where, $value = null, $rowId = null ) {
+    function get_row( $table, $where, $value = null, $rowId = null ) {
         $result = $this->GetRows( $table, $where, $value );
 
         if( $result == false )
@@ -71,15 +71,15 @@ class Main_model extends CI_Model {
     /**
      *
      */
-    function GetInfo( $table, $searched_field, $criteria, $value = null ) {
+    function get_infos( $table, $searched_field, $where, $value = null ) {
         $this->db
         ->select( $searched_field )
         ->from( $table );
 
         if( $value != null )
-            $criteria = array( $criteria => $value );
+            $where = array( $where => $value );
 
-        foreach( $criteria as $field => $value)
+        foreach( $where as $field => $value)
             $this->db->where( $field, $value );
 
         $result = $this->db->get();

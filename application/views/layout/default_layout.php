@@ -16,7 +16,7 @@
 		<!-- /Meta -->
 
 		<!-- CSS -->		
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo cssLink( 'main' ); ?>" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo css_link( 'main' ); ?>" />
 <?php foreach( $css as $url ): ?>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $url; ?>" />
 <?php endforeach; ?>

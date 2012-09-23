@@ -9,26 +9,13 @@ class Admin extends CI_Controller {
 
     	$this->load->library('encrypt');
 
-    	$this->sitedata = GetSiteData();
+    	get_site_data();
 
-    	$this->layout->AddView( 'bodyStart', 'menu_view', array('page'=>'admin'));
+		set_page( 'admin' );
+		set_admin_page( $this->router->fetch_method() );
 
-    	// prevent acces to the admin page when the user is not logged in AND the login form is not send
-    	// allow acces when logged in
-        //if( !userdata( 'isloggedin' ) && (!post( 'admin_login_form_submit' ) || !post( 'admin_login_form_lostpassword' )) )
-        	//redirect( 'admin/login' );
-    	$page = 'admin';
-    }
-
-
-    // ----------------------------------------------------------------------------------
-
-    /**
-     * Main hub with no content but the admin menu
-     */
-    function in_dex() {
-    	redirect( 'admin/hub' );
-    }
+    	$this->layout->view( 'bodyStart', 'menu_view' );
+	}
 
 
     // ----------------------------------------------------------------------------------
@@ -39,10 +26,12 @@ class Admin extends CI_Controller {
     function index() {
     	if(!userdata( 'isloggedin' ))
     		redirect( 'admin/login' );
-    	$adminPage = "hub";
+
+    	set_admin_page( 'hub' );
+
     	$this->layout
-    	->AddView( 'bodyStart', 'admin/admin_menu_view', )
-    	->Load();
+    	->view( 'bodyStart', 'admin/admin_menu_view' )
+    	->load();
     }
 
 
@@ -56,12 +45,11 @@ class Admin extends CI_Controller {
     	if(userdata('isloggedin'))
     		redirect('admin/hub');
 
-    	$adminPage = 'login';
     	$error = '';
     	$name = post( 'name' );
 
     	if( post( 'admin_login_form_submit' ) ) {
-	    	$user = $this->main_model->GetRow( 'users', 'name', $name );
+	    	$user = $this->main_model->get_row( 'users', 'name', $name );
 
 	    	if($user) {
 	    		if($this->encrypt->sha1( post( 'password' ) ) == $user->password) {
@@ -84,12 +72,10 @@ class Admin extends CI_Controller {
 
 
     	$this->layout
-    	->AddView( 'bodyStart', 'forms/admin_login_form', array('error'=>$error, 'name'=>$name ))
-    	->Load();
+    	->view( 'bodyStart', 'forms/admin_login_form', array('error'=>$error, 'name'=>$name ))
+    	->load();
     }
 
-
-    // ----------------------------------------------------------------------------------
 
     /**
      * Disconnect the user
@@ -117,20 +103,45 @@ class Admin extends CI_Controller {
     /**
      * Main hub with no content but the admin menu
      */
-    function addgame() {
-    	$data['siteData'] = $siteData;
-        
+    function adddeveloper() {
         $this->layout
-        ->AddView( 'bodyStart', 'menu_view', array('page'=>'admin'))
-        ->AddView( 'bodyStart', 'admin_menu_view', array('page'=>'addgame'))
-        ->AddView( 'bodyStart', 'game_form', $data )
-        ->Load();
+        ->view( 'bodyStart', 'admin/admin_menu_view' )
+        ->view( 'bodyStart', 'forms/developer_form' )
+        ->load();
+    }
+
+
+    function editdeveloper( $id = null ) {
+        $data['account_data'] = $this->db->get_row( 'developers', 'id', $id );
+
+        $this->layout
+        ->view( 'bodyStart', 'admin/admin_menu_view' )
+        ->view( 'bodyStart', 'forms/developer_form' )
+        ->load();
+    }
+
+
+    // ----------------------------------------------------------------------------------
+
+    /**
+     * Main hub with no content but the admin menu
+     */
+    function addgame() {
+        $this->layout
+        ->view( 'bodyStart', 'admin/admin_menu_view' )
+        ->view( 'bodyStart', 'forms/game_form' )
+        ->load();
     }
 
 
     function editgame() {
-    	
+    	$this->layout
+        ->view( 'bodyStart', 'admin/admin_menu_view' )
+        ->view( 'bodyStart', 'forms/game_form' )
+        ->load();
     }
+
+    // ----------------------------------------------------------------------------------
 }
 
 /* End of file admin.php */
