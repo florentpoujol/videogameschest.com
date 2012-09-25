@@ -1,4 +1,7 @@
 {
+	"countries": ["Australia", "Austria", "Belgium", "Canada", "France", "Germany", "Greece", "Holland", "Ireland", 
+	"Portugal", "Russia", "Spain", "Switzerland", "UK", "USA"],
+
 	"operatingsystems": ["Windows", "Mac", "Linux", "iOS", "Android", "Windows Phone", "Blackberry OS"],
 	
 	"devices": ["Pc", "xBox360", "PS3", "Wii", "Wii U", "Ouya", "iPod", "iPhone", "iPad", "Android Tablet",
@@ -7,7 +10,7 @@
 	"engines": ["Custom Built", "Unity3D", "UDK", "Unreal Engine", "Cry Engine", "Stencyl", "RPG Maker",
 	"Game Maker", "HTML5/JS", "CraftStudio", "XNA"],
 
-	"portals": ["Website", "Steam", "Desura", "Apple App Store", "Android MarketPlace", "Amazon Marketplace", "IndieVania",
+	"stores": ["Website", "Steam", "Desura", "Apple App Store", "Android MarketPlace", "Amazon Marketplace", "IndieVania",
 	"IndieCity", "GamersGate", "Impulse", "GreenManGaming", "Kongregate", "NewsGround", "Armor Games"],
 
 	"nbplayers": ["Singleplayer", "Multiplayer", "Co-op", "MMO"],

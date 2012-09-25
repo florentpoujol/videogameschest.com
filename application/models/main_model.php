@@ -57,7 +57,7 @@ class Main_model extends CI_Model {
      * @return the DB object or false if nothing is found
      */
     function get_row( $table, $where, $value = null, $rowId = null ) {
-        $result = $this->GetRows( $table, $where, $value );
+        $result = $this->get_rows( $table, $where, $value );
 
         if( $result == false )
             return false;

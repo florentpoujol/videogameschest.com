@@ -27,17 +27,26 @@ function get_site_data() {
 	if($site_data != null)
 		return $site_data;
 
-    $filePath = APPPATH.'data/siteData.json'; // in application folder
+    $filePath = APPPATH.'data/site_data.json'; // in application folder
     
     if( !file_exists( $filePath ) )
-    	die( "siteData.json does not exists at path : ".$filePath);
+    	die( "site_data.json does not exists at path : ".$filePath);
 
-    $siteData = read_file( $filePath );
+    $string_site_data = read_file( $filePath );
 
-    if( $siteData == false ) // $siteData is false because read_file() failed, otherwise it is a string
+    if( $string_site_data == false ) // $siteData is false because read_file() failed, otherwise it is a string
     	die( $filePath." could not be read !" );
 
-    $site_data = json_decode( $siteData );
+    $site_data = json_decode( $string_site_data );
+
+    // sort all arrays
+    $members = get_object_vars( $site_data );
+    
+    foreach( $members as $array => $values ) {
+    	if( is_array( $site_data->$array ) )
+    		sort( $site_data->$array );
+    }
+
     return $site_data;
 }
 
