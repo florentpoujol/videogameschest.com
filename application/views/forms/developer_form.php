@@ -11,7 +11,7 @@ if( isset( $account_data ) ) {
 
 
 $fields = array( 'pitch', 'logo', 'blogfeed', 'website', 'country', 'teamsize',
-'operatingsystems', 'engines', 'portals', 'socialnetworks' );
+'operatingsystems', 'engines', 'devices', 'stores', 'socialnetworks' );
 
 foreach( $fields as $field )
 	${$field} = '';
@@ -59,40 +59,67 @@ echo form_dropdown( 'country', $site_data->countries, $country, 'id="country"' )
 			<label for="country">Your country</label> <br>
 			<input type="number" min="1" name="teamsize" id="teamsize" placeholder="Teamsize" value="<?php echo $teamsize == '' ? 1: $teamsize;?>" > <label for="teamsize">The size of your team</label> <br>
 			<br>
-
+			<label for="stores">The social websites you are active on :</label> <br>
 <?php
-$operatingsystems = array( 'Mac', 'Linux');
-
-if( is_array( $operatingsystems ) ) {
-	for( $i = 0; $i < count( $operatingsystems ); $i++ )
-		$operatingsystems[$i] = array_search( $operatingsystems, $site_data->operatingsystems );
+if( is_array( $socialnetworks ) ) {
+	foreach( $socialnetworks as $site => $url ) {
+		$site = array_search( $site, $site_data->socialnetworks );
+		echo form_dropdown( 'socialnetwork_name_'.$site, $site_data->socialnetworks, $site, 'id="socialnetwork_name_'.$site.'"' );
+		echo '<input type="url" name="socialnetwork_url_'.$site.'" id="socialnetwork_url_'.$site.'" placehodder="Full profile url" value="'.$url.'"> <label for="socialnetwork_url_'.$site.'">Leave url blanck to delete</label> <br>';
+	}
 }
 
-echo form_multiselect( 'operatingsystem', $site_data->operatingsystems, $operatingsystems, 'id="operatingsystem" rows="10"' );
+for( $i=1; $i<=3; $i++ ) {
+	echo form_dropdown( 'newsocialnetwork_name_'.$i, $site_data->socialnetworks, null, 'id="newsocialnetwork_name_'.$i.'"' );
+	echo '<input type="url" name="newsocialnetwork_url_'.$i.'" id="newsocialnetwork_url_'.$i.'" placehodder="Full profile url"> <label for="newsocialnetwork_url_'.$i.'">New social network '.$i.'</label> <br>';
+}
+?>
+			<br>
+			<label for="engines">The engines/technologies you are developping your games with :</label> <br>
+<?php
+if( is_array( $engines ) ) {
+	for( $i = 0; $i < count( $engines ); $i++ )
+		$engines[$i] = array_search( $engines[$i], $site_data->engines );
+}
+
+echo form_multiselect( 'engines', $site_data->engines, $engines, 'id="engines" size="10"' );
 ?>		
-			<label for="operatingsystem">The operating systems your games are available on</label> <br>
+			<br>
+			<br>
+			<label for="operatingsystems">The operating systems your games are available on :</label> <br>
+<?php
+if( is_array( $operatingsystems ) ) {
+	for( $i = 0; $i < count( $operatingsystems ); $i++ )
+		$operatingsystems[$i] = array_search( $operatingsystems[$i], $site_data->operatingsystems );
+}
 
+echo form_multiselect( 'operatingsystems', $site_data->operatingsystems, $operatingsystems, 'id="operatingsystems" size="7"' );
+?>
+			<br>
+			<br>
+			<label for="devices">The devices your games are playable on :</label> <br>
+<?php
+if( is_array( $devices ) ) {
+	for( $i = 0; $i < count( $devices ); $i++ )
+		$devices[$i] = array_search( $devices[$i], $site_data->devices );
+}
 
+echo form_multiselect( 'devices', $site_data->devices, $devices, 'id="devices" size="10"' );
+?>		
+			<br>
+			<br>
+			<label for="stores">The stores you sells your games on :</label> <br>
+<?php
+if( is_array( $stores ) ) {
+	for( $i = 0; $i < count( $stores ); $i++ )
+		$stores[$i] = array_search( $stores[$i], $site_data->stores );
+}
 
+echo form_multiselect( 'stores', $site_data->stores, $stores, 'id="stores" size="10"' );
+?>		
 
 		</fieldset>
 
-		<input type="submit" name="<?php echo get_admin_page().'_form'; ?>" value="Validate">
+		<input type="submit" name="<?php echo get_admin_page().'_form_submit'; ?>" value="Validate">
 	</form>
 </div>
-
-
-
-<br>
-<br>
-<br>
-						blogfeed : string (url)
-						website : string (url)
-						contry : string
-						teamsize : int
-
-						operatingsys : array (string)
-						platforms : array (string)
-						engines : array (string)
-
-						socialnetworks : assoc array (string, string) (name, url)
