@@ -1,12 +1,14 @@
 <?php
+$id = -1;
+$statut = 'private';
 $name = '';
 $email = '';
-$statut = '';
 
 if( isset( $account_data ) ) {
+	$id = $account_data->id;
+	$statut = $account_data->statut;
 	$name = $account_data->name;
 	$email = $account_data->email;
-	$statut = $account_data->statut;
 }
 
 
@@ -24,7 +26,7 @@ if( isset( $dev_data ) ) {
 ?>
 <div id="developer_form">
 <?php 
-	echo form_open('admin/adddeveloper');
+	echo form_open( 'admin/'.get_admin_page() );
 ?>
 		<fieldset>
 			<legend>Account</legend>
@@ -34,6 +36,7 @@ if( isset( $dev_data ) ) {
 			<input type="email" name="email" id="email" placeholder="Your email" value="<?php echo $email;?>" > <label for="email">Email</label> <br>
 
 			Statut :
+<?php if( $statut == '' ) $statut = 'private'; ?>
 			<input type="radio" name="statut" id="statut_private" value="private" <?php if($statut=='private') echo 'checked="checked"'; ?>> <label for="statut_private">Private</label>
 			<input type="radio" name="statut" id="statut_public" value="public" <?php if($statut=='public') echo 'checked="checked"'; ?>> <label for="statut_public">Public</label> <br>
 			
@@ -120,6 +123,8 @@ echo form_multiselect( 'stores', $site_data->stores, $stores, 'id="stores" size=
 
 		</fieldset>
 
+
+		<input type="hidden" name="id" value="<?php echo $id;?>">
 		<input type="submit" name="<?php echo get_admin_page().'_form_submit'; ?>" value="Validate">
 	</form>
 </div>

@@ -41,7 +41,7 @@ function get_site_data() {
 
     // sort all arrays
     $members = get_object_vars( $site_data );
-    
+
     foreach( $members as $array => $values ) {
     	if( is_array( $site_data->$array ) )
     		sort( $site_data->$array );
@@ -50,6 +50,17 @@ function get_site_data() {
     return $site_data;
 }
 
+
+// ----------------------------------------------------------------------------------
+// DATABASE
+
+function get_rows( $table, $where, $value = null ) {
+	return get_instance()->main_model->get_rows( $table, $where, $value );
+}
+
+function get_row( $table, $where, $value = null, $rowId = null ) {
+	return get_instance()->main_model->get_row( $table, $where, $value, $rowId );
+}
 
 function get_info( $table, $field, $criteria, $value = null ) {
 	return get_instance()->main_model->get_info( $table, $field, $criteria, $value );
