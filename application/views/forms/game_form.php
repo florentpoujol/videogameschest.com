@@ -26,46 +26,40 @@ if( isset( $dev_data ) ) {
 		${$field} = $dev_data->$field;
 }
 
+$site_data = get_site_data();
+
 ?>
 <div id="game_form">
 <?php 
 	echo form_open( 'admin/'.get_admin_page() );
 ?>
 		<fieldset>
-			<legend>Account</legend>
-
-			<input type="text" name="name" id="name" placeholder="Name" value="<?php echo $name;?>" > <label for="name">Name</label> <br>
-<?php
-if( userdata( 'isadmin' ) ) { // allow to change developer
-	$raw_devs = get_rows( 'users', 'statut', 'public' );
-	$devs = array();
-	foreach( $raw_devs->result() as $dev ) {
-		$devs[$dev->id] = $dev->name;
-	}
-
-	echo form_dropdown( 'developer_id', $devs, $developer_id, 'id="developer_id"' );
-}
-?>
-		</fieldset>
-
-		<fieldset>
 			<legend>Data</legend>
 
+			<input type="text" name="name" id="name" placeholder="Name" value="<?php echo $name;?>" > <label for="name">Name of the game</label> <br>
+<?php
+if( userdata( 'isadmin' ) ) { // allow to change developer
+	$devs = get_developers();
+	echo form_dropdown( 'developer', $devs, $developer_id, 'id="developer"' );
+	echo ' <label for="developer">Developer</label>';
+}
+?>
+			<br>
+			<br>
 			<label for="pitch">Pitch the game below :</label> <br>
 			<textarea name="pitch" id="pitch" placeholder="Pitch the game" rows="10" cols="40"><?php echo $pitch;?></textarea> <br>
-			<input type="url" name="logo" id="logo" placeholder="Logo's url" value="<?php echo $logo;?>" > <label for="logo">Your logo's url</label> <br>
+			<input type="url" name="logo" id="logo" placeholder="Main screenshot url" value="<?php echo $logo;?>" > <label for="logo">The main screenshot url</label> <br>
 			<br>
-			<input type="url" name="website" id="website" placeholder="Website url" value="<?php echo $website;?>" > <label for="website">Your website url</label> <br>
-			<input type="url" name="blogfeed" id="blogfeed" placeholder="Blog RSS/Atom feed" value="<?php echo $blogfeed;?>" > <label for="blogfeed">Your blog feed (RSS or Atom flux)</label> <br>
+			<input type="url" name="website" id="website" placeholder="Website url" value="<?php echo $website;?>" > <label for="website">The game website url</label> <br>
+			<input type="url" name="blogfeed" id="blogfeed" placeholder="Blog RSS/Atom feed" value="<?php echo $blogfeed;?>" > <label for="blogfeed">The game blog feed (RSS or Atom flux)</label> <br>
 <?php
-$site_data = get_site_data();
-
-if( $country != '' )
-	$country = array_search( $country, $site_data->countries );
-
-echo form_dropdown( 'country', $site_data->countries, $country, 'id="country"' );
+// country (same as the develope's)
+if( $developer_id != 0 ) {
+	$country = json_decode( get_row( 'users', 'id', $developer_id )->data )->country;
+	$country = get_data( 'users', 'id', $developer_id )
+	echo '<input type="hidden" name="country" value="'.$country.'"> '.$country.'<br>';
+}
 ?>
-			<label for="country">Your country</label> <br>
 			<input type="number" min="1" name="price" id="price" placeholder="Price" value="<?php echo $price == '' ? 1: $teamsize;?>" > <label for="teamsize">The size of your team</label> <br>
 			<br>
 			<label for="stores">The social websites you are active on :</label> <br>
@@ -134,10 +128,10 @@ echo form_multiselect( 'stores', $site_data->stores, $stores, 'id="stores" size=
 	</form>
 </div>
 
-name : string
-statut : string
-pitch : string
-logo : string (url)
+<?php
+var_dump(get_instance()->main_model->cache);
+?>
+
 devname : (nom du dev sur le même site)
 devid : int (id dev sur le site)
 publishername : (string)

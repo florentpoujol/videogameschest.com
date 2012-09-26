@@ -54,16 +54,20 @@ function get_site_data() {
 // ----------------------------------------------------------------------------------
 // DATABASE
 
-function get_rows( $table, $where, $value = null ) {
+function get_db_rows( $table, $where = null, $value = null ) {
 	return get_instance()->main_model->get_rows( $table, $where, $value );
 }
 
-function get_row( $table, $where, $value = null, $rowId = null ) {
+function get_db_row( $table, $where, $value = null, $rowId = null ) {
 	return get_instance()->main_model->get_row( $table, $where, $value, $rowId );
 }
 
-function get_info( $table, $field, $criteria, $value = null ) {
-	return get_instance()->main_model->get_info( $table, $field, $criteria, $value );
+function get_db_info( $table, $field, $where, $value = null ) {
+	return get_instance()->main_model->get_info( $table, $field, $where, $value );
+}
+
+function get_db_data( $table, $where, $value = null ) {
+	return get_instance()->main_model->get_data( $table, $where, $value );
 }
 
 
@@ -92,6 +96,10 @@ function title_url( $url ) {
  */
 function userdata( $key ) {
 	return get_instance()->session->userdata( $key );
+}
+
+function set_userdata( $userdata ) {
+	return get_instance()->session->set_userdata( $userdata );
 }
 
 
@@ -154,13 +162,40 @@ function menu_selected( $item ) {
 }
 
 function admin_menu_selected( $item ) {
-	global $adminPage;
+	global $admin_page;
 	$text = '';
 
-	if($adminPage == $item)
+	if($admin_page == $item)
 		$text = 'id="admin_menu_selected" ';
 
 	return $text;
 }
 
+
+// mode
+// raw : raw data from database
+// clean : clean array key = dev id value = name
+function get_developers( $raw = false ) {
+	static $raw_devs = null;
+	static $clean_devs = null;
+
+	if( $raw_devs != null && $raw == true )
+		return $raw_devs;
+
+	if( $clean_devs != null && $raw == false )
+		return $clean_devs;
+
+
+	$raw_devs = get_db_rows( 'users', 'is_admin', 0 );
+
+	if( $raw == true )
+		return $raw_devs;
+
+	$clean_devs = array();
+	foreach( $raw_devs->result() as $dev ) {
+		$clean_devs[$dev->id] = $dev->name;
+	}
+
+	return $clean_devs;
+}
 ?>

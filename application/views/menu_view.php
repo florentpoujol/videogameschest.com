@@ -13,5 +13,4 @@
 <?php else: ?>
 	<a href="<?php echo site_url('admin/login'); ?>" <?php echo menu_selected('login');?>>Log In</a>
 <?php endif; ?> <br>
-<?php echo 'page : '.get_page();?>
 </header>

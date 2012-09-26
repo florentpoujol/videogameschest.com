@@ -2,10 +2,69 @@
 
 class Main_model extends CI_Model {
     
+    
+
+
     function __construct() {
         parent::__construct();
         $this->load->database();
     }
+
+
+    // ----------------------------------------------------------------------------------
+
+    public $cache = array();
+
+    /**
+     * 
+     *
+     * @param the table where to look
+     * @param an assoc array with where criteria or a single key (string)
+     * @param if the last parameter is a single key, this one is its value
+     * 
+     * @return the DB object or false if nothing is found
+     */
+    function get_from_cache( $table, $where = null, $value = null ) {
+       $pattern = $this->built_pattern( $table, $where, $value );
+
+        if( array_key_exists( $pattern, $this->cache ) )
+            return $this->cache[$attern];
+        else 
+            return false;
+    }
+
+
+    /**
+     * 
+     *
+     * @param the table where to look
+     * @param an assoc array with where criteria or a single key (string)
+     * @param if the last parameter is a single key, this one is its value
+     * 
+     * @return the DB object or false if nothing is found
+     */
+    function cache( $data, $table, $where = null, $value = null ) {
+        $pattern = $this->built_pattern( $table, $where, $value );
+
+        $this->cache[$pattern] = $data;
+    }
+
+
+    function built_pattern( $table, $where = null, $value = null ) {
+        $pattern = $table.'|';
+
+        if( $where == null )
+            return $pattern;
+
+        if( is_string( $where ) && isset( $value ) )
+            $where = array( $where => $value );
+
+        foreach( $where as $key => $value )
+            $pattern .= "$key=$value|";
+
+        return $pattern;
+    }
+
 
 
     // ----------------------------------------------------------------------------------
@@ -19,27 +78,27 @@ class Main_model extends CI_Model {
      * 
      * @return the DB object or false if nothing is found
      */
-    function get_rows( $table, $where, $value = null ) {
+    function get_rows( $table, $where = null, $value = null ) {
+        /*$cache = $this->get_from_cache( $table, $where, $value );
+        if( $cache != false )
+            return $cache;*/
+
         $this->db->from( $table );
 
-        if( $value != null )
-            $where = array( $where => $value );
+        if( isset( $where ) ) {
+            if( !is_array( $where ) && isset( $value ) )
+                $where = array( $where => $value );
 
-        foreach( $where as $field => $value )
-            $this->db->where( $field, $value );
-
-        /*if( is_numeric( $name ) )
-            $this->db->where( 'id', $name )->where( 'statut', 'public' );
-        else {
-
-            $this->db->where( 'name', title_url( $name ) )->where( 'statut', 'public' );
-        }*/
+            foreach( $where as $field => $value )
+                $this->db->where( $field, $value );
+        }
 
         $result = $this->db->get();
 
         if( $result->num_rows() <= 0 )
             return false;
 
+        //$this->cache( $result, $table, $where, $value );
         return $result;
     }
 
@@ -61,8 +120,9 @@ class Main_model extends CI_Model {
 
         if( $result == false )
             return false;
-        else 
+        else
             return $result->row( $rowId );
+ 
     }
 
 
@@ -71,24 +131,26 @@ class Main_model extends CI_Model {
     /**
      *
      */
-    function get_infos( $table, $searched_field, $where, $value = null ) {
-        $this->db
-        ->select( $searched_field )
-        ->from( $table );
+    function get_info( $table, $searched_field, $where, $value = null ) {
+        $result = $this->get_row( $table, $where, $value );
 
-        if( $value != null )
-            $where = array( $where => $value );
-
-        foreach( $where as $field => $value)
-            $this->db->where( $field, $value );
-
-        $result = $this->db->get();
-
-        if( $result->num_rows() <= 0 )
+        if( $result == false )
             return false;
-
-        return $result->row()->$searched_field;
+        else
+            return $result->$searched_field;
     }
+    
+
+    function get_data( $table, $where, $value = null ) {
+        $result = $this->get_info( $table, 'data', $where, $value );
+
+        if( $result == false )
+            return false;
+        else
+            return json_decode( $result );
+    }
+
+    
 
 }
 
