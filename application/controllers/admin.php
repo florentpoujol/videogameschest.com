@@ -5,13 +5,15 @@ class Admin extends CI_Controller {
     function __construct() {
     	parent::__construct();
 
-        if( !userdata( 'isloggedin' ) )
+        set_page( 'admin' );
+        set_admin_page( $this->router->fetch_method() );
+
+        if( get_admin_page() != 'login' && !userdata( 'isloggedin' ) )
             redirect( 'admin/login' );
 
     	$this->load->library('encrypt');
 
-		set_page( 'admin' );
-		set_admin_page( $this->router->fetch_method() );
+		
 
     	$this->layout->view( 'bodyStart', 'menu_view' );
 	}
@@ -145,12 +147,25 @@ class Admin extends CI_Controller {
                 The developer may not be seen in the search if the account is still private.';
             
 
+            // strip out empty url from the socialnetwork array
+            for( $i = 0; $i < count( $form_data['socialnetworks']['url'] ); $i++ ) {
+                if( trim( $form_data['socialnetworks']['url'][$i] ) == '' ) {
+                    unset( $form_data['socialnetworks']['site'][$i] );
+                    unset( $form_data['socialnetworks']['url'][$i] );
+                }
+            }
 
+            // rebuilt the index, 
+            // so that json_encode consider them as array an not object
+            array_values( $form_data['socialnetworks']['url'] );
+            array_values( $form_data['socialnetworks']['url'] );
+
+            // save data if all is well
             if( count( $form_data['errors'] ) == 0 ) {
 
-                //$id = $this->main_model->create_user( $form_data );
+                $id = $this->main_model->create_user( $form_data );
                 
-                //redirect( 'admin/editdeveloper/'.$id );
+                redirect( 'admin/editdeveloper/'.$id );
                 echo 'enreng db  redirect to edtdeveloper';
             }
         }

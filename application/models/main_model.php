@@ -156,18 +156,25 @@ class Main_model extends CI_Model {
         // but we need to encode the password
         // and encode a few field in JSON
         
-
-        if( trim( $data['password'] ) == '' )
-            $data['password'] = null;
-        else
+        if( trim( $data['password'] ) != '' )
             $data['password'] = $this->encrypt->sha1( $data['password'] );
+
+        unset( $data['password2'] );
+        unset( $data['developer_form_submitted'] );
+        unset( $data['errors'] );
 
         // these field are PHP array that contain ids
         // but we need to store a JSON array that contains names related to these ids
-        $variables = array( 'operatingsystems', 'engines', 'devices', 'stores', 'socialnetworks' );
+        $arrays = array( 'operatingsystems', 'engines', 'devices', 'stores', 'socialnetworks' );
 
-        foreach( )
+        foreach( $arrays as $array_name )
+            $data[$array_name] = json_encode( $data[$array_name] );
+        
+        //var_dump( $data );
+
+
         $this->db->insert( 'users', $data );
+        return $this->get_info( 'users', 'id', 'name', $data['name'] );
     }
 
 }

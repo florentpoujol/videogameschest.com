@@ -1,5 +1,7 @@
 <?php
 $site_data = get_site_data();
+$page = get_page();
+$admin_page = get_admin_page();
 
 // all variables for the form should have been passed to the view (when editiing an account)
 
@@ -11,7 +13,6 @@ $variables = array( 'id', 'name', 'email', 'is_admin', 'statut', 'pitch', 'logo'
 about the array values :
 when the data they contain comes from the database, it is a JSON array
 	the PHP array returned by json_decode then contain the name of the items
-		that have to be converted to the id of the item (the key in the $site_data->item array)
 but when the data comes from the form itself, it is already an array that contains the id of the items
 
 so the arrays like $operatingsystems, $engines, $devices and $stores are regular arrays that contains ids of the selected items
@@ -30,35 +31,28 @@ foreach( $variables as $var => $value ) {
 		}
 
 		if( is_string( ${$var} ) ) { // the data is a JSON array
-			$item_names_array = json_decode( ${$var} ); // now a regular array that contains names
+			$item_names_array = json_decode( ${$var}, true ); // now a regular array that contains names
 			
-			if( ${$var} == 'socialnetworks' ) {
+			if( $var == 'socialnetworks' ) {
 				$socialnetworks = $item_names_array;
-				$networks_id = array();
-				
-				foreach( $socialnetworks['site'] as $network_name )
-					$networks_id[] = array_search( $network_name, $site_data->socialnetworks );
-
-				$socialnetworks['site'] = $networks_id;
+				//$socialnetworks['site'] = get_assoc_array( $socialnetworks['site'] );
 			}
-			else {
+			else
+				${$var} = $item_names_array;
+			/*else {
 				${$var} = array();
 				foreach( $item_names_array as $item_name )
 					${$var}[] = array_search( $item_name, $site_data->$var );
-			}
+			}*/
 		}
 	}
 	elseif( !isset( ${$value} ) )
 			${$value} = '';
 }
-
-
 ?>
 <div id="developer_form">
 <?php
 
-$page = get_page();
-$admin_page = get_admin_page();
 
 // page title
 if( $admin_page == 'adddeveloper' || $page == 'adddeveloper' )
@@ -68,13 +62,11 @@ elseif( $admin_page == 'editdeveloper' )
 elseif( $admin_page == 'edityouraccount' )
 	echo '<h2>Edit your account</h2>';
 
-echo display_errors( $errors );
+if( isset( $errors ) )
+	echo display_errors( $errors );
 
 // opening form tag
-/*if( $page == 'adddeveloper' )
-	echo form_open( 'adddeveloper' );
-elseif( $page == 'admin' )*/
-	echo form_open( 'admin/'.$admin_page );
+echo form_open( 'admin/'.$admin_page );
 
 // display account id
 if( $admin_page == 'editdeveloper' || $admin_page == 'edityouraccount' )
@@ -106,8 +98,8 @@ if( $statut == '' )
 		<input type="url" name="website" id="website" placeholder="Website's URL" value="<?php echo $website;?>" > <label for="website">Your website's URL (company website or personal blog/portfolio)</label> <br>
 		<input type="url" name="blogfeed" id="blogfeed" placeholder="Blog RSS/Atom feed" value="<?php echo $blogfeed;?>" > <label for="blogfeed">Your blog feed (RSS or Atom flux)</label> <br>
 <?php
-if( !is_numeric( $country ) )
-	$country = array_search( $country, $site_data->countries );
+//if( !is_numeric( $country ) )
+//	$country = array_search( $country, $site_data->countries );
 
 echo form_dropdown( 'country', $site_data->countries, $country, 'id="country"' );
 ?>
@@ -137,6 +129,7 @@ for( $i = $count; $i < $count+3; $i++ ) {
 		<br>
 		<label for="engines">The engines/technologies you are developing your games with :</label> <br>
 <?php
+//var_dump($engines);
 echo form_multiselect( 'engines[]', $site_data->engines, $engines, 'id="engines" size="10"' );
 ?>		
 		<br>

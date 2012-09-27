@@ -20,21 +20,22 @@ $site_data = null;
 
 /**
  * Get the infos inside the file siteData.json
+ * @return 
  */
 function get_site_data() {
 	global $site_data;
 
-	if($site_data != null)
+	if( $site_data != null )
 		return $site_data;
 
     $filePath = APPPATH.'data/site_data.json'; // in application folder
     
     if( !file_exists( $filePath ) )
-    	die( "site_data.json does not exists at path : ".$filePath);
+    	die( "site_data.json does not exists at path : ".$filePath );
 
     $string_site_data = read_file( $filePath );
 
-    if( $string_site_data == false ) // $siteData is false because read_file() failed, otherwise it is a string
+    if( $string_site_data == false ) // $siteData may be false because read_file() failed, otherwise it is a string
     	die( $filePath." could not be read !" );
 
     $site_data = json_decode( $string_site_data );
@@ -43,11 +44,32 @@ function get_site_data() {
     $members = get_object_vars( $site_data );
 
     foreach( $members as $array => $values ) {
-    	if( is_array( $site_data->$array ) )
+    	if( is_array( $site_data->$array ) ) {
+    		// sort the array then makes them associative arrays
     		sort( $site_data->$array );
+
+    		$site_data->$array = get_assoc_array( $site_data->$array );
+    	}
+    		
     }
 
     return $site_data;
+}
+
+
+// ----------------------------------------------------------------------------------
+
+/**
+ * Turn an array to an associative array where keys = value
+ * @param the array
+ * @return the associative array
+ */
+function get_assoc_array( $array ) {
+	$assoc_array = array();
+	foreach( $array as $value ) {
+		$assoc_array[$value] = $value;
+	}
+	return $assoc_array;
 }
 
 
@@ -221,4 +243,6 @@ function display_errors( $errors ) {
 
 	return $html;
 }
+
+
 ?>
