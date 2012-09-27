@@ -12,8 +12,10 @@ class Admin extends CI_Controller {
             redirect( 'admin/login' );
 
     	$this->load->library('encrypt');
-
-		
+        
+        $lang = userdata( 'language' );
+        if( $lang )
+            $this->lang->load( 'main', $lang );
 
     	$this->layout->view( 'bodyStart', 'menu_view' );
 	}
@@ -257,6 +259,14 @@ class Admin extends CI_Controller {
     }
 
     // ----------------------------------------------------------------------------------
+
+    function setlanguage( $lang = null ) {
+        if( !in_array( $lang, get_site_data()->languages ) )
+            $lang = $this->config->item( 'language' ); // default language
+
+        set_userdata( 'language', $lang );
+        redirect( 'admin' );
+    }
 }
 
 /* End of file admin.php */

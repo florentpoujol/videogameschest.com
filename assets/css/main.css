@@ -8,6 +8,11 @@
 	color: green;
 	font-weight: bold;
 }
+.selected {
+	color: green;
+	font-weight: bold;
+}
+
 .errors {
 	color: red;
 }

@@ -120,8 +120,11 @@ function userdata( $key ) {
 	return get_instance()->session->userdata( $key );
 }
 
-function set_userdata( $userdata ) {
-	return get_instance()->session->set_userdata( $userdata );
+function set_userdata( $key, $value = null ) {
+	if( is_array( $key ) )
+		return get_instance()->session->set_userdata( $userdata );
+	else
+		return get_instance()->session->set_userdata( $key, $value );
 }
 
 
@@ -243,6 +246,8 @@ function display_errors( $errors ) {
 
 	return $html;
 }
+
+
 
 
 ?>

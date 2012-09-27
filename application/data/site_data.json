@@ -1,4 +1,6 @@
 {
+	"languages": ["french", "english"],
+
 	"countries": ["Australia", "Austria", "Belgium", "Canada", "France", "Germany", "Greece", "Holland", "Ireland", 
 	"Portugal", "Russia", "Spain", "Switzerland", "United Kingdom", "United States of America"],
 
