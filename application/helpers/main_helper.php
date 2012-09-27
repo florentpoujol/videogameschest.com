@@ -109,7 +109,7 @@ function set_userdata( $userdata ) {
  * 
  *
  */
-function post( $key ) {
+function post( $key = null ) {
 	return get_instance()->input->post( $key );
 }
 
@@ -197,5 +197,28 @@ function get_developers( $raw = false ) {
 	}
 
 	return $clean_devs;
+}
+
+
+function display_errors( $errors ) {
+	$html = '';
+
+	if( is_array( $errors) && count( $errors ) >= 1 ) {
+		$html = 
+'<div class="errors">
+	<p>There has been some errors :</p>
+	<ul>
+';
+
+		foreach( $errors as $error )
+			$html .= 
+'		<li>'.$error.'</li>';
+
+		$html .=
+'	</ul>
+</div>';
+	}
+
+	return $html;
 }
 ?>

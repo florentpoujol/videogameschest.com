@@ -2,12 +2,10 @@
 
 class Main_model extends CI_Model {
     
-    
-
-
     function __construct() {
         parent::__construct();
         $this->load->database();
+        $this->load->library( 'encrypt' );
     }
 
 
@@ -88,7 +86,7 @@ class Main_model extends CI_Model {
         if( isset( $where ) ) {
             if( !is_array( $where ) && isset( $value ) )
                 $where = array( $where => $value );
-
+            //var_dump($where);
             foreach( $where as $field => $value )
                 $this->db->where( $field, $value );
         }
@@ -151,6 +149,26 @@ class Main_model extends CI_Model {
     }
 
     
+
+    function create_user( $data ) {
+        // data is th raw data from the developer form
+        // at this point we are sure we want to create the user, 
+        // but we need to encode the password
+        // and encode a few field in JSON
+        
+
+        if( trim( $data['password'] ) == '' )
+            $data['password'] = null;
+        else
+            $data['password'] = $this->encrypt->sha1( $data['password'] );
+
+        // these field are PHP array that contain ids
+        // but we need to store a JSON array that contains names related to these ids
+        $variables = array( 'operatingsystems', 'engines', 'devices', 'stores', 'socialnetworks' );
+
+        foreach( )
+        $this->db->insert( 'users', $data );
+    }
 
 }
 

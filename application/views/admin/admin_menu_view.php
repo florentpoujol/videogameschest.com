@@ -5,13 +5,10 @@
 <?php if( userdata( 'is_admin' ) ): ?> <!-- admins only -->
 		<li><a href="<?php echo site_url('admin/adddeveloper'); ?>" <?php echo admin_menu_selected('adddeveloper');?>>Add a developer</a></li>
 		<li><a href="<?php echo site_url('admin/reports'); ?>" <?php echo admin_menu_selected('reports');?>>Reports</a></li>
-<?php endif; ?>
-
-<?php if( userdata( 'is_developer' ) ): ?> <!-- admins only -->
-		<li><a href="<?php echo site_url('admin/adddeveloper/'.userdata( 'user_id' )); ?>" <?php echo admin_menu_selected('adddeveloper');?>>Add a developer</a></li>
-<?php else: ?>
 		<li><a href="<?php echo site_url('admin/editdeveloper'); ?>" <?php echo admin_menu_selected('editdeveloper');?>>Edit a developer</a></li>
 <?php endif; ?>
+
+		<li><a href="<?php echo site_url('admin/edityouraccount'); ?>" <?php echo admin_menu_selected('edityouraccount');?>>Edit your account</a></li>
 		<li><a href="<?php echo site_url('admin/addgame'); ?>" <?php echo admin_menu_selected('addgame');?>>Add a game</a></li>
 		<li><a href="<?php echo site_url('admin/editgame'); ?>" <?php echo admin_menu_selected('editgame');?>>Edit a game</a></li>
 		<li><a href="<?php echo site_url('admin/gamequeue'); ?>" <?php echo admin_menu_selected('gamequeue');?>>Game queue</a></li>
