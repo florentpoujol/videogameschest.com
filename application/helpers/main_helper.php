@@ -116,15 +116,15 @@ function title_url( $url ) {
  * @param the url segment
  * @return the name
  */
-function userdata( $key ) {
+function userdata( $key = null ) {
 	return get_instance()->session->userdata( $key );
 }
 
 function set_userdata( $key, $value = null ) {
 	if( is_array( $key ) )
-		return get_instance()->session->set_userdata( $userdata );
+		get_instance()->session->set_userdata( $key );
 	else
-		return get_instance()->session->set_userdata( $key, $value );
+		get_instance()->session->set_userdata( $key, $value );
 }
 
 

@@ -15,7 +15,7 @@
 	"stores": ["Company/Game website", "Steam", "Desura", "Apple App Store", "Android MarketPlace", "Amazon Marketplace", "IndieVania",
 	"IndieCity", "GamersGate", "Impulse", "GreenManGaming", "Kongregate", "NewsGround", "Armor Games", "Google Play"],
 
-	"socialnetworks": ["Twitter", "Facebook", "Google+", "Pinterest", "Reddit", "LinkedIn"],
+	"socialnetworks": ["Twitter", "Facebook", "Google+", "Pinterest", "Reddit", "LinkedIn", "Steam"],
 
 	"nbplayers": ["Singleplayer", "Multiplayer", "Co-op", "MMO"],
 

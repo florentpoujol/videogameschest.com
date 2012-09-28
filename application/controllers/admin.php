@@ -8,9 +8,6 @@ class Admin extends CI_Controller {
         set_page( 'admin' );
         set_admin_page( $this->router->fetch_method() );
 
-        if( get_admin_page() != 'login' && !userdata( 'isloggedin' ) )
-            redirect( 'admin/login' );
-
     	$this->load->library('encrypt');
         
         $lang = userdata( 'language' );
@@ -27,7 +24,7 @@ class Admin extends CI_Controller {
      * Main hub with no content but the admin menu
      */
     function index() {
-    	if( !userdata( 'isloggedin' ) )
+    	if( !userdata( 'is_logged_in' ) )
     		redirect( 'admin/login' );
 
     	set_admin_page( 'hub' );
@@ -48,7 +45,7 @@ class Admin extends CI_Controller {
      */
     function login( $error = null ) {
     	// redirect if alredy logged in
-    	if( userdata( 'isloggedin' ) )
+    	if( userdata( 'is_logged_in' ) )
     		redirect( 'admin' );
 
     	$error = '';
@@ -59,19 +56,19 @@ class Admin extends CI_Controller {
 
             if( is_numeric( $name ) )
                 $field = 'id';
-            elseif( strpos( '@', $name ) ) // the name is actually an email
+            elseif( strpos( $name, '@' ) ) // the name is actually an email
                 $field = 'email';
 
 	    	$user = get_db_row( 'users', $field, $name );
 
 	    	if( $user ) {
-	    		if($this->encrypt->sha1( post( 'password' ) ) == $user->password) {
-	    			$userdata = array( 'isloggedin' => 'true' );
+	    		if( $this->encrypt->sha1( post( 'password' ) ) == $user->password ) {
+	    			$userdata = array( 'is_logged_in' => '1' );
 	    			
-	    			if($user->is_admin == 1 )
-	    				$userdata['is_admin'] = 'true';
+	    			if( $user->is_admin == 1 )
+	    				$userdata['is_admin'] = '1';
 	    			else
-	    				$userdata['is_developer'] = 'true';
+	    				$userdata['is_developer'] = '1';
 
                     $userdata['user_id'] = $user->id;
 	    			set_userdata( $userdata );
@@ -106,7 +103,7 @@ class Admin extends CI_Controller {
      * Page that show the reports
      */
     function reports() {
-    	if( !userdata( 'isloggedin' ) )
+    	if( !userdata( 'is_logged_in' ) )
             redirect( 'admin/login' );
     }
 
@@ -238,7 +235,7 @@ class Admin extends CI_Controller {
      * Main hub with no content but the admin menu
      */
     function addgame() {
-        if( !userdata( 'isloggedin' ) )
+        if( !userdata( 'is_logged_in' ) )
             redirect( 'admin/login' );
 
         $this->layout
@@ -249,7 +246,7 @@ class Admin extends CI_Controller {
 
 
     function editgame() {
-        if( !userdata( 'isloggedin' ) )
+        if( !userdata( 'is_logged_in' ) )
             redirect( 'admin/login' );
 
     	$this->layout
