@@ -127,7 +127,14 @@ class Main_model extends CI_Model {
     // ----------------------------------------------------------------------------------
 
     /**
+     * Return only one information from a table
      *
+     * @param string $table the table where to look
+     * @param string $searched_field the name of the searched field
+     * @param assoc array or string $where where criteria or a single key
+     * @param string or null if $where is a single key, $value is its value
+     * 
+     * @return the DB object or false if nothing is found
      */
     function get_info( $table, $searched_field, $where, $value = null ) {
         $result = $this->get_row( $table, $where, $value );
@@ -139,19 +146,14 @@ class Main_model extends CI_Model {
     }
     
 
-    function get_data( $table, $where, $value = null ) {
-        $result = $this->get_info( $table, 'data', $where, $value );
+    // ----------------------------------------------------------------------------------
 
-        if( $result == false )
-            return false;
-        else
-            return json_decode( $result );
-    }
-
-    
-
-    function create_user( $data ) {
-        // data is th raw data from the developer form
+    /**
+     * Create a developer in the database
+     * @param assoc array $data the raw data from the developer_form view
+     */
+    function create_developer( $data ) {
+        // data is the raw data from the developer form
         // at this point we are sure we want to create the user, 
         // but we need to encode the password
         // and encode a few field in JSON
@@ -159,9 +161,7 @@ class Main_model extends CI_Model {
         if( trim( $data['password'] ) != '' )
             $data['password'] = $this->encrypt->sha1( $data['password'] );
 
-        unset( $data['password2'] );
-        unset( $data['developer_form_submitted'] );
-        unset( $data['errors'] );
+
 
         // these field are PHP array that contain ids
         // but we need to store a JSON array that contains names related to these ids
@@ -173,8 +173,27 @@ class Main_model extends CI_Model {
         //var_dump( $data );
 
 
-        $this->db->insert( 'users', $data );
-        return $this->get_info( 'users', 'id', 'name', $data['name'] );
+        $this->db->insert( 'developers', $data );
+        return $this->get_info( 'developers', 'id', 'name', $data['name'] );
+    }
+
+    /**
+     * Updata a developer in the database
+     * @param assoc array $data the raw data from the developer_form view
+     */
+    function update_developer() {
+
+    }
+
+    // ----------------------------------------------------------------------------------
+
+    /**
+     * Update an administrator in the database
+     * @param assoc array $data the raw data from the admin_form view
+     */
+    function update_admin( $data ) {
+        if( trim( $data['password'] ) != '' )
+            $data['password'] = $this->encrypt->sha1( $data['password'] );
     }
 
 }

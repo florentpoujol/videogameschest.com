@@ -1,6 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 
+/**
+ * Set of 
+ */
 function css_link( $file ) {
 	return base_url().'assets/css/'.$file.'.css';
 }
@@ -19,7 +22,8 @@ function img_link( $file ) {
 $site_data = null;
 
 /**
- * Get the infos inside the file siteData.json
+ * Get the site data (devices, stores list...)
+ * the infos inside the file application/data/site_data.json
  * @return 
  */
 function get_site_data() {
@@ -35,15 +39,15 @@ function get_site_data() {
 
     $string_site_data = read_file( $filePath );
 
-    if( $string_site_data == false ) // $siteData may be false because read_file() failed, otherwise it is a string
+    if( $string_site_data == false ) // $site_data may be false because read_file() failed, otherwise it is a string
     	die( $filePath." could not be read !" );
 
     $site_data = json_decode( $string_site_data );
 
     // sort all arrays
-    $members = get_object_vars( $site_data );
+    /*$members = get_object_vars( $site_data );
 
-    foreach( $members as $array => $values ) {
+    foreach( $members as $object_name => $object ) {
     	if( is_array( $site_data->$array ) ) {
     		// sort the array then makes them associative arrays
     		sort( $site_data->$array );
@@ -51,7 +55,7 @@ function get_site_data() {
     		$site_data->$array = get_assoc_array( $site_data->$array );
     	}
     		
-    }
+    }*/
 
     return $site_data;
 }
@@ -211,7 +215,7 @@ function get_developers( $raw = false ) {
 		return $clean_devs;
 
 
-	$raw_devs = get_db_rows( 'users', 'is_admin', 0 );
+	$raw_devs = get_db_rows( 'developers' );
 
 	if( $raw == true )
 		return $raw_devs;
@@ -247,6 +251,39 @@ function display_errors( $errors ) {
 	return $html;
 }
 
+// ----------------------------------------------------------------------------------
+
+/**
+ * Wraper around validation_errors()
+ */
+function get_form_errors() {
+	$errors = validation_errors();
+
+	if( $errors != '' ) {
+		$errors =
+'<div class="form_errors">
+	'.$errors.'
+</div>';
+	}
+
+	return $errors;
+}
+
+/**
+ *
+ */
+function get_form_success( $form ) {
+	$html = '';
+
+	if( isset($form['success']) ) {
+		$html = 
+'<div class="form_success">
+	'.$form['success'].'
+</div>';
+	}
+
+	return $html;
+}
 
 
 

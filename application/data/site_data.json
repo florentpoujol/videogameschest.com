@@ -1,28 +1,136 @@
 {
-	"languages": ["french", "english"],
+	"languages": {
+		"french": "French",
+		"english": "English"
+	},
 
-	"countries": ["Australia", "Austria", "Belgium", "Canada", "France", "Germany", "Greece", "Holland", "Ireland", 
-	"Portugal", "Russia", "Spain", "Switzerland", "United Kingdom", "United States of America"],
+	"countries": {
+		"australia": "Australia",
+		"austria": "Austria",
+		"belgium": "Belgium",
+		"canada": "Canada",
+ 		"france": "France",
+ 		"germany": "Germany",
+		"greece": "Greece",
+		"holland": "Holland",
+		"ireland": "Ireland",
+		"portugal": "Portugal",
+		"russia": "Russia",
+		"spain": "Spain",
+		"switzerland": "Switzerland",
+		"united-kingdom": "United Kingdom",
+		"usa": "United States of America"
+	},
 
-	"operatingsystems": ["Windows", "Mac", "Linux", "iOS", "Android", "Windows Phone", "Blackberry OS"],
+	"operatingsystems": {
+		"windows": "Windows",
+		"mac": "Mac",
+		"linux": "Linux",
+		"ios": "iOS",
+		"android": "Android",
+		"windows-phone-7": "Windows Phone 7",
+		"blackberry": "BlackBerry OS"
+	},
 	
-	"devices": ["Pc", "Mac", "xBox", "xBox360", "PS1", "PS2", "PS3", "PS Vita", "Wii", "Wii U", "Ouya", "iPod", "iPhone", "iPad", "Android Tablet",
-	"Android Smartphone", "Windows Phone Tablet", "Windows Phone Smartphone", "DS", "3DS", "3DS XL", "Xperia Play", "Xperia Smartphone", "BlackBerry Smartphones"],
+	"devices": {
+		"pc": "Pc",
+		"mac": "Mac",
+		"xbox-360": "xBox 360",
+		"ps3": "PS3",
+		"ps-vita": "PS Vita",
+		"wii": "Wii",
+		"wii-u": "Wii U",
+		"ouya": "Ouya",
+		"ipod": "iPod",
+		"iphone": "iPhone",
+		"ipad": "iPad",
+		"android-tablet": "Android Tablet",
+		"android-smartphone": "Android Smartphone",
+		"windows-phone-tablet": "Windows Phone Tablet",
+		"windows-phone-smartphone": "Windows Phone Smartphone",
+		"ds": "DS",
+		"3ds": "3DS",
+		"3ds-xl": "3DS XL",
+		"xperia-play": "Xperia Play",
+		"xperia-smartphone": "Xperia Smartphone",
+		"blackberry-smartphone": "BlackBerry Smartphone"
+	},
 
-	"engines": ["Custom Built", "Unity3D", "UDK", "Unreal Engine", "Cry Engine", "Stencyl", "RPG Maker", "Adventure Game Studio",
-	"Game Maker", "HTML5/JS", "ImpactJS", "CraftStudio", "XNA", "Blender Game Engine"],
+	"technologies": {
+		"custom-built": "Custom Built",
+		"unity-3d": "Unity 3D",
+		"udk": "UDK",
+		"unreal-engine": "Unreal Engine",
+		"cry-engine": "Cry Engine",
+		"stencyl": "Stencyl",
+		"rpg-maker": "RPG Maker",
+		"adventure-game-studio": "Adventure Game Studio",
+		"game-maker": "game Maker",
+		"html5/js": "HTML5/JS",
+		"impactjs": "ImpactJS",
+		"craftstudio": "CraftStudio",
+		"xna": "XNA",
+		"blender-game-engine": "Blender Game Engine"
+	},
 
-	"stores": ["Company/Game website", "Steam", "Desura", "Apple App Store", "Android MarketPlace", "Amazon Marketplace", "IndieVania",
-	"IndieCity", "GamersGate", "Impulse", "GreenManGaming", "Kongregate", "NewsGround", "Armor Games", "Google Play"],
+	"stores": {
+		"website": "Company/Game website",
+		"steam": "Steam",
+		"desura": "Desura",
+		"apple-app-store": "Apple App Store",
+		"android-marketPlace": "Android MarketPlace",
+		"amazon-marketplace": "Amazon Marketplace",
+		"indievania": "IndieVania",
+		"indiecity": "IndieCity",
+		"gamersgate": "GamersGate",
+		"impulse": "Impulse",
+		"greenmangaming": "GreenManGaming",
+		"kongregate": "Kongregate",
+		"newsground": "NewsGround",
+		"armor-games": "Armor Games",
+		"google-play": "Google Play",
+		"xblig": "xBox Live Indie Games",
+		"xbla": "xBox Live Arcade"
+	},
 
-	"socialnetworks": ["Twitter", "Facebook", "Google+", "Pinterest", "Reddit", "LinkedIn", "Steam"],
+	"socialnetworks": {
+		"twitter": "Twitter",
+		"facebook": "Facebook",
+		"googleplus": "Google+",
+		"pinterest": "Pinterest",
+		"reddit": "Reddit",
+		"linkedin": "LinkedIn",
+		"steam": "Steam"
+ 	},
 
-	"nbplayers": ["Singleplayer", "Multiplayer", "Co-op", "MMO"],
+	"nbplayers": {
+		"singleplayer": "Singleplayer",
+ 		"multiplayer": "Multiplayer",
+ 		"co-op": "Coo-op",
+ 		"mmo": "MMO"
+ 	},
 
-	"gamestatuts": ["Early developement", "Internal playable built", "Public playable built", "released", "canceled"],
+	"gamestate": {
+		"concept": "Concept",
+		"prototype": "Prototype",
+		"early-production": "Early production",
+		"internal-playable-built": "Internal playable built",
+		"public-playable-built": "Public playable built",
+		"released": "released",
+ 		"canceled": "Canceled"
+ 	},
 
-	"themes": ["Fantasy", "Scify", "SteamPunk", "Comic"],
+	"themes": {
+		"fantasy": "Fantasy",
+ 		"scify": "Scify",
+ 		"steampunk": "SteamPunk",
+ 		"comics": "Comics"
+ 	},
 
-	"tags": ["isometric", "casual", "hardcore", "fun"]
-
+	"tags": {
+		"isometric": "Isometric",
+ 		"casual": "Casual",
+ 		"hardcore": "Hardcore",
+ 		"fun": "Fun"
+ 	}
 }

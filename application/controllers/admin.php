@@ -14,11 +14,16 @@ class Admin extends CI_Controller {
         if( $lang )
             $this->lang->load( 'main', $lang );
 
-    	$this->layout->view( 'bodyStart', 'menu_view' );
+    	$this->layout
+        ->view( 'bodyStart', 'menu_view' )
+        ->view( 'bodyStart', 'admin/admin_menu_view' );
+
+        $this->load->library( 'form_validation' );
 	}
 
 
     // ----------------------------------------------------------------------------------
+
 
     /**
      * Main hub with no content but the admin menu
@@ -27,12 +32,14 @@ class Admin extends CI_Controller {
     	if( !userdata( 'is_logged_in' ) )
     		redirect( 'admin/login' );
 
-    	set_admin_page( 'hub' );
+    	
 
-    	$this->layout->view( 'bodyStart', 'admin/admin_menu_view' );
 
-        if( userdata( 'is_admin' ) )
-            $this->layout->view( 'bodyStart', 'forms/select_developer_to_edit_form' );
+        /*if( userdata( 'is_admin' ) ) {
+            $this->layout
+            ->view( 'bodyStart', 'forms/select_developer_to_edit_form' )
+            ->view( 'bodyStart', 'forms/admin_form' );
+        }*/
 
     	$this->layout->load();
     }
@@ -59,13 +66,19 @@ class Admin extends CI_Controller {
             elseif( strpos( $name, '@' ) ) // the name is actually an email
                 $field = 'email';
 
-	    	$user = get_db_row( 'users', $field, $name );
+            $is_admin = false;
+	    	$user = get_db_row( 'developers', $field, $name );
+
+            if( !$user ) {
+                $user = get_db_row( 'administrators', $field, $name );
+                $is_admin = true;
+            }
 
 	    	if( $user ) {
 	    		if( $this->encrypt->sha1( post( 'password' ) ) == $user->password ) {
 	    			$userdata = array( 'is_logged_in' => '1' );
 	    			
-	    			if( $user->is_admin == 1 )
+	    			if( $is_admin )
 	    				$userdata['is_admin'] = '1';
 	    			else
 	    				$userdata['is_developer'] = '1';
@@ -105,6 +118,9 @@ class Admin extends CI_Controller {
     function reports() {
     	if( !userdata( 'is_logged_in' ) )
             redirect( 'admin/login' );
+
+        if( !userdata( 'is_admin' ) )
+            redirect( 'admin' );
     }
 
 
@@ -114,8 +130,13 @@ class Admin extends CI_Controller {
      * Main hub with no content but the admin menu
      */
     function adddeveloper() {
-        $form_data = post();
-        $form_data['errors'] = array();
+        if( !userdata( 'is_logged_in' ) )
+            redirect( 'admin/login' );
+
+        if( !userdata( 'is_admin' ) )
+            redirect( 'admin' );
+
+        
 
         if( post( 'developer_form_submitted' ) ) {
             // what to verify
@@ -123,13 +144,20 @@ class Admin extends CI_Controller {
             // name not empty and does not yet exist
             // email not empty and does not yet exists
 
-            /*$password = $form_data['password'];
-            $password2 = $form_data['password2'];
+            $form = post( 'form' );
 
-            if( trim( $password ) != '' && $password != $password2 )
-                $form_data['errors'][] = 'The two passwords do not match !';*/
+            $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[5]' );
+            $this->form_validation->set_rules( 'form[email]', 'Email', 'trim|required|min_length[5]|valid_email' );
 
-            if( $form_data['name'] == '' )
+            if( trim($form['password']) != '' ) {
+                $this->form_validation->set_rules( 'form[password]', 'Password', 'min_length[5]' );
+                $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'min_length[5]' );
+                
+                if( $form['password'] != $form['password2'] )
+                    $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'matches[form[password]]' );
+            }
+
+            /*if( $form_data['name'] == '' )
                 $form_data['errors'][] = 'The developer name is empty !';
             
             if( get_db_info( 'users', 'name', 'name', $form_data['name'] ) )
@@ -143,7 +171,7 @@ class Admin extends CI_Controller {
             if( get_db_info( 'users', 'email', 'email', $form_data['email'] ) )
                 $form_data['errors'][] = 'The email is already in use ! 
                 That means that the developer account already exist. 
-                The developer may not be seen in the search if the account is still private.';
+                The developer may not be seen in the search if the account is still private.';*/
             
 
             // strip out empty url from the socialnetwork array
@@ -162,24 +190,29 @@ class Admin extends CI_Controller {
             // save data if all is well
             if( count( $form_data['errors'] ) == 0 ) {
 
+                unset( $data['password2'] );
+                unset( $data['developer_form_submitted'] );
+                unset( $data['errors'] );
                 $id = $this->main_model->create_user( $form_data );
                 
                 redirect( 'admin/editdeveloper/'.$id );
                 echo 'enreng db  redirect to edtdeveloper';
             }
         }
-        
-
-        $this->layout
-        ->view( 'bodyStart', 'admin/admin_menu_view' )
-        ->view( 'bodyStart', 'forms/developer_form', $form_data )
-        ->load();
-    }
+        else
+            $this->layout->view( 'bodyStart', 'forms/developer_form' )->load();
+    } // end of method adddeveloper()
 
 
+    /**
+     * Page to edit a developer account
+     */
     function editdeveloper( $id = null ) {
-        // redirect developer to their edit page
-        if( userdata( 'is_developer' ) && $id == null )
+        if( !userdata( 'is_logged_in' ) )
+            redirect( 'admin/login' );
+
+        // redirect developer to their edit page only
+        if( userdata( 'is_developer' ) && $id != userdata( 'user_id' ) )
             redirect( 'admin/editdeveloper/'.userdata( 'user_id' ) );
         
         //
@@ -195,14 +228,12 @@ class Admin extends CI_Controller {
         /*if( post( 'edit_own_account_form_submitted' ) )
             redirect( 'admin/editdeveloper/'.userdata( 'user_id' ) );*/
         
-        $this->layout->view( 'bodyStart', 'admin/admin_menu_view' );
-
         if( $id != null ) {
             // make sure developers can't edit another account than their own
-            if( userdata( 'is_developer' ) && userdata( 'user_id' ) != $id ) // developer trying to edit an account he dosn't own
-                redirect( 'admin/editdeveloper/'.userdata( 'user_id' ) );
+            //if( userdata( 'is_developer' ) && userdata( 'user_id' ) != $id ) // developer trying to edit an account he dosn't own
+                //redirect( 'admin/editdeveloper/'.userdata( 'user_id' ) );
 
-            $developer_data = get_db_row( 'users', 'id', $id );
+            $developer_data = get_db_row( 'developers', 'id', $id );
 
             $this->layout
             ->view( 'bodyStart', 'forms/developer_form', $developer_data )
@@ -217,22 +248,88 @@ class Admin extends CI_Controller {
 
     }
 
-    function edityouraccount() {
-        redirect( 'admin/editdeveloper/'.userdata( 'user_id') );
 
-        /*$data['developer_data'] = get_db_row( 'users', 'id', userdata( 'user_id') );
+    // ----------------------------------------------------------------------------------
 
-        $this->layout
-        ->view( 'bodyStart', 'admin/admin_menu_view' )
-        ->view( 'bodyStart', 'forms/developer_form', $data )
-        ->Load();*/
+    /**
+     * Page to edit an admin account
+     */
+    function editadmin() {
+        if( !userdata( 'is_logged_in' ) )
+            redirect( 'admin/login' );
+
+        if( !userdata( 'is_admin' ) )
+            redirect( 'admin' );
+
+        // the has been submitted
+        if( post( 'admin_form_submitted' ) ) {
+            // checking form
+            $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[5]' );
+            $this->form_validation->set_rules( 'form[email]', 'Email', 'trim|required|min_length[5]|valid_email' );
+            
+            $form = post( 'form' );
+
+            if( trim($form['password']) != '' ) {
+                $this->form_validation->set_rules( 'form[password]', 'Password', 'min_length[5]' );
+                $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'min_length[5]' );
+                
+                if( $form['password'] != $form['password2'] )
+                    $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'matches[form[password]]' );
+            }
+            
+            // form OK
+            if( $this->form_validation->run() ) {
+                $form['success'] = 'Your administrator account has been successfully updated.';
+                $form['password'] = '';
+                $form['password2'] = '';
+
+                $this->layout
+                ->view( 'bodyStart', 'forms/admin_form' , 
+                    array( 'form' => $form ) )
+                ->load();
+            }
+            else {
+                // just reload the form and let the form_validation class display the errors
+                $form['password'] = '';
+                $form['password2'] = '';
+
+                $this->layout->view( 'bodyStart', 'forms/admin_form' , array('form' => post('form')) )
+                ->load();
+            }
+        }
+        // no form submitted
+        else {
+            $id = userdata( 'user_id' );
+            $form = get_db_row( 'administrators', 'id', $id );
+            $form->id = $id;
+            $form->password = '';
+
+            $this->layout->view( 'bodyStart', 'forms/admin_form' , array('form' => $form) )
+            ->load();
+        }
     }
 
 
     // ----------------------------------------------------------------------------------
 
     /**
-     * Main hub with no content but the admin menu
+     * Page to edit it's own account, redirect to the hub or editdeveloper
+     */
+    function edityouraccount() {
+        if( !userdata( 'is_logged_in' ) )
+            redirect( 'admin/login' );
+
+        if( userdata( 'is_developer' ) )
+            redirect( 'admin/editdeveloper/'.userdata( 'user_id') );
+        else //is admin
+            redirect( 'admin/editadmin' );
+    }
+
+
+    // ----------------------------------------------------------------------------------
+
+    /**
+     * Page to add a game
      */
     function addgame() {
         if( !userdata( 'is_logged_in' ) )
@@ -245,6 +342,9 @@ class Admin extends CI_Controller {
     }
 
 
+    /**
+     * Page to edit a game
+     */
     function editgame() {
         if( !userdata( 'is_logged_in' ) )
             redirect( 'admin/login' );
@@ -255,8 +355,12 @@ class Admin extends CI_Controller {
         ->load();
     }
 
+
     // ----------------------------------------------------------------------------------
 
+    /**
+     * Page to set the current language
+     */ 
     function setlanguage( $lang = null ) {
         if( !in_array( $lang, get_site_data()->languages ) )
             $lang = $this->config->item( 'language' ); // default language

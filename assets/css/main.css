@@ -13,6 +13,24 @@
 	font-weight: bold;
 }
 
-.errors {
+.form_errors  {
 	color: red;
+	font-weight: bold;
+	border: 1px solid red;
+	background: rgba(255,0,0,0.2);
+	padding: 5px;
+	margin: 5px;
+}
+.forms_errors p {
+	padding:0;
+	margin:0;
+}
+
+.form_success {
+	color: green;
+	font-weight: bold;
+	border: 1px solid green;
+	background: rgba(0,255,0,0.2);
+	padding: 5px;
+	margin: 5px;
 }

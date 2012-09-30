@@ -5,12 +5,15 @@ class Featured extends CI_Controller {
     function index()
     {
         
-        $data = array();
+        //$data = array();
 
-        $this->layout
-        ->AddView( 'bodyStart', 'menu_view', array('page'=>'featured'))
-        ->AddView( 'bodyStart', 'featured_view', $data )
-        ->Load();
+        /*$this->layout
+        ->AddView( 'bodyStart', 'menu_view')
+        ->AddView( 'bodyStart', 'featured_view' )
+        ->Load();*/
+       
+
+
     }
 
     function pagenotfound( $reason = "noreason" ) {
@@ -29,6 +32,12 @@ class Featured extends CI_Controller {
         ->AddView( 'bodyStart', '404_view', $_404)
         ->AddView( 'bodyStart', 'featured_view', $data )
         ->Load();
+    }
+
+    function testtable() {
+
+
+
     }
 }
 
