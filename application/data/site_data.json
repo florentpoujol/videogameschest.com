@@ -58,7 +58,7 @@
 
 	"technologies": {
 		"custom-built": "Custom Built",
-		"unity-3d": "Unity 3D",
+		"unity3d": "Unity3D",
 		"udk": "UDK",
 		"unreal-engine": "Unreal Engine",
 		"cry-engine": "Cry Engine",

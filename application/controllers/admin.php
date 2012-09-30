@@ -233,10 +233,10 @@ class Admin extends CI_Controller {
             //if( userdata( 'is_developer' ) && userdata( 'user_id' ) != $id ) // developer trying to edit an account he dosn't own
                 //redirect( 'admin/editdeveloper/'.userdata( 'user_id' ) );
 
-            $developer_data = get_db_row( 'developers', 'id', $id );
+            $form = get_db_row( 'developers', 'id', $id );
 
             $this->layout
-            ->view( 'bodyStart', 'forms/developer_form', $developer_data )
+            ->view( 'bodyStart', 'forms/developer_form', array('form'=>$form) )
             ->load();
         }
         else {

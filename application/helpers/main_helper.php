@@ -45,17 +45,14 @@ function get_site_data() {
     $site_data = json_decode( $string_site_data );
 
     // sort all arrays
-    /*$members = get_object_vars( $site_data );
+    $members = get_object_vars( $site_data );
 
-    foreach( $members as $object_name => $object ) {
-    	if( is_array( $site_data->$array ) ) {
-    		// sort the array then makes them associative arrays
-    		sort( $site_data->$array );
-
-    		$site_data->$array = get_assoc_array( $site_data->$array );
-    	}
-    		
-    }*/
+    foreach( $site_data as $member_name => $object_value) {
+    	$site_data->$member_name = get_object_vars( $object_value );
+    	asort( $site_data->$member_name ); 
+    	// asort() sort the array but values and keeps the key/value relation ships
+    	// sort() replace the keys by numbers
+	}
 
     return $site_data;
 }
@@ -229,27 +226,7 @@ function get_developers( $raw = false ) {
 }
 
 
-function display_errors( $errors ) {
-	$html = '';
 
-	if( is_array( $errors) && count( $errors ) >= 1 ) {
-		$html = 
-'<div class="errors">
-	<p>There has been some errors :</p>
-	<ul>
-';
-
-		foreach( $errors as $error )
-			$html .= 
-'		<li>'.$error.'</li>';
-
-		$html .=
-'	</ul>
-</div>';
-	}
-
-	return $html;
-}
 
 // ----------------------------------------------------------------------------------
 
@@ -286,5 +263,37 @@ function get_form_success( $form ) {
 }
 
 
+// ----------------------------------------------------------------------------------
 
+/**
+ * Transform a list of coma-separated values as a single string into an array
+ * @param string $csv The come-separated values
+ * @return array $array The array containin the items from the string
+ */
+/*function csv_to_array( $csv ) {
+ 	// look for explode() and implode()
+}*/
+
+/*function display_errors( $errors ) {
+	$html = '';
+
+	if( is_array( $errors) && count( $errors ) >= 1 ) {
+		$html = 
+'<div class="errors">
+	<p>There has been some errors :</p>
+	<ul>
+';
+
+		foreach( $errors as $error )
+			$html .= 
+'		<li>'.$error.'</li>';
+
+		$html .=
+'	</ul>
+</div>';
+	}
+
+	return $html;
+}*/
 ?>
+
