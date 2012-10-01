@@ -16,9 +16,8 @@
 	</ul>
 	<ul>
 <?php
-$site_data = get_site_data();
 $class = '';
-foreach( $site_data->languages as $lang ) {
+foreach( get_site_data()->sitelanguages as $lang ) {
 	if( userdata( 'language' ) == $lang )
 		$class = 'class="selected"';
 	else

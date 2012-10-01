@@ -50,7 +50,7 @@
 		"xbox360": "xBox 360",
 		"ps3": "PS3",
 		"psvita": "PS Vita",
-		"psp": "PSP"
+		"psp": "PSP",
 		"wii": "Wii",
 		"wiiu": "Wii U",
 		"ouya": "Ouya",
@@ -129,7 +129,7 @@
  		"mmo": "MMO"
  	},
 
-	"gamestate": {
+	"gamestates": {
 		"concept": "Concept",
 		"prototype": "Prototype",
 		"earlyproduction": "Early production",
@@ -142,33 +142,38 @@
 	"themes": {
 		"fantasy": "Fantasy",
 		"medieval": "Medieval",
- 		"scify": "Scify",
+ 		"scifi": "Sci-Fi",
  		"steampunk": "SteamPunk",
- 		"comics": "Comics",
- 		"horror": "Horror"
+ 		"comic": "Comic",
+ 		"horror": "Horror",
+ 		"western": "Western",
+ 		"mafia": "Mafia"
  	},
+
 
  	"genres": {
  		"shooter": "Shooter",
  		"fighting": "Fighting",
  		"strategy": "Strategy",
  		"citybuilding": "City Building",
- 		"ressources": "Ressources Management",
+ 		"resources": "Resources Management",
  		"racing": "Racing",
  		"simulation": "Simulation",
  		"action": "Action",
+ 		"arcade": "Arcade",
  		"adventure": "Adventure",
  		"puzzle": "Puzzle",
  		"platformer": "Platformer",
- 		
+ 		"towerdefense": "Tower Defense",
  		"roguelike": "Rogue-like",
  		"shootemup": "Shoot'Em Up",
  		"sport": "Sport",
- 		"rpg": "Role Playing Game",
- 		"rts": "Real-time Strategy"
+ 		"roleplaying": "Role Playing",
+ 		"rts": "Real-time Strategy",
+ 		"pointandclick": "Point and Click"
  	},
 
- 	"views": {
+ 	"viewpoints": {
  		"firstperson": "First Person",
  		"thirdperson": "Third Person",
  		"topdown": "Top Down",
@@ -186,5 +191,6 @@
  		"fun": "Fun",
  		"sidescrolling": "Side Scrolling",
  		"turnbased": "Turn-based",
+ 		"cellshading": "Cell Shading"
  	}
 }

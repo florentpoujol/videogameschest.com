@@ -379,7 +379,6 @@ class Admin extends CI_Controller {
             redirect( 'admin/login' );
 
         $this->layout
-        ->view( 'bodyStart', 'admin/admin_menu_view' )
         ->view( 'bodyStart', 'forms/game_form' )
         ->load();
     }
@@ -393,7 +392,6 @@ class Admin extends CI_Controller {
             redirect( 'admin/login' );
 
     	$this->layout
-        ->view( 'bodyStart', 'admin/admin_menu_view' )
         ->view( 'bodyStart', 'forms/game_form' )
         ->load();
     }

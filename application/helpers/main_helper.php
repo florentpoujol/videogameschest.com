@@ -85,8 +85,8 @@ function get_db_row( $table, $where, $value = null, $rowId = null ) {
 	return get_instance()->main_model->get_row( $table, $where, $value, $rowId );
 }
 
-function get_db_info( $table, $field, $where, $value = null ) {
-	return get_instance()->main_model->get_info( $table, $field, $where, $value );
+function get_db_info( $table, $searched_field, $where, $value = null ) {
+	return get_instance()->main_model->get_info( $table, $searched_field, $where, $value );
 }
 
 function get_db_data( $table, $where, $value = null ) {
@@ -260,6 +260,12 @@ function get_form_success( $form ) {
 	}
 
 	return $html;
+}
+
+
+// take the data field then translate it
+function get_data( $form ) {
+
 }
 
 
