@@ -136,67 +136,53 @@ class Admin extends CI_Controller {
         if( !userdata( 'is_admin' ) )
             redirect( 'admin' );
 
-        
-
         if( post( 'developer_form_submitted' ) ) {
-            // what to verify
-            // password maybe
-            // name not empty and does not yet exist
-            // email not empty and does not yet exists
-
             $form = post( 'form' );
 
-            $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[5]' );
-            $this->form_validation->set_rules( 'form[email]', 'Email', 'trim|required|min_length[5]|valid_email' );
+            $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[5]|is_unique[developers.name]' );
+            $this->form_validation->set_rules( 'form[email]', 'Email', 'trim|required|min_length[5]|valid_email|is_unique[developers.email]' );
 
-            if( trim($form['password']) != '' ) {
+            /*if( trim($form['password']) != '' ) {
                 $this->form_validation->set_rules( 'form[password]', 'Password', 'min_length[5]' );
                 $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'min_length[5]' );
                 
                 if( $form['password'] != $form['password2'] )
                     $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'matches[form[password]]' );
-            }
-
-            /*if( $form_data['name'] == '' )
-                $form_data['errors'][] = 'The developer name is empty !';
-            
-            if( get_db_info( 'users', 'name', 'name', $form_data['name'] ) )
-                $form_data['errors'][] = 'The name is already in use ! 
-                That means that the developer account already exist. 
-                The name may not be seen in the search if the account is still private.';
-            
-            if( $form_data['email'] == '' )
-                $form_data['errors'][] = 'The email is empty !';
-
-            if( get_db_info( 'users', 'email', 'email', $form_data['email'] ) )
-                $form_data['errors'][] = 'The email is already in use ! 
-                That means that the developer account already exist. 
-                The developer may not be seen in the search if the account is still private.';*/
-            
+            }*/
 
             // strip out empty url from the socialnetwork array
-            for( $i = 0; $i < count( $form_data['socialnetworks']['url'] ); $i++ ) {
-                if( trim( $form_data['socialnetworks']['url'][$i] ) == '' ) {
-                    unset( $form_data['socialnetworks']['site'][$i] );
-                    unset( $form_data['socialnetworks']['url'][$i] );
+            $count = count( $form['socialnetworks']['urls'] );
+            for( $i = 0; $i < $count; $i++ ) {
+                if( isset( $form['socialnetworks']['urls'][$i] ) &&
+                    trim( $form['socialnetworks']['urls'][$i] ) == '' )
+                {
+                    unset( $form['socialnetworks']['sites'][$i] );
+                    unset( $form['socialnetworks']['urls'][$i] );
+                    $i--;
+                    // problem : unsetting here change the size of the array and the keys of the remaining values
                 }
             }
 
+            unset( $form['password2'] );
+
             // rebuilt the index, 
-            // so that json_encode consider them as array an not object
-            array_values( $form_data['socialnetworks']['url'] );
-            array_values( $form_data['socialnetworks']['url'] );
+            // so that json_encode (in create_user()) consider them as array an not object
+            if( isset( $form['socialnetworks']['sites'] ) ) {
+                array_values( $form['socialnetworks']['sites'] );
+                array_values( $form['socialnetworks']['urls'] );
+            }
 
-            // save data if all is well
-            if( count( $form_data['errors'] ) == 0 ) {
 
-                unset( $data['password2'] );
-                unset( $data['developer_form_submitted'] );
-                unset( $data['errors'] );
-                $id = $this->main_model->create_user( $form_data );
-                
+            // save data if all is OK
+            if( $this->form_validation->run() ) {
+                $id = $this->main_model->create_developer( $form );
                 redirect( 'admin/editdeveloper/'.$id );
-                echo 'enreng db  redirect to edtdeveloper';
+            }
+            else {
+                unset( $form['password'] );
+                $this->layout
+                ->view( 'bodyStart', 'forms/developer_form', array('form'=>$form) )
+                ->load();
             }
         }
         else
@@ -225,29 +211,86 @@ class Admin extends CI_Controller {
             redirect( 'admin/editdeveloper/'.$id );
         }
 
-        /*if( post( 'edit_own_account_form_submitted' ) )
-            redirect( 'admin/editdeveloper/'.userdata( 'user_id' ) );*/
         
-        if( $id != null ) {
-            // make sure developers can't edit another account than their own
-            //if( userdata( 'is_developer' ) && userdata( 'user_id' ) != $id ) // developer trying to edit an account he dosn't own
-                //redirect( 'admin/editdeveloper/'.userdata( 'user_id' ) );
+        if( post( 'developer_form_submitted' ) ) {
+            $form = post( 'form' );
+            $db_data = get_db_row( 'developers', 'id', $form['id'] );
 
+            // cheking name
+            $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[5]' );
+            if( $form['name'] != $db_data->name )
+                $this->form_validation->set_rules( 'form[name]', 'Name', 'is_unique[developers.name]' );
+            
+            // cheking email
+            $this->form_validation->set_rules( 'form[email]', 'Email', 'trim|required|min_length[5]|valid_email' );
+            if( $form['email'] != $db_data->email )
+                $this->form_validation->set_rules( 'form[email]', 'Email', 'is_unique[developers.email]' );
+    
+            // checking password
+            /*if( trim($form['password']) != '' ) {
+                $this->form_validation->set_rules( 'form[password]', 'Password', 'min_length[5]' );
+                $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'min_length[5]' );
+                
+                if( $form['password'] != $form['password2'] )
+                    $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'matches[form[password]]' );
+            }*/
+
+            unset( $form['password2'] );
+
+            // strip out empty url from the socialnetwork array
+            $max_count = count( $form['socialnetworks']['urls'] );
+            for( $i = 0; $i < $max_count; $i++ ) {
+                if( isset( $form['socialnetworks']['urls'][$i] ) && trim( $form['socialnetworks']['urls'][$i] ) == '' )
+                {
+                    unset( $form['socialnetworks']['sites'][$i] );
+                    unset( $form['socialnetworks']['urls'][$i] );
+                    $i--; // unsetting change the size of the array and the keys of the remaining values
+                }
+            }
+
+            // rebuilt the social networks sites and urls index
+            // so that json_encode (in update_user()) consider them as array an not as object
+            if( isset( $form['socialnetworks']['sites'] ) ) {
+                array_values( $form['socialnetworks']['sites'] );
+                array_values( $form['socialnetworks']['urls'] );
+            }
+
+
+            // update data if all is OK
+            if( $this->form_validation->run() ) {
+                $this->main_model->update_developer( $form, $db_data );
+                
+                unset( $form['password'] );
+                $form['success'] = 'Your developer account has been successfully updated.';
+                
+                $this->layout
+                ->view( 'bodyStart', 'forms/developer_form', array('form'=>$form) )
+                ->load();
+            }
+            else {
+                unset( $form['password'] );
+                $this->layout
+                ->view( 'bodyStart', 'forms/developer_form', array('form'=>$form) )
+                ->load();
+               
+            }
+        } // end if( post( 'developer_form_submitted' ) ) {
+
+        // no form has been submitted, just show the form filled with data from the database
+        elseif( $id != null ) { // if user is a developer, this will always be the case (see redirect above)
             $form = get_db_row( 'developers', 'id', $id );
 
             $this->layout
             ->view( 'bodyStart', 'forms/developer_form', array('form'=>$form) )
             ->load();
         }
-        else {
-            // show to the admins the form to chose which devs to edit
+
+        else { // show to the admins the form to chose which devs to edit
             $this->layout
             ->view( 'bodyStart', 'forms/select_developer_to_edit_form' )
             ->load();
         }
-
     }
-
 
     // ----------------------------------------------------------------------------------
 
@@ -363,7 +406,7 @@ class Admin extends CI_Controller {
      */ 
     function setlanguage( $lang = null ) {
         if( !in_array( $lang, get_site_data()->languages ) )
-            $lang = $this->config->item( 'language' ); // default language
+            $lang = $this->config->item( 'sitelanguage' ); // default language
 
         set_userdata( 'language', $lang );
         redirect( 'admin' );
@@ -372,3 +415,4 @@ class Admin extends CI_Controller {
 
 /* End of file admin.php */
 /* Location: ./application/controllers/admin.php */
+?>

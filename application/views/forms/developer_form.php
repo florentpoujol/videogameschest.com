@@ -4,12 +4,14 @@ $page = get_page();
 $admin_page = get_admin_page();
 
 
+
 if( !isset($form) )
 	$form = array();
 elseif( is_object($form) )
 	$form = get_object_vars($form);
 
 
+//var_dump($form);
 // all variables for the form should have been passed to the view (when editiing an account)
 
 // initialise variable with default values (empty string or array)
@@ -46,6 +48,7 @@ elseif( is_string( $form['socialnetworks'] ) )
 	$form['socialnetworks'] = json_decode( $form['socialnetworks'], true );
 
 
+//var_dump($form);
 echo '<div id="developer_form">
 ';
 
@@ -64,8 +67,10 @@ echo get_form_success($form);
 echo form_open( 'admin/'.$admin_page );
 
 // display account id
-if( $admin_page == 'editdeveloper' )
-	echo 'Id : '.$form['id'].' <input type="hidden" name="form[form[id]" value="'.$form['id'].'"> <br>';
+if( $admin_page == 'editdeveloper' ) {
+	echo 'Id : '.$form['id'].' <input type="hidden" name="form[id]" value="'.$form['id'].'"> <br>
+';
+}
 ?>
 		<input type="text" name="form[name]" id="name" placeholder="(Company) name" value="<?php echo $form['name'];?>"> <label for="name">Your name (the company name, if applicable)</label> <br>
 		<input type="email" name="form[email]" id="email" placeholder="Email" value="<?php echo $form['email'];?>"> <label for="email">Your email</label> <br>
@@ -141,6 +146,7 @@ if( $page == 'adddeveloper' || $admin_page == 'adddeveloper' )
 elseif( $form['id'] == userdata('user_id') )
 	$value = 'Edit your account';
 ?>
-		<input type="submit" name="<?php echo $name;?>" value="<?php echo $value;?>">
+		
+		<input type="submit" name="developer_form_submitted" value="<?php echo $value;?>">
 	</form>
 </div> <!-- /#developer_form -->

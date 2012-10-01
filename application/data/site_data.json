@@ -1,7 +1,18 @@
 {
-	"languages": {
+	"sitelanguages": {
 		"french": "French",
 		"english": "English"
+	},
+
+	"languages": {
+		"french": "French",
+		"english": "English",
+		"german": "German",
+		"spanish": "Spanish",
+		"italian": "Italian",
+		"russian": "Russian",
+		"japonese": "Japonese",
+		"chinese": "Chinese"
 	},
 
 	"countries": {
@@ -18,7 +29,7 @@
 		"russia": "Russia",
 		"spain": "Spain",
 		"switzerland": "Switzerland",
-		"united-kingdom": "United Kingdom",
+		"uk": "United Kingdom",
 		"usa": "United States of America"
 	},
 
@@ -28,58 +39,66 @@
 		"linux": "Linux",
 		"ios": "iOS",
 		"android": "Android",
-		"windows-phone-7": "Windows Phone 7",
+		"windowsphone7": "Windows Phone 7",
 		"blackberry": "BlackBerry OS"
 	},
 	
 	"devices": {
+		"browser": "Browser",
 		"pc": "Pc",
 		"mac": "Mac",
-		"xbox-360": "xBox 360",
+		"xbox360": "xBox 360",
 		"ps3": "PS3",
-		"ps-vita": "PS Vita",
+		"psvita": "PS Vita",
+		"psp": "PSP"
 		"wii": "Wii",
-		"wii-u": "Wii U",
+		"wiiu": "Wii U",
 		"ouya": "Ouya",
 		"ipod": "iPod",
 		"iphone": "iPhone",
 		"ipad": "iPad",
-		"android-tablet": "Android Tablet",
-		"android-smartphone": "Android Smartphone",
-		"windows-phone-tablet": "Windows Phone Tablet",
-		"windows-phone-smartphone": "Windows Phone Smartphone",
+		"androidtablet": "Android Tablet",
+		"androidsmartphone": "Android Smartphone",
+		"windowsphonetablet": "Windows Phone Tablet",
+		"windowsphonesmartphone": "Windows Phone Smartphone",
 		"ds": "DS",
 		"3ds": "3DS",
-		"3ds-xl": "3DS XL",
-		"xperia-play": "Xperia Play",
-		"xperia-smartphone": "Xperia Smartphone",
-		"blackberry-smartphone": "BlackBerry Smartphone"
+		"3dsxl": "3DS XL",
+		"xperiaplay": "Xperia Play",
+		"xperiasmartphone": "Xperia Smartphone",
+		"blackberrysmartphone": "BlackBerry Smartphone"
 	},
 
 	"technologies": {
-		"custom-built": "Custom Built",
+		"custom": "Custom Built",
 		"unity3d": "Unity3D",
-		"udk": "UDK",
-		"unreal-engine": "Unreal Engine",
-		"cry-engine": "Cry Engine",
+		"udk": "Unreal Developement Kit",
+		"unrealengine": "Unreal Engine",
+		"cryengine": "Cry Engine",
 		"stencyl": "Stencyl",
-		"rpg-maker": "RPG Maker",
-		"adventure-game-studio": "Adventure Game Studio",
-		"game-maker": "game Maker",
+		"rpgmaker": "RPG Maker",
+		"adventuregamestudio": "Adventure Game Studio",
+		"gamemaker": "game Maker",
 		"html5/js": "HTML5/JS",
 		"impactjs": "ImpactJS",
 		"craftstudio": "CraftStudio",
 		"xna": "XNA",
-		"blender-game-engine": "Blender Game Engine"
+		"blender": "Blender Game Engine",
+		"source": "Source Engine",
+		"flixel": "Flixel",
+		"torque": "Torque Game Engine",
+		"ogre3d": "Ogre3D",
+		"shiva3d": "Shiva3D",
+		"flash": "Flash"
 	},
 
 	"stores": {
 		"website": "Company/Game website",
 		"steam": "Steam",
 		"desura": "Desura",
-		"apple-app-store": "Apple App Store",
-		"android-marketPlace": "Android MarketPlace",
-		"amazon-marketplace": "Amazon Marketplace",
+		"applestore": "Apple App Store",
+		"androidmarket": "Android MarketPlace",
+		"amazonmarket": "Amazon Marketplace",
 		"indievania": "IndieVania",
 		"indiecity": "IndieCity",
 		"gamersgate": "GamersGate",
@@ -87,8 +106,8 @@
 		"greenmangaming": "GreenManGaming",
 		"kongregate": "Kongregate",
 		"newsground": "NewsGround",
-		"armor-games": "Armor Games",
-		"google-play": "Google Play",
+		"armorgames": "Armor Games",
+		"googleplay": "Google Play",
 		"xblig": "xBox Live Indie Games",
 		"xbla": "xBox Live Arcade"
 	},
@@ -106,31 +125,66 @@
 	"nbplayers": {
 		"singleplayer": "Singleplayer",
  		"multiplayer": "Multiplayer",
- 		"co-op": "Coo-op",
+ 		"coop": "Cooop",
  		"mmo": "MMO"
  	},
 
 	"gamestate": {
 		"concept": "Concept",
 		"prototype": "Prototype",
-		"early-production": "Early production",
-		"internal-playable-built": "Internal playable built",
-		"public-playable-built": "Public playable built",
+		"earlyproduction": "Early production",
+		"internalplayablebuilt": "Internal playable built",
+		"publicplayablebuilt": "Public playable built",
 		"released": "released",
  		"canceled": "Canceled"
  	},
 
 	"themes": {
 		"fantasy": "Fantasy",
+		"medieval": "Medieval",
  		"scify": "Scify",
  		"steampunk": "SteamPunk",
- 		"comics": "Comics"
+ 		"comics": "Comics",
+ 		"horror": "Horror"
+ 	},
+
+ 	"genres": {
+ 		"shooter": "Shooter",
+ 		"fighting": "Fighting",
+ 		"strategy": "Strategy",
+ 		"citybuilding": "City Building",
+ 		"ressources": "Ressources Management",
+ 		"racing": "Racing",
+ 		"simulation": "Simulation",
+ 		"action": "Action",
+ 		"adventure": "Adventure",
+ 		"puzzle": "Puzzle",
+ 		"platformer": "Platformer",
+ 		
+ 		"roguelike": "Rogue-like",
+ 		"shootemup": "Shoot'Em Up",
+ 		"sport": "Sport",
+ 		"rpg": "Role Playing Game",
+ 		"rts": "Real-time Strategy"
+ 	},
+
+ 	"views": {
+ 		"firstperson": "First Person",
+ 		"thirdperson": "Third Person",
+ 		"topdown": "Top Down",
+ 		"isometric": "Isometric"
  	},
 
 	"tags": {
-		"isometric": "Isometric",
- 		"casual": "Casual",
+		
+		"2.5d": "2.5D",
+		"2d": "2D",
+		"3d": "3D",
+ 		"physics": "Physics",
  		"hardcore": "Hardcore",
- 		"fun": "Fun"
+ 		"casual": "Casual",
+ 		"fun": "Fun",
+ 		"sidescrolling": "Side Scrolling",
+ 		"turnbased": "Turn-based",
  	}
 }

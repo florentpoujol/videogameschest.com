@@ -151,51 +151,81 @@ class Main_model extends CI_Model {
     /**
      * Create a developer in the database
      * @param assoc array $data the raw data from the developer_form view
+     * @return int or bool the id of the newly inserted row or false
      */
-    function create_developer( $data ) {
+    function create_developer( $form ) {
         // data is the raw data from the developer form
         // at this point we are sure we want to create the user, 
         // but we need to encode the password
-        // and encode a few field in JSON
+        // and format a few fields
         
-        if( trim( $data['password'] ) != '' )
-            $data['password'] = $this->encrypt->sha1( $data['password'] );
+        // encode password if it exist
+        if( trim( $form['password'] ) != '' )
+            $form['password'] = $this->encrypt->sha1( $form['password'] );
 
+        // make sure arrays exists, or format them into a CSV string
+        $arrays = array( 'operatingsystems', 'technologies', 'devices', 'stores' );
 
+        foreach( $arrays as $array_name ) {
+            if( isset( $form[$array_name] ) )
+                $form[$array_name] = implode( ',', $form[$array_name] );
+            else // happens when nothing was put in the form, $form[$array_name] is null
+                $form[$array_name] = '';
+        }
 
-        // these field are PHP array that contain ids
-        // but we need to store a JSON array that contains names related to these ids
-        $arrays = array( 'operatingsystems', 'engines', 'devices', 'stores', 'socialnetworks' );
+        $form['socialnetworks'] = json_encode( $form['socialnetworks'] );
 
-        foreach( $arrays as $array_name )
-            $data[$array_name] = json_encode( $data[$array_name] );
-        
-        //var_dump( $data );
-
-
-        $this->db->insert( 'developers', $data );
-        return $this->get_info( 'developers', 'id', 'name', $data['name'] );
+        $this->db->insert( 'developers', $form );
+        return $this->db->insert_id();
     }
 
     /**
-     * Updata a developer in the database
-     * @param assoc array $data the raw data from the developer_form view
+     * Update a developer in the database
+     * @param assoc array $form the raw data from the developer_form view
+     * @param assoc array $db_data the db object
      */
-    function update_developer() {
+    function update_developer( $form, $db_data ) {
+        // encode the password if it exists
+        if( trim( $form['password'] ) != '' )
+            $form['password'] = $this->encrypt->sha1( $form['password'] );
 
+        // make sure arrays exists, or format them into a CSV string
+        $arrays = array('operatingsystems', 'technologies', 'devices', 'stores');
+
+        foreach( $arrays as $array_name ) {
+            if( isset( $form[$array_name] ) )
+                $form[$array_name] = implode( ',', $form[$array_name] );
+            else // happens when nothing was put in the form, $form[$array_name] is null
+                $form[$array_name] = '';
+        }
+
+
+        $form['socialnetworks'] = json_encode( $form['socialnetworks'] );
+
+        // now that everything is nicely formatted for databse
+        // lets compare what form data is different to the db data
+        // and update only what has changed
+        $id = $form['id'];
+
+        foreach( $form as $field => $value ) {
+            if( $value == $db_data->$field )
+                unset( $form[$field] );
+        }
+        
+        if( count($form) > 0 )
+            $this->db->update( 'developers', $form, 'id = '.$id );
     }
 
     // ----------------------------------------------------------------------------------
 
     /**
      * Update an administrator in the database
-     * @param assoc array $data the raw data from the admin_form view
+     * @param assoc array $form the raw data from the admin_form view
      */
-    function update_admin( $data ) {
-        if( trim( $data['password'] ) != '' )
-            $data['password'] = $this->encrypt->sha1( $data['password'] );
+    function update_admin( $form ) {
+        if( trim( $form['password'] ) != '' )
+            $form['password'] = $this->encrypt->sha1( $form['password'] );
     }
-
 }
 
 /* End of file main_model.php */
