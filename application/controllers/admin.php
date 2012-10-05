@@ -231,7 +231,7 @@ class Admin extends CI_Controller {
 
             // save data if all is OK
             if( $this->form_validation->run() ) {
-                $id = $this->main_model->create_developer( $form );
+                $id = $this->main_model->insert_developer( $form );
                 redirect( 'admin/editdeveloper/'.$id );
             }
             else {
@@ -353,7 +353,7 @@ class Admin extends CI_Controller {
 
             // save data if all is OK
             if( $this->form_validation->run() ) {
-                $id = $this->main_model->create_game( $form );
+                $id = $this->main_model->insert_game( $form );
                 redirect( 'admin/editgame/'.$id );
             }
             else {
@@ -443,8 +443,8 @@ class Admin extends CI_Controller {
             ->view( 'bodyStart', 'forms/game_form', array('form'=>$form) )
             ->load();
         }
-
-        else { // show the form to chose which game to edit
+        // show the form to chose which game to edit
+        else { 
             $this->layout
             ->view( 'bodyStart', 'forms/select_game_to_edit_form' )
             ->load();
@@ -463,6 +463,56 @@ class Admin extends CI_Controller {
 
         set_userdata( 'language', $lang );
         redirect( 'admin' );
+    }
+
+
+    // ----------------------------------------------------------------------------------
+
+    /**
+     * handle creating, deleting, and reading private messages
+     */
+    /*
+    Système de ticket pour communiquer entre admin et devs
+
+Les devs et les admins peuvent s'échanger des messages.
+
+Les devs peuvent envoyer des messages aux admins et vice versa.
+Les devs ne peuvent pas envoyer de message à d'autre devs.
+Un admin peu envoyer des message vers les autres admins.
+
+Tous les messages envoyés aux admins apparaissent dans une sections du panel avec les infos
+ : nom (nom du dev ou « admin »), timestamp, message
+*/
+    function messages() {
+        if( !userdata( 'is_logged_in' ) )
+            redirect( 'admin/login' );
+
+        if( post( 'write_message_form_submitted' ) ) {
+            $this->form_validation->set_rules( 'form[message]', 'Message text', 'trim|required|min_length[10]' );
+
+            if( $this->form_validation->run() ) {
+                $form = post( 'form' );
+
+                if( $form['recipient_id'] == "admins" )
+                    $form['recipient_id'] = 0;
+
+                if( userdata( 'is_admin' ) ) {
+                    $form['admin_owner_id'] = userdata( 'user_id' );
+                    $form['sender_id'] = userdata( 'user_id' );
+                }
+                else {
+                    $form['dev_owner_id'] = userdata( 'user_id' );
+                    $form['sender_id'] = userdata( 'user_id' );
+                }
+
+                $this->main_model->insert_message( $form );
+            }
+
+        }
+
+        $this->layout
+        ->view( 'bodyStart', 'forms/message_form' )
+        ->load();
     }
 }
 

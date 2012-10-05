@@ -210,7 +210,6 @@ function get_developers( $raw = false ) {
 	if( $clean_devs != null && $raw == false )
 		return $clean_devs;
 
-
 	$raw_devs = get_db_rows( 'developers' );
 
 	if( $raw == true )
@@ -232,10 +231,10 @@ function get_developers( $raw = false ) {
 /**
  * Wraper around validation_errors()
  */
-function get_form_errors() {
+function get_form_errors( $form = null ) {
 	$errors = validation_errors();
 
-	if( isset( $form['errors'] ) )
+	if( isset( $form ) && isset( $form['errors'] ) )
 		$errors .= "\n".$form['errors'];
 
 	if( $errors != '' ) {
@@ -295,38 +294,3 @@ function clean_socialnetworks( $socialnetworks ) {
 
     return $socialnetworks;
 }
-
-// ----------------------------------------------------------------------------------
-
-/**
- * Transform a list of coma-separated values as a single string into an array
- * @param string $csv The come-separated values
- * @return array $array The array containin the items from the string
- */
-/*function csv_to_array( $csv ) {
- 	// look for explode() and implode()
-}*/
-
-/*function display_errors( $errors ) {
-	$html = '';
-
-	if( is_array( $errors) && count( $errors ) >= 1 ) {
-		$html = 
-'<div class="errors">
-	<p>There has been some errors :</p>
-	<ul>
-';
-
-		foreach( $errors as $error )
-			$html .= 
-'		<li>'.$error.'</li>';
-
-		$html .=
-'	</ul>
-</div>';
-	}
-
-	return $html;
-}*/
-?>
-

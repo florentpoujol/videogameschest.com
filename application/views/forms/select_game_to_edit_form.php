@@ -26,4 +26,4 @@ echo ' <label for="game_id_select">Select the game</label>';
 		<br>
 		<input type="submit" name="select_game_to_edit_form_submitted" value="Edit this game"> <br>
 	</form>
-</div>
+</div> <!-- /#select_game_to_edit_form -->

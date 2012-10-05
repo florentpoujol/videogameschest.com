@@ -4,7 +4,6 @@ $page = get_page();
 $admin_page = get_admin_page();
 
 
-
 if( !isset($form) )
 	$form = array();
 elseif( is_object($form) )
@@ -149,4 +148,4 @@ elseif( $form['id'] == userdata('user_id') )
 		
 		<input type="submit" name="game_form_submitted" value="<?php echo $value;?>">
 	</form>
-</div> <!-- /#developer_form -->
+</div> <!-- /#game_form -->

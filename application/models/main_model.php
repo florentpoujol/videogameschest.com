@@ -153,7 +153,7 @@ class Main_model extends CI_Model {
      * @param assoc array $data the raw data from the developer_form view
      * @return int or bool the id of the newly inserted row or false
      */
-    function create_developer( $form ) {
+    function insert_developer( $form ) {
         // data is the raw data from the developer form
         // at this point we are sure we want to create the user, 
         // but we need to encode the password
@@ -224,7 +224,7 @@ class Main_model extends CI_Model {
      * @param assoc array $data the raw data from the game_form view
      * @return int or bool the id of the newly inserted row or false
      */
-    function create_game( $form ) {
+    function insert_game( $form ) {
         // data is the raw data from the game form
         // at this point we are sure we want to create the game, 
         
@@ -266,7 +266,7 @@ class Main_model extends CI_Model {
         }
 
         $form['data'] = json_encode( $form['data'] );
-        
+
         if( count($form) > 0 )
             $this->db->update( 'games', $form, 'id = '.$id );
     }
@@ -287,11 +287,24 @@ class Main_model extends CI_Model {
     // ----------------------------------------------------------------------------------
 
     /**
-     * Retrieve the games 
-     * @param assoc array $form the raw data from the admin_form view
+     * Insert a new message in the database
+     * @param assoc array $form the raw data from the message_form view
      */
-    function get_dev_games( $dev_id ) {
+    function insert_message( $form ) {
+        $form['date'] = date_create()->format('Y-m-d H:i:s'); // alias of DateTime::__construct('Now')
         
+        // first insert the copy of the admin
+        $form['admin_owner_id'] = 1;// the idea here is to create has much copy as admins
+        $this->db->insert( 'messages', $form );
+
+        // then the copy for the developer
+        unset( $form['admin_owner_id'] );
+        
+        $form['dev_owner_id'] = $form['sender_id'];
+        if( $form['recipient_id'] != 0 ) // the sender is an admin so the developer id is the recipient_id
+            $form['dev_owner_id'] = $form['recipient_id'];
+
+        $this->db->insert( 'messages', $form );
     }
 }
 
