@@ -487,6 +487,8 @@ Tous les messages envoyés aux admins apparaissent dans une sections du panel av
         if( !userdata( 'is_logged_in' ) )
             redirect( 'admin/login' );
 
+        $form = array();
+
         if( post( 'write_message_form_submitted' ) ) {
             $this->form_validation->set_rules( 'form[message]', 'Message text', 'trim|required|min_length[10]' );
 
@@ -496,22 +498,24 @@ Tous les messages envoyés aux admins apparaissent dans une sections du panel av
                 if( $form['recipient_id'] == "admins" )
                     $form['recipient_id'] = 0;
 
-                if( userdata( 'is_admin' ) ) {
-                    $form['admin_owner_id'] = userdata( 'user_id' );
+                $form['sender_id'] = 0;
+                if( userdata( 'is_developer' ) ) 
                     $form['sender_id'] = userdata( 'user_id' );
-                }
-                else {
-                    $form['dev_owner_id'] = userdata( 'user_id' );
-                    $form['sender_id'] = userdata( 'user_id' );
-                }
-
+                
                 $this->main_model->insert_message( $form );
+                $form['success'] = 'Message sent successfully.';
             }
-
         }
 
+
+        if( post( 'delete_inbox_form_submitted' ) || post( 'delete_outbox_form_submitted' ) ) {
+            $this->main_model->delete_messages( post( 'delete' ) );
+            $form['success'] = 'Message(s) deleted successfully.';
+        }
+
+
         $this->layout
-        ->view( 'bodyStart', 'forms/message_form' )
+        ->view( 'bodyStart', 'forms/message_form', array('form'=>$form) )
         ->load();
     }
 }

@@ -294,17 +294,44 @@ class Main_model extends CI_Model {
         $form['date'] = date_create()->format('Y-m-d H:i:s'); // alias of DateTime::__construct('Now')
         
         // first insert the copy of the admin
-        $form['admin_owner_id'] = 1;// the idea here is to create has much copy as admins
+        $form['owner_id'] = $form['sender_id'];
         $this->db->insert( 'messages', $form );
 
         // then the copy for the developer
-        unset( $form['admin_owner_id'] );
-        
-        $form['dev_owner_id'] = $form['sender_id'];
-        if( $form['recipient_id'] != 0 ) // the sender is an admin so the developer id is the recipient_id
-            $form['dev_owner_id'] = $form['recipient_id'];
-
+        $form['owner_id'] = $form['recipient_id'];
         $this->db->insert( 'messages', $form );
+    }
+
+
+    /**
+     * Insert a new message in the database
+     * @param assoc array $form the raw data from the message_form view
+     */
+    function get_messages( $where, $join_field = null ) {
+        $this->db
+        ->select( '*' )
+        ->select( 'messages.id AS msg_id' ) // message.id gets overritten by developers.id
+        ->from( 'messages' );
+
+        if( $join_field != null )
+            $this->db->join( 'developers', 'developers.id = messages.'.$join_field );
+
+        return $this->db->where( $where )->get();
+    }
+
+
+    /**
+     * Insert a new message in the database
+     * @param assoc array $form the raw data from the message_form view
+     */
+    function delete_messages( $ids ) {
+        if( !is_array( $ids ) )
+            $ids = array($ids);
+
+        foreach( $ids as $id )
+            $this->db->or_where( 'id', $id );
+
+        $this->db->delete( 'messages' );
     }
 }
 
