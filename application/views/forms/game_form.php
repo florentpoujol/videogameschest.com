@@ -107,7 +107,7 @@ else { // user is a developer on the admin panel ?>
 		Developer: You ! Id=<?php echo $form['developer_id'];?> Name=<?php echo $form['developer_name'];?>
 <?php } // end if( $page == 'admin' ): ?>
 		<br>
-		<label for="pitch">Pitch your philosophy, goals below :</label> <br>
+		<label for="pitch">Pitch the game story, features below :</label> <br>
 		<textarea name="form[data][pitch]" id="pitch" placeholder="Pitch the company" rows="10" cols="40"><?php echo $form['data']['pitch'];?></textarea> <br>
 		<input type="url" name="form[data][logo]" id="logo" placeholder="Logo's URL" value="<?php echo $form['data']['logo'];?>" > <label for="logo">Your logo's URL</label> <br>
 		<br>
@@ -131,7 +131,6 @@ for( $i = $count; $i < $count+3; $i++ ) {
 }
 ?>
 		If you want to add more than 3 networks, add 3 now, save, then you will be able to add 3 more. <br>
-		<br>
 <?php
 $infos = array(
 	'technologies' => 'The technologies/engines the game is developed with :',
@@ -146,11 +145,15 @@ $infos = array(
 	);
 
 foreach( $infos as $key => $label ) {
+	$size = count( $site_data->$key );
+	if( $size > 10 )
+		$size = 10;
+
 	echo '
 		<br>
 		<br>
 		<label for="'.$key.'">'.$label.'</label> <br>'.
-		form_multiselect( 'form[data]['.$key.'][]', $site_data->$key, $form['data'][$key], 'id="'.$key.'" size="10"' ).'
+		form_multiselect( 'form[data]['.$key.'][]', $site_data->$key, $form['data'][$key], 'id="'.$key.'" size="'.$size.'"' ).'
 ';
 }
 ?>

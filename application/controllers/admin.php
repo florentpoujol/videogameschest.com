@@ -24,7 +24,6 @@ class Admin extends CI_Controller {
 
     // ----------------------------------------------------------------------------------
 
-
     /**
      * Main hub with no content but the admin menu
      */
@@ -121,6 +120,83 @@ class Admin extends CI_Controller {
 
         if( !userdata( 'is_admin' ) )
             redirect( 'admin' );
+    }
+
+
+    // ----------------------------------------------------------------------------------
+
+    /**
+     * Page to edit an admin account
+     */
+    function editadmin() {
+        if( !userdata( 'is_logged_in' ) )
+            redirect( 'admin/login' );
+
+        if( !userdata( 'is_admin' ) )
+            redirect( 'admin' );
+
+        // the has been submitted
+        if( post( 'admin_form_submitted' ) ) {
+            // checking form
+            $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[5]' );
+            $this->form_validation->set_rules( 'form[email]', 'Email', 'trim|required|min_length[5]|valid_email' );
+            
+            $form = post( 'form' );
+
+            if( trim($form['password']) != '' ) {
+                $this->form_validation->set_rules( 'form[password]', 'Password', 'min_length[5]' );
+                $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'min_length[5]' );
+                
+                if( $form['password'] != $form['password2'] )
+                    $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'matches[form[password]]' );
+            }
+            
+            // form OK
+            if( $this->form_validation->run() ) {
+                $form['success'] = 'Your administrator account has been successfully updated.';
+                $form['password'] = '';
+                $form['password2'] = '';
+
+                $this->layout
+                ->view( 'bodyStart', 'forms/admin_form' , 
+                    array( 'form' => $form ) )
+                ->load();
+            }
+            else {
+                // just reload the form and let the form_validation class display the errors
+                $form['password'] = '';
+                $form['password2'] = '';
+
+                $this->layout->view( 'bodyStart', 'forms/admin_form' , array('form' => post('form')) )
+                ->load();
+            }
+        }
+        // no form submitted
+        else {
+            $id = userdata( 'user_id' );
+            $form = get_db_row( 'administrators', 'id', $id );
+            $form->id = $id;
+            $form->password = '';
+
+            $this->layout->view( 'bodyStart', 'forms/admin_form' , array('form' => $form) )
+            ->load();
+        }
+    }
+
+
+    // ----------------------------------------------------------------------------------
+
+    /**
+     * Page to edit it's own account, redirect to the hub or editdeveloper
+     */
+    function edityouraccount() {
+        if( !userdata( 'is_logged_in' ) )
+            redirect( 'admin/login' );
+
+        if( userdata( 'is_developer' ) )
+            redirect( 'admin/editdeveloper/'.userdata( 'user_id') );
+        else //is admin
+            redirect( 'admin/editadmin' );
     }
 
 
@@ -292,81 +368,7 @@ class Admin extends CI_Controller {
         }
     }
 
-    // ----------------------------------------------------------------------------------
-
-    /**
-     * Page to edit an admin account
-     */
-    function editadmin() {
-        if( !userdata( 'is_logged_in' ) )
-            redirect( 'admin/login' );
-
-        if( !userdata( 'is_admin' ) )
-            redirect( 'admin' );
-
-        // the has been submitted
-        if( post( 'admin_form_submitted' ) ) {
-            // checking form
-            $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[5]' );
-            $this->form_validation->set_rules( 'form[email]', 'Email', 'trim|required|min_length[5]|valid_email' );
-            
-            $form = post( 'form' );
-
-            if( trim($form['password']) != '' ) {
-                $this->form_validation->set_rules( 'form[password]', 'Password', 'min_length[5]' );
-                $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'min_length[5]' );
-                
-                if( $form['password'] != $form['password2'] )
-                    $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'matches[form[password]]' );
-            }
-            
-            // form OK
-            if( $this->form_validation->run() ) {
-                $form['success'] = 'Your administrator account has been successfully updated.';
-                $form['password'] = '';
-                $form['password2'] = '';
-
-                $this->layout
-                ->view( 'bodyStart', 'forms/admin_form' , 
-                    array( 'form' => $form ) )
-                ->load();
-            }
-            else {
-                // just reload the form and let the form_validation class display the errors
-                $form['password'] = '';
-                $form['password2'] = '';
-
-                $this->layout->view( 'bodyStart', 'forms/admin_form' , array('form' => post('form')) )
-                ->load();
-            }
-        }
-        // no form submitted
-        else {
-            $id = userdata( 'user_id' );
-            $form = get_db_row( 'administrators', 'id', $id );
-            $form->id = $id;
-            $form->password = '';
-
-            $this->layout->view( 'bodyStart', 'forms/admin_form' , array('form' => $form) )
-            ->load();
-        }
-    }
-
-
-    // ----------------------------------------------------------------------------------
-
-    /**
-     * Page to edit it's own account, redirect to the hub or editdeveloper
-     */
-    function edityouraccount() {
-        if( !userdata( 'is_logged_in' ) )
-            redirect( 'admin/login' );
-
-        if( userdata( 'is_developer' ) )
-            redirect( 'admin/editdeveloper/'.userdata( 'user_id') );
-        else //is admin
-            redirect( 'admin/editadmin' );
-    }
+    
 
 
     // ----------------------------------------------------------------------------------
@@ -378,9 +380,44 @@ class Admin extends CI_Controller {
         if( !userdata( 'is_logged_in' ) )
             redirect( 'admin/login' );
 
-        $this->layout
-        ->view( 'bodyStart', 'forms/game_form' )
-        ->load();
+        if( post( 'game_form_submitted' ) ) {
+            $form = post( 'form' );
+
+            $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[3]|is_unique[games.name]' );
+            
+            // strip out empty url from the socialnetwork array
+            $count = count( $form['data']['socialnetworks']['urls'] );
+            for( $i = 0; $i < $count; $i++ ) {
+                if( isset( $form['data']['socialnetworks']['urls'][$i] ) &&
+                    trim( $form['data']['socialnetworks']['urls'][$i] ) == '' )
+                {
+                    unset( $form['data']['socialnetworks']['sites'][$i] );
+                    unset( $form['data']['socialnetworks']['urls'][$i] );
+                    $i--;
+                }
+            }
+
+            // rebuilt the index, 
+            // so that json_encode (in create_game()) consider them as array an not object
+            if( isset( $form['data']['socialnetworks']['sites'] ) ) {
+                array_values( $form['data']['socialnetworks']['sites'] );
+                array_values( $form['data']['socialnetworks']['urls'] );
+            }
+
+
+            // save data if all is OK
+            if( $this->form_validation->run() ) {
+                $id = $this->main_model->create_game( $form );
+                redirect( 'admin/editgame/'.$id );
+            }
+            else {
+                $this->layout
+                ->view( 'bodyStart', 'forms/game_form', array('form'=>$form) )
+                ->load();
+            }
+        }
+        else
+            $this->layout->view( 'bodyStart', 'forms/game_form' )->load();
     }
 
 
@@ -413,4 +450,3 @@ class Admin extends CI_Controller {
 
 /* End of file admin.php */
 /* Location: ./application/controllers/admin.php */
-?>

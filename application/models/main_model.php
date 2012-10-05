@@ -216,6 +216,74 @@ class Main_model extends CI_Model {
             $this->db->update( 'developers', $form, 'id = '.$id );
     }
 
+
+    // ----------------------------------------------------------------------------------
+
+    /**
+     * Create a game in the database
+     * @param assoc array $data the raw data from the game_form view
+     * @return int or bool the id of the newly inserted row or false
+     */
+    function create_game( $form ) {
+        // data is the raw data from the game form
+        // at this point we are sure we want to create the game, 
+        // but we need to format a few fields
+        
+        // make sure arrays exists, or format them into a CSV string
+        /*$arrays = array( 'operatingsystems', 'technologies', 'devices', 'stores',
+        'nbplayers', 'themes', 'genres', 'tags', 'viewpoints' );
+
+        foreach( $arrays as $array_name ) {
+            if( isset( $form[$array_name] ) )
+                $form[$array_name] = implode( ',', $form[$array_name] );
+            else // happens when nothing was put in the form, $form[$array_name] is null
+                $form[$array_name] = '';
+        }*/
+
+        $form['data'] = json_encode( $form['data'] );
+
+        $this->db->insert( 'games', $form );
+        return $this->db->insert_id();
+    }
+
+    /**
+     * Update a game in the database
+     * @param assoc array $form the raw data from the developer_form view
+     * @param assoc array $db_data the db object
+     */
+    function update_game( $form, $db_data ) {
+        // encode the password if it exists
+        if( trim( $form['password'] ) != '' )
+            $form['password'] = $this->encrypt->sha1( $form['password'] );
+
+        // make sure arrays exists, or format them into a CSV string
+        $arrays = array('operatingsystems', 'technologies', 'devices', 'stores');
+
+        foreach( $arrays as $array_name ) {
+            if( isset( $form[$array_name] ) )
+                $form[$array_name] = implode( ',', $form[$array_name] );
+            else // happens when nothing was put in the form, $form[$array_name] is null
+                $form[$array_name] = '';
+        }
+
+
+        $form['socialnetworks'] = json_encode( $form['socialnetworks'] );
+
+        // now that everything is nicely formatted for databse
+        // lets compare what form data is different to the db data
+        // and update only what has changed
+        $id = $form['id'];
+
+        foreach( $form as $field => $value ) {
+            if( $value == $db_data->$field )
+                unset( $form[$field] );
+        }
+        
+        if( count($form) > 0 )
+            $this->db->update( 'developers', $form, 'id = '.$id );
+    }
+
+
     // ----------------------------------------------------------------------------------
 
     /**
