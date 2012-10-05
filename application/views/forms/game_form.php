@@ -25,7 +25,7 @@ foreach( $form_items as $item ) {
 
 if( $form['data'] == '' )
 	$form['data'] = array();
-else
+elseif( is_string( $form['data'] ) )
 	$form['data'] = json_decode($form['data'], true);
 
 
@@ -48,30 +48,7 @@ foreach( $data_arrays as $array ) {
 if( !isset( $form['data']['socialnetworks'] ) )
 	$form['data']['socialnetworks'] = array( 'sites' => array() );
 
-// arrays
-// if they are set, they can be a string of coma-seprated values to be transformed to an array (when from the database)
-// or they can alredy be arrays if it came from the form itself
-/*$form_items = array('operatingsystems', 'technologies', 'devices', 'stores');
 
-foreach( $form_items as $item ) {
-	if( !isset( $form[$item] ) )
-		$form[$item] = array();
-	elseif( is_string( $form[$item] ) )
-		$form[$item] = explode( ',', $form[$item] );
-}
-
-
-// social network
-// if socialnetworks wasn't set, it is now an empty array
-// but if it was already set, it can be a JSON object as a string if comming from the database
-// or alredy and array if comming from the form
-if( !isset( $form['socialnetworks'] ) )
-	$form['socialnetworks'] = array( 'sites' => array() );
-elseif( is_string( $form['socialnetworks'] ) )
-	$form['socialnetworks'] = json_decode( $form['socialnetworks'], true );*/
-
-
-//var_dump($form);
 echo '<div id="developer_form">
 ';
 
@@ -86,6 +63,7 @@ echo get_form_errors();
 echo get_form_success($form);
 
 echo form_open( 'admin/'.$admin_page );
+
 
 // display account id
 if( $admin_page == 'editgame' ) {
@@ -165,7 +143,7 @@ $value = 'Edit this game account';
 
 if( $page == 'addgame' || $admin_page == 'addgame' )
 	$value = 'Create this game account';
-elseif( $form['data']['id'] == userdata('user_id') )
+elseif( $form['id'] == userdata('user_id') )
 	$value = 'Edit your account';
 ?>
 		

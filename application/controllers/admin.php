@@ -225,29 +225,9 @@ class Admin extends CI_Controller {
                 if( $form['password'] != $form['password2'] )
                     $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'matches[form[password]]' );
             }*/
-
-            // strip out empty url from the socialnetwork array
-            $count = count( $form['socialnetworks']['urls'] );
-            for( $i = 0; $i < $count; $i++ ) {
-                if( isset( $form['socialnetworks']['urls'][$i] ) &&
-                    trim( $form['socialnetworks']['urls'][$i] ) == '' )
-                {
-                    unset( $form['socialnetworks']['sites'][$i] );
-                    unset( $form['socialnetworks']['urls'][$i] );
-                    $i--;
-                    // problem : unsetting here change the size of the array and the keys of the remaining values
-                }
-            }
-
             unset( $form['password2'] );
-
-            // rebuilt the index, 
-            // so that json_encode (in create_user()) consider them as array an not object
-            if( isset( $form['socialnetworks']['sites'] ) ) {
-                array_values( $form['socialnetworks']['sites'] );
-                array_values( $form['socialnetworks']['urls'] );
-            }
-
+            
+            $form['socialnetworks'] = clean_socialnetworks( $form['socialnetworks'] );
 
             // save data if all is OK
             if( $this->form_validation->run() ) {
@@ -312,24 +292,8 @@ class Admin extends CI_Controller {
             }*/
 
             unset( $form['password2'] );
-
-            // strip out empty url from the socialnetwork array
-            $max_count = count( $form['socialnetworks']['urls'] );
-            for( $i = 0; $i < $max_count; $i++ ) {
-                if( isset( $form['socialnetworks']['urls'][$i] ) && trim( $form['socialnetworks']['urls'][$i] ) == '' )
-                {
-                    unset( $form['socialnetworks']['sites'][$i] );
-                    unset( $form['socialnetworks']['urls'][$i] );
-                    $i--; // unsetting change the size of the array and the keys of the remaining values
-                }
-            }
-
-            // rebuilt the social networks sites and urls index
-            // so that json_encode (in update_user()) consider them as array an not as object
-            if( isset( $form['socialnetworks']['sites'] ) ) {
-                array_values( $form['socialnetworks']['sites'] );
-                array_values( $form['socialnetworks']['urls'] );
-            }
+            
+            $form['socialnetworks'] = clean_socialnetworks( $form['socialnetworks'] );
 
 
             // update data if all is OK
@@ -385,25 +349,7 @@ class Admin extends CI_Controller {
 
             $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[3]|is_unique[games.name]' );
             
-            // strip out empty url from the socialnetwork array
-            $count = count( $form['data']['socialnetworks']['urls'] );
-            for( $i = 0; $i < $count; $i++ ) {
-                if( isset( $form['data']['socialnetworks']['urls'][$i] ) &&
-                    trim( $form['data']['socialnetworks']['urls'][$i] ) == '' )
-                {
-                    unset( $form['data']['socialnetworks']['sites'][$i] );
-                    unset( $form['data']['socialnetworks']['urls'][$i] );
-                    $i--;
-                }
-            }
-
-            // rebuilt the index, 
-            // so that json_encode (in create_game()) consider them as array an not object
-            if( isset( $form['data']['socialnetworks']['sites'] ) ) {
-                array_values( $form['data']['socialnetworks']['sites'] );
-                array_values( $form['data']['socialnetworks']['urls'] );
-            }
-
+            $form['data']['socialnetworks'] = clean_socialnetworks( $form['data']['socialnetworks'] );
 
             // save data if all is OK
             if( $this->form_validation->run() ) {
@@ -424,13 +370,85 @@ class Admin extends CI_Controller {
     /**
      * Page to edit a game
      */
-    function editgame() {
+    function editgame( $id = null ) {
         if( !userdata( 'is_logged_in' ) )
             redirect( 'admin/login' );
 
-    	$this->layout
-        ->view( 'bodyStart', 'forms/game_form' )
-        ->load();
+
+        if( post( "select_game_to_edit_form_submitted" ) ) {
+            $id = trim( post( 'game_id_text' ) );
+
+            if( $id == '' )
+                $id = post( 'game_id_select' );
+
+            redirect( 'admin/editgame/'.$id );
+        }
+
+        
+        if( post( 'game_form_submitted' ) ) {
+            $form = post( 'form' );
+            $db_data = get_db_row( 'games', 'id', $form['id'] );
+
+            // cheking name
+            $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[5]' );
+            if( $form['name'] != $db_data->name )
+                $this->form_validation->set_rules( 'form[name]', 'Name', 'is_unique[games.name]' );
+            
+
+            $form['data']['socialnetworks'] = clean_socialnetworks( $form['data']['socialnetworks'] );
+
+            // update data if all is OK
+            if( $this->form_validation->run() ) {
+                $this->main_model->update_game( $form, $db_data );
+                
+                $form['success'] = 'Your game account has been successfully updated.';
+                
+                $this->layout
+                ->view( 'bodyStart', 'forms/game_form', array('form'=>$form) )
+                ->load();
+            }
+            else {
+                $this->layout
+                ->view( 'bodyStart', 'forms/game_form', array('form'=>$form) )
+                ->load();
+               
+            }
+        } // end if( post( 'game_form_submitted' ) ) {
+
+        // no form has been submitted, just show the form filled with data from the database
+        elseif( $id != null ) {
+            // prevent developer to edit a game they don't own
+            if( userdata( 'is_developer' ) ) {
+                //$games = $this->main_model->get_dev_games( userdata( 'user_id' ) );
+                $games = get_db_rows( 'games', 'developer_id', userdata( 'user_id' ) );
+                $game_is_owned_by_dev = false;
+
+                foreach( $games->results() as $game ) {
+                    if( $game->id == userdata( 'user_id' ) )
+                        $game_is_owned_by_dev = true;
+                }
+
+                if( !$game_is_owned_by_dev ) {
+                    $form['errors'] = "The game with id [$id] does not belong to you, you can't edit it.";
+
+                    $this->layout
+                    ->view( 'bodyStart', 'forms/select_game_to_edit_form', array('form'=>$form) )
+                    ->load();
+                }
+            }
+
+            $form = get_db_row( 'games', 'id', $id );
+
+            $this->layout
+            ->view( 'bodyStart', 'forms/game_form', array('form'=>$form) )
+            ->load();
+        }
+
+        else { // show the form to chose which game to edit
+            $this->layout
+            ->view( 'bodyStart', 'forms/select_game_to_edit_form' )
+            ->load();
+        }
     }
 
 

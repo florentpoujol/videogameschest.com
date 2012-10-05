@@ -112,10 +112,7 @@ function title_url( $url ) {
 // ----------------------------------------------------------------------------------
 
 /**
- * Does the opposite of url_title() from the url helper
- * Replace dashes and %20 by spaces
- * @param the url segment
- * @return the name
+ * 
  */
 function userdata( $key = null ) {
 	return get_instance()->session->userdata( $key );
@@ -198,6 +195,8 @@ function admin_menu_selected( $item ) {
 }
 
 
+// ----------------------------------------------------------------------------------
+
 // mode
 // raw : raw data from database
 // clean : clean array key = dev id value = name
@@ -236,6 +235,9 @@ function get_developers( $raw = false ) {
 function get_form_errors() {
 	$errors = validation_errors();
 
+	if( isset( $form['errors'] ) )
+		$errors .= "\n".$form['errors'];
+
 	if( $errors != '' ) {
 		$errors =
 '<div class="form_errors">
@@ -263,11 +265,36 @@ function get_form_success( $form ) {
 }
 
 
-// take the data field then translate it
-function get_data( $form ) {
+// ----------------------------------------------------------------------------------
 
+/**
+ * strip out empty url from the socialnetwork array
+ * then rebuilt it's index
+ *
+ * @param assoc array $socialnetworks the socialnetworks array
+ * @return the array clened up
+ */
+function clean_socialnetworks( $socialnetworks ) {
+    $max_count = count( $socialnetworks['urls'] );
+
+    for( $i = 0; $i < $max_count; $i++ ) {
+        if( isset( $socialnetworks['urls'][$i] ) && trim( $socialnetworks['urls'][$i] ) == '' )
+        {
+            unset( $socialnetworks['sites'][$i] );
+            unset( $socialnetworks['urls'][$i] );
+            $i--; // unsetting change the size of the array and the keys of the remaining values
+        }
+    }
+
+    // rebuilt the sites and urls index
+    // so that json_encode consider them as array an not as object
+    if( isset( $form['socialnetworks']['sites'] ) ) {
+        array_values( $socialnetworks['sites'] );
+        array_values( $socialnetworks['urls'] );
+    }
+
+    return $socialnetworks;
 }
-
 
 // ----------------------------------------------------------------------------------
 

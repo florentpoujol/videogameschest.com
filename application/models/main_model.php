@@ -227,19 +227,7 @@ class Main_model extends CI_Model {
     function create_game( $form ) {
         // data is the raw data from the game form
         // at this point we are sure we want to create the game, 
-        // but we need to format a few fields
         
-        // make sure arrays exists, or format them into a CSV string
-        /*$arrays = array( 'operatingsystems', 'technologies', 'devices', 'stores',
-        'nbplayers', 'themes', 'genres', 'tags', 'viewpoints' );
-
-        foreach( $arrays as $array_name ) {
-            if( isset( $form[$array_name] ) )
-                $form[$array_name] = implode( ',', $form[$array_name] );
-            else // happens when nothing was put in the form, $form[$array_name] is null
-                $form[$array_name] = '';
-        }*/
-
         $form['data'] = json_encode( $form['data'] );
 
         $this->db->insert( 'games', $form );
@@ -248,16 +236,12 @@ class Main_model extends CI_Model {
 
     /**
      * Update a game in the database
-     * @param assoc array $form the raw data from the developer_form view
+     * @param assoc array $form the raw data from the game_form view
      * @param assoc array $db_data the db object
      */
     function update_game( $form, $db_data ) {
-        // encode the password if it exists
-        if( trim( $form['password'] ) != '' )
-            $form['password'] = $this->encrypt->sha1( $form['password'] );
-
         // make sure arrays exists, or format them into a CSV string
-        $arrays = array('operatingsystems', 'technologies', 'devices', 'stores');
+        /*$arrays = array('operatingsystems', 'technologies', 'devices', 'stores');
 
         foreach( $arrays as $array_name ) {
             if( isset( $form[$array_name] ) )
@@ -267,7 +251,7 @@ class Main_model extends CI_Model {
         }
 
 
-        $form['socialnetworks'] = json_encode( $form['socialnetworks'] );
+        $form['socialnetworks'] = json_encode( $form['socialnetworks'] );*/
 
         // now that everything is nicely formatted for databse
         // lets compare what form data is different to the db data
@@ -275,12 +259,16 @@ class Main_model extends CI_Model {
         $id = $form['id'];
 
         foreach( $form as $field => $value ) {
-            if( $value == $db_data->$field )
+            if( $field != 'data' && $value == $db_data->$field ) {
+                echo 'unset : '.$field;
                 unset( $form[$field] );
+            }
         }
+
+        $form['data'] = json_encode( $form['data'] );
         
         if( count($form) > 0 )
-            $this->db->update( 'developers', $form, 'id = '.$id );
+            $this->db->update( 'games', $form, 'id = '.$id );
     }
 
 
@@ -293,6 +281,17 @@ class Main_model extends CI_Model {
     function update_admin( $form ) {
         if( trim( $form['password'] ) != '' )
             $form['password'] = $this->encrypt->sha1( $form['password'] );
+    }
+
+
+    // ----------------------------------------------------------------------------------
+
+    /**
+     * Retrieve the games 
+     * @param assoc array $form the raw data from the admin_form view
+     */
+    function get_dev_games( $dev_id ) {
+        
     }
 }
 
