@@ -240,19 +240,6 @@ class Main_model extends CI_Model {
      * @param assoc array $db_data the db object
      */
     function update_game( $form, $db_data ) {
-        // make sure arrays exists, or format them into a CSV string
-        /*$arrays = array('operatingsystems', 'technologies', 'devices', 'stores');
-
-        foreach( $arrays as $array_name ) {
-            if( isset( $form[$array_name] ) )
-                $form[$array_name] = implode( ',', $form[$array_name] );
-            else // happens when nothing was put in the form, $form[$array_name] is null
-                $form[$array_name] = '';
-        }
-
-
-        $form['socialnetworks'] = json_encode( $form['socialnetworks'] );*/
-
         // now that everything is nicely formatted for databse
         // lets compare what form data is different to the db data
         // and update only what has changed

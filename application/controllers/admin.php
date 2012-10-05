@@ -31,9 +31,6 @@ class Admin extends CI_Controller {
     	if( !userdata( 'is_logged_in' ) )
     		redirect( 'admin/login' );
 
-    	
-
-
         /*if( userdata( 'is_admin' ) ) {
             $this->layout
             ->view( 'bodyStart', 'forms/select_developer_to_edit_form' )
@@ -206,8 +203,8 @@ class Admin extends CI_Controller {
      * Main hub with no content but the admin menu
      */
     function adddeveloper() {
-        if( !userdata( 'is_logged_in' ) )
-            redirect( 'admin/login' );
+        //if( !userdata( 'is_logged_in' ) )
+            //redirect( 'admin/login' );
 
         if( !userdata( 'is_admin' ) )
             redirect( 'admin' );
@@ -232,13 +229,29 @@ class Admin extends CI_Controller {
             // save data if all is OK
             if( $this->form_validation->run() ) {
                 $id = $this->main_model->insert_developer( $form );
-                redirect( 'admin/editdeveloper/'.$id );
+                
+                if( post( 'from_adddeveloper_page' ) ) {
+                    $form = array('success' => lang('adddeveloper_form_success'));
+                    set_userdata( 'adddeveloper_form', json_encode($form) );
+
+                    redirect( 'adddeveloper' );
+                }
+                else
+                    redirect( 'admin/editdeveloper/'.$id );
             }
             else {
                 unset( $form['password'] );
-                $this->layout
-                ->view( 'bodyStart', 'forms/developer_form', array('form'=>$form) )
-                ->load();
+
+                if( post( 'from_adddeveloper_page' ) ) {
+                    $form['errors'] = validation_errors(); // get errors from the form_validation class
+                    set_userdata( 'adddeveloper_form', json_encode($form) ); // a coockie can only hold 4Kb of data
+                    redirect( 'adddeveloper' );
+                }
+                else {
+                    $this->layout
+                    ->view( 'bodyStart', 'forms/developer_form', array('form'=>$form) )
+                    ->load();
+                }
             }
         }
         else
@@ -471,18 +484,6 @@ class Admin extends CI_Controller {
     /**
      * handle creating, deleting, and reading private messages
      */
-    /*
-    Système de ticket pour communiquer entre admin et devs
-
-Les devs et les admins peuvent s'échanger des messages.
-
-Les devs peuvent envoyer des messages aux admins et vice versa.
-Les devs ne peuvent pas envoyer de message à d'autre devs.
-Un admin peu envoyer des message vers les autres admins.
-
-Tous les messages envoyés aux admins apparaissent dans une sections du panel avec les infos
- : nom (nom du dev ou « admin »), timestamp, message
-*/
     function messages() {
         if( !userdata( 'is_logged_in' ) )
             redirect( 'admin/login' );

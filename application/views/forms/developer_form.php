@@ -4,7 +4,6 @@ $page = get_page();
 $admin_page = get_admin_page();
 
 
-
 if( !isset($form) )
 	$form = array();
 elseif( is_object($form) )
@@ -61,8 +60,11 @@ elseif( $admin_page == 'edityouraccount' )
 	echo '<h2>Edit your account</h2>';
 
 
-echo get_form_errors();
+echo get_form_errors($form);
 echo get_form_success($form);
+
+if( $page == 'adddeveloper')
+	$admin_page = 'adddeveloper';
 
 echo form_open( 'admin/'.$admin_page );
 
@@ -145,6 +147,9 @@ if( $page == 'adddeveloper' || $admin_page == 'adddeveloper' )
 	$value = 'Create this developer account';
 elseif( $form['id'] == userdata('user_id') )
 	$value = 'Edit your account';
+
+if( $page == 'adddeveloper' )
+	echo '<input type="hidden" name="from_adddeveloper_page">';
 ?>
 		
 		<input type="submit" name="developer_form_submitted" value="<?php echo $value;?>">

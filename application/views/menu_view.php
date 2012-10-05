@@ -3,9 +3,12 @@
 ?>
 <header id="menu">
 	<ul>
-		<li><a href="<?php echo site_url('featured'); ?>" <?php echo menu_selected('featured');?>>Featured</a></li> 
-		<li><a href="<?php echo site_url('search'); ?>" >Search</a></li> 
-		<li><a href="<?php echo site_url('about'); ?>" >About</a></li>
+<?php
+$items = array('featured', 'search', 'about', 'adddeveloper', 'addgame');
+
+foreach( $items as $item )
+	echo '<li><a href="'.site_url($item).'" '.menu_selected($item).'>'.lang('menu_'.$item).'</a></li>';
+?>
 
 <?php if( userdata( 'is_logged_in' ) ): ?>
 		<li><a href="<?php echo site_url('admin'); ?>" <?php echo menu_selected('admin');?>>Admin</a></li>
