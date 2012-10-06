@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Adddeveloper extends CI_Controller {
+class Addgame extends CI_Controller {
     
     function __construct() {
     	parent::__construct();
@@ -9,7 +9,7 @@ class Adddeveloper extends CI_Controller {
         if( $lang )
             $this->lang->load( 'main', $lang );
 
-        set_page( 'adddeveloper' );
+        set_page( 'addgame' );
 
         $this->load->library( 'form_validation' );
 	}
@@ -21,17 +21,18 @@ class Adddeveloper extends CI_Controller {
      * Default method
      */
     function index() {
-        $form = $this->session->flashdata( 'adddeveloper_form' );
+        $form = $this->session->flashdata( 'addgame_form' );
 
         if( is_string( $form ) )
-            $form = json_decode( $form, true );
+            $form = json_decode( $form );
         else
             $form = array();        
         
         $this->layout
-        ->view( 'bodyStart', 'forms/developer_form', array('form'=>$form) )
+        ->view( 'bodyStart', 'forms/game_form', array('form'=>$form) )
         ->load();
     }
+
 }
 
 /* End of file adddeveloper.php */

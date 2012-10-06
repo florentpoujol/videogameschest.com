@@ -295,3 +295,21 @@ function clean_socialnetworks( $socialnetworks ) {
 
     return $socialnetworks;
 }
+
+// ----------------------------------------------------------------------------------
+
+/**
+ *
+ */
+function form_input_extended( $input ) {
+	if( !isset( $input['name'] ) )
+		$input['name'] = 'form['.$input['id'].']';
+
+	$lang = lang($input['lang']);
+	unset($input['lang']);
+
+	$input['placeholder'] = $lang;
+	$input['maxlength'] = '255';
+	
+	return form_input($input).' '.form_label( $lang, $input['id'] ).' <br>';
+}

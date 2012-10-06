@@ -15,7 +15,7 @@ elseif( is_object($form) )
 
 // initialise variable with default values (empty string or array)
 // or values from the database
-$form_items = array('id', 'developer_id', 'name', 'account_statut', 'data');
+$form_items = array('id', 'developer_id', 'name', 'profile_privacy', 'data');
 
 foreach( $form_items as $item ) {
 	if( !isset( $form[$item] ) )
@@ -36,7 +36,7 @@ foreach( $data_strings as $string ) {
 }
 
 // arrays
-$data_arrays = array('operatingsystems', 'technologies', 'devices', 'stores',
+$data_arrays = array('technologies', 'operatingsystems', 'devices',
  'nbplayers', 'themes', 'genres', 'tags', 'viewpoints');
 
 foreach( $data_arrays as $array ) {
@@ -44,12 +44,19 @@ foreach( $data_arrays as $array ) {
 		$form['data'][$array] = array();
 }
 
-if( !isset( $form['data']['socialnetworks'] ) )
-	$form['data']['socialnetworks'] = array( 'sites' => array() );
+
+$data_site_url_arrays = array('socialnetworks', 'stores');
+
+foreach( $data_site_url_arrays as $array ) {
+	if( !isset( $form['data'][$array] ) )
+	$form['data'][$array] = array( 'sites' => array() );
+}
+
 
 
 echo '<div id="developer_form">
 ';
+
 
 // page title
 if( $admin_page == 'addgame' || $page == 'addgame' )
@@ -58,94 +65,136 @@ elseif( $admin_page == 'editgame' )
 	echo '<h2>Edit a game</h2>';
 
 
+// display oerrors or success confirmation
 echo get_form_errors();
 echo get_form_success($form);
+
+
+// form opening tag
+if( $page == 'addgame')
+	$admin_page = 'addgame';
 
 echo form_open( 'admin/'.$admin_page );
 
 
-// display account id
-if( $admin_page == 'editgame' ) {
-	echo 'Id : '.$form['id'].' <input type="hidden" name="form[id]" value="'.$form['id'].'"> <br>
-';
-}
-?>
-		<input type="text" name="form[name]" id="name" placeholder="Title" value="<?php echo $form['name'];?>"> <label for="name">The name of the game</label> <br>
-		<input type="hidden" name="form[account_state]" value="private">
-<?php if( userdata( 'is_admin' ) || $page == 'addgame' ) {
-	$db_devs = get_db_rows( 'developers' );
+// explanation text
+if( $page == 'addgame' )
+	echo '<p>'.lang('addgame_required_field').'</p>';
+
+
+// profile id
+if( $admin_page == 'editgame' )
+	echo 'Id : '.$form['id'].' <input type="hidden" name="form[id]" value="'.$form['id'].'"> <br>';
+
+
+// name
+$input = array(
+	'id'=>'name',
+	'lang'=>'addgame_name',
+	'value'=>$form['name']	
+);
+echo form_input_extended($input);
+
+
+// developer
+if( userdata( 'is_admin' ) || $page == 'addgame' ) {
+	$db_devs = get_db_rows( 'developers', 'is_public', 1 );
 	$developers = array();
 	foreach( $db_devs->result() as $dev )
 		$developers[$dev->id] = $dev->name;
 
 	echo form_dropdown( 'form[developer_id]', $developers, $form['developer_id'], 'id="developer"' );
 }
-else { // user is a developer on the admin panel ?>
-		Developer: You ! Id=<?php echo $form['developer_id'];?> Name=<?php echo $form['developer_name'];?>
-<?php } // end if( $page == 'admin' ): ?>
-		<br>
-		<label for="pitch">Pitch the game story, features below :</label> <br>
-		<textarea name="form[data][pitch]" id="pitch" placeholder="Pitch the company" rows="10" cols="40"><?php echo $form['data']['pitch'];?></textarea> <br>
-		<input type="url" name="form[data][logo]" id="logo" placeholder="Logo's URL" value="<?php echo $form['data']['logo'];?>" > <label for="logo">Your logo's URL</label> <br>
-		<br>
-		<input type="url" name="form[data][website]" id="website" placeholder="Website's URL" value="<?php echo $form['data']['website'];?>" > <label for="website">Your website's URL (company website or personal blog/portfolio)</label> <br>
-		<input type="url" name="form[data][blogfeed]" id="blogfeed" placeholder="Blog RSS/Atom feed" value="<?php echo $form['data']['blogfeed'];?>" > <label for="blogfeed">Your blog feed (RSS or Atom flux)</label> <br>
-		<br>
-		<label for="stores">The social networks you are active on (leave url blank to delete existing ones) :</label> <br>
-<?php
-foreach( $form['data']['socialnetworks']['sites'] as $array_id => $site_id ) {
-	if( $form['data']['socialnetworks']['urls'][$array_id] == '' ) // that's the 3 "new" fields, it happens when $form comes from the form itself
-		continue;
-
-	echo form_dropdown( 'form[data][socialnetworks][sites]['.$array_id.']', $site_data->socialnetworks, $site_id, 'id="socialnetwork_site_'.$array_id.'"' );
-	echo '<input type="url" name="form[data][socialnetworks][urls]['.$array_id.']" id="socialnetworks_url_'.$array_id.'" placehodder="Full profile url" value="'.$form['data']['socialnetworks']['urls'][$array_id].'"> <!--<label for="socialnetwork_url_">Leave url blanck to delete</label>--> <br>';
-}
-
-$count = count( $form['data']['socialnetworks']['sites'] );
-for( $i = $count; $i < $count+3; $i++ ) {
-	echo form_dropdown( 'form[data][socialnetworks][sites][]', $site_data->socialnetworks, null, 'id="socialnetworks_site_'.$i.'"' );
-	echo '<input type="url" name="form[data][socialnetworks][urls][]" id="socialnetworks_url_'.$i.'" placehodder="Full profile url" value=""><!-- <label for="socialnetworks_url_">Leave url blanck to delete</label> --><br>';
-}
+else // user is a developer on the admin panel 
+	echo '<br> You are the developer. Id='.$form['developer_id'].' Name='.$form['developer_name'];
 ?>
-		If you want to add more than 3 networks, add 3 now, save, then you will be able to add 3 more. <br>
+		<br>
+		<label for="pitch"><?php echo lang('addgame_pitch');?></label> <br>
+		<textarea name="form[data][pitch]" id="pitch" placeholder="<?php echo lang('addgame_pitch');?>" rows="7" cols="30"><?php echo $form['data']['pitch'];?></textarea> <br>
 <?php
-$infos = array(
-	'technologies' => 'The technologies/engines the game is developed with :',
-	'operatingsystems' => 'The operating systems the game runs on (not applicable for most consoles) :',
-	'devices' => 'The devices the game is playable on :',
-	'stores' => 'The stores the game is purchable from :',
-	'nbplayers' => 'The number of players who can join the fun :',
-	'themes' => 'The themes of the game :',
-	'viewpoints' => 'The point of view (not applicable for 2D games, not always for 3D games) :',
-	'genres' => 'The type of the game :',
-	'tags' => 'The tags :',
+$inputs = array('logo', 'website', 'blogfeed');
+foreach( $inputs as $input_name ) {
+	$input_data = array(
+		'type'=>'url',
+		'name'=>'form[data]['.$input_name.']',
+		'id'=>$input_name,
+		'lang'=>'addgame_'.$input_name,
+		'value'=>$form['data'][$input_name]	
 	);
+	echo form_input_extended($input_data);
+}
+// logo
 
-foreach( $infos as $key => $label ) {
+
+/*
+// website url
+$input = array(
+	'type'=>'url',
+	'name'=>'form[data][url]',
+	'id'=>'website',
+	'lang'=>'addgame_website',
+	'value'=>$form['data']['website']	
+);
+echo form_input_extended($input);
+
+
+// blogfeed
+$input = array(
+	'type'=>'url',
+	'name'=>'form[data][blogfeed]',
+	'id'=>'blogfeed',
+	'lang'=>'addgame_blogfeed',
+	'value'=>$form['data']['blogfeed']	
+);
+echo form_input_extended($input);*/
+
+
+// site/url arrays
+foreach( $data_site_url_arrays as $array ) {
+	echo '<br> '.form_label( lang( 'addgame_'.$array ), $array ).' <br>';
+
+	foreach( $form['data'][$array]['sites'] as $array_id => $site_id ) {
+		if( $form['data'][$array]['urls'][$array_id] == '' ) // that's the 4 "new" fields, it happens when $form comes from the form itself
+			continue;
+
+		echo form_dropdown( 'form[data]['.$array.'][sites]['.$array_id.']', $site_data->$array, $site_id, 'id="'.$array.'_site_'.$array_id.'"' );
+		echo '<input type="url" name="form[data]['.$array.'][urls]['.$array_id.']" id="'.$array.'_url_'.$array_id.'" placehodder=URL" value="'.$form['data'][$array]['urls'][$array_id].'"> <br>';
+	}
+
+	$count = count( $form['data'][$array]['sites'] );
+	for( $i = $count; $i < $count+4; $i++ ) {
+		echo form_dropdown( 'form[data]['.$array.'][sites][]', $site_data->$array, null, 'id="'.$array.'_site_'.$i.'"' );
+		echo '<input type="url" name="form[data]['.$array.'][urls][]" id="'.$array.'_url_'.$i.'" placehodder="URL" value=""><br>';
+	}
+}
+
+
+// other array fields
+foreach( $data_arrays as $key ) {
 	$size = count( $site_data->$key );
 	if( $size > 10 )
 		$size = 10;
 
 	echo '
-		<br>
-		<br>
-		<label for="'.$key.'">'.$label.'</label> <br>'.
-		form_multiselect( 'form[data]['.$key.'][]', $site_data->$key, $form['data'][$key], 'id="'.$key.'" size="'.$size.'"' ).'
+<br><br>
+<label for="'.$key.'">'.lang( 'addgame_'.$key ).'</label> <br>'.
+form_multiselect( 'form[data]['.$key.'][]', $site_data->$key, $form['data'][$key], 'id="'.$key.'" size="'.$size.'"' ).'
 ';
 }
 ?>
-		
 		<br>
 		<br>
 <?php
 $value = 'Edit this game account';
 
 if( $page == 'addgame' || $admin_page == 'addgame' )
-	$value = 'Create this game account';
+	$value = lang('addgame_submit');
 elseif( $form['id'] == userdata('user_id') )
 	$value = 'Edit your account';
 ?>
 		
 		<input type="submit" name="game_form_submitted" value="<?php echo $value;?>">
 	</form>
+
+	<input type="hidden" name="form[profile_privacy]" value="private">
 </div> <!-- /#game_form -->

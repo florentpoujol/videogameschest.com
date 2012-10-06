@@ -1,20 +1,23 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Featured extends CI_Controller {
+class About extends CI_Controller {
     
-    public function __construct() {
+    function __construct() {
         parent::__construct();
+
+        $lang = userdata( 'language' );
+        if( $lang )
+            $this->lang->load( 'main', $lang );
+
+        set_page( 'about' );
     }
     
     public function index()
     {
-
-        $data['infos'] = GetSiteData( true );
         
         $this->layout
-        ->AddView( 'bodyStart', 'menu_view', array('page'=>'about'))
-        ->AddView( 'bodyStart', 'featured_view', $data )
-        ->Load();
+        ->view( 'bodyStart', 'about_view' )
+        ->load();
     }
 }
 

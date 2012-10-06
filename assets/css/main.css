@@ -13,7 +13,7 @@
 	font-weight: bold;
 }
 
-.form_errors  {
+.form_errors, .forms_errors p {
 	color: red;
 	font-weight: bold;
 	border: 1px solid red;

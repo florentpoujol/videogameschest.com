@@ -7,7 +7,8 @@
 $items = array('featured', 'search', 'about', 'adddeveloper', 'addgame');
 
 foreach( $items as $item )
-	echo '<li><a href="'.site_url($item).'" '.menu_selected($item).'>'.lang('menu_'.$item).'</a></li>';
+	echo '		<li><a href="'.site_url($item).'" '.menu_selected($item).'>'.lang('menu_'.$item).'</a></li>
+';
 ?>
 
 <?php if( userdata( 'is_logged_in' ) ): ?>
@@ -26,7 +27,8 @@ foreach( get_site_data()->sitelanguages as $lang ) {
 	else
 		$class ='';
 
-	echo '<li><a href="'.site_url( 'admin/setlanguage/'.$lang ).'" title="'.$lang.'" '.$class.'>'.$lang.'</a></li>';
+	echo '		<li><a href="'.site_url( 'admin/setlanguage/'.$lang ).'" title="'.$lang.'" '.$class.'>'.$lang.'</a></li>
+	';
 }
 ?>
 	</ul>

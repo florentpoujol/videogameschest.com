@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "featured";
+$route['default_controller'] = 'about';
 $route['404_override'] = 'errors/page_missing';
 $route['game/(:any)'] = 'game/index/$1';
 $route['developer/(:any)'] = 'developer/index/$1';
