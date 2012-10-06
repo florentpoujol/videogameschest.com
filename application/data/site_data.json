@@ -110,6 +110,7 @@
 		"googleplay": "Google Play",
 		"xblig": "xBox Live Indie Games",
 		"xbla": "xBox Live Arcade"
+
 	},
 
 	"socialnetworks": {
@@ -119,7 +120,10 @@
 		"pinterest": "Pinterest",
 		"reddit": "Reddit",
 		"linkedin": "LinkedIn",
-		"steam": "Steam"
+		"steam": "Steam",
+		"desura":"Desura",
+		"indiedb":"Indie DB",
+		"moddb": "Mod DB"
  	},
 
 	"nbplayers": {
@@ -147,7 +151,9 @@
  		"comic": "Comic",
  		"horror": "Horror",
  		"western": "Western",
- 		"mafia": "Mafia"
+ 		"mafia": "Mafia",
+ 		"modern": "Modern",
+ 		"futuristic": "Futuristic"
  	},
 
 

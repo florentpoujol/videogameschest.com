@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html> 
 	<head>
-		<!-- HeadStart hook -->
-<?php echo $headStart; ?>
-		<!-- /HeadStart hook -->
-
 		<title><?php echo $pageTitle; ?></title>
 
 		<!-- Meta -->
@@ -21,10 +17,6 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $url; ?>" />
 <?php endforeach; ?>
 		<!-- /CSS -->
-
-		<!-- HeadEnd hook -->
-<?php echo $headEnd; ?>
-		<!-- /HeadEnd hook -->
 	</head>
 	
 	<body>
@@ -33,12 +25,13 @@
 <?php
 $items = array('featured', 'search', 'adddeveloper', 'addgame', 'about');
 
-foreach( $items as $item )
-	echo '<li><a href="'.site_url($item).'" '.menu_selected($item).'>'.lang('menu_'.$item).'</a></li>
-';
-?>
+foreach( $items as $item ): ?>
+				<?php echo '<li><a href="'.site_url($item).'" '.menu_selected($item).'>'.lang('menu_'.$item).'</a></li>'; ?>
 
-<?php if( userdata( 'is_logged_in' ) ): ?>
+<?php
+endforeach;
+
+if( userdata( 'is_logged_in' ) ): ?>
 				<li><a href="<?php echo site_url('admin'); ?>" <?php echo menu_selected('admin');?>>Admin</a></li>
 				<li><a href="<?php echo site_url('admin/logout'); ?>"><?php echo lang('menu_logout');?></a></li>
 <?php else: ?>
@@ -53,10 +46,11 @@ foreach( get_site_data()->sitelanguages as $lang ) {
 		$class = 'class="selected"';
 	else
 		$class ='';
+?>
+				<?php echo '<li><a href="'.site_url( 'admin/setlanguage/'.$lang ).'" title="'.$lang.'" '.$class.'>'.lang('language_'.$lang).'</a></li>'; ?>
 
-	echo '<li><a href="'.site_url( 'admin/setlanguage/'.$lang ).'" title="'.$lang.'" '.$class.'>'.lang('language_'.$lang).'</a></li>
-	';
-}
+<?php	
+} // end foreach
 ?>
 			</ul>
 		</header>
@@ -70,9 +64,5 @@ foreach( get_site_data()->sitelanguages as $lang ) {
 		<script type="text/javascript" src="<?php echo $url; ?>"></script> 
 <?php endforeach; ?>
 		<!-- /JavaScript -->
-
-		<!-- BodyEnd hook -->
-<?php echo $bodyEnd; ?>
-		<!-- /BodyEnd hook -->
 	</body>
 </html>

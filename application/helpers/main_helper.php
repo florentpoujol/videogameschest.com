@@ -301,15 +301,18 @@ function clean_socialnetworks( $socialnetworks ) {
 /**
  *
  */
-function form_input_extended( $input ) {
+function form_input_extended( $input, $br =  ' <br>' ) {
 	if( !isset( $input['name'] ) )
 		$input['name'] = 'form['.$input['id'].']';
 
 	$lang = lang($input['lang']);
 	unset($input['lang']);
 
-	$input['placeholder'] = $lang;
-	$input['maxlength'] = '255';
+	if( !isset( $input['placeholder'] ) )
+		$input['placeholder'] = $lang;
+
+	if( !isset( $input['type'] ) || $input['type'] == 'text' || $input['type'] == 'url' )
+		$input['maxlength'] = '255';
 	
-	return form_input($input).' '.form_label( $lang, $input['id'] ).' <br>';
+	return form_input($input).' '.form_label( $lang, $input['id'] ).$br;
 }

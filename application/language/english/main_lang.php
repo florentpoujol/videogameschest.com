@@ -47,15 +47,20 @@ They must first check the data then make their account public before you can add
 
 // GAME FORM
 
-$lang['addgame_create_developer'] = 'Create a developer profile';
+$lang['addgame_form_title'] = 'Create a developer profile';
 
 $lang['addgame_required_field'] = 'The developer\'s name and email are required fields.';
 
 $lang['addgame_name'] = 'Game title';
 $lang['addgame_pitch'] = 'Game story, features...';
+
 $lang['addgame_logo'] = 'Logo URL';
 $lang['addgame_website'] = 'Website URL';
 $lang['addgame_blogfeed'] = 'Blog RSS/Atom feed';
+$lang['addgame_publishername'] = 'Publisher name';
+$lang['addgame_soundtrack'] = 'Soundtrack URL';
+$lang['addgame_price'] = 'Price (this is a text field, write whatever is appropriate)';
+
 $lang['addgame_country'] = 'Country';
 $lang['addgame_socialnetworks'] = 'Social networks profiles : ';
 $lang['addgame_stores'] = 'The stores the game is purchable from : ';
@@ -63,10 +68,17 @@ $lang['addgame_technologies'] = 'The technologies the game is made with : ';
 $lang['addgame_operatingsystems'] = 'The operating systems the game runs on (not applicable for most console games) : ';
 $lang['addgame_devices'] = 'The devices the game is playable on : ';
 $lang['addgame_nbplayers'] = 'How many players can play the game at the same time :';
-$lang['addgame_themes'] = 'The theme of the game :';
-$lang['addgame_genres'] = 'The genre of the game : ';
-$lang['addgame_tags'] = 'The tags of the game : ';
-$lang['addgame_viewpoints'] = 'The player\'s point of vue in the game : ';
+$lang['addgame_themes'] = 'Theme :';
+$lang['addgame_genres'] = 'Genre : ';
+$lang['addgame_tags'] = 'Tags : ';
+$lang['addgame_viewpoints'] = 'The player\'s point of vue : ';
+
+$lang['addgame_screenshots'] = 'Screenshots : ';
+$lang['addgame_screenshots_name'] = 'Title';
+$lang['addgame_screenshots_url'] = 'URL';
+$lang['addgame_videos'] = 'Video and trailers : ';
+$lang['addgame_videos_name'] = 'Title';
+$lang['addgame_videos_url'] = 'URL';
 
 $lang['addgame_submit'] = 'Create this game profile';
 
