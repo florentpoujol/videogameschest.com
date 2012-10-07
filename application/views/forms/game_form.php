@@ -77,8 +77,7 @@ if( $admin_page == 'addgame' || $page == 'addgame' )
 
 <?php
 // explanation text
-if( $page == 'addgame' )
-	echo '<p>'.lang('addgame_required_field').'</p>';
+
 
 
 // display errors or success confirmation
@@ -98,6 +97,11 @@ if( $admin_page == 'editgame' ): ?>
 			
 			Id : <?php echo $form['game_id'];?> <input type="hidden" name="form[game_id]" value="<?php echo $form['game_id'];?>"> <br>
 <?php endif;
+
+// required fields
+if( $page == 'addgame' )
+	echo '<p>'.lang('addgame_required_field').'</p>';
+
 
 // name
 $input = array(
@@ -223,20 +227,16 @@ foreach( $namesdropdown_urls_arrays as $array ) {
 		if( $form['data'][$array]['urls'][$array_id] == '' ) // that's the 4 "new" fields, it happens when $form comes from the form itself
 			continue;
 ?>
-				<?php echo form_dropdown( 'form[data]['.$array.'][names]['.$array_id.']', $site_data->$array, $site_key, 'id="'.$array.'_site_'.$array_id.'"' ); ?>
-
-				<?php echo '<input type="url" name="form[data]['.$array.'][urls]['.$array_id.']" id="'.$array.'_url_'.$array_id.'" placeholder="Profile URL" value="'.$form['data'][$array]['urls'][$array_id].'"> <br>'; ?>
-
+				<?php echo form_dropdown( 'form[data]['.$array.'][names]['.$array_id.']', $site_data->$array, $site_key, 'id="'.$array.'_site_'.$array_id.'"' ); ?> 
+				<?php echo '<input type="url" name="form[data]['.$array.'][urls]['.$array_id.']" id="'.$array.'_url_'.$array_id.'" placeholder="Profile URL" value="'.$form['data'][$array]['urls'][$array_id].'"> <br>'; ?> 
 <?php
 	}
 
 	$count = count( $form['data'][$array]['names'] );
 	for( $i = $count; $i < $count+4; $i++ ) {
 ?>
-				<?php echo form_dropdown( 'form[data]['.$array.'][names][]', $site_data->$array, null, 'id="'.$array.'_site_'.$i.'"' ); ?>
-
-				<?php echo '<input type="url" name="form[data]['.$array.'][urls][]" id="'.$array.'_url_'.$i.'" placeholder="Profile URL" value=""><br>'; ?>
-
+				<?php echo form_dropdown( 'form[data]['.$array.'][names][]', $site_data->$array, null, 'id="'.$array.'_site_'.$i.'"' ); ?> 
+				<?php echo '<input type="url" name="form[data]['.$array.'][urls][]" id="'.$array.'_url_'.$i.'" placeholder="Profile URL" value=""><br>'; ?> 
 <?php
 	}
 }
@@ -248,11 +248,10 @@ foreach( $data_arrays as $key ) {
 	if( $size > 10 )
 		$size = 10;
 ?>
-
+				
 				<br>
-				<?php echo '<label for="'.$key.'">'.lang( 'addgame_'.$key ).'</label> <br>';
-				echo form_multiselect( 'form[data]['.$key.'][]', $site_data->$key, $form['data'][$key], 'id="'.$key.'" size="'.$size.'"' ); ?> <br>
-
+				<?php echo '<label for="'.$key.'">'.lang( 'addgame_'.$key ).'</label> <br> ';
+				echo form_multiselect( 'form[data]['.$key.'][]', $site_data->$key, $form['data'][$key], 'id="'.$key.'" size="'.$size.'"' ); ?> <br> 
 <?php
 }
 ?>

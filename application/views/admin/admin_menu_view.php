@@ -14,4 +14,4 @@
 				<li><a href="<?php echo site_url('admin/gamequeue'); ?>" <?php echo admin_menu_selected('gamequeue');?>>Game queue</a></li>
 				<li><a href="<?php echo site_url('admin/messages'); ?>" <?php echo admin_menu_selected('messages');?>>Messages</a></li>
 			<ul>
-		</header>
+		</header> <!-- /#admin_menu -->

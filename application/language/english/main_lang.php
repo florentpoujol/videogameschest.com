@@ -20,7 +20,7 @@ $lang['menu_logout'] = 'Log Out';
 
 // DEVELOPER FORM
 
-$lang['adddeveloper_create_developer'] = 'Create a developer profile';
+$lang['adddeveloper_form_title'] = 'Create a developer profile';
 
 $lang['adddeveloper_required_field'] = 'The developer\'s name and email are required fields.';
 

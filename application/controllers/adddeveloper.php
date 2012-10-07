@@ -29,7 +29,7 @@ class Adddeveloper extends CI_Controller {
             $form = array();        
         
         $this->layout
-        ->view( 'bodyStart', 'forms/developer_form', array('form'=>$form) )
+        ->view( 'forms/developer_form', array('form'=>$form) )
         ->load();
     }
 }

@@ -14,7 +14,7 @@ elseif( is_object($form) )
 
 // initialise variable with default values (empty string or array)
 // or values from the database
-$form_items = array( 'id', 'name', 'email', 'password', 'password2', 'is_public', 
+$form_items = array( 'developer_id', 'name', 'email', 'password', 'password2', 'is_public', 
 	'pitch', 'logo', 'blogfeed', 'website', 'country', 'teamsize');
 
 foreach( $form_items as $item ) {
@@ -41,30 +41,35 @@ foreach( $multiselect_form_items as $item ) {
 // but if it was already set, it can be a JSON object as a string if comming from the database
 // or alredy and array if comming from the form
 if( !isset( $form['socialnetworks'] ) )
-	$form['socialnetworks'] = array( 'sites' => array() );
+	$form['socialnetworks'] = array( 'names' => array() );
 elseif( is_string( $form['socialnetworks'] ) )
 	$form['socialnetworks'] = json_decode( $form['socialnetworks'], true );
 elseif( is_string( $form['socialnetworks'] ) )
 	$form['socialnetworks'] = json_decode( $form['socialnetworks'], true );
 
 
+// ----------------------------------------------------------------------------------
 
-echo '<div id="developer_form">
-';
+
+?>
+		<div id="developer_form">
+<?php
 
 // page title
+$title = 'Edit your developer profile';
 if( $admin_page == 'adddeveloper' || $page == 'adddeveloper' )
-	echo '	<h2>'.lang('adddeveloper_create_developer').'</h2>
-';
+	$title = lang('adddeveloper_form_title');
 elseif( $admin_page == 'editdeveloper' )
-	echo '	<h2>Edit a developper</h2>
-';
-elseif( $admin_page == 'edityouraccount' )
-	echo '	<h2>Edit your account</h2>
-';
+	$title = 'Edit a developper profile'
+?>
+			<h2><?php echo $title;?></h2>
+
+<?php
+// explanation text
 
 
-// display oerrors or success confirmation
+
+// display errors or success confirmation
 echo get_form_errors($form);
 echo get_form_success($form);
 
@@ -77,15 +82,15 @@ echo form_open( 'admin/'.$admin_page ).'
 ';
 
 
-// explanation text
+// profile id
+if( $admin_page == 'editdeveloper' ): ?>
+
+				Id : <?php echo $form['developer_id'];?> <input type="hidden" name="form[developer_id]" value="<?php echo $form['developer_id'];?>"> <br>
+<?php endif;
+
+// required fields
 if( $page == 'adddeveloper' )
 	echo '<p>'.lang('adddeveloper_required_field').'</p>';
-
-
-// profile id
-if( $admin_page == 'editdeveloper' )
-	echo 'Id : '.$form['developer_id'].' <input type="hidden" name="form[developer_id]" value="'.$form['developer_id'].'"> <br>
-';
 
 
 // name
@@ -94,8 +99,9 @@ $input = array(
 	'lang'=>'adddeveloper_name',
 	'value'=>$form['name']	
 );
-echo form_input_extended($input);
-
+?>
+				<?php echo form_input_extended($input); ?> 
+<?php
 
 //email
 $input = array(
@@ -104,93 +110,96 @@ $input = array(
 	'lang'=>'adddeveloper_email',
 	'value'=>$form['email']	
 );
-echo form_input_extended($input);
-
-
-if( $page == 'admin' ){
 ?>
-		<input type="password" name="form[password]" id="password" placeholder="Write here only to update" value=""> <label for="password">Password (write only to update your existing password, don't forget to write it again below)</label> <br>
-		<input type="password" name="form[password2]" id="password2" placeholder="Same as above" value=""> <label for="password2">Password confirmation</label> <br>
-		
-		<!--Statut :
-		<input type="radio" name="form[is_public]" id="statut_private" value="0" <?php if($form['is_public']=='0'||$form['is_public']=='') echo 'checked="checked"'; ?>> <label for="statut_private">Private</label>
-		<input type="radio" name="form[is_public]" id="statut_public" value="1" <?php if($form['is_public']=='1') echo 'checked="checked"'; ?>> <label for="statut_public">Public</label> <br> -->
-<?php 
-	if( $form['is_public'] == 0 )
-		echo '<br> <input type="checkbox" name="form[is_public]" id="is_public" value="1"> <label for="is_public">Make your profile public</label> <br>';
-	else
-		echo '<br>Your profile is public<br>';
-}
-else { // end if( $page == 'admin' ): ?>
-		<input type="hidden" name="form[password]" value=""> 
-<?php } ?>
-		<br>
-		<label for="pitch"><?php echo lang('adddeveloper_pitch');?></label> <br>
-		<textarea name="form[pitch]" id="pitch" placeholder="<?php echo lang('adddeveloper_pitch');?>" rows="7" cols="30"><?php echo $form['pitch'];?></textarea> <br>
+				<?php echo form_input_extended($input); ?> 
 <?php
-// logo
-$input = array(
-	'type'=>'url',
-	'id'=>'logo',
-	'lang'=>'adddeveloper_logo',
-	'value'=>$form['logo']	
-);
-echo form_input_extended($input);
+
+if( $page == 'admin' ):
+?>
+
+				<input type="password" name="form[password]" id="password" placeholder="Write here only to update" value=""> <label for="password">Password (write only to update your existing password, don't forget to write it again below)</label> <br>
+				<input type="password" name="form[password2]" id="password2" placeholder="Same as above" value=""> <label for="password2">Password confirmation</label> <br>
+				
+				<!--Statut :
+				<input type="radio" name="form[is_public]" id="statut_private" value="0" <?php if($form['is_public']=='0'||$form['is_public']=='') echo 'checked="checked"'; ?>> <label for="statut_private">Private</label>
+				<input type="radio" name="form[is_public]" id="statut_public" value="1" <?php if($form['is_public']=='1') echo 'checked="checked"'; ?>> <label for="statut_public">Public</label> <br> -->
+<?php if( $form['is_public'] == 0 ): ?>
+				<?php echo '<br> <input type="checkbox" name="form[is_public]" id="is_public" value="1"> <label for="is_public">Make your profile public</label> <br>'; ?>
+<?php else: ?>
+				<?php echo '<br>Your profile is public<br>'; ?> 
+<?php endif;
+// end if( $page == 'admin' ):
+else: ?>
+				<input type="hidden" name="form[password]" value=""> 
+<?php endif; ?>
+
+				<br>
+				<label for="pitch"><?php echo lang('adddeveloper_pitch');?></label> <br>
+				<textarea name="form[pitch]" id="pitch" placeholder="<?php echo lang('adddeveloper_pitch');?>" rows="7" cols="30"><?php echo $form['pitch'];?></textarea> <br>
+
+<?php
 
 
-// website url
-$input = array(
-	'type'=>'url',
-	'id'=>'website',
-	'lang'=>'adddeveloper_website',
-	'value'=>$form['website']	
-);
-echo form_input_extended($input);
+// string fields
+$inputs = array('logo'=>'url', 'website'=>'url', 'blogfeed'=>'url');
 
-
-// blogfeed
-$input = array(
-	'type'=>'url',
-	'id'=>'blogfeed',
-	'lang'=>'adddeveloper_blogfeed',
-	'value'=>$form['blogfeed']	
-);
-echo form_input_extended($input);
+foreach( $inputs as $name => $type ) {
+	$input_data = array(
+		'type'=>$type,
+		'name'=>'form['.$name.']',
+		'id'=>$name,
+		'lang'=>'adddeveloper_'.$name,
+		'value'=>$form[$name]	
+	);
+?>
+				<?php echo form_input_extended($input_data);?> 
+<?php
+}
 
 
 // teamsize
-$input = array(
+$input_data = array(
 	'type'=>'number',
 	'id'=>'teamsize',
 	'lang'=>'adddeveloper_teamsize',
 	'value'=> ($form['teamsize'] == '' ? 1 : $form['teamsize'])
 );
-echo form_input_extended($input);
+?>
+				<?php echo form_input_extended($input_data);?> 
+<?php
 
 
 // country
 if( $form['country'] == '' )
 	$form['country'] = 'usa';
+?>
+				<?php echo form_dropdown( 'form[country]', $site_data->countries, $form['country'], 'id="country"' ); ?> 
+				<?php echo form_label( lang('adddeveloper_country'), 'country' ).' <br>'; ?> 
 
-echo form_dropdown( 'form[country]', $site_data->countries, $form['country'], 'id="country"' );
-echo form_label( lang('adddeveloper_country'), 'country' ).' <br>';
- 
+<?php
 
 // social networks
-echo '<br> '.form_label( lang( 'adddeveloper_socialnetworks' ), 'socialnetworks' ).' <br>';
+?>
+				
+				<br>
+				<?php echo form_label( lang( 'addgame_socialnetworks' ), 'socialnetworks' ); ?> <br>
+<?php
 
-foreach( $form['socialnetworks']['sites'] as $array_id => $site_id ) {
+foreach( $form['socialnetworks']['names'] as $array_id => $site_id ) {
 	if( $form['socialnetworks']['urls'][$array_id] == '' ) // that's the 3 "new" fields, it happens when $form comes from the form itself
 		continue;
-
-	echo form_dropdown( 'form[socialnetworks][sites]['.$array_id.']', $site_data->socialnetworks, $site_id, 'id="socialnetwork_site_'.$array_id.'"' );
-	echo '<input type="url" name="form[socialnetworks][urls]['.$array_id.']" id="socialnetworks_url_'.$array_id.'" placehodder="Full profile url" value="'.$form['socialnetworks']['urls'][$array_id].'"> <!--<label for="socialnetwork_url_">Leave url blanck to delete</label>--> <br>';
+?>
+				<?php echo form_dropdown( 'form[socialnetworks][names]['.$array_id.']', $site_data->socialnetworks, $site_id, 'id="socialnetwork_site_'.$array_id.'"' ); ?> 
+				<?php echo '<input type="url" name="form[socialnetworks][urls]['.$array_id.']" id="socialnetworks_url_'.$array_id.'" placehodder="Full profile url" value="'.$form['socialnetworks']['urls'][$array_id].'"> <br> '; ?> 
+<?php
 }
 
-$count = count( $form['socialnetworks']['sites'] );
+$count = count( $form['socialnetworks']['names'] );
 for( $i = $count; $i < $count+4; $i++ ) {
-	echo form_dropdown( 'form[socialnetworks][sites][]', $site_data->socialnetworks, null, 'id="socialnetworks_site_'.$i.'"' );
-	echo '<input type="url" name="form[socialnetworks][urls][]" id="socialnetworks_url_'.$i.'" placehodder="Full profile url" value=""><br>';
+?>
+				<?php echo form_dropdown( 'form[socialnetworks][names][]', $site_data->socialnetworks, null, 'id="socialnetworks_site_'.$i.'"' ); ?> 
+				<?php echo '<input type="url" name="form[socialnetworks][urls][]" id="socialnetworks_url_'.$i.'" placehodder="Full profile url" value=""> <br> '; ?> 
+<?php
 }
 
 
@@ -199,31 +208,27 @@ foreach( $multiselect_form_items as $key ) {
 	$size = count( $site_data->$key );
 	if( $size > 10 )
 		$size = 10;
-
-	$lang = lang( 'adddeveloper_'.$key );
-
-	echo '
-<br><br>
-<label for="'.$key.'">'.$lang.'</label> <br>'.
-form_multiselect( 'form['.$key.'][]', $site_data->$key, $form[$key], 'id="'.$key.'" size="'.$size.'"' ).'
-';
+?>
+				
+				<br>
+				<?php echo '<label for="'.$key.'">'.lang( 'adddeveloper_'.$key ).'</label> <br> ';
+				echo form_multiselect( 'form['.$key.'][]', $site_data->$key, $form[$key], 'id="'.$key.'" size="'.$size.'"' ); ?> <br> 
+<?php
 }
 
 //--------------------
 
-$name = $admin_page.'_form_submitted';
-$value = 'Edit this developer account';
+
+$submit_value = 'Edit this developer account';
 
 if( $page == 'adddeveloper' || $admin_page == 'adddeveloper' )
-	$value = lang('adddeveloper_submit');
-elseif( $form['id'] == userdata('user_id') )
-	$value = 'Edit your account';
+	$submit_value = lang('adddeveloper_submit');
 
 if( $page == 'adddeveloper' )
 	echo '<input type="hidden" name="from_adddeveloper_page" value="true">';
 ?>
-		<br>
-		<br>
-		<input type="submit" name="developer_form_submitted" value="<?php echo $value;?>">
-	</form>
-</div> <!-- /#developer_form -->
+				<br>
+				<br>
+				<input type="submit" name="developer_form_submitted" value="<?php echo $submit_value;?>">
+			</form>
+		</div> <!-- /#developer_form -->
