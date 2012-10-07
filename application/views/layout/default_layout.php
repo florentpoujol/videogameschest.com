@@ -5,7 +5,7 @@
 
 		<!-- Meta -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<meta name='robots' content='index,follow' />
+		<meta name='robots' content='noindex,nofollow' />
 <?php foreach( $metas as $meta ): ?>
 		<meta name='<?php echo $meta['name']; ?>' content='<?php echo $meta['content']; ?>' />
 <?php endforeach; ?>
@@ -53,11 +53,11 @@ foreach( get_site_data()->sitelanguages as $lang ) {
 } // end foreach
 ?>
 			</ul>
-		</header>
+		</header> <!-- /#menu -->
 
-		<!-- BodyStart hook -->
-<?php echo $bodyStart; ?>
-		<!-- /BodyStart hook -->
+		<!-- Body hook -->
+<?php echo $body_views; ?>
+		<!-- /Body hook -->
 
 		<!-- JavaScript -->
 <?php foreach( $js as $url ): ?>

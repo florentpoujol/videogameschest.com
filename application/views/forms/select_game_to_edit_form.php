@@ -1,9 +1,9 @@
-<div id="select_game_to_edit_form">
+		<div id="select_game_to_edit_form">
 <?php
 echo get_form_errors().'
 ';
 ?>
-	<h2>Select the game to edit</h2>
+			<h2>Select the game to edit</h2>
 
 <?php
 echo form_open( 'admin/editgame' );
@@ -15,15 +15,15 @@ else
 
 $games = array();
 foreach( $raw_games->result() as $game ) {
-	$games[$game->id] = $game->name;
+	$games[$game->game_id] = $game->name;
 }
 
 echo form_dropdown( 'game_id_select', $games, null, 'id="game_id_select"' );
 echo ' <label for="game_id_select">Select the game</label>';
 ?>
-		<br>
-		<input type="number" min="1" name="game_id_text" id="game_id_text"> <label for="game_id_text">Or write its id</label> <br>
-		<br>
-		<input type="submit" name="select_game_to_edit_form_submitted" value="Edit this game"> <br>
-	</form>
-</div> <!-- /#select_game_to_edit_form -->
+				<br>
+				<input type="number" min="1" name="game_id_text" id="game_id_text"> <label for="game_id_text">Or write its id</label> <br>
+				<br>
+				<input type="submit" name="select_game_to_edit_form_submitted" value="Edit this game"> <br>
+			</form>
+		</div> <!-- /#select_game_to_edit_form -->

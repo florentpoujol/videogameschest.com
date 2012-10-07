@@ -47,11 +47,12 @@ They must first check the data then make their account public before you can add
 
 // GAME FORM
 
-$lang['addgame_form_title'] = 'Create a developer profile';
+$lang['addgame_form_title'] = 'Create a game profile';
 
 $lang['addgame_required_field'] = 'The developer\'s name and email are required fields.';
 
 $lang['addgame_name'] = 'Game title';
+$lang['addgame_developer'] = 'Developer';
 $lang['addgame_pitch'] = 'Game story, features...';
 
 $lang['addgame_logo'] = 'Logo URL';

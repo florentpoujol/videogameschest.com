@@ -12,15 +12,15 @@ class Layout
         $this->CI =& get_instance(); // =& permet un passage par référence
         //get_instance() permet d'obtenir le super objet de code igniter
 
-        $this->data['headStart'] = '';
+        //$this->data['headStart'] = '';
         $this->data['metas'] = array();
         $this->data['css'] = array();
-        $this->data['headEnd'] = '';
+        //$this->data['headEnd'] = '';
 
 
-        $this->data['bodyStart'] = '';
+        $this->data['body_views'] = '';
         $this->data['js'] = array();
-        $this->data['bodyEnd'] = '';
+        //$this->data['bodyEnd'] = '';
 
         //	Le titre par défaut est composé du nom de la méthode et du nom du contrôleur.
         //	La fonction ucfirst permet d'ajouter une majuscule.
@@ -115,8 +115,8 @@ class Layout
      * @param The name of the view file
      * @param the date variable to pass to that view
      */
-    public function view( $hook, $viewName, $data = array() ) {
-        $this->data[$hook] .= $this->CI->load->View( $viewName, $data, true ).'
+    public function view( $view_name, $data = array(), $hook = 'body_views' ) {
+        $this->data[$hook] .= $this->CI->load->View( $view_name, $data, true ).'
         ';
         return $this;
     }

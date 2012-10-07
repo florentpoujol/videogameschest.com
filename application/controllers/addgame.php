@@ -24,12 +24,12 @@ class Addgame extends CI_Controller {
         $form = $this->session->flashdata( 'addgame_form' );
 
         if( is_string( $form ) )
-            $form = json_decode( $form );
+            $form = json_decode( $form, true );
         else
             $form = array();        
         
         $this->layout
-        ->view( 'bodyStart', 'forms/game_form', array('form'=>$form) )
+        ->view( 'forms/game_form', array('form'=>$form) )
         ->load();
     }
 

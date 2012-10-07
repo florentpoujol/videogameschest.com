@@ -84,7 +84,7 @@ if( $page == 'adddeveloper' )
 
 // profile id
 if( $admin_page == 'editdeveloper' )
-	echo 'Id : '.$form['id'].' <input type="hidden" name="form[id]" value="'.$form['id'].'"> <br>
+	echo 'Id : '.$form['developer_id'].' <input type="hidden" name="form[developer_id]" value="'.$form['developer_id'].'"> <br>
 ';
 
 

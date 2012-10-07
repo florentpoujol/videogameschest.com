@@ -218,7 +218,7 @@ function get_developers( $raw = false ) {
 
 	$clean_devs = array();
 	foreach( $raw_devs->result() as $dev ) {
-		$clean_devs[$dev->id] = $dev->name;
+		$clean_devs[$dev->developer_id] = $dev->name;
 	}
 
 	return $clean_devs;
@@ -274,26 +274,27 @@ function get_form_success( $form ) {
  * @param assoc array $socialnetworks the socialnetworks array
  * @return the array clened up
  */
-function clean_socialnetworks( $socialnetworks ) {
-    $max_count = count( $socialnetworks['urls'] );
+function clean_names_urls_array( $array ) {
+    $max_count = count( $array['names'] );
 
     for( $i = 0; $i < $max_count; $i++ ) {
-        if( isset( $socialnetworks['urls'][$i] ) && trim( $socialnetworks['urls'][$i] ) == '' )
+        if( isset( $array['names'][$i] ) &&
+         	(trim( $array['names'][$i] ) == '' || trim( $array['urls'][$i] ) == '') ) 
         {
-            unset( $socialnetworks['sites'][$i] );
-            unset( $socialnetworks['urls'][$i] );
+            unset( $array['names'][$i] );
+            unset( $array['urls'][$i] );
             $i--; // unsetting change the size of the array and the keys of the remaining values
         }
     }
 
     // rebuilt the sites and urls index
     // so that json_encode consider them as array an not as object
-    if( isset( $form['socialnetworks']['sites'] ) ) {
-        array_values( $socialnetworks['sites'] );
-        array_values( $socialnetworks['urls'] );
+    if( isset( $array['names'] ) ) {
+        array_values( $array['names'] );
+        array_values( $array['urls'] );
     }
 
-    return $socialnetworks;
+    return $array;
 }
 
 // ----------------------------------------------------------------------------------

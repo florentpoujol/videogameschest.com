@@ -15,8 +15,8 @@ class Admin extends CI_Controller {
             $this->lang->load( 'main', $lang );
 
     	$this->layout
-        //->view( 'bodyStart', 'menu_view' )
-        ->view( 'bodyStart', 'admin/admin_menu_view' );
+        //->view( 'menu_view' )
+        ->view( 'admin/admin_menu_view' );
 
         $this->load->library( 'form_validation' );
 	}
@@ -33,8 +33,8 @@ class Admin extends CI_Controller {
 
         /*if( userdata( 'is_admin' ) ) {
             $this->layout
-            ->view( 'bodyStart', 'forms/select_developer_to_edit_form' )
-            ->view( 'bodyStart', 'forms/admin_form' );
+            ->view( 'forms/select_developer_to_edit_form' )
+            ->view( 'forms/admin_form' );
         }*/
 
     	$this->layout->load();
@@ -92,7 +92,7 @@ class Admin extends CI_Controller {
 
 
     	$this->layout
-    	->view( 'bodyStart', 'forms/admin_login_form', array('error'=>$error, 'name'=>$name ))
+    	->view( 'forms/admin_login_form', array('error'=>$error, 'name'=>$name ))
     	->load();
     }
 
@@ -155,7 +155,7 @@ class Admin extends CI_Controller {
                 $form['password2'] = '';
 
                 $this->layout
-                ->view( 'bodyStart', 'forms/admin_form' , 
+                ->view( 'forms/admin_form' , 
                     array( 'form' => $form ) )
                 ->load();
             }
@@ -164,7 +164,7 @@ class Admin extends CI_Controller {
                 $form['password'] = '';
                 $form['password2'] = '';
 
-                $this->layout->view( 'bodyStart', 'forms/admin_form' , array('form' => post('form')) )
+                $this->layout->view( 'forms/admin_form' , array('form' => post('form')) )
                 ->load();
             }
         }
@@ -175,7 +175,7 @@ class Admin extends CI_Controller {
             $form->id = $id;
             $form->password = '';
 
-            $this->layout->view( 'bodyStart', 'forms/admin_form' , array('form' => $form) )
+            $this->layout->view( 'forms/admin_form' , array('form' => $form) )
             ->load();
         }
     }
@@ -203,11 +203,6 @@ class Admin extends CI_Controller {
      * Main hub with no content but the admin menu
      */
     function adddeveloper() {
-        //if( !userdata( 'is_logged_in' ) )
-            //redirect( 'admin/login' );
-
-        
-
         if( post( 'developer_form_submitted' ) ) {
             $form = post( 'form' );
 
@@ -223,7 +218,7 @@ class Admin extends CI_Controller {
             }
             unset( $form['password2'] );
             
-            $form['socialnetworks'] = clean_socialnetworks( $form['socialnetworks'] );
+            $form['socialnetworks'] = clean_names_urls_array( $form['socialnetworks'] );
 
             // save data if all is OK
             if( $this->form_validation->run() ) {
@@ -248,13 +243,13 @@ class Admin extends CI_Controller {
                 }
                 else {
                     $this->layout
-                    ->view( 'bodyStart', 'forms/developer_form', array('form'=>$form) )
+                    ->view( 'forms/developer_form', array('form'=>$form) )
                     ->load();
                 }
             }
         }
         elseif( userdata( 'is_admin' ) ) 
-            $this->layout->view( 'bodyStart', 'forms/developer_form' )->load();
+            $this->layout->view( 'forms/developer_form' )->load();
         else
             redirect( 'adddeveloper' );
     } // end of method adddeveloper()
@@ -284,7 +279,7 @@ class Admin extends CI_Controller {
         
         if( post( 'developer_form_submitted' ) ) {
             $form = post( 'form' );
-            $db_data = get_db_row( 'developers', 'id', $form['id'] );
+            $db_data = get_db_row( 'developers', 'developer_id', $form['developer_id'] );
 
             // cheking name
             $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[5]' );
@@ -307,7 +302,7 @@ class Admin extends CI_Controller {
 
             unset( $form['password2'] );
             
-            $form['socialnetworks'] = clean_socialnetworks( $form['socialnetworks'] );
+            $form['socialnetworks'] = clean_names_urls_array( $form['socialnetworks'] );
 
 
             // update data if all is OK
@@ -318,30 +313,29 @@ class Admin extends CI_Controller {
                 $form['success'] = 'Your developer account has been successfully updated.';
                 
                 $this->layout
-                ->view( 'bodyStart', 'forms/developer_form', array('form'=>$form) )
+                ->view( 'forms/developer_form', array('form'=>$form) )
                 ->load();
             }
             else {
                 unset( $form['password'] );
                 $this->layout
-                ->view( 'bodyStart', 'forms/developer_form', array('form'=>$form) )
+                ->view( 'forms/developer_form', array('form'=>$form) )
                 ->load();
-               
             }
         } // end if( post( 'developer_form_submitted' ) ) {
 
         // no form has been submitted, just show the form filled with data from the database
         elseif( $id != null ) { // if user is a developer, this will always be the case (see redirect above)
-            $form = get_db_row( 'developers', 'id', $id );
+            $form = get_db_row( 'developers', 'developer_id', $id );
 
             $this->layout
-            ->view( 'bodyStart', 'forms/developer_form', array('form'=>$form) )
+            ->view( 'forms/developer_form', array('form'=>$form) )
             ->load();
         }
 
         else { // show to the admins the form to chose which devs to edit
             $this->layout
-            ->view( 'bodyStart', 'forms/select_developer_to_edit_form' )
+            ->view( 'forms/select_developer_to_edit_form' )
             ->load();
         }
     }
@@ -353,15 +347,16 @@ class Admin extends CI_Controller {
      * Page to add a game
      */
     function addgame() {
-        if( !userdata( 'is_logged_in' ) )
-            redirect( 'admin/login' );
-
         if( post( 'game_form_submitted' ) ) {
             $form = post( 'form' );
 
             $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[3]|is_unique[games.name]' );
             
-            $form['data']['socialnetworks'] = clean_socialnetworks( $form['data']['socialnetworks'] );
+            $form['data']['screenshots'] = clean_names_urls_array( $form['data']['screenshots'] );
+            $form['data']['videos'] = clean_names_urls_array( $form['data']['videos'] );
+
+            $form['data']['socialnetworks'] = clean_names_urls_array( $form['data']['socialnetworks'] );
+            $form['data']['stores'] = clean_names_urls_array( $form['data']['stores'] );
 
             // save data if all is OK
             if( $this->form_validation->run() ) {
@@ -369,7 +364,7 @@ class Admin extends CI_Controller {
 
                 if( post( 'from_addgame_page' ) ) {
                     $form = array('success' => lang('addgame_form_success'));
-                    $this->session->set_flashdata( 'addgameform', json_encode($form) );
+                    $this->session->set_flashdata( 'addgame_form', json_encode($form) );
                     redirect( 'addgame' );
                 }
                 else
@@ -383,13 +378,15 @@ class Admin extends CI_Controller {
                 }
                 else {
                     $this->layout
-                    ->view( 'bodyStart', 'forms/game_form', array('form'=>$form) )
+                    ->view( 'forms/game_form', array('form'=>$form) )
                     ->load();
                 }
             }
         }
+        elseif( userdata( 'is_admin' ) ) 
+            $this->layout->view( 'forms/game_form' )->load();
         else
-            $this->layout->view( 'bodyStart', 'forms/game_form' )->load();
+            redirect( 'addgame' );
     }
 
 
@@ -413,15 +410,18 @@ class Admin extends CI_Controller {
         
         if( post( 'game_form_submitted' ) ) {
             $form = post( 'form' );
-            $db_data = get_db_row( 'games', 'id', $form['id'] );
+            $db_data = get_db_row( 'games', 'game_id', $form['game_id'] );
 
             // cheking name
             $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[5]' );
             if( $form['name'] != $db_data->name )
                 $this->form_validation->set_rules( 'form[name]', 'Name', 'is_unique[games.name]' );
             
+            $form['data']['screenshots'] = clean_names_urls_array( $form['data']['screenshots'] );
+            $form['data']['videos'] = clean_names_urls_array( $form['data']['videos'] );
 
-            $form['data']['socialnetworks'] = clean_socialnetworks( $form['data']['socialnetworks'] );
+            $form['data']['socialnetworks'] = clean_names_urls_array( $form['data']['socialnetworks'] );
+            $form['data']['stores'] = clean_names_urls_array( $form['data']['stores'] );
 
             // update data if all is OK
             if( $this->form_validation->run() ) {
@@ -430,12 +430,12 @@ class Admin extends CI_Controller {
                 $form['success'] = 'Your game account has been successfully updated.';
                 
                 $this->layout
-                ->view( 'bodyStart', 'forms/game_form', array('form'=>$form) )
+                ->view( 'forms/game_form', array('form'=>$form) )
                 ->load();
             }
             else {
                 $this->layout
-                ->view( 'bodyStart', 'forms/game_form', array('form'=>$form) )
+                ->view( 'forms/game_form', array('form'=>$form) )
                 ->load();
                
             }
@@ -458,21 +458,21 @@ class Admin extends CI_Controller {
                     $form['errors'] = "The game with id [$id] does not belong to you, you can't edit it.";
 
                     $this->layout
-                    ->view( 'bodyStart', 'forms/select_game_to_edit_form', array('form'=>$form) )
+                    ->view( 'forms/select_game_to_edit_form', array('form'=>$form) )
                     ->load();
                 }
             }
 
-            $form = get_db_row( 'games', 'id', $id );
+            $form = get_db_row( 'games', 'game_id', $id );
 
             $this->layout
-            ->view( 'bodyStart', 'forms/game_form', array('form'=>$form) )
+            ->view( 'forms/game_form', array('form'=>$form) )
             ->load();
         }
         // show the form to chose which game to edit
         else { 
             $this->layout
-            ->view( 'bodyStart', 'forms/select_game_to_edit_form' )
+            ->view( 'forms/select_game_to_edit_form' )
             ->load();
         }
     }
@@ -531,7 +531,7 @@ class Admin extends CI_Controller {
 
 
         $this->layout
-        ->view( 'bodyStart', 'forms/message_form', array('form'=>$form) )
+        ->view( 'forms/message_form', array('form'=>$form) )
         ->load();
     }
 }

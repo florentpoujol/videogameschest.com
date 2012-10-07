@@ -205,7 +205,7 @@ class Main_model extends CI_Model {
         // now that everything is nicely formatted for databse
         // lets compare what form data is different to the db data
         // and update only what has changed
-        $id = $form['id'];
+        $id = $form['developer_id'];
 
         foreach( $form as $field => $value ) {
             if( $value == $db_data->$field )
@@ -213,7 +213,7 @@ class Main_model extends CI_Model {
         }
         
         if( count($form) > 0 )
-            $this->db->update( 'developers', $form, 'id = '.$id );
+            $this->db->update( 'developers', $form, 'developer_id = '.$id );
     }
 
 
@@ -243,7 +243,7 @@ class Main_model extends CI_Model {
         // now that everything is nicely formatted for databse
         // lets compare what form data is different to the db data
         // and update only what has changed
-        $id = $form['id'];
+        $id = $form['game_id'];
 
         foreach( $form as $field => $value ) {
             if( $field != 'data' && $value == $db_data->$field ) {
@@ -255,7 +255,7 @@ class Main_model extends CI_Model {
         $form['data'] = json_encode( $form['data'] );
 
         if( count($form) > 0 )
-            $this->db->update( 'games', $form, 'id = '.$id );
+            $this->db->update( 'games', $form, 'game_id = '.$id );
     }
 
 
