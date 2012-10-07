@@ -295,13 +295,10 @@ class Main_model extends CI_Model {
      * @param assoc array $form the raw data from the message_form view
      */
     function get_messages( $where, $join_field = null ) {
-        $this->db
-        ->select( '*' )
-        ->select( 'messages.id AS msg_id' ) // message.id gets overritten by developers.id
-        ->from( 'messages' );
+        $this->db->from( 'messages' );
 
         if( $join_field != null )
-            $this->db->join( 'developers', 'developers.id = messages.'.$join_field );
+            $this->db->join( 'developers', 'developers.developer_id = messages.'.$join_field );
 
         return $this->db->where( $where )->get();
     }

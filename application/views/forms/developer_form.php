@@ -120,9 +120,6 @@ if( $page == 'admin' ):
 				<input type="password" name="form[password]" id="password" placeholder="Write here only to update" value=""> <label for="password">Password (write only to update your existing password, don't forget to write it again below)</label> <br>
 				<input type="password" name="form[password2]" id="password2" placeholder="Same as above" value=""> <label for="password2">Password confirmation</label> <br>
 				
-				<!--Statut :
-				<input type="radio" name="form[is_public]" id="statut_private" value="0" <?php if($form['is_public']=='0'||$form['is_public']=='') echo 'checked="checked"'; ?>> <label for="statut_private">Private</label>
-				<input type="radio" name="form[is_public]" id="statut_public" value="1" <?php if($form['is_public']=='1') echo 'checked="checked"'; ?>> <label for="statut_public">Public</label> <br> -->
 <?php if( $form['is_public'] == 0 ): ?>
 				<?php echo '<br> <input type="checkbox" name="form[is_public]" id="is_public" value="1"> <label for="is_public">Make your profile public</label> <br>'; ?>
 <?php else: ?>

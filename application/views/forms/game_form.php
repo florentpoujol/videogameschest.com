@@ -158,13 +158,13 @@ foreach( $inputs as $name => $type ) {
 
 
 // name text/url arrays
-foreach( $namestext_urls_arrays as $item ) { 
+foreach( $namestext_urls_arrays as $item ):
 ?>
 				
 				<br>
 				<?php echo form_label( lang( 'addgame_'.$item ), $item );?> <br>
 <?php
-	foreach( $form['data'][$item]['names'] as $array_id => $name ) {
+	foreach( $form['data'][$item]['names'] as $array_id => $name ):
 		if( $form['data'][$item]['urls'] == '' ) // that's the 4 "new" fields, it happens when $form comes from the form itself
 			continue;
 
@@ -189,10 +189,10 @@ foreach( $namestext_urls_arrays as $item ) {
 ?>
 				<?php echo form_input_extended($input_data, ''); ?> <br>
 <?php
-	}
+	endforeach;
 
 	$count = count( $form['data'][$item]['names'] );
-	for( $i = $count; $i < $count+4; $i++ ) {
+	for( $i = $count; $i < $count+4; $i++ ):
 		$input_data = array(
 			'name'=>'form[data]['.$item.'][names][]',
 			'id'=>$item.'_names_'.$i,
@@ -212,38 +212,38 @@ foreach( $namestext_urls_arrays as $item ) {
 ?>
 				<?php echo form_input_extended($input_data, ''); ?> <br>
 <?php
-	}
-} // end foreach( $namestext_urls_arrays as $item ) { 
+	endfor;
+endforeach; // end foreach( $namestext_urls_arrays as $item ) { 
 
 
 // name dropdown/url arrays
-foreach( $namesdropdown_urls_arrays as $array ) {
+foreach( $namesdropdown_urls_arrays as $array ):
 ?>
 				
 				<br>
 				<?php echo form_label( lang( 'addgame_'.$array ), $array ); ?> <br>
 <?php
-	foreach( $form['data'][$array]['names'] as $array_id => $site_key ) {
+	foreach( $form['data'][$array]['names'] as $array_id => $site_key ):
 		if( $form['data'][$array]['urls'][$array_id] == '' ) // that's the 4 "new" fields, it happens when $form comes from the form itself
 			continue;
 ?>
 				<?php echo form_dropdown( 'form[data]['.$array.'][names]['.$array_id.']', $site_data->$array, $site_key, 'id="'.$array.'_site_'.$array_id.'"' ); ?> 
 				<?php echo '<input type="url" name="form[data]['.$array.'][urls]['.$array_id.']" id="'.$array.'_url_'.$array_id.'" placeholder="Profile URL" value="'.$form['data'][$array]['urls'][$array_id].'"> <br>'; ?> 
 <?php
-	}
+	endforeach;
 
 	$count = count( $form['data'][$array]['names'] );
-	for( $i = $count; $i < $count+4; $i++ ) {
+	for( $i = $count; $i < $count+4; $i++ ):
 ?>
 				<?php echo form_dropdown( 'form[data]['.$array.'][names][]', $site_data->$array, null, 'id="'.$array.'_site_'.$i.'"' ); ?> 
 				<?php echo '<input type="url" name="form[data]['.$array.'][urls][]" id="'.$array.'_url_'.$i.'" placeholder="Profile URL" value=""><br>'; ?> 
 <?php
-	}
-}
+	endfor;
+endforeach;
 
 
 // other array (multiselect) fields
-foreach( $data_arrays as $key ) {
+foreach( $data_arrays as $key ):
 	$size = count( $site_data->$key );
 	if( $size > 10 )
 		$size = 10;
@@ -252,9 +252,7 @@ foreach( $data_arrays as $key ) {
 				<br>
 				<?php echo '<label for="'.$key.'">'.lang( 'addgame_'.$key ).'</label> <br> ';
 				echo form_multiselect( 'form[data]['.$key.'][]', $site_data->$key, $form['data'][$key], 'id="'.$key.'" size="'.$size.'"' ); ?> <br> 
-<?php
-}
-?>
+<?php endforeach; ?>
 				<br>
 				<br>
 <?php if( $page == 'addgame' ): ?>
@@ -267,7 +265,10 @@ if( $page == 'addgame' || $admin_page == 'addgame' )
 ?>
 		
 				<input type="submit" name="game_form_submitted" value="<?php echo $submit_value;?>">
+<?php
+if( $admin_page == 'editgame' && $form['profile_privacy'] == 'private' ):
+?>
+				<input type="submit" name="send_game_in_review" value="Send this game profile in peer review">
+<?php endif; ?>
 			</form>
-
-			<input type="hidden" name="form[profile_privacy]" value="private">
 		</div> <!-- /#game_form -->

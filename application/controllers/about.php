@@ -16,7 +16,7 @@ class About extends CI_Controller {
     {
         
         $this->layout
-        ->view( 'bodyStart', 'about_view' )
+        ->view( 'about_view' )
         ->load();
     }
 }
