@@ -1,4 +1,4 @@
-		<div id="message_form">
+		<section id="message_form">
 <?php
 if(!isset($form))
 	$form = '';
@@ -6,7 +6,7 @@ if(!isset($form))
 			<?php echo get_form_errors($form);
 			echo get_form_success($form); ?>
 
-			<h2>Message center</h2>
+			<h1 id="page_title">Message center</h1>
 
 			<fieldset>
 				<legend>Write a message</legend>
@@ -123,4 +123,4 @@ if( $messages->num_rows() > 0 ):
 				Your outbox is empty.
 <?php endif; ?>
 			</fieldset>		
-		</div> <!-- /#message_form -->
+		</section> <!-- /#message_form -->

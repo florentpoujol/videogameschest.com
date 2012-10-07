@@ -4,16 +4,7 @@ class Featured extends CI_Controller {
     
     function index()
     {
-        
-        //$data = array();
-
-        /*$this->layout
-        ->AddView( 'bodyStart', 'menu_view')
-        ->AddView( 'bodyStart', 'featured_view' )
-        ->Load();*/
-       
-
-
+        $this->layout->load();
     }
 
     function pagenotfound( $reason = "noreason" ) {
@@ -26,20 +17,13 @@ class Featured extends CI_Controller {
             break;
         }
         
-        
         $this->layout
         ->AddView( 'bodyStart', 'menu_view', array('page'=>'featured404'))
         ->AddView( 'bodyStart', '404_view', $_404)
         ->AddView( 'bodyStart', 'featured_view', $data )
         ->Load();
     }
-
-    function testtable() {
-
-
-
-    }
 }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+/* End of file featured.php */
+/* Location: ./application/controllers/featured.php */

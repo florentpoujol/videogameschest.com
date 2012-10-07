@@ -18,7 +18,7 @@ $lang['menu_login'] = 'Log In';
 $lang['menu_logout'] = 'Log Out';
 
 
-// DEVELOPER FORM
+// DEVELOPER FORM, page "adddeveloper"
 
 $lang['adddeveloper_form_title'] = 'Create a developer profile';
 
@@ -45,7 +45,7 @@ $lang['adddeveloper_form_success'] = 'Thanks you, the developer has successfully
 They must first check the data then make their account public before you can add one of their game.';
 
 
-// GAME FORM
+// GAME FORM (mostly page "addgame")
 
 $lang['addgame_form_title'] = 'Create a game profile';
 
@@ -86,11 +86,18 @@ $lang['addgame_submit'] = 'Create this game profile';
 $lang['addgame_form_success'] = 'Thanks you, the developer has successfully been added, an email will be send to let them now. \n 
 They must first check the data then make their account public before you can add one of their game.';
 
-/*
-'nbplayers' => 'The number of players who can join the fun :',
-	'themes' => 'The themes of the game :',
-	'viewpoints' => 'The point of view (not applicable for 2D games, not always for 3D games) :',
-	'genres' => 'The type of the game :',
-	'tags' => 'The tags :',
-	*/
+
+// DEVELOPER PROFILE (page "developer")
+
+$lang['developer_page_title'] = "Developer";
+$lang['developer_website_title'] = "Go to the developer's website";
+$lang['developer_teamsize'] = "Size of the team";
+$lang['developer_country'] = "Country";
+
+$lang['developer_socialnetworks'] = "Social networks";
+$lang['developer_technologies'] = "Technologies";
+$lang['developer_operatingsystems'] = "Operating systems";
+$lang['developer_devices'] = "Devices";
+$lang['developer_stores'] = "Stores";
+
 ?>

@@ -89,7 +89,9 @@
 		"torque": "Torque Game Engine",
 		"ogre3d": "Ogre3D",
 		"shiva3d": "Shiva3D",
-		"flash": "Flash"
+		"flash": "Flash",
+		"java": "Java",
+		"python": "Python"
 	},
 
 	"stores": {

@@ -52,7 +52,7 @@ elseif( is_string( $form['socialnetworks'] ) )
 
 
 ?>
-		<div id="developer_form">
+		<section id="developer_form">
 <?php
 
 // page title
@@ -62,7 +62,7 @@ if( $admin_page == 'adddeveloper' || $page == 'adddeveloper' )
 elseif( $admin_page == 'editdeveloper' )
 	$title = 'Edit a developper profile'
 ?>
-			<h2><?php echo $title;?></h2>
+			<h1 id="page_title"><?php echo $title;?></h1>
 
 <?php
 // explanation text
@@ -228,4 +228,4 @@ if( $page == 'adddeveloper' )
 				<br>
 				<input type="submit" name="developer_form_submitted" value="<?php echo $submit_value;?>">
 			</form>
-		</div> <!-- /#developer_form -->
+		</section> <!-- /#developer_form -->

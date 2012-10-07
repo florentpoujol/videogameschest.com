@@ -2,29 +2,42 @@
 
 class Developer extends CI_Controller {
     
-    function index($nameOrId = null)
-    {
-    	$data['siteData'] = GetSiteData();
+    function __construct() {
+        parent::__construct();
 
-    	$where = array();
-    	if( is_numeric( $nameOrId ) )
-    		$where['id'] = $nameOrId;
-    	else
-    		$where['name'] = title_url( $nameOrId );
-
-        $DBInfos = $this->main_model->GetRow( 'games', $where );
-        if( $DBInfos == false )
-        	redirect( 'featured/404/gamenotfound:'.$nameOrId );
+        set_page( 'developer' );
         
-		$gameData = json_decode( $DBInfos->data );
+        $lang = userdata( 'language' );
+        if( $lang )
+            $this->lang->load( 'main', $lang );
+    }
 
-        $data['DBInfos'] = $DBInfos;
-        $data['gameData'] = $gameData;
+
+    // ----------------------------------------------------------------------------------
+
+    /**
+     * Main hub with no content but the admin menu
+     */
+    function index( $name_or_id = null ) {
+    	$where = array();
+    	if( is_numeric( $name_or_id ) )
+    		$where['id'] = $name_or_id;
+    	else
+    		$where['name'] = title_url( $name_or_id );
+
+
+        $db_dev = get_db_row( 'developers', $where );
+        if( $db_dev == false )
+        	redirect( 'home/404/developernotfound:'.$name_or_id );
+
+        if( $db_dev->is_public == 0 )
+            redirect( 'home/404/developerprivate' );
+
+        unset( $db_dev->password );
         
         $this->layout
-        ->AddView( 'bodyStart', 'menu_view', array('page'=>'game'))
-        ->AddView( 'bodyStart', 'full_game_view', $data )
-        ->Load();
+        ->view( 'full_developer_view', array('db_dev'=>$db_dev) )
+        ->load();
     }
 }
 

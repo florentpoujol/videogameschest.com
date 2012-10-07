@@ -26,11 +26,15 @@ $site_data = null;
  * the infos inside the file application/data/site_data.json
  * @return 
  */
-function get_site_data() {
+function get_site_data( $return_as_array = false ) {
 	global $site_data;
 
-	if( $site_data != null )
-		return $site_data;
+	if( $site_data != null ) {
+		if( $return_as_array )
+			return get_object_vars( $site_data );
+		else
+			return $site_data;
+	}
 
     $filePath = APPPATH.'data/site_data.json'; // in application folder
     
@@ -54,7 +58,10 @@ function get_site_data() {
     	// sort() replace the keys by numbers
 	}
 
-    return $site_data;
+    if( $return_as_array )
+		return get_object_vars( $site_data );
+	else
+		return $site_data;
 }
 
 
@@ -316,4 +323,22 @@ function form_input_extended( $input, $br =  ' <br>' ) {
 		$input['maxlength'] = '255';
 	
 	return form_input($input).' '.form_label( $lang, $input['id'] ).$br;
+}
+
+
+// ----------------------------------------------------------------------------------
+
+/**
+ * Parse bbCode
+ * @param string $input the input text
+ * @return 
+ */
+function parse_bbcode( $input ) {
+	$input = preg_replace( "#\[b\](.+)\[/b\]#", "<strong>$1</strong>" ,$input);
+	$input = preg_replace( "#\[i\](.+)\[/i\]#", "<em>$1</em>" ,$input);
+	$input = preg_replace( "#https?://[^ ]+#i", '<a href="$0">$0</a>' ,$input);
+	//$input = preg_replace( "#\[url\](.+)\[/url\]#", '<a href="$1">$1</a>' ,$input);
+	$input = preg_replace( "#\[url=(.+)\](.+)\[/url\]#", '<a href="$1">$2</a>' ,$input);
+	$input = preg_replace( "#/n#", '<br>' ,$input);
+	return $input;
 }

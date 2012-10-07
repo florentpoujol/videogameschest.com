@@ -2,21 +2,23 @@
 
 class Search extends CI_Controller {
     
-    public function __construct() {
+    function __construct() {
         parent::__construct();
+
+        $lang = userdata( 'language' );
+        if( $lang )
+            $this->lang->load( 'main', $lang );
+
+        set_page( 'search' );
     }
     
     public function index()
     {
-
-        $data['infos'] = GetSiteData( true );
-        
         $this->layout
-        ->AddView( 'bodyStart', 'menu_view', array('page'=>'search'))
-        ->AddView( 'bodyStart', 'featured_view', $data )
-        ->Load();
+        ->view( 'forms/search_form' )
+        ->load();
     }
 }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+/* End of file search.php */
+/* Location: ./application/controllers/search.php */

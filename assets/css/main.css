@@ -1,4 +1,41 @@
 
+body {
+	margin:0;
+	margin: auto;
+	width: 1000px;
+	height: 100%;
+	/*background: rgb(230,230,230);*/
+	border: 1px solid rgb(230,230,230);
+	padding:0;
+}
+
+/***************************************************
+	MENU
+***************************************************/
+
+#menu,
+#lang_menu,
+#admin_menu {
+	background: rgb(200,200,200);
+	width: 100%;
+	height: 25px; /* they have no height because of the float:left; on the li */
+	clear: both;
+}
+/*
+#menu ul li, 
+#lang_menu ul li,
+#admin_menu ul li {
+	float: left;
+	list-style: none;
+	margin-left: 10px;
+}*/
+
+#page_title {
+	clear: both;
+}
+ 
+
+
 #menu_selected {
 	color: green;
 	font-weight: bold;
@@ -45,3 +82,4 @@ th, td {
 	padding: 5px;
 	text-align: center;
 }
+

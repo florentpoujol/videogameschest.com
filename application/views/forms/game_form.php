@@ -65,7 +65,7 @@ foreach( $namesdropdown_urls_arrays as $array ) {
 
 
 ?>
-		<div id="developer_form">
+		<section id="developer_form">
 <?php
 
 // page title
@@ -73,7 +73,7 @@ $title = 'Edit a game';
 if( $admin_page == 'addgame' || $page == 'addgame' )
 	$title = lang('addgame_form_title');
 ?>
-			<h2><?php echo $title;?></h2>
+			<h1 id="page_title"><?php echo $title;?></h1>
 
 <?php
 // explanation text
@@ -271,4 +271,4 @@ if( $admin_page == 'editgame' && $form['profile_privacy'] == 'private' ):
 				<input type="submit" name="send_game_in_review" value="Send this game profile in peer review">
 <?php endif; ?>
 			</form>
-		</div> <!-- /#game_form -->
+		</section> <!-- /#game_form -->
