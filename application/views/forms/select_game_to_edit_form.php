@@ -6,6 +6,9 @@ echo get_form_errors().'
 			<h2>Select the game to edit</h2>
 
 <?php
+if( isset($form) )
+	echo get_form_errors($form);
+
 echo form_open( 'admin/editgame' );
 
 if( userdata( 'is_admin' ) ) // allow to edit any games

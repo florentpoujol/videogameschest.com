@@ -427,18 +427,12 @@ class Admin extends CI_Controller {
             if( $this->form_validation->run() ) {
                 $this->main_model->update_game( $form, $db_data );
                 
-                $form['success'] = 'Your game account has been successfully updated.';
+                $form['success'] = 'The game profile has been successfully updated.';
                 
-                $this->layout
-                ->view( 'forms/game_form', array('form'=>$form) )
-                ->load();
+                $this->layout->view( 'forms/game_form', array('form'=>$form) );
             }
-            else {
-                $this->layout
-                ->view( 'forms/game_form', array('form'=>$form) )
-                ->load();
-               
-            }
+            else
+                $this->layout->view( 'forms/game_form', array('form'=>$form) );
         } // end if( post( 'game_form_submitted' ) ) {
 
         // no form has been submitted, just show the form filled with data from the database
@@ -456,25 +450,24 @@ class Admin extends CI_Controller {
 
                 if( !$game_is_owned_by_dev ) {
                     $form['errors'] = "The game with id [$id] does not belong to you, you can't edit it.";
-
-                    $this->layout
-                    ->view( 'forms/select_game_to_edit_form', array('form'=>$form) )
-                    ->load();
+                    $this->layout->view( 'forms/select_game_to_edit_form', array('form'=>$form) );
                 }
             }
 
             $form = get_db_row( 'games', 'game_id', $id );
 
-            $this->layout
-            ->view( 'forms/game_form', array('form'=>$form) )
-            ->load();
+            if( $form == false ) {
+                $form = array('errors'=>"No game with id [$id] was found.");
+                $this->layout->view( 'forms/select_game_to_edit_form', array('form'=>$form) );
+            }
+            else
+                $this->layout->view( 'forms/game_form', array('form'=>$form) );
         }
         // show the form to chose which game to edit
-        else { 
-            $this->layout
-            ->view( 'forms/select_game_to_edit_form' )
-            ->load();
-        }
+        else
+            $this->layout->view( 'forms/select_game_to_edit_form' );
+
+        $this->layout->load();
     }
 
 
