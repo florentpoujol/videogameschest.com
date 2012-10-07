@@ -331,7 +331,7 @@ function form_input_extended( $input, $br =  ' <br>' ) {
 /**
  * Parse bbCode
  * @param string $input the input text
- * @return 
+ * @return string the replacement string
  */
 function parse_bbcode( $input ) {
 	$input = preg_replace( "#\[b\](.+)\[/b\]#", "<strong>$1</strong>" ,$input);

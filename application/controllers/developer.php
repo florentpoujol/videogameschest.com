@@ -10,6 +10,8 @@ class Developer extends CI_Controller {
         $lang = userdata( 'language' );
         if( $lang )
             $this->lang->load( 'main', $lang );
+
+        $this->load->library('RSSReader', null, 'http://feeds.feedburner.com/SwingSwingSubmarine');
     }
 
 

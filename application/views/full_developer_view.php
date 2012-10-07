@@ -20,7 +20,7 @@ $db_dev->socialnetworks = json_decode( $db_dev->socialnetworks, true );
 				</div>
 
 				<div id="developer_blogfeed">
-					blogfeed
+					<?php echo $db_dev->blogfeed; ?> 
 				</div>
 
 				<div id="developer_socialnetworks">
@@ -44,8 +44,7 @@ $db_dev->socialnetworks = json_decode( $db_dev->socialnetworks, true );
 					$items = explode( ',', $db_dev->$category );
 					$text = '';
 					foreach( $items as $item ) {
-						$array = $site_data->$category;
-						$text .= $array[$item].', ';
+						$text .= $site_data->{$category}[$item].', ';
 					}
 
 					echo rtrim( $text, ', ' );
