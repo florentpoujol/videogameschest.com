@@ -27,7 +27,7 @@ if( $form['data'] == '' )
 elseif( is_string( $form['data'] ) )
 	$form['data'] = json_decode( $form['data'], true );
 
-
+/*
 $data_strings = array( 'pitch', 'logo', 'blogfeed', 'website', 'country', 'publishername', 'price', 'soundtrack' );
 
 foreach( $data_strings as $string ) {
@@ -58,7 +58,7 @@ $namesdropdown_urls_arrays = array('socialnetworks', 'stores');
 foreach( $namesdropdown_urls_arrays as $array ) {
 	if( !isset( $form['data'][$array] ) )
 		$form['data'][$array] = array( 'names' => array() );
-}
+}*/
 
 
 // ----------------------------------------------------------------------------------

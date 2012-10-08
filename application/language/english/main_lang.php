@@ -93,7 +93,7 @@ $lang['developer_page_title'] = "Developer";
 $lang['developer_website_title'] = "Go to the developer's website";
 $lang['developer_teamsize'] = "Size of the team";
 $lang['developer_country'] = "Country";
-$lang['developer_blogfeed'] = "Lastest articles from the blog :";
+$lang['developer_blogfeed'] = "Lastest articles from the blog";
 
 $lang['developer_socialnetworks'] = "Social networks";
 $lang['developer_technologies'] = "Technologies";
@@ -106,13 +106,15 @@ $lang['developer_stores'] = "Stores";
 
 $lang['game_page_title'] = "Game";
 $lang['game_website_title'] = "Go to the game's website";
-$lang['game_blogfeed'] = "Lastest articles from the blog :";
+$lang['game_blogfeed'] = "Lastest articles from the blog";
 
-$lang['game_socialnetworks'] = "Social networks :";
+$lang['game_socialnetworks'] = "Social networks";
 $lang['game_technologies'] = "Technologies";
 $lang['game_operatingsystems'] = "Operating systems";
 $lang['game_devices'] = "Devices";
-$lang['game_stores'] = "Stores :";
-
-
-?>
+$lang['game_stores'] = "Stores";
+$lang['game_genres'] = "Genres";
+$lang['game_themes'] = "Stores";
+$lang['game_viewpoints'] = "Stores";
+$lang['game_nbplayers'] = "Stores";
+$lang['game_tags'] = "tags";

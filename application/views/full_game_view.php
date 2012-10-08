@@ -40,7 +40,6 @@ $site_data = get_site_data();
 					?> 
 				</div>
 
-
 				<div id="profile_socialnetworks">
 					<?php echo lang('game_socialnetworks').' : '; ?> 
 					
@@ -50,6 +49,7 @@ $site_data = get_site_data();
 						echo '<a href="'.$db_game->data['socialnetworks']['urls'][$i].'">'.$site_data->socialnetworks[$db_game->data['socialnetworks']['names'][$i]].'</a> ';
 					?> 
 				</div>
+				
 				<div id="profile_stores">
 					<?php echo lang('game_stores').' : '; ?> 
 					
@@ -65,6 +65,8 @@ $site_data = get_site_data();
  				'genres', 'themes', 'viewpoints', 'nbplayers',  'tags' );
 
 				foreach( $categories as $category ):
+					if( count( $db_game->data[$category] ) == 0 )
+						continue;
 				?> 
 				<div id="profile_<?php echo $category;?>">
 					<?php echo lang('game_'.$category).' : '; ?> 

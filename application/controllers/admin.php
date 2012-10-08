@@ -27,11 +27,13 @@ class Admin extends CI_Controller {
     	if( !userdata( 'is_logged_in' ) )
     		redirect( 'admin/login' );
 
-        /*if( userdata( 'is_admin' ) ) {
+        if( userdata( 'is_admin' ) ) {
             $this->layout
-            ->view( 'forms/select_developer_to_edit_form' )
-            ->view( 'forms/admin_form' );
-        }*/
+            ->view( 'forms/select_developer_to_edit_form' );
+        }
+
+        $this->layout
+            ->view( 'forms/select_game_to_edit_form' );
 
     	$this->layout->load();
     }
@@ -40,9 +42,9 @@ class Admin extends CI_Controller {
     // ----------------------------------------------------------------------------------
 
     /**
-     * the login screen
+     * The login screen
      */
-    function login( $error = null ) {
+    function login() {
     	// redirect if alredy logged in
     	if( userdata( 'is_logged_in' ) )
     		redirect( 'admin' );
@@ -93,26 +95,14 @@ class Admin extends CI_Controller {
     }
 
 
+    // ----------------------------------------------------------------------------------
+
     /**
      * Disconnect the user
      */
     function logout() {
     	$this->session->sess_destroy();
     	redirect( 'admin/login' );
-    }
-
-
-    // ----------------------------------------------------------------------------------
-
-    /**
-     * Page that show the reports
-     */
-    function reports() {
-    	if( !userdata( 'is_logged_in' ) )
-            redirect( 'admin/login' );
-
-        if( !userdata( 'is_admin' ) )
-            redirect( 'admin' );
     }
 
 
@@ -251,6 +241,7 @@ class Admin extends CI_Controller {
     } // end of method adddeveloper()
 
 
+    // ----------------------------------------------------------------------------------
     /**
      * Page to edit a developer account
      */
@@ -486,7 +477,7 @@ class Admin extends CI_Controller {
     // ----------------------------------------------------------------------------------
 
     /**
-     * handle creating, deleting, and reading private messages
+     * Handle creating, deleting, and reading private messages
      */
     function messages() {
         if( !userdata( 'is_logged_in' ) )
@@ -522,6 +513,20 @@ class Admin extends CI_Controller {
         $this->layout
         ->view( 'forms/message_form', array('form'=>$form) )
         ->load();
+    }
+
+
+    // ----------------------------------------------------------------------------------
+
+    /**
+     * Handle creating, deleting, and reading reports
+     */
+    function reports() {
+        if( !userdata( 'is_logged_in' ) )
+            redirect( 'admin/login' );
+
+        if( !userdata( 'is_admin' ) )
+            redirect( 'admin' );
     }
 }
 
