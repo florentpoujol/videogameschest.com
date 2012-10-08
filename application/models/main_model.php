@@ -118,7 +118,7 @@ class Main_model extends CI_Model {
     /**
      * Update a developer in the database, but only the modified field
      * @param assoc array $form The raw data from the developer_form view
-     * @param assoc array $db_data The db object to check $form against
+     * @param object $db_data The db object to check $form against
      */
     function update_developer( $form, $db_data ) {
         // encode the password if it exists
@@ -160,34 +160,30 @@ class Main_model extends CI_Model {
      * @return int or bool the id of the newly inserted row or false
      */
     function insert_game( $form ) {
-        // data is the raw data from the game form
-        // at this point we are sure we want to create the game, 
-        
+        // $form is the raw data from the game form
+        // at this point we are sure we want to create the game
         $form['data'] = json_encode( $form['data'] );
 
         $this->db->insert( 'games', $form );
         return $this->db->insert_id();
     }
 
+
+    // ----------------------------------------------------------------------------------
+
     /**
      * Update a game in the database
-     * @param assoc array $form the raw data from the game_form view
-     * @param assoc array $db_data the db object
+     * @param assoc array $form The raw data from the developer_form view
+     * @param object $db_data The db object to check $form against
      */
     function update_game( $form, $db_data ) {
-        // now that everything is nicely formatted for databse
-        // lets compare what form data is different to the db data
-        // and update only what has changed
         $id = $form['game_id'];
+        $form['data'] = json_encode( $form['data'] );
 
         foreach( $form as $field => $value ) {
-            if( $field != 'data' && $value == $db_data->$field ) {
-                echo 'unset : '.$field;
+            if( $value == $db_data->$field )
                 unset( $form[$field] );
-            }
         }
-
-        $form['data'] = json_encode( $form['data'] );
 
         if( count($form) > 0 )
             $this->db->update( 'games', $form, 'game_id = '.$id );
@@ -198,7 +194,7 @@ class Main_model extends CI_Model {
 
     /**
      * Update an administrator in the database
-     * @param assoc array $form the raw data from the admin_form view
+     * @param assoc array $form The raw data from the admin_form view
      */
     function update_admin( $form ) {
         if( trim( $form['password'] ) != '' )
@@ -210,45 +206,53 @@ class Main_model extends CI_Model {
 
     /**
      * Insert a new message in the database
-     * @param assoc array $form the raw data from the message_form view
+     * @param assoc array $form The raw data from the message_form view
      */
     function insert_message( $form ) {
-        $form['date'] = date_create()->format('Y-m-d H:i:s'); // alias of DateTime::__construct('Now')
+        $form['date'] = DateTime::__construct('Now')->format('Y-m-d H:i:s'); // DateTime::__construct('Now') = date_create()
         
-        // first insert the copy of the admin
+        // first insert the copy of the sender
         $form['owner_id'] = $form['sender_id'];
         $this->db->insert( 'messages', $form );
 
-        // then the copy for the developer
+        // then the copy for the recipient
         $form['owner_id'] = $form['recipient_id'];
         $this->db->insert( 'messages', $form );
     }
 
 
+    // ----------------------------------------------------------------------------------
+
     /**
-     * Insert a new message in the database
-     * @param assoc array $form the raw data from the message_form view
+     * Retrieve messages from the database
+     * @param assoc array $where The WHERE criteria, usually the owner_id or recipient_id
+     * @param string $join_field The $field in the messages table to join to the developers table
+     * @return object/false the DB object or false if nothing is found
      */
     function get_messages( $where, $join_field = null ) {
-        $this->db->from( 'messages' );
+        $this->db
+        ->from( 'messages' )
+        ->where( $where );
 
         if( $join_field != null )
             $this->db->join( 'developers', 'developers.developer_id = messages.'.$join_field );
 
-        return $this->db->where( $where )->get();
+        return $this->db->get();
     }
 
 
+    // ----------------------------------------------------------------------------------
+
     /**
-     * Insert a new message in the database
-     * @param assoc array $form the raw data from the message_form view
+     * Delete  messages from the database
+     * @param assoc array/int/string $ids An array with the message's ids to delete or a single id
      */
     function delete_messages( $ids ) {
         if( !is_array( $ids ) )
             $ids = array($ids);
 
         foreach( $ids as $id )
-            $this->db->or_where( 'id', $id );
+            $this->db->or_where( 'message_id', $id );
 
         $this->db->delete( 'messages' );
     }
