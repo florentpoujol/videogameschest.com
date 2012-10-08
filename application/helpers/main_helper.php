@@ -352,3 +352,6 @@ function parse_bbcode( $input ) {
 	$input = preg_replace( "#/n#", '<br>' ,$input);
 	return $input;
 }
+
+/* End of file main_helper.php */
+/* Location: ./application/helpers/main_helper.php */
