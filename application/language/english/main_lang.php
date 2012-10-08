@@ -93,6 +93,7 @@ $lang['developer_page_title'] = "Developer";
 $lang['developer_website_title'] = "Go to the developer's website";
 $lang['developer_teamsize'] = "Size of the team";
 $lang['developer_country'] = "Country";
+$lang['developer_blogfeed'] = "Lastest articles from the blog :";
 
 $lang['developer_socialnetworks'] = "Social networks";
 $lang['developer_technologies'] = "Technologies";

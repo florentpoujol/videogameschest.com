@@ -10,8 +10,6 @@ class Developer extends CI_Controller {
         $lang = userdata( 'language' );
         if( $lang )
             $this->lang->load( 'main', $lang );
-
-        $this->load->library('RSSReader', null, 'http://feeds.feedburner.com/SwingSwingSubmarine');
     }
 
 
@@ -25,7 +23,7 @@ class Developer extends CI_Controller {
     	if( is_numeric( $name_or_id ) )
     		$where['id'] = $name_or_id;
     	else
-    		$where['name'] = title_url( $name_or_id );
+    		$where['name'] = url_to_name( $name_or_id );
 
 
         $db_dev = get_db_row( 'developers', $where );
@@ -36,6 +34,10 @@ class Developer extends CI_Controller {
             redirect( 'home/404/developerprivate' );
 
         unset( $db_dev->password );
+
+        // get feed infos
+        $this->load->library('RSSReader');
+        $db_dev->feed_items = $this->rssreader->parse( $db_dev->blogfeed )->get_feed_items(6);
         
         $this->layout
         ->view( 'full_developer_view', array('db_dev'=>$db_dev) )

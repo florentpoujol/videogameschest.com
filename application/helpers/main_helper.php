@@ -204,7 +204,7 @@ function menu_selected( $item ) {
 function admin_menu_selected( $item ) {
 	global $admin_page;
 	$text = '';
-	if( $admin_page == $item
+	if( $admin_page == $item )
 		$text = 'id="admin_menu_selected" ';
 	return $text;
 }

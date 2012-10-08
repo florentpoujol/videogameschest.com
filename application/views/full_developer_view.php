@@ -20,7 +20,14 @@ $db_dev->socialnetworks = json_decode( $db_dev->socialnetworks, true );
 				</div>
 
 				<div id="developer_blogfeed">
-					<?php echo $db_dev->blogfeed; ?> 
+					<?php echo lang('developer_blogfeed'); ?>
+					<ul>
+						<?php 
+						foreach( $db_dev->feed_items as $item ) {
+						 	echo '<li><a href="'.$item['link'].'">'.$item['title'].'</a></li>';
+						}
+						?>
+					 </ul>
 				</div>
 
 				<div id="developer_socialnetworks">

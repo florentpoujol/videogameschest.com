@@ -47,6 +47,9 @@ class RSSReader {
      * 
      */
     function parse( $uri ) {
+        if( trim( $uri ) == '' )
+            return $this;
+
         // check the cache file
         if( $this->cache_life > 0 ) {
             $cache_file = $this->cache_dir.'rssreader_feed_cache_'.md5( $uri );
@@ -110,37 +113,21 @@ class RSSReader {
 
     /**
      * Return the feeds one at a time: when there are no more feeds return false
-     * @param N° of items to return from the feed
-     * @return Associative array of items
+     * @param int $item_count Number of items to return from the feed
+     * @return array An array containing the wanted items from the feed
      */
-    function getFeed( $num ) {
-        $c = 0;
-        $return = array();
+    function get_feed_items( $item_count ) {
+        $items = array();
 
-        foreach( $this->feed_items as $item ) {
-            $return[] = $item;
-            $c++;
-
-            if( $c == $num )
+        for( $i = 0; $i < $item_count; $i++ ) {
+            if( isset( $this->feed_items[$i] ) )
+                $items[] = $this->feed_items[$i];
+            else
                 break;
         }
 
-        return $return;
+        return $items;
     }
-
-
-    // ----------------------------------------------------------------------------------
-
-    /* Return channel data for the feed */
-    function & getChannelData() {
-        $flag = false;
-
-        if( !empty( $this->channel_data ) )
-            return $this->channel_data;
-        else
-            return $flag;
-    }
-
 }
 
 /* End of file RSSReader.php */

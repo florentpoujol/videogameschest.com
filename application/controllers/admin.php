@@ -14,10 +14,6 @@ class Admin extends CI_Controller {
         if( $lang )
             $this->lang->load( 'main', $lang );
 
-    	//$this->layout
-        //->view( 'menu_view' )
-        //->view( 'admin/admin_menu_view' );
-
         $this->load->library( 'form_validation' );
 	}
 
