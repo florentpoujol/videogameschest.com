@@ -85,16 +85,17 @@ class Main_model extends CI_Model {
      * @return int/bool The id of the newly inserted row or false
      */
     function insert_developer( $form ) {
-        $this->load->library( 'encrypt' );
-        
         // $form is the raw data from the developer form
         // at this point we are sure we want to create the developer, 
         // but we need to encode the password
         // and format a few fields
         
         // encode password if it exist
-        if( trim( $form['password'] ) != '' )
-            $form['password'] = $this->encrypt->sha1( $form['password'] );
+        if( trim( $form['password'] ) != '' ) {
+            $password = encode_password( $form['password'] );
+            $form['password'] = $password['hash'];
+            $form['salt'] = $password['salt'];
+        }
 
         // make sure arrays exists, or format them into a CSV string
         $arrays = array( 'operatingsystems', 'technologies', 'devices', 'stores' );
@@ -122,8 +123,11 @@ class Main_model extends CI_Model {
      */
     function update_developer( $form, $db_data ) {
         // encode the password if it exists
-        if( trim( $form['password'] ) != '' )
-            $form['password'] = $this->encrypt->sha1( $form['password'] );
+        if( trim( $form['password'] ) != '' ) {
+            $password = encode_password( $form['password'] );
+            $form['password'] = $password['hash'];
+            $form['salt'] = $password['salt'];
+        }
 
         // make sure arrays exists, or format them into a CSV string
         $arrays = array('operatingsystems', 'technologies', 'devices', 'stores');

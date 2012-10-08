@@ -69,7 +69,7 @@ class Admin extends CI_Controller {
             }
 
 	    	if( $user ) {
-	    		if( $this->encrypt->sha1( post( 'password' ) ) == $user->password ) {
+	    		if( check_password( post( 'password' ), $user->password, $user->salt ) ) {
 	    			$userdata = array( 'is_logged_in' => '1' );
 	    			
 	    			if( $is_admin )

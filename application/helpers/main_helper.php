@@ -353,5 +353,77 @@ function parse_bbcode( $input ) {
 	return $input;
 }
 
+
+// ----------------------------------------------------------------------------------
+
+/**
+ * Encode the password and return the hash and the salt
+ * @return An assoc array containing the salt and the password hash
+ */
+function encode_password( $password ) {
+	$system_salt = "#:T{9 o]5A;-i|dT((5m7,!DF.&@x";
+	// mixes the system_salt to the password to be hashed so that it is very long and unique
+	// and pretty impossible to match with a rainbow table
+	// but it only works if
+	
+	if( CRYPT_EXT_DES == 1 )
+		$hash = crypt( $system_salt.$password, get_ext_des_salt() );
+	else
+		$hash = crypt( $system_salt[0].$password, get_des_salt() );
+
+	return $hash;
+}
+
+
+// ----------------------------------------------------------------------------------
+
+/**
+ * Check the user password against the encoded password
+ * @return True if the password is valid, false otherwise
+ */
+function check_password( $password, $hash ) {
+	$system_salt = "#T{9 o]5A;-idT((5m7,!DF.&@x";
+	$new_hash = '';
+
+	if( CRYPT_EXT_DES == 1 )
+		$new_hash = crypt( $system_salt.$password, $hash );
+	else
+		$new_hash = crypt( $system_salt[0].$password, $hash );
+
+	if( $hash == $new_hash )
+		return true;
+	else
+		return false;
+}
+
+
+// ----------------------------------------------------------------------------------
+
+$alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./";
+
+/**
+ * 
+ */
+function get_des_salt() {
+	$alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./";
+	return $alphabet[mt_rand( 0, strlen($alphabet)-1 )].$alphabet[mt_rand( 0, strlen($alphabet)-1 )];
+}
+
+
+/**
+ * Create a random string, used for as a salt
+ * @return The salt (string)
+ */
+function get_ext_des_salt() {
+	$alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./";
+	$salt = '_';
+	
+	for( $i = 0; $i < 8; $i++ )
+		$salt .= $alphabet[mt_rand( 0, strlen($alphabet)-1 )];
+	
+	return $salt;
+}
+
+
 /* End of file main_helper.php */
 /* Location: ./application/helpers/main_helper.php */
