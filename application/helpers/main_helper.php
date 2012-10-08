@@ -2,14 +2,17 @@
 
 
 /**
- * Set of 
+ * Methods that return the url of CSS, JS or Image files
+ * @param string $file Name of the file
+ * @param string $ext optionnal The extension of the file
+ * @return string The full url
  */
-function css_link( $file ) {
-	return base_url().'assets/css/'.$file.'.css';
+function css_link( $file, $ext = '.css' ) {
+	return base_url().'assets/css/'.$file.$ext;
 }
 
-function js_link( $file ) {
-	return base_url().'assets/js/'.$file.'.js';
+function js_link( $file, $ext = '.js' ) {
+	return base_url().'assets/js/'.$file.$ext;
 }
 
 function img_link( $file ) {
@@ -19,15 +22,14 @@ function img_link( $file ) {
 
 // ----------------------------------------------------------------------------------
 
-$site_data = null;
-
 /**
  * Get the site data (devices, stores list...)
  * the infos inside the file application/data/site_data.json
- * @return 
+ * @param bool $return_as_array=false Return the site data as an aray instead of an object
+ * @return The site data object (or array)
  */
 function get_site_data( $return_as_array = false ) {
-	global $site_data;
+	static $site_data = null;
 
 	if( $site_data != null ) {
 		if( $return_as_array )
@@ -54,7 +56,7 @@ function get_site_data( $return_as_array = false ) {
     foreach( $site_data as $member_name => $object_value) {
     	$site_data->$member_name = get_object_vars( $object_value );
     	asort( $site_data->$member_name ); 
-    	// asort() sort the array but values and keeps the key/value relation ships
+    	// asort() sort the array by values and keeps the key/value relation ships
     	// sort() replace the keys by numbers
 	}
 
@@ -84,6 +86,10 @@ function get_assoc_array( $array ) {
 // ----------------------------------------------------------------------------------
 // DATABASE
 
+/**
+ * Helper function for the main model
+ * @return The database object
+ */
 function get_db_rows( $table, $where = null, $value = null ) {
 	return get_instance()->main_model->get_rows( $table, $where, $value );
 }
@@ -109,17 +115,20 @@ function get_db_data( $table, $where, $value = null ) {
  * @param the url segment
  * @return the name
  */
-function title_url( $url ) {
+function url_to_name( $url ) {
 	$url = str_replace( array( '-', '%20' ), ' ', $url );
 	return $url;
 }
-
+function name_to_url( $name ) {
+	return url_title( $name );
+}
 
 
 // ----------------------------------------------------------------------------------
+// SESSION
 
 /**
- * 
+ * Helper functions for the Session library
  */
 function userdata( $key = null ) {
 	return get_instance()->session->userdata( $key );
@@ -134,10 +143,10 @@ function set_userdata( $key, $value = null ) {
 
 
 // ----------------------------------------------------------------------------------
+// INPUT
 
 /**
- * 
- *
+ * Helper function for the Input library
  */
 function post( $key = null ) {
 	return get_instance()->input->post( $key );
@@ -147,7 +156,7 @@ function post( $key = null ) {
 // ----------------------------------------------------------------------------------
 
 /**
- * current page name
+ * Allow to easily share the name of the current page
  */
 $page = '';
 
@@ -163,7 +172,7 @@ function get_page() {
 
 
 /**
- * current admin page name
+ * Allow to easily share the name of the current admin page
  */
 $admin_page = '';
 
@@ -177,37 +186,35 @@ function get_admin_page() {
 	return $admin_page;
 }
 
+
 // ----------------------------------------------------------------------------------
 
 /**
- *
+ * Return a text if the current page or admin_page match the name passed as parameter
+ * Allow to style the menu items matching the current page
  */
 function menu_selected( $item ) {
 	global $page;
 	$text = '';
-
-	if($page == $item)
+	if( $page == $item )
 		$text = 'id="menu_selected" ';
-
 	return $text;
 }
 
 function admin_menu_selected( $item ) {
 	global $admin_page;
 	$text = '';
-
-	if($admin_page == $item)
+	if( $admin_page == $item
 		$text = 'id="admin_menu_selected" ';
-
 	return $text;
 }
 
 
 // ----------------------------------------------------------------------------------
 
-// mode
-// raw : raw data from database
-// clean : clean array key = dev id value = name
+/**
+ * @return The developers as an array where key=id and value=name
+ */
 function get_developers( $raw = false ) {
 	static $raw_devs = null;
 	static $clean_devs = null;
@@ -232,12 +239,13 @@ function get_developers( $raw = false ) {
 }
 
 
-
-
 // ----------------------------------------------------------------------------------
 
 /**
- * Wraper around validation_errors()
+ * Wraper around validation_errors() of the Form_validation library
+ * 	that allow to add my own errors mesages
+ * @param array The $form array that may contains the 'errors' key
+ * @return string The formated error messages
  */
 function get_form_errors( $form = null ) {
 	$errors = validation_errors();
@@ -255,8 +263,11 @@ function get_form_errors( $form = null ) {
 	return $errors;
 }
 
+
 /**
- *
+ * Allow to set and display my own success message
+ * @param array The $form array that may contains the 'success' key
+ * @return string The formated success messages
  */
 function get_form_success( $form ) {
 	$html = '';
@@ -275,11 +286,10 @@ function get_form_success( $form ) {
 // ----------------------------------------------------------------------------------
 
 /**
- * strip out empty url from the socialnetwork array
+ * strip out empty name/url in names/urls arrays (socialnetworks, stores, screenshots, videos)
  * then rebuilt it's index
- *
- * @param assoc array $socialnetworks the socialnetworks array
- * @return the array clened up
+ * @param assoc array $array
+ * @return the array cleaned up
  */
 function clean_names_urls_array( $array ) {
     $max_count = count( $array['names'] );
@@ -290,12 +300,11 @@ function clean_names_urls_array( $array ) {
         {
             unset( $array['names'][$i] );
             unset( $array['urls'][$i] );
-            $i--; // unsetting change the size of the array and the keys of the remaining values
+            $i--; // go back one index since unsetting change the size of the array and the keys of the remaining values
         }
     }
 
-    // rebuilt the sites and urls index
-    // so that json_encode consider them as array an not as object
+    // rebuilt indexes so that json_encode consider them as array an not as object
     if( isset( $array['names'] ) ) {
         array_values( $array['names'] );
         array_values( $array['urls'] );
@@ -304,12 +313,13 @@ function clean_names_urls_array( $array ) {
     return $array;
 }
 
+
 // ----------------------------------------------------------------------------------
 
 /**
- *
+ * Wrapper around form_input() and form_label() of the Form helper
  */
-function form_input_extended( $input, $br =  ' <br>' ) {
+function form_input_extended( $input, $br = ' <br>' ) {
 	if( !isset( $input['name'] ) )
 		$input['name'] = 'form['.$input['id'].']';
 
@@ -331,7 +341,7 @@ function form_input_extended( $input, $br =  ' <br>' ) {
 /**
  * Parse bbCode
  * @param string $input the input text
- * @return string the replacement string
+ * @return string the input string with the bbCode replaced by html tags
  */
 function parse_bbcode( $input ) {
 	$input = preg_replace( "#\[b\](.+)\[/b\]#", "<strong>$1</strong>" ,$input);
