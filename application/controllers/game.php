@@ -2,29 +2,59 @@
 
 class Game extends CI_Controller {
     
-    function index($nameOrId = null)
-    {
-    	$data['siteData'] = GetSiteData();
+    function __construct() {
+        parent::__construct();
 
+        set_page( 'game' );
+        
+        $lang = userdata( 'language' );
+        if( $lang )
+            $this->lang->load( 'main', $lang );
+    }
+
+
+    // ----------------------------------------------------------------------------------
+
+    /**
+     * Default method
+     */
+    function index( $name_or_id = null ) {
     	$where = array();
-    	if( is_numeric( $nameOrId ) )
-    		$where['id'] = $nameOrId;
+    	if( is_numeric( $name_or_id ) )
+    		$where['game_id'] = $name_or_id;
     	else
-    		$where['name'] = title_url( $nameOrId );
+    		$where['name'] = url_to_name( $name_or_id );
 
-        $DBInfos = $this->main_model->GetRow( 'games', $where );
-        if( $DBInfos == false )
-        	redirect( 'featured/404/gamenotfound:'.$nameOrId );
+        $db_game = $this->main_model->get_game( $where );
         
-		$gameData = json_decode( $DBInfos->data );
+        if( $db_game == false )
+        	redirect( 'home/404/gamenotfound:'.$name_or_id );
 
-        $data['DBInfos'] = $DBInfos;
-        $data['gameData'] = $gameData;
-        
-        $this->layout
-        ->AddView( 'bodyStart', 'menu_view', array('page'=>'game'))
-        ->AddView( 'bodyStart', 'full_game_view', $data )
-        ->Load();
+        // display page when :
+        // the game is public
+        // user is admin (whathever profile_privacy)
+        // user is developer and the game is in review
+        // user is developer and the game is its own (even if the game is still private)
+        if( 
+            $db_game->profile_privacy == 'public' || userdata( 'is_admin' ) ||
+            (
+                userdata( 'is_developer ' ) &&
+                (
+                    $db_game->profile_privacy == 'in_review' || $db_game->developer_id == userdata( 'user_id' )
+                )
+            )
+        ) 
+        {
+            // get feed infos
+            $this->load->library('RSSReader');
+            $db_game->feed_items = $this->rssreader->parse( $db_game->data['blogfeed'] )->get_feed_items(6);
+            
+            $this->layout
+            ->view( 'full_game_view', array('db_game'=>$db_game) )
+            ->load();
+        }
+        else
+            redirect( 'home/404/gameprivate' );
     }
 }
 

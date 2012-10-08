@@ -101,4 +101,18 @@ $lang['developer_operatingsystems'] = "Operating systems";
 $lang['developer_devices'] = "Devices";
 $lang['developer_stores'] = "Stores";
 
+
+// GAME PROFILE (page "game")
+
+$lang['game_page_title'] = "Game";
+$lang['game_website_title'] = "Go to the game's website";
+$lang['game_blogfeed'] = "Lastest articles from the blog :";
+
+$lang['game_socialnetworks'] = "Social networks :";
+$lang['game_technologies'] = "Technologies";
+$lang['game_operatingsystems'] = "Operating systems";
+$lang['game_devices'] = "Devices";
+$lang['game_stores'] = "Stores :";
+
+
 ?>

@@ -193,6 +193,54 @@ class Main_model extends CI_Model {
     // ----------------------------------------------------------------------------------
 
     /**
+     * Return games from the database
+     * Make sure that all potential data keys exists and have a default value
+     * @param array/string $where An assoc array with where criteria or a single key as string
+     * @param string $value=null If the $where parameter is a single key, this one is its value
+     * @return object/false the DB object or false if nothing is found
+     */
+    function get_game( $where, $value = null ) {
+        $game = $this->get_row( 'games', $where, $value );
+
+        if( $game == false )
+            return false;
+
+        $data = json_decode( $game->data, true );
+
+        // make sure keys exists and set a default value if needed
+        $string_keys = array( 'pitch', 'logo', 'blogfeed', 'website', 'country',
+        'publishername', 'price', 'soundtrack' );
+
+        foreach( $string_keys as $key ) {
+            if( !isset( $data[$key] ) )
+                $data[$key] = '';
+        }
+
+        // arrays
+        $array_keys = array('technologies', 'operatingsystems', 'devices',
+         'genres', 'themes', 'viewpoints', 'nbplayers',  'tags' );
+
+        foreach( $array_keys as $key ) {
+            if( !isset( $data[$key] ) )
+                $data[$key] = array();
+        }
+
+        // array( 'names'=>array(), 'urls'=>array() )
+        $names_urls_array_keys = array('screenshots', 'videos', 'socialnetworks', 'stores');
+
+        foreach( $names_urls_array_keys as $key ) {
+            if( !isset( $data[$key] ) )
+                $data[$key] = array( 'names' => array() );
+        }
+
+        $game->data = $data;
+        return $game;
+    }
+
+
+    // ----------------------------------------------------------------------------------
+
+    /**
      * Update an administrator in the database
      * @param assoc array $form The raw data from the admin_form view
      */

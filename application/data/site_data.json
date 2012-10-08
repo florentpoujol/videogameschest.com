@@ -111,7 +111,8 @@
 		"armorgames": "Armor Games",
 		"googleplay": "Google Play",
 		"xblig": "xBox Live Indie Games",
-		"xbla": "xBox Live Arcade"
+		"xbla": "xBox Live Arcade",
+		"gameolith": "Gameolith"
 
 	},
 
@@ -189,7 +190,6 @@
  	},
 
 	"tags": {
-		
 		"2.5d": "2.5D",
 		"2d": "2D",
 		"3d": "3D",
@@ -199,6 +199,7 @@
  		"fun": "Fun",
  		"sidescrolling": "Side Scrolling",
  		"turnbased": "Turn-based",
- 		"cellshading": "Cell Shading"
+ 		"cellshading": "Cell Shading",
+ 		"leveleditor": "Level editor"
  	}
 }
