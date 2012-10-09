@@ -84,7 +84,7 @@ class RSSReader {
         foreach( $xml->channel->item as $item ) {
             $data = array();
             $data['title'] = (string)$item->title;
-            $data['description'] = (string)$item->description;
+            //$data['description'] = (string)$item->description;
             $data['pubDate'] = (string)$item->pubDate;
             $data['link'] = (string)$item->link;
             $this->feed_items[] = $data;
