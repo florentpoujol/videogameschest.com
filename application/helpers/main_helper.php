@@ -360,10 +360,10 @@ function parse_bbcode( $input ) {
 // ----------------------------------------------------------------------------------
 
 /**
- * Encode the password and return the hash and the salt
+ * Hash the password and return the hash and the salt
  * @return An assoc array containing the salt and the password hash
  */
-function encode_password( $password ) {
+function hash_password( $password ) {
 	$pass_complexifier = "#:T{9 o]5A;-i|dT((5m7,!DF.&@x";
 	// mixes the pass_complexifier to the password to be hashed so that it is very long and unique
 	// and *impossible* to match with a rainbow table if the site's source code is unknow
@@ -371,7 +371,7 @@ function encode_password( $password ) {
 	// It uses only one character with CRYPT_DES because this algo only cares for 8 characters
 	// made the pass slightly harder to guess without source code, even with source, there is still 7 characters to guess
 	
-	if( CRYPT_EXT_DES == 1 )
+	if( CRYPT_EXT_DES == 1 ) // CRYPT_EXT_DES hash more than 8 characters
 		$hash = crypt( $pass_complexifier.$password, get_ext_des_salt() );
 	else
 		$hash = crypt( $pass_complexifier[0].$password, get_des_salt() );
@@ -445,7 +445,7 @@ function init_developer_form( $form ) {
 	}
 
 	// then take care of data
-	if( trim($form['data']) == '' )
+	if( is_string($form['data']) && trim($form['data']) == '' )
 		$form['data'] = array();
 	elseif( is_string( $form['data'] ) )
 		$form['data'] = json_decode( $form['data'], true ); // true makes the returned value an array instead of an object
@@ -453,8 +453,7 @@ function init_developer_form( $form ) {
     $data = $form['data'];
 
     // string data
-    $string_keys = array( 'pitch', 'logo', 'blogfeed', 'website', 'country',
-    'publishername', 'price', 'soundtrack' );
+    $string_keys = array( 'pitch', 'logo', 'blogfeed', 'website', 'country', 'teamsize');
 
     foreach( $string_keys as $key ) {
         if( !isset( $data[$key] ) )
@@ -462,8 +461,7 @@ function init_developer_form( $form ) {
     }
 
     // array data
-    $array_keys = array('technologies', 'operatingsystems', 'devices',
-     'genres', 'themes', 'viewpoints', 'nbplayers',  'tags' );
+    $array_keys = array('technologies', 'operatingsystems', 'devices','stores');
 
     foreach( $array_keys as $key ) {
         if( !isset( $data[$key] ) )
@@ -471,7 +469,7 @@ function init_developer_form( $form ) {
     }
 
     // array( 'names'=>array(), 'urls'=>array() )
-    $names_urls_array_keys = array('screenshots', 'videos', 'socialnetworks', 'stores');
+    $names_urls_array_keys = array('socialnetworks');
 
     foreach( $names_urls_array_keys as $key ) {
         if( !isset( $data[$key] ) )
@@ -494,7 +492,7 @@ function init_developer_form( $form ) {
 function init_game_form( $form ) {
 	if( is_object($form) ) // if $form comes from the database
 		$form = get_object_vars($form);
-	
+
 	// first make sure that the databse fields exists (+ password2)
 	$db_fields = array('game_id', 'developer_id', 'name', 'profile_privacy', 'data');
 
@@ -504,7 +502,7 @@ function init_game_form( $form ) {
 	}
 
 	// then take care of data
-	if( trim($form['data']) == '' )
+	if( is_string($form['data']) && trim($form['data']) == '' )
 		$form['data'] = array();
 	elseif( is_string( $form['data'] ) )
 		$form['data'] = json_decode( $form['data'], true );

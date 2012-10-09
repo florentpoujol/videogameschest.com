@@ -7,12 +7,9 @@ TODO LIST
 
 STORIES
 
+- administrators can edit their account
 
-- password are encryted with crpyt() et avec hash
-
-- the developers table has the same structure as the games table
-	- the get_developer() model method ensure returned developer data has needed keys and default value
-	- make sure the changes have been made in admin controler, developer form and developer profile
+- visitors can see developer's games on the developer profile
 
 
 	MESSAGES
@@ -32,3 +29,13 @@ STORIES
 
 
 
+STORIES DONE
+
+
+09/10/2012
+- the developers table has the same structure as the games table
+	- the get_developer() model method ensure returned developer data has needed keys and default value
+		- make sure the changes have been made in admin controler, developer form and developer profile
+
+08/10/2012
+- password are encryted with crpyt() et avec hash

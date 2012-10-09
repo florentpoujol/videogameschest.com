@@ -83,7 +83,7 @@ class Admin extends CI_Controller {
 	    			$error = 'The password provided for user '.$field.' ['.$name.'] is incorrect.';
 	    	}
 	    	else
-	    		$error = 'No user with the name ['.$name.'] have been found.';
+	    		$error = 'No user with the '.$field.' ['.$name.'] have been found.';
     	}
 
 
@@ -134,22 +134,19 @@ class Admin extends CI_Controller {
             
             // form OK
             if( $this->form_validation->run() ) {
+                // DO NOTHING, YET
                 $form['success'] = 'Your administrator account has been successfully updated.';
-                $form['password'] = '';
-                $form['password2'] = '';
+                unset($form['password']);
+                unset($form['password2']);
 
-                $this->layout
-                ->view( 'forms/admin_form' , 
-                    array( 'form' => $form ) )
-                ->load();
+                $this->layout->view( 'forms/admin_form', array('form'=>$form) )->load();
             }
             else {
                 // just reload the form and let the form_validation class display the errors
-                $form['password'] = '';
-                $form['password2'] = '';
+                unset($form['password']);
+                unset($form['password2']);
 
-                $this->layout->view( 'forms/admin_form' , array('form' => post('form')) )
-                ->load();
+                $this->layout->view( 'forms/admin_form', array('form' => post('form')) )->load();
             }
         }
         // no form submitted
@@ -159,8 +156,7 @@ class Admin extends CI_Controller {
             $form->id = $id;
             $form->password = '';
 
-            $this->layout->view( 'forms/admin_form' , array('form' => $form) )
-            ->load();
+            $this->layout->view( 'forms/admin_form', array('form'=>$form) )->load();
         }
     }
 
@@ -194,19 +190,19 @@ class Admin extends CI_Controller {
             $this->form_validation->set_rules( 'form[email]', 'Email', 'trim|required|min_length[5]|valid_email|is_unique[developers.email]' );
 
             if( trim($form['password']) != '' ) {
-                $this->form_validation->set_rules( 'form[password]', 'Password', 'min_length[5]' );
-                $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'min_length[5]' );
+                $this->form_validation->set_rules( 'form[password]', 'Password', 'min_length[8]' );
+                $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'min_length[8]' );
                 
                 if( $form['password'] != $form['password2'] )
-                    $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'matches[form[password]]' );
+                    $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'matches[form[password]]' ); // this fails when passwords matches ???
             }
+
             unset( $form['password2'] );
-            
-            $form['socialnetworks'] = clean_names_urls_array( $form['socialnetworks'] );
+            $form['data']['socialnetworks'] = clean_names_urls_array( $form['data']['socialnetworks'] );
 
             // save data if all is OK
             if( $this->form_validation->run() ) {
-                $id = $this->main_model->insert_developer( $form );
+                $id = $this->developer_model->insert_developer( $form );
                 
                 if( post( 'from_adddeveloper_page' ) ) {
                     $form = array('success' => lang('adddeveloper_form_success'));
@@ -217,31 +213,30 @@ class Admin extends CI_Controller {
                 else
                     redirect( 'admin/editdeveloper/'.$id );
             }
-            else {
-                unset( $form['password'] );
+            else { // error
+                unset($form['password']);
 
                 if( post( 'from_adddeveloper_page' ) ) {
                     $form['errors'] = validation_errors(); // get errors from the form_validation class
-                    $this->session->set_flashdata( 'adddeveloper_form', json_encode($form) ); // a coockie can only hold 4Kb of data
+                    $this->session->set_flashdata( 'adddeveloper_form', json_encode($form) );
                     redirect( 'adddeveloper' );
                 }
-                else {
-                    $this->layout
-                    ->view( 'forms/developer_form', array('form'=>$form) )
-                    ->load();
-                }
+                else
+                    $this->layout->view( 'forms/developer_form', array('form'=>$form) )->load();
             }
         }
         elseif( userdata( 'is_admin' ) ) 
             $this->layout->view( 'forms/developer_form' )->load();
         else
             redirect( 'adddeveloper' );
-    } // end of method adddeveloper()
+    }
 
 
     // ----------------------------------------------------------------------------------
+    
     /**
      * Page to edit a developer account
+     * @param int $id The id of the developer to edit
      */
     function editdeveloper( $id = null ) {
         if( !userdata( 'is_logged_in' ) )
@@ -277,37 +272,31 @@ class Admin extends CI_Controller {
                 $this->form_validation->set_rules( 'form[email]', 'Email', 'is_unique[developers.email]' );
     
             // checking password
-            /*if( trim($form['password']) != '' ) {
-                $this->form_validation->set_rules( 'form[password]', 'Password', 'min_length[5]' );
-                $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'min_length[5]' );
+            if( trim($form['password']) != '' ) {
+                $this->form_validation->set_rules( 'form[password]', 'Password', 'min_length[8]' );
+                $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'min_length[8]' );
                 
                 if( $form['password'] != $form['password2'] )
                     $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'matches[form[password]]' );
-            }*/
+            }
 
             unset( $form['password2'] );
-            
-            $form['socialnetworks'] = clean_names_urls_array( $form['socialnetworks'] );
-
+            $form['data']['socialnetworks'] = clean_names_urls_array( $form['data']['socialnetworks'] );
 
             // update data if all is OK
             if( $this->form_validation->run() ) {
-                $this->main_model->update_developer( $form, $db_data );
+                $this->developer_model->update_developer( $form, $db_data );
                 
                 unset( $form['password'] );
                 $form['success'] = 'Your developer account has been successfully updated.';
                 
-                $this->layout
-                ->view( 'forms/developer_form', array('form'=>$form) )
-                ->load();
+                $this->layout->view( 'forms/developer_form', array('form'=>$form) )->load();
             }
             else {
                 unset( $form['password'] );
-                $this->layout
-                ->view( 'forms/developer_form', array('form'=>$form) )
-                ->load();
+                $this->layout->view( 'forms/developer_form', array('form'=>$form) )->load();
             }
-        } // end if( post( 'developer_form_submitted' ) ) {
+        } // end if form submitted
 
         // no form has been submitted, just show the form filled with data from the database
         elseif( $id != null ) { // if user is a developer, this will always be the case (see redirect above)
@@ -318,11 +307,8 @@ class Admin extends CI_Controller {
             ->load();
         }
 
-        else { // show to the admins the form to chose which devs to edit
-            $this->layout
-            ->view( 'forms/select_developer_to_edit_form' )
-            ->load();
-        }
+        else // show to the admins the form to chose which devs to edit
+            $this->layout->view( 'forms/select_developer_to_edit_form' )->load();
     }
 
 
@@ -345,7 +331,7 @@ class Admin extends CI_Controller {
 
             // save data if all is OK
             if( $this->form_validation->run() ) {
-                $id = $this->main_model->insert_game( $form );
+                $id = $this->game_model->insert_game( $form );
 
                 if( post( 'from_addgame_page' ) ) {
                     $form = array('success' => lang('addgame_form_success'));
@@ -377,6 +363,7 @@ class Admin extends CI_Controller {
 
     /**
      * Page to edit a game
+     * @param int $id The id of the game to edit
      */
     function editgame( $id = null ) {
         if( !userdata( 'is_logged_in' ) )
@@ -410,7 +397,7 @@ class Admin extends CI_Controller {
 
             // update data if all is OK
             if( $this->form_validation->run() ) {
-                $this->main_model->update_game( $form, $db_data );
+                $this->game_model->update_game( $form, $db_data );
                 
                 $form['success'] = 'The game profile has been successfully updated.';
                 

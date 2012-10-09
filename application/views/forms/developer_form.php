@@ -89,7 +89,7 @@ else: ?>
 
 				<br>
 				<label for="pitch"><?php echo lang('adddeveloper_pitch');?></label> <br>
-				<textarea name="form[pitch]" id="pitch" placeholder="<?php echo lang('adddeveloper_pitch');?>" rows="7" cols="30"><?php echo $form['pitch'];?></textarea> <br>
+				<textarea name="form[data][pitch]" id="pitch" placeholder="<?php echo lang('adddeveloper_pitch');?>" rows="7" cols="30"><?php echo $form['data']['pitch'];?></textarea> <br>
 
 <?php
 
@@ -100,10 +100,10 @@ $inputs = array('logo'=>'url', 'website'=>'url', 'blogfeed'=>'url');
 foreach( $inputs as $name => $type ) {
 	$input_data = array(
 		'type'=>$type,
-		'name'=>'form['.$name.']',
+		'name'=>'form[data]['.$name.']',
 		'id'=>$name,
 		'lang'=>'adddeveloper_'.$name,
-		'value'=>$form[$name]	
+		'value'=>$form['data'][$name]	
 	);
 ?>
 				<?php echo form_input_extended($input_data);?> 
@@ -114,9 +114,10 @@ foreach( $inputs as $name => $type ) {
 // teamsize
 $input_data = array(
 	'type'=>'number',
+	'name'=>'form[data][teamsize]',
 	'id'=>'teamsize',
 	'lang'=>'adddeveloper_teamsize',
-	'value'=> ($form['teamsize'] == '' ? 1 : $form['teamsize'])
+	'value'=> ($form['data']['teamsize'] == '' ? 1 : $form['data']['teamsize'])
 );
 ?>
 				<?php echo form_input_extended($input_data);?> 
@@ -124,10 +125,10 @@ $input_data = array(
 
 
 // country
-if( $form['country'] == '' )
-	$form['country'] = 'usa';
+if( trim($form['data']['country']) == '' )
+	$form['data']['country'] = 'usa';
 ?>
-				<?php echo form_dropdown( 'form[country]', $site_data->countries, $form['country'], 'id="country"' ); ?> 
+				<?php echo form_dropdown( 'form[data][country]', $site_data->countries, $form['data']['country'], 'id="country"' ); ?> 
 				<?php echo form_label( lang('adddeveloper_country'), 'country' ).' <br>'; ?> 
 
 <?php
@@ -139,25 +140,26 @@ if( $form['country'] == '' )
 				<?php echo form_label( lang( 'addgame_socialnetworks' ), 'socialnetworks' ); ?> <br>
 <?php
 
-foreach( $form['socialnetworks']['names'] as $array_id => $site_id ) {
-	if( $form['socialnetworks']['urls'][$array_id] == '' ) // that's the 3 "new" fields, it happens when $form comes from the form itself
+foreach( $form['data']['socialnetworks']['names'] as $array_id => $site_id ) {
+	if( $form['data']['socialnetworks']['urls'][$array_id] == '' ) // that's the 3 "new" fields, it happens when $form comes from the form itself
 		continue;
 ?>
-				<?php echo form_dropdown( 'form[socialnetworks][names]['.$array_id.']', $site_data->socialnetworks, $site_id, 'id="socialnetwork_site_'.$array_id.'"' ); ?> 
-				<?php echo '<input type="url" name="form[socialnetworks][urls]['.$array_id.']" id="socialnetworks_url_'.$array_id.'" placehodder="Full profile url" value="'.$form['socialnetworks']['urls'][$array_id].'"> <br> '; ?> 
+				<?php echo form_dropdown( 'form[data][socialnetworks][names]['.$array_id.']', $site_data->socialnetworks, $site_id, 'id="socialnetwork_site_'.$array_id.'"' ); ?> 
+				<?php echo '<input type="url" name="form[data][socialnetworks][urls]['.$array_id.']" id="socialnetworks_url_'.$array_id.'" placehodder="Full profile url" value="'.$form['data']['socialnetworks']['urls'][$array_id].'"> <br> '; ?> 
 <?php
 }
 
-$count = count( $form['socialnetworks']['names'] );
+$count = count( $form['data']['socialnetworks']['names'] );
 for( $i = $count; $i < $count+4; $i++ ) {
 ?>
-				<?php echo form_dropdown( 'form[socialnetworks][names][]', $site_data->socialnetworks, null, 'id="socialnetworks_site_'.$i.'"' ); ?> 
-				<?php echo '<input type="url" name="form[socialnetworks][urls][]" id="socialnetworks_url_'.$i.'" placehodder="Full profile url" value=""> <br> '; ?> 
+				<?php echo form_dropdown( 'form[data][socialnetworks][names][]', $site_data->socialnetworks, null, 'id="socialnetworks_site_'.$i.'"' ); ?> 
+				<?php echo '<input type="url" name="form[data][socialnetworks][urls][]" id="socialnetworks_url_'.$i.'" placehodder="Full profile url" value=""> <br> '; ?> 
 <?php
 }
 
 
 // other array fields
+$multiselect_form_items = array('technologies', 'operatingsystems', 'devices','stores');
 foreach( $multiselect_form_items as $key ) {
 	$size = count( $site_data->$key );
 	if( $size > 10 )
@@ -166,7 +168,7 @@ foreach( $multiselect_form_items as $key ) {
 				
 				<br>
 				<?php echo '<label for="'.$key.'">'.lang( 'adddeveloper_'.$key ).'</label> <br> ';
-				echo form_multiselect( 'form['.$key.'][]', $site_data->$key, $form[$key], 'id="'.$key.'" size="'.$size.'"' ); ?> <br> 
+				echo form_multiselect( 'form[data]['.$key.'][]', $site_data->$key, $form['data'][$key], 'id="'.$key.'" size="'.$size.'"' ); ?> <br> 
 <?php
 }
 
