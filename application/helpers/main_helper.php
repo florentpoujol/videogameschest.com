@@ -28,7 +28,7 @@ function img_link( $file ) {
  * @param bool $return_as_array=false Return the site data as an aray instead of an object
  * @return The site data object (or array)
  */
-function get_site_data( $return_as_array = false ) {
+function get_site_data_old( $return_as_array = false ) {
 	static $site_data = null;
 
 	if( $site_data != null ) {
@@ -64,6 +64,47 @@ function get_site_data( $return_as_array = false ) {
 		return get_object_vars( $site_data );
 	else
 		return $site_data;
+}
+
+function get_site_data( $data_name = 'site_data' ) {
+	static $site_data = null;
+
+	if( $site_data != null && isset( $site_data[$data_name] ) ) {
+		if( $return_as_array )
+			return get_object_vars( $site_data[$data_name] );
+		else
+			return $site_data[$data_name];
+	}
+
+    $filePath = BASEPATH.'assets/json/'.$data_name.'.json';
+    
+    if( !file_exists( $filePath ) )
+    	die( "$data_name.json does not exists at path : $filePath" );
+
+    $string_site_data = read_file( $filePath );
+
+    if( $string_site_data == false ) // $site_data may be false because read_file() failed, otherwise it is a string
+    	die( $filePath." could not be read !" );
+
+    $data = json_decode( $string_site_data );
+
+    // sort all arrays
+    /*$members = get_object_vars( $data );
+
+    foreach( $data as $member_name => $object_value) {
+    	$site_data->$member_name = get_object_vars( $object_value );
+    	asort( $site_data->$member_name ); 
+    	// asort() sort the array by values and keeps the key/value relation ships
+    	// sort() replace the keys by numbers
+	}*/
+
+	//cache
+	$site_data[$data_name] = $data;
+
+    if( $return_as_array )
+		return get_object_vars( $data );
+	else
+		return $data;
 }
 
 
