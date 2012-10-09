@@ -7,14 +7,10 @@ class Admin extends CI_Controller {
 
         set_page( 'admin' );
         set_admin_page( $this->router->fetch_method() );
-
-    	$this->load->library('encrypt');
         
         $lang = userdata( 'language' );
         if( $lang )
             $this->lang->load( 'main', $lang );
-
-        $this->load->library( 'form_validation' );
 	}
 
 
@@ -33,9 +29,8 @@ class Admin extends CI_Controller {
         }
 
         $this->layout
-            ->view( 'forms/select_game_to_edit_form' );
-
-    	$this->layout->load();
+        ->view( 'forms/select_game_to_edit_form' )
+        ->load();
     }
 
 
@@ -56,7 +51,7 @@ class Admin extends CI_Controller {
             $field = 'name';
 
             if( is_numeric( $name ) )
-                $field = 'id';
+                $field = 'developer_id';
             elseif( strpos( $name, '@' ) ) // the name is actually an email
                 $field = 'email';
 
@@ -64,12 +59,15 @@ class Admin extends CI_Controller {
 	    	$user = get_db_row( 'developers', $field, $name );
 
             if( !$user ) {
+                if( $field == 'developer_id' )
+                    $field = 'administrator_id';
+
                 $user = get_db_row( 'administrators', $field, $name );
                 $is_admin = true;
             }
 
 	    	if( $user ) {
-	    		if( check_password( post( 'password' ), $user->password, $user->salt ) ) {
+	    		if( check_password( post( 'password' ), $user->password ) ) {
 	    			$userdata = array( 'is_logged_in' => '1' );
 	    			
 	    			if( $is_admin )
@@ -82,7 +80,7 @@ class Admin extends CI_Controller {
 	    			redirect( 'admin' );
 	    		}
 	    		else
-	    			$error = 'The password provided for user ['.$name.'] is incorrect.';
+	    			$error = 'The password provided for user '.$field.' ['.$name.'] is incorrect.';
 	    	}
 	    	else
 	    		$error = 'No user with the name ['.$name.'] have been found.';

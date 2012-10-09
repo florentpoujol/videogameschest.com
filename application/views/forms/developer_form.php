@@ -3,53 +3,10 @@ $site_data = get_site_data();
 $page = get_page();
 $admin_page = get_admin_page();
 
-
 if( !isset($form) )
 	$form = array();
-elseif( is_object($form) )
-	$form = get_object_vars($form);
 
-
-// all variables for the form should have been passed to the view (when editiing an account)
-
-// initialise variable with default values (empty string or array)
-// or values from the database
-$form_items = array( 'developer_id', 'name', 'email', 'password', 'password2', 'is_public', 
-	'pitch', 'logo', 'blogfeed', 'website', 'country', 'teamsize');
-
-foreach( $form_items as $item ) {
-	if( !isset( $form[$item] ) )
-		$form[$item] = '';
-}
-
-
-// arrays
-// if they are set, they can be a string of coma-seprated values to be transformed to an array (when from the database)
-// or they can alredy be arrays if it came from the form itself
-$multiselect_form_items = array('technologies', 'operatingsystems', 'devices', 'stores');
-
-foreach( $multiselect_form_items as $item ) {
-	if( !isset( $form[$item] ) )
-		$form[$item] = array();
-	elseif( is_string( $form[$item] ) )
-		$form[$item] = explode( ',', $form[$item] );
-}
-
-
-// social network
-// if socialnetworks wasn't set, it is now an empty array
-// but if it was already set, it can be a JSON object as a string if comming from the database
-// or alredy and array if comming from the form
-if( !isset( $form['socialnetworks'] ) )
-	$form['socialnetworks'] = array( 'names' => array() );
-elseif( is_string( $form['socialnetworks'] ) )
-	$form['socialnetworks'] = json_decode( $form['socialnetworks'], true );
-elseif( is_string( $form['socialnetworks'] ) )
-	$form['socialnetworks'] = json_decode( $form['socialnetworks'], true );
-
-
-// ----------------------------------------------------------------------------------
-
+$form = init_developer_form($form);
 
 ?>
 		<section id="developer_form">

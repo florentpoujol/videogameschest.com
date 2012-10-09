@@ -3,18 +3,22 @@ $site_data = get_site_data();
 $page = get_page();
 $admin_page = get_admin_page();
 
+// the $form variable is pased to the view via the controller
+// when editting a profile, or returning to the form when an errors occured
+// 
 
-if( !isset($form) )
+if( !isset($form) ) // when adding a profile, and no $form has been passed to the view
 	$form = array();
-elseif( is_object($form) )
+
+$form = init_game_form($form);
+
+/*
+if( !isset($form) ) // when adding a profile, and no $form has been passed to the view
+	$form = array();
+elseif( is_object($form) ) // when $form comes from the database
 	$form = get_object_vars($form);
 
-
-//var_dump($form);
-// all variables for the form should have been passed to the view (when editing an account)
-
-// initialise variable with default values (empty string or array)
-// or values from the database
+// make sure that all $form keys exists
 $form_items = array('game_id', 'developer_id', 'name', 'profile_privacy', 'data');
 
 foreach( $form_items as $item ) {
@@ -27,43 +31,7 @@ if( $form['data'] == '' )
 elseif( is_string( $form['data'] ) )
 	$form['data'] = json_decode( $form['data'], true );
 
-/*
-$data_strings = array( 'pitch', 'logo', 'blogfeed', 'website', 'country', 'publishername', 'price', 'soundtrack' );
-
-foreach( $data_strings as $string ) {
-	if( !isset( $form['data'][$string] ) )
-		$form['data'][$string] = '';
-}
-
-// arrays
-$data_arrays = array('technologies', 'operatingsystems', 'devices',
- 'genres', 'themes', 'viewpoints', 'nbplayers',  'tags' );
-
-foreach( $data_arrays as $array ) {
-	if( !isset( $form['data'][$array] ) )
-		$form['data'][$array] = array();
-}
-
-
-$namestext_urls_arrays = array('screenshots', 'videos');
-
-foreach( $namestext_urls_arrays as $array ) {
-	if( !isset( $form['data'][$array] ) )
-		$form['data'][$array] = array( 'names' => array() );
-}
-
-
-$namesdropdown_urls_arrays = array('socialnetworks', 'stores');
-
-foreach( $namesdropdown_urls_arrays as $array ) {
-	if( !isset( $form['data'][$array] ) )
-		$form['data'][$array] = array( 'names' => array() );
-}*/
-
-
-// ----------------------------------------------------------------------------------
-
-
+*/
 ?>
 		<section id="developer_form">
 <?php
@@ -123,8 +91,9 @@ if( userdata( 'is_admin' ) || $page == 'addgame' ):
 		$db_devs = get_db_rows( 'developers', 'is_public', 1 );
 
 	$developers = array();
-	foreach( $db_devs->result() as $dev )
-		$developers[$dev->developer_id] = $dev->name;
+	if( is_object( $db_devs ) )
+		foreach( $db_devs->result() as $dev )
+			$developers[$dev->developer_id] = $dev->name;
 ?>
 
 				<?php echo form_dropdown( 'form[developer_id]', $developers, $form['developer_id'], 'id="developer"' );?>
@@ -158,6 +127,8 @@ foreach( $inputs as $name => $type ) {
 
 
 // name text/url arrays
+$namestext_urls_arrays = array('screenshots', 'videos');
+
 foreach( $namestext_urls_arrays as $item ):
 ?>
 				
@@ -217,6 +188,8 @@ endforeach; // end foreach( $namestext_urls_arrays as $item ) {
 
 
 // name dropdown/url arrays
+$namesdropdown_urls_arrays = array('socialnetworks', 'stores');
+
 foreach( $namesdropdown_urls_arrays as $array ):
 ?>
 				
@@ -243,7 +216,10 @@ endforeach;
 
 
 // other array (multiselect) fields
-foreach( $data_arrays as $key ):
+$array_keys = array('technologies', 'operatingsystems', 'devices',
+'genres', 'themes', 'viewpoints', 'nbplayers', 'tags' );
+
+foreach( $array_keys as $key ):
 	$size = count( $site_data->$key );
 	if( $size > 10 )
 		$size = 10;

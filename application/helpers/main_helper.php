@@ -231,8 +231,11 @@ function get_developers( $raw = false ) {
 		return $raw_devs;
 
 	$clean_devs = array();
-	foreach( $raw_devs->result() as $dev ) {
-		$clean_devs[$dev->developer_id] = $dev->name;
+
+	if( is_object( $raw_devs ) ) {
+		foreach( $raw_devs->result() as $dev ) {
+			$clean_devs[$dev->developer_id] = $dev->name;
+		}
 	}
 
 	return $clean_devs;
@@ -361,15 +364,17 @@ function parse_bbcode( $input ) {
  * @return An assoc array containing the salt and the password hash
  */
 function encode_password( $password ) {
-	$system_salt = "#:T{9 o]5A;-i|dT((5m7,!DF.&@x";
-	// mixes the system_salt to the password to be hashed so that it is very long and unique
-	// and pretty impossible to match with a rainbow table
-	// but it only works if
+	$pass_complexifier = "#:T{9 o]5A;-i|dT((5m7,!DF.&@x";
+	// mixes the pass_complexifier to the password to be hashed so that it is very long and unique
+	// and *impossible* to match with a rainbow table if the site's source code is unknow
+	
+	// It uses only one character with CRYPT_DES because this algo only cares for 8 characters
+	// made the pass slightly harder to guess without source code, even with source, there is still 7 characters to guess
 	
 	if( CRYPT_EXT_DES == 1 )
-		$hash = crypt( $system_salt.$password, get_ext_des_salt() );
+		$hash = crypt( $pass_complexifier.$password, get_ext_des_salt() );
 	else
-		$hash = crypt( $system_salt[0].$password, get_des_salt() );
+		$hash = crypt( $pass_complexifier[0].$password, get_des_salt() );
 
 	return $hash;
 }
@@ -382,18 +387,13 @@ function encode_password( $password ) {
  * @return True if the password is valid, false otherwise
  */
 function check_password( $password, $hash ) {
-	$system_salt = "#T{9 o]5A;-idT((5m7,!DF.&@x";
-	$new_hash = '';
+	$pass_complexifier = "#:T{9 o]5A;-i|dT((5m7,!DF.&@x";
+	$test_hash = '';
 
 	if( CRYPT_EXT_DES == 1 )
-		$new_hash = crypt( $system_salt.$password, $hash );
+		return ($hash == crypt( $pass_complexifier.$password, $hash ));
 	else
-		$new_hash = crypt( $system_salt[0].$password, $hash );
-
-	if( $hash == $new_hash )
-		return true;
-	else
-		return false;
+		return ($hash == crypt( $pass_complexifier[0].$password, $hash ));
 }
 
 
@@ -424,6 +424,122 @@ function get_ext_des_salt() {
 	return $salt;
 }
 
+
+// ----------------------------------------------------------------------------------
+
+/**
+ * Make sure that all potential $form keys and $form['data'] keys exists and have a default value
+ * @param array $form An assoc array with where criteria or a single key as string
+ * @return 
+ */
+function init_developer_form( $form ) {
+	if( is_object($form) ) // if $form comes from the database
+		$form = get_object_vars($form);
+
+	// first make sure that the databse fields exists (+ password2)
+	$db_fields = array( 'developer_id', 'name', 'email', 'password', 'password2', 'is_public', 'data');
+
+	foreach( $db_fields as $field ) {
+		if( !isset( $form[$field] ) )
+			$form[$field] = '';
+	}
+
+	// then take care of data
+	if( trim($form['data']) == '' )
+		$form['data'] = array();
+	elseif( is_string( $form['data'] ) )
+		$form['data'] = json_decode( $form['data'], true ); // true makes the returned value an array instead of an object
+
+    $data = $form['data'];
+
+    // string data
+    $string_keys = array( 'pitch', 'logo', 'blogfeed', 'website', 'country',
+    'publishername', 'price', 'soundtrack' );
+
+    foreach( $string_keys as $key ) {
+        if( !isset( $data[$key] ) )
+            $data[$key] = '';
+    }
+
+    // array data
+    $array_keys = array('technologies', 'operatingsystems', 'devices',
+     'genres', 'themes', 'viewpoints', 'nbplayers',  'tags' );
+
+    foreach( $array_keys as $key ) {
+        if( !isset( $data[$key] ) )
+            $data[$key] = array();
+    }
+
+    // array( 'names'=>array(), 'urls'=>array() )
+    $names_urls_array_keys = array('screenshots', 'videos', 'socialnetworks', 'stores');
+
+    foreach( $names_urls_array_keys as $key ) {
+        if( !isset( $data[$key] ) )
+            $data[$key] = array( 'names' => array() );
+    }
+
+
+    $form['data'] = $data;
+    return $form;
+}
+
+
+// ----------------------------------------------------------------------------------
+
+/**
+ * Make sure that all potential $form keys and $form['data'] keys exists and have a default value
+ * @param array $form An assoc array with where criteria or a single key as string
+ * @return 
+ */
+function init_game_form( $form ) {
+	if( is_object($form) ) // if $form comes from the database
+		$form = get_object_vars($form);
+	
+	// first make sure that the databse fields exists (+ password2)
+	$db_fields = array('game_id', 'developer_id', 'name', 'profile_privacy', 'data');
+
+	foreach( $db_fields as $field ) {
+		if( !isset( $form[$field] ) )
+			$form[$field] = '';
+	}
+
+	// then take care of data
+	if( trim($form['data']) == '' )
+		$form['data'] = array();
+	elseif( is_string( $form['data'] ) )
+		$form['data'] = json_decode( $form['data'], true );
+
+    $data = $form['data'];
+
+    // string data
+    $string_keys = array( 'pitch', 'logo', 'blogfeed', 'website',
+    'publishername', 'publisherurl', 'price', 'soundtrack' );
+
+    foreach( $string_keys as $key ) {
+        if( !isset( $data[$key] ) )
+            $data[$key] = '';
+    }
+
+    // array data
+    $array_keys = array('technologies', 'operatingsystems', 'devices',
+     'genres', 'themes', 'viewpoints', 'nbplayers', 'tags' );
+
+    foreach( $array_keys as $key ) {
+        if( !isset( $data[$key] ) )
+            $data[$key] = array();
+    }
+
+    // array( 'names'=>array(), 'urls'=>array() )
+    $names_urls_array_keys = array('screenshots', 'videos', 'socialnetworks', 'stores');
+
+    foreach( $names_urls_array_keys as $key ) {
+        if( !isset( $data[$key] ) )
+            $data[$key] = array( 'names' => array() );
+    }
+
+    $form['data'] = $data;
+    return $form;
+}
 
 /* End of file main_helper.php */
 /* Location: ./application/helpers/main_helper.php */

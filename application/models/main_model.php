@@ -2,14 +2,6 @@
 
 class Main_model extends CI_Model {
     
-    function __construct() {
-        parent::__construct();
-        $this->load->database();
-    }
-
-
-    // ----------------------------------------------------------------------------------
-
     /**
      * Return the DB object related to several rows
      * @param string $table The table where to look

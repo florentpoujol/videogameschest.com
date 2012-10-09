@@ -9,7 +9,7 @@ class Search extends CI_Controller {
         if( $lang )
             $this->lang->load( 'main', $lang );
 
-        set_page( 'search' );  
+        set_page( 'search' );
     }
     
     public function index()

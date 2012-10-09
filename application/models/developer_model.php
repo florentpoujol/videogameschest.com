@@ -1,15 +1,7 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Developere_model extends CI_Model {
+class Developer_model extends CI_Model {
     
-    function __construct() {
-        parent::__construct();
-        $this->load->database();
-    }
-
-
-    // ----------------------------------------------------------------------------------
-
     /**
      * Insert a new developer in the database
      * @param assoc array $form The raw data from the developer_form view

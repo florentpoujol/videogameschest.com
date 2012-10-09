@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array('layout', 'session', 'lessphp');
+$autoload['libraries'] = array('database', 'layout', 'session', 'form_validation', 'lessphp');
 
 
 /*
@@ -109,7 +109,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('main_model');
+$autoload['model'] = array('main_model', 'developer_model', 'game_model', 'admin_model');
 
 
 /* End of file autoload.php */
