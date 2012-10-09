@@ -13,7 +13,8 @@
 
 		<!-- CSS -->		
 		<!--<link rel="stylesheet" type="text/css" media="screen" href="<?php echo css_link( 'main' ); ?>" />-->
-		<link rel="stylesheet/less" type="text/css" media="screen" href="<?php echo base_url(); ?>/assets/css/main.less" />
+		<link rel="stylesheet/less" type="text/css" media="screen" href="<?php echo css_link('main', '.less');?>" />
+		<!--<link rel="stylesheet" type="text/css" href="<?php echo css_link('tooltipster');?>" />-->
 <?php
 /*try {
     $this->lessphp->instance->ccompile(base_url().'assets/css/main.less', base_url().'assets/css/mainCompiled.css');
@@ -97,11 +98,19 @@ foreach( get_site_data()->sitelanguages as $lang ) {
 
 		<!-- JavaScript -->
 		<script src="http://lesscss.googlecode.com/files/less-1.3.0.min.js" type="text/javascript"></script>
+		
 		<script src="http://code.jquery.com/jquery-1.8.2.min.js" type="text/javascript"></script>
+		<!--<script src="<?php echo js_link('jquery.tooltipster.min');?>" type="text/javascript"></script>-->
 
 <?php foreach( $js as $url ): ?>
 		<script type="text/javascript" src="<?php echo $url; ?>"></script> 
 <?php endforeach; ?>
+
+		<script type="text/javascript">
+			/*$(document).ready(function() {
+				$('.tooltip').tooltipster();
+			});*/
+		</script>
 		<!-- /JavaScript -->
 	</body>
 </html>

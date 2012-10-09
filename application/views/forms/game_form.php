@@ -3,35 +3,11 @@ $site_data = get_site_data();
 $page = get_page();
 $admin_page = get_admin_page();
 
-// the $form variable is pased to the view via the controller
-// when editting a profile, or returning to the form when an errors occured
-// 
-
 if( !isset($form) ) // when adding a profile, and no $form has been passed to the view
 	$form = array();
 
 $form = init_game_form($form);
 
-/*
-if( !isset($form) ) // when adding a profile, and no $form has been passed to the view
-	$form = array();
-elseif( is_object($form) ) // when $form comes from the database
-	$form = get_object_vars($form);
-
-// make sure that all $form keys exists
-$form_items = array('game_id', 'developer_id', 'name', 'profile_privacy', 'data');
-
-foreach( $form_items as $item ) {
-	if( !isset( $form[$item] ) )
-		$form[$item] = '';
-}
-
-if( $form['data'] == '' )
-	$form['data'] = array();
-elseif( is_string( $form['data'] ) )
-	$form['data'] = json_decode( $form['data'], true );
-
-*/
 ?>
 		<section id="developer_form">
 <?php
@@ -104,13 +80,32 @@ if( userdata( 'is_admin' ) || $page == 'addgame' ):
 				You are the developer. Id=<?php echo $form['developer_id'];?> Name=<?php echo $form['developer_name'];?>
 <?php endif; ?>
 				<br>
+				<fieldset>
+					<legend><?php echo lang('addgame_developementstates_legend');?></legend>
+<?php
+
+// state of developement
+foreach( $site_data->developementstates as $state_key => $state_name ):
+	$radio = array(
+    'name'        => 'developementstate',
+    'id'          => 'developementstate_'.$state_key,
+    'value'       => $state_key,
+    );
+?>
+					<?php echo form_radio($radio).' '.form_label($state_name, 'developementstate_'.$state_key); ?> <br> 
+<?php endforeach; ?>
+				</fieldset>
+
+
+				<br>
 				<label for="pitch"><?php echo lang('addgame_pitch');?></label> <br>
 				<textarea name="form[data][pitch]" id="pitch" placeholder="<?php echo lang('addgame_pitch');?>" rows="7" cols="30"><?php echo $form['data']['pitch'];?></textarea> <br>
 
 <?php
 // string fields
-$inputs = array('logo'=>'url', 'website'=>'url', 'blogfeed'=>'url', 'publishername'=>'text', 'soundtrack'=>'url',
- 'price'=>'text');
+$inputs = array('logo'=>'url', 'website'=>'url', 'blogfeed'=>'url', 'publishername'=>'text',
+ 'publisherurl'=>'url', 'soundtrack'=>'url',
+ 'price'=>'text', 'releasedate'=>'date');
 
 foreach( $inputs as $name => $type ) {
 	$input_data = array(
@@ -216,7 +211,7 @@ endforeach;
 
 
 // other array (multiselect) fields
-$array_keys = array('technologies', 'operatingsystems', 'devices',
+$array_keys = array('languages', 'technologies', 'operatingsystems', 'devices',
 'genres', 'themes', 'viewpoints', 'nbplayers', 'tags' );
 
 foreach( $array_keys as $key ):

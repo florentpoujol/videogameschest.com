@@ -1,6 +1,7 @@
 TODO LIST
 
-
+- crawler from 
+Apple app store
 
 
 
@@ -10,6 +11,10 @@ STORIES
 - administrators can edit their account
 
 - visitors can see developer's games on the developer profile
+
+- developer can set a release date for their game
+
+- user can over a questions at the side of a field (in a from) and a tooltip show up explaing how to fill the field
 
 
 	MESSAGES

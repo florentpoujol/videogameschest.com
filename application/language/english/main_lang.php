@@ -33,11 +33,15 @@ $lang['adddeveloper_website'] = 'Website URL';
 $lang['adddeveloper_blogfeed'] = 'Blog RSS/Atom feed';
 $lang['adddeveloper_country'] = 'Country';
 $lang['adddeveloper_teamsize'] = 'Size of the team';
+
 $lang['adddeveloper_socialnetworks'] = 'Social networks profiles';
 $lang['adddeveloper_technologies'] = 'The technologies the developer works with :';
 $lang['adddeveloper_operatingsystems'] = 'The operating systems the developer\'s games run on (not applicable for most consoles) : ';
 $lang['adddeveloper_devices'] = 'The devices the developer\'s games are playable on : ';
 $lang['adddeveloper_stores'] = 'The stores the developer sells their games on : ';
+
+
+
 
 $lang['adddeveloper_submit'] = 'Create this developer profile';
 
@@ -55,15 +59,27 @@ $lang['addgame_name'] = 'Game title';
 $lang['addgame_developer'] = 'Developer';
 $lang['addgame_pitch'] = 'Game story, features...';
 
+$lang['addgame_developementstates_legend'] = "Developement state";
+$lang['addgame_developementstates_concept'] = "Concept/Design phase";
+$lang['addgame_developementstates_prototype'] = "Prototype phase";
+$lang['addgame_developementstates_earlyproduction'] = "Early production";
+$lang['addgame_developementstates_internalplayablebuilt'] = "Internal playable built";
+$lang['addgame_developementstates_publicplayablebuilt'] = "Public playable built";
+$lang['addgame_developementstates_released'] = "Released";
+$lang['addgame_developementstates_canceled'] = "Canceled";
+
 $lang['addgame_logo'] = 'Logo URL';
 $lang['addgame_website'] = 'Website URL';
 $lang['addgame_blogfeed'] = 'Blog RSS/Atom feed';
 $lang['addgame_publishername'] = 'Publisher name';
+$lang['addgame_publisherurl'] = "Publisher's website url";
 $lang['addgame_soundtrack'] = 'Soundtrack URL';
 $lang['addgame_price'] = 'Price (this is a text field, write whatever is appropriate)';
+$lang['addgame_releasedate'] = 'Release date';
 
 $lang['addgame_country'] = 'Country';
 $lang['addgame_socialnetworks'] = 'Social networks profiles : ';
+$lang['addgame_languages'] = 'The languages the game is playable in : ';
 $lang['addgame_stores'] = 'The stores the game is purchable from : ';
 $lang['addgame_technologies'] = 'The technologies the game is made with : ';
 $lang['addgame_operatingsystems'] = 'The operating systems the game runs on (not applicable for most console games) : ';
@@ -118,3 +134,9 @@ $lang['game_themes'] = "Stores";
 $lang['game_viewpoints'] = "Stores";
 $lang['game_nbplayers'] = "Stores";
 $lang['game_tags'] = "tags";
+
+
+
+// TOOLTIPS
+
+$lang['tooltip_developer_name'] = "This is a <br> useful \n tooltip";

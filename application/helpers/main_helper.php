@@ -67,6 +67,7 @@ function get_site_data( $return_as_array = false ) {
 }
 
 
+
 // ----------------------------------------------------------------------------------
 
 /**
@@ -245,50 +246,6 @@ function get_developers( $raw = false ) {
 // ----------------------------------------------------------------------------------
 
 /**
- * Wraper around validation_errors() of the Form_validation library
- * 	that allow to add my own errors mesages
- * @param array The $form array that may contains the 'errors' key
- * @return string The formated error messages
- */
-function get_form_errors( $form = null ) {
-	$errors = validation_errors();
-
-	if( isset( $form ) && isset( $form['errors'] ) )
-		$errors .= "\n".$form['errors'];
-
-	if( $errors != '' ) {
-		$errors =
-'<div class="form_errors">
-	'.$errors.'
-</div>';
-	}
-
-	return $errors;
-}
-
-
-/**
- * Allow to set and display my own success message
- * @param array The $form array that may contains the 'success' key
- * @return string The formated success messages
- */
-function get_form_success( $form ) {
-	$html = '';
-
-	if( isset($form['success']) ) {
-		$html = 
-'<div class="form_success">
-	'.$form['success'].'
-</div>';
-	}
-
-	return $html;
-}
-
-
-// ----------------------------------------------------------------------------------
-
-/**
  * strip out empty name/url in names/urls arrays (socialnetworks, stores, screenshots, videos)
  * then rebuilt it's index
  * @param assoc array $array
@@ -314,28 +271,6 @@ function clean_names_urls_array( $array ) {
     }
 
     return $array;
-}
-
-
-// ----------------------------------------------------------------------------------
-
-/**
- * Wrapper around form_input() and form_label() of the Form helper
- */
-function form_input_extended( $input, $br = ' <br>' ) {
-	if( !isset( $input['name'] ) )
-		$input['name'] = 'form['.$input['id'].']';
-
-	$lang = lang($input['lang']);
-	unset($input['lang']);
-
-	if( !isset( $input['placeholder'] ) )
-		$input['placeholder'] = $lang;
-
-	if( !isset( $input['type'] ) || $input['type'] == 'text' || $input['type'] == 'url' )
-		$input['maxlength'] = '255';
-	
-	return form_input($input).' '.form_label( $lang, $input['id'] ).$br;
 }
 
 
@@ -511,7 +446,7 @@ function init_game_form( $form ) {
 
     // string data
     $string_keys = array( 'pitch', 'logo', 'blogfeed', 'website',
-    'publishername', 'publisherurl', 'price', 'soundtrack' );
+    'publishername', 'publisherurl', 'price', 'soundtrack', 'releasedate' );
 
     foreach( $string_keys as $key ) {
         if( !isset( $data[$key] ) )
@@ -519,7 +454,7 @@ function init_game_form( $form ) {
     }
 
     // array data
-    $array_keys = array('technologies', 'operatingsystems', 'devices',
+    $array_keys = array('languages', 'technologies', 'operatingsystems', 'devices',
      'genres', 'themes', 'viewpoints', 'nbplayers', 'tags' );
 
     foreach( $array_keys as $key ) {
@@ -538,6 +473,8 @@ function init_game_form( $form ) {
     $form['data'] = $data;
     return $form;
 }
+
+
 
 /* End of file main_helper.php */
 /* Location: ./application/helpers/main_helper.php */

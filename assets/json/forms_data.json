@@ -1,0 +1,200 @@
+{
+	"languages": [
+		"french",
+		"english",
+		"german",
+		"spanish",
+		"italian",
+		"russian",
+		"japonese",
+		"chinese"
+	],
+
+	"countries": [
+		"australia",
+		"austria",
+		"belgium",
+		"canada",
+ 		"france",
+ 		"germany",
+		"greece",
+		"holland",
+		"ireland",
+		"portugal",
+		"russia",
+		"spain",
+		"switzerland",
+		"uk",
+		"usa"
+	],
+
+	"operatingsystems": [
+		"windows",
+		"mac",
+		"linux",
+		"ios",
+		"android",
+		"windowsphone7",
+		"blackberry"
+	],
+	
+	"devices": [
+		"browser",
+		"pc",
+		"mac",
+		"xbox360",
+		"ps3",
+		"psvita",
+		"psp",
+		"wii",
+		"wiiu",
+		"ouya",
+		"ipod",
+		"iphone",
+		"ipad",
+		"androidtablet",
+		"androidsmartphone",
+		"windowsphonetablet",
+		"windowsphonesmartphone",
+		"ds",
+		"3ds",
+		"3dsxl",
+		"xperiaplay",
+		"xperiasmartphone",
+		"blackberrysmartphone"
+	],
+
+	"technologies": [
+		"custom",
+		"unity3d",
+		"udk",
+		"unrealengine",
+		"cryengine",
+		"stencyl",
+		"rpgmaker",
+		"adventuregamestudio",
+		"gamemaker",
+		"craftstudio",
+		"xna",
+		"blender",
+		"source",
+		"flixel",
+		"torque",
+		"ogre3d",
+		"shiva3d",
+		"html5/js",
+		"impactjs",
+		"flash",
+		"AIR",
+		"java",
+		"python"
+	],
+
+	"stores": [
+		"website",
+		"steam",
+		"desura",
+		"applestore",
+		"androidmarket",
+		"amazonmarket",
+		"indievania",
+		"indiecity",
+		"gamersgate",
+		"impulse",
+		"greenmangaming",
+		"kongregate",
+		"newsground",
+		"armorgames",
+		"googleplay",
+		"xblig",
+		"xbla",
+		"gameolith"
+	],
+
+	"socialnetworks": [
+		"twitter",
+		"facebook",
+		"googleplus",
+		"pinterest",
+		"reddit",
+		"linkedin",
+		"steam",
+		"desura",
+		"indiedb",
+		"moddb"
+ 	],
+
+	"nbplayers": [
+		"singleplayer",
+ 		"multiplayer",
+ 		"coop",
+ 		"mmo"
+ 	],
+
+	"developementstates": [
+		"concept",
+		"prototype",
+		"earlyproduction",
+		"internalplayablebuilt",
+		"publicplayablebuilt",
+		"released",
+ 		"canceled"
+ 	],
+
+	"themes": [
+		"fantasy",
+		"medieval",
+ 		"scifi",
+ 		"steampunk",
+ 		"comic",
+ 		"horror",
+ 		"western",
+ 		"mafia",
+ 		"modern",
+ 		"futuristic"
+ 	],
+
+
+ 	"genres": [
+ 		"shooter",
+ 		"fighting",
+ 		"strategy",
+ 		"citybuilding",
+ 		"resources",
+ 		"racing",
+ 		"simulation",
+ 		"action",
+ 		"arcade",
+ 		"adventure",
+ 		"puzzle",
+ 		"platformer",
+ 		"towerdefense",
+ 		"roguelike",
+ 		"shootemup",
+ 		"sport",
+ 		"roleplaying",
+ 		"rts",
+ 		"pointandclick"
+ 	],
+
+ 	"viewpoints": [
+ 		"firstperson",
+ 		"thirdperson",
+ 		"topdown",
+ 		"isometric"
+ 	],
+
+	"tags": [
+		"2.5d",
+		"2d",
+		"3d",
+ 		"physics",
+ 		"hardcore",
+ 		"casual",
+ 		"fun",
+ 		"sidescrolling",
+ 		"turnbased",
+ 		"cellshading",
+ 		"leveleditor"
+ 	]
+}

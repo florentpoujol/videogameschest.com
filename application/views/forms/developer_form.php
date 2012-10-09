@@ -54,7 +54,8 @@ if( $page == 'adddeveloper' )
 $input = array(
 	'id'=>'name',
 	'lang'=>'adddeveloper_name',
-	'value'=>$form['name']	
+	'value'=>$form['name'],
+	'tooltip' => 'developer_name'
 );
 ?>
 				<?php echo form_input_extended($input); ?> 
