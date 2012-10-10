@@ -76,7 +76,7 @@ function get_site_data( $data_name = 'site_data' ) {
 			return $site_data[$data_name];
 	}
 
-    $filePath = BASEPATH.'assets/json/'.$data_name.'.json';
+    $filePath = base_url().'assets/json/'.$data_name.'.json';
     
     if( !file_exists( $filePath ) )
     	die( "$data_name.json does not exists at path : $filePath" );

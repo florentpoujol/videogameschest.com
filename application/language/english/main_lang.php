@@ -18,7 +18,9 @@ $lang['menu_login'] = 'Log In';
 $lang['menu_logout'] = 'Log Out';
 
 
+
 // DEVELOPER FORM, page "adddeveloper"
+
 
 $lang['adddeveloper_form_title'] = 'Create a developer profile';
 
@@ -40,16 +42,15 @@ $lang['adddeveloper_operatingsystems'] = 'The operating systems the developer\'s
 $lang['adddeveloper_devices'] = 'The devices the developer\'s games are playable on : ';
 $lang['adddeveloper_stores'] = 'The stores the developer sells their games on : ';
 
-
-
-
 $lang['adddeveloper_submit'] = 'Create this developer profile';
 
 $lang['adddeveloper_form_success'] = 'Thanks you, the developer has successfully been added, an email will be send to let them now. \n 
 They must first check the data then make their account public before you can add one of their game.';
 
 
+
 // GAME FORM (mostly page "addgame")
+
 
 $lang['addgame_form_title'] = 'Create a game profile';
 
@@ -137,6 +138,21 @@ $lang['game_tags'] = "tags";
 
 
 
-// TOOLTIPS
+// SEARCH (page "search")
+
+
+
+// TOOLTIPS      use \n to insert a new line
 
 $lang['tooltip_developer_name'] = "This is a <br> useful \n tooltip";
+
+
+// FORMS DATA   keys inside /assets/json/forms_data.json
+
+$lang['form_data_languages_french'] = "French";
+$lang['form_data_languages_english'] = "English";
+$lang['form_data_languages_deutch'] = "Deutch";
+
+$lang['form_data_countries_france'] = "France";
+$lang['form_data_countries_uk'] = "United Kingdom";
+$lang['form_data_countries_usa'] = "United States of America";
