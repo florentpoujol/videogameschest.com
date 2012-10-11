@@ -1,16 +1,17 @@
 {
 	"languages": [
-		"french",
 		"english",
+		"chinese",
+		"french",
 		"german",
-		"spanish",
 		"italian",
-		"russian",
 		"japonese",
-		"chinese"
+		"russian",
+		"spanish"
 	],
 
 	"countries": [
+		"usa",
 		"australia",
 		"austria",
 		"belgium",
@@ -24,111 +25,110 @@
 		"russia",
 		"spain",
 		"switzerland",
-		"uk",
-		"usa"
+		"uk"
 	],
 
 	"operatingsystems": [
-		"windows",
-		"mac",
-		"linux",
-		"ios",
 		"android",
-		"windowsphone7",
-		"blackberry"
+		"blackberry",
+		"ios",
+		"linux",
+		"mac",
+		"windows",
+		"windowsphone7"
 	],
 	
 	"devices": [
+		"3ds",
+		"3dsxl",
+		"androidtablet",
+		"androidsmartphone",
+		"blackberrysmartphone",
 		"browser",
-		"pc",
-		"mac",
-		"xbox360",
-		"ps3",
-		"psvita",
-		"psp",
-		"wii",
-		"wiiu",
-		"ouya",
+		"ds",
 		"ipod",
 		"iphone",
 		"ipad",
-		"androidtablet",
-		"androidsmartphone",
+		"mac",
+		"ouya",
+		"pc",
+		"ps3",
+		"psp",
+		"psvita",
+		"wii",
+		"wiiu",
 		"windowsphonetablet",
 		"windowsphonesmartphone",
-		"ds",
-		"3ds",
-		"3dsxl",
+		"xbox360",
 		"xperiaplay",
-		"xperiasmartphone",
-		"blackberrysmartphone"
+		"xperiasmartphone"
 	],
 
 	"technologies": [
-		"custom",
-		"unity3d",
-		"udk",
-		"unrealengine",
-		"cryengine",
-		"stencyl",
-		"rpgmaker",
 		"adventuregamestudio",
-		"gamemaker",
-		"craftstudio",
-		"xna",
+		"air",
 		"blender",
-		"source",
+		"craftstudio",
+		"cryengine",
+		"custom",
+		"flash",
 		"flixel",
-		"torque",
-		"ogre3d",
-		"shiva3d",
+		"gamemaker",
 		"html5/js",
 		"impactjs",
-		"flash",
-		"AIR",
 		"java",
-		"python"
+		"ogre3d",
+		"python",
+		"rpgmaker",
+		"shiva3d",
+		"source",
+		"stencyl",
+		"torque",
+		"udk",
+		"unity3d",
+		"unrealengine",
+		"xna"
 	],
 
 	"stores": [
-		"website",
-		"steam",
-		"desura",
-		"applestore",
-		"androidmarket",
 		"amazonmarket",
-		"indievania",
-		"indiecity",
+		"androidmarket",
+		"applestore",
+		"armorgames",
+		"desura",
+		"gameolith",
 		"gamersgate",
-		"impulse",
+		"googleplay",
 		"greenmangaming",
+		"impulse",
+		"indiecity",
+		"indievania",
 		"kongregate",
 		"newsground",
-		"armorgames",
-		"googleplay",
-		"xblig",
+		"steam",
+		"website",
 		"xbla",
-		"gameolith"
+		"xblig"
 	],
 
 	"socialnetworks": [
-		"twitter",
+		"desura",
 		"facebook",
 		"googleplus",
+		"indiedb",
+		"linkedin",
+		"moddb",
 		"pinterest",
 		"reddit",
-		"linkedin",
 		"steam",
-		"desura",
-		"indiedb",
-		"moddb"
+		"twitter"
  	],
 
 	"nbplayers": [
 		"singleplayer",
- 		"multiplayer",
  		"coop",
- 		"mmo"
+ 		"mmo",
+ 		"multiplayer"
  	],
 
 	"developementstates": [
@@ -144,57 +144,56 @@
 	"themes": [
 		"fantasy",
 		"medieval",
- 		"scifi",
- 		"steampunk",
  		"comic",
+ 		"futuristic",
  		"horror",
- 		"western",
  		"mafia",
  		"modern",
- 		"futuristic"
+ 		"scifi",
+ 		"steampunk",
+ 		"western"
  	],
 
-
  	"genres": [
- 		"shooter",
- 		"fighting",
- 		"strategy",
- 		"citybuilding",
- 		"resources",
- 		"racing",
- 		"simulation",
  		"action",
- 		"arcade",
  		"adventure",
- 		"puzzle",
+ 		"arcade",
+ 		"citybuilding",
+ 		"fighting",
  		"platformer",
- 		"towerdefense",
+ 		"pointandclick",
+ 		"puzzle",
+ 		"racing",
+ 		"resources",
  		"roguelike",
- 		"shootemup",
- 		"sport",
  		"roleplaying",
  		"rts",
- 		"pointandclick"
+ 		"shootemup",
+ 		"shooter",
+ 		"simulation",
+ 		"sport",
+ 		"strategy",
+ 		"towerdefense"
  	],
 
  	"viewpoints": [
  		"firstperson",
+ 		"isometric",
  		"thirdperson",
- 		"topdown",
- 		"isometric"
+ 		"topdown"
  	],
 
 	"tags": [
 		"2.5d",
 		"2d",
 		"3d",
- 		"physics",
- 		"hardcore",
  		"casual",
- 		"fun",
- 		"sidescrolling",
- 		"turnbased",
  		"cellshading",
- 		"leveleditor"
+ 		"fun",
+ 		"hardcore",
+ 		"leveleditor",
+ 		"physics",
+ 		"sidescrolling",
+ 		"turnbased"
  	]
 }

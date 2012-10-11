@@ -1,9 +1,5 @@
 <?php
 
-// LANGUAGES
-
-$lang['language_English'] = 'English';
-$lang['language_French'] = 'French';
 
 
 
@@ -142,17 +138,180 @@ $lang['game_tags'] = "tags";
 
 
 
-// TOOLTIPS      use \n to insert a new line
+// TOOLTIPS      use \n to insert  
 
 $lang['tooltip_developer_name'] = "This is a <br> useful \n tooltip";
 
 
-// FORMS DATA   keys inside /assets/json/forms_data.json
 
-$lang['form_data_languages_french'] = "French";
-$lang['form_data_languages_english'] = "English";
-$lang['form_data_languages_deutch'] = "Deutch";
 
-$lang['form_data_countries_france'] = "France";
-$lang['form_data_countries_uk'] = "United Kingdom";
-$lang['form_data_countries_usa'] = "United States of America";
+// LANGUAGES
+
+$languages = array(
+"french",
+"english",
+"german",
+"spanish",
+"italian",
+"russian",
+"japonese",
+"chinese"
+);
+foreach ($languages as $language)
+	$lang['languages_'.$language] = ucfirst($language);
+
+
+// COUNTRIES
+
+$countries = array( 
+"australia",
+"austria",
+"belgium",
+"canada",
+"france",
+"germany",
+"greece",
+"holland",
+"ireland",
+"portugal",
+"russia",
+"spain",
+"switzerland",
+"uk",
+"usa"
+);
+foreach ($countries as $country)
+	$lang['countries_'.$country] = ucfirst($country);
+
+$lang['countries_uk'] = "United Kingdom";
+$lang['countries_usa'] = "United States of America";
+
+
+// OPERATING SYSTEMS
+
+$oss = array(
+"android",
+"blackberry",
+"linux",
+"mac",
+"windows",
+"windowsphone7"
+);
+foreach ($oss as $os)
+	$lang['operatingsystems_'.$os] = ucfirst($os);
+
+$lang['operatingsystems_ios'] = "iOS";
+
+
+// DEVICES
+
+$oss = array(
+"browser",
+"mac",
+"ouya",
+"wii"
+);
+foreach ($oss as $os)
+	$lang['devices_'.$os] = ucfirst($os);
+
+
+$lang['devices_3ds'] = "3DS";
+$lang['devices_3dsxl'] = "3DS XL";
+$lang['devices_androidtablet'] = "Android Tablet";
+$lang['devices_androidsmartphone'] = "Android Smartphone";
+$lang['devices_blackberrysmartphone'] = "BlackBerry Smartphone";
+$lang['devices_ds'] = "DS";
+$lang['devices_ipod'] = "iPod";
+$lang['devices_iphone'] = "iPhone";
+$lang['devices_ipad'] = "iPad";
+$lang['devices_pc'] = "PC";
+$lang['devices_ps3'] = "PS3";
+$lang['devices_psp'] = "PSP";
+$lang['devices_psvita'] = "PS Vita";
+$lang['devices_wiiu'] = "Wii U";
+$lang['devices_windowsphonetablet'] = "Windows Phone Tablet";
+$lang['devices_windowsphonesmartphone'] = "Windows Phone Smartphone";
+$lang['devices_xbox360'] = "xBox 360";
+$lang['devices_xperiaplay'] = "Xperia Play";
+$lang['devices_xperiasmartphone'] = "Xperia Smartphone";
+
+
+// DEVICES
+
+$technologies = array(
+"blender",
+"flash",
+"flixel",
+"java",
+"python",
+"stencyl"
+);
+foreach ($technologies as $techno)
+	$lang['technologies_'.$techno] = ucfirst($techno);
+
+
+$lang['technologies_adventuregamestudio'] = "Adventure Games Studio";
+$lang['technologies_air'] = "Adobe AIR";
+$lang['technologies_craftstudio'] = "CraftStudio";
+$lang['technologies_cryengine'] = "Cry Engine";
+$lang['technologies_custom'] = "Custom built";
+$lang['technologies_gamemaker'] = "GameMaker";
+$lang['technologies_html5'] = "HTML5 / JS";
+$lang['technologies_impactjs'] = "Impact JS";
+$lang['technologies_ogre3d'] = "Ogre 3D";
+$lang['technologies_rpgmaker'] = "RPG Maker";
+$lang['technologies_shiva3d'] = "Shiva 3D";
+$lang['technologies_source'] = "Source Engine";
+$lang['technologies_torque'] = "Torque Engine";
+$lang['technologies_udk'] = "Unreal Developement Kit";
+$lang['technologies_unity3d'] = "Unity 3D";
+$lang['technologies_unrealengine'] = "Unreal Engine";
+$lang['technologies_xna'] = "XNA";
+
+
+// STORES
+
+$stores = array(
+"desura",
+"gameolith",
+"gamersgate",
+"impulse",
+"indiecity",
+"indievania",
+"kongregate",
+"newsground",
+"steam",
+);
+foreach ($stores as $store)
+	$lang['stores_'.$store] = ucfirst($store);
+
+
+$lang['stores_amazonmarket'] = "Amazon Marketplace";
+$lang['stores_androidmarket'] = "Android Marketplace";
+$lang['stores_applestore'] = "Apple Store";
+$lang['stores_armorgames'] = "Armor Games";
+$lang['stores_googleplay'] = "Google Play";
+$lang['stores_greenmangaming'] = "GreenManGaming";
+$lang['stores_website'] = "Company/Game Website";
+$lang['stores_xbla'] = "xBox Live Arcade";
+$lang['stores_xblig'] = "xBox Live Indie Games";
+
+
+// SOCIAL NETWORKS
+
+$socialnetworks = array(
+"desura",
+"facebook",
+"pinterest",
+"reddit",
+"steam",
+"twitter"
+);
+foreach ($socialnetworks as $site)
+	$lang['socialnetworks_'.$site] = ucfirst($site);
+
+
+$lang['socialnetworks_googleplus'] = "Google+";
+$lang['socialnetworks_indiedb'] = "IndieDB";
+$lang['socialnetworks_linkedin'] = "Linked In";
+$lang['socialnetworks_moddb'] = "ModDB";

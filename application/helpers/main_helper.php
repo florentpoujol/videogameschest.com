@@ -38,15 +38,15 @@ function get_site_data_old( $return_as_array = false ) {
 			return $site_data;
 	}
 
-    $filePath = APPPATH.'data/site_data.json'; // in application folder
+    $file_path = APPPATH.'data/site_data.json'; // in application folder
     
-    if( !file_exists( $filePath ) )
-    	die( "site_data.json does not exists at path : ".$filePath );
+    if( !file_exists( $file_path ) )
+    	die( "site_data.json does not exists at path : ".$file_path );
 
-    $string_site_data = read_file( $filePath );
+    $string_site_data = read_file( $file_path );
 
     if( $string_site_data == false ) // $site_data may be false because read_file() failed, otherwise it is a string
-    	die( $filePath." could not be read !" );
+    	die( $file_path." could not be read !" );
 
     $site_data = json_decode( $string_site_data );
 
@@ -66,7 +66,7 @@ function get_site_data_old( $return_as_array = false ) {
 		return $site_data;
 }
 
-function get_site_data( $data_name = 'site_data' ) {
+function get_static_data( $data_name = 'site', $return_as_array = false ) {
 	static $site_data = null;
 
 	if( $site_data != null && isset( $site_data[$data_name] ) ) {
@@ -76,27 +76,20 @@ function get_site_data( $data_name = 'site_data' ) {
 			return $site_data[$data_name];
 	}
 
-    $filePath = base_url().'assets/json/'.$data_name.'.json';
+    $file_path = APPPATH.'/../assets/json/'.$data_name.'.json';
+   	// DO NOT USE base_url() !!
+   	// file_exists will return false, even if the file is accessible
+ 
+    if( !file_exists( $file_path ) )
+    	die( "[$data_name.json] does not exists at path : $file_path" );
     
-    if( !file_exists( $filePath ) )
-    	die( "$data_name.json does not exists at path : $filePath" );
 
-    $string_site_data = read_file( $filePath );
+    $string_site_data = file_get_contents( $file_path );
 
     if( $string_site_data == false ) // $site_data may be false because read_file() failed, otherwise it is a string
-    	die( $filePath." could not be read !" );
+    	die( "[$file_path] could not be read !" );
 
     $data = json_decode( $string_site_data );
-
-    // sort all arrays
-    /*$members = get_object_vars( $data );
-
-    foreach( $data as $member_name => $object_value) {
-    	$site_data->$member_name = get_object_vars( $object_value );
-    	asort( $site_data->$member_name ); 
-    	// asort() sort the array by values and keeps the key/value relation ships
-    	// sort() replace the keys by numbers
-	}*/
 
 	//cache
 	$site_data[$data_name] = $data;
@@ -359,26 +352,8 @@ function hash_password( $password ) {
 // ----------------------------------------------------------------------------------
 
 /**
- * Check the user password against the encoded password
- * @return True if the password is valid, false otherwise
- */
-function check_password( $password, $hash ) {
-	$pass_complexifier = "#:T{9 o]5A;-i|dT((5m7,!DF.&@x";
-	$test_hash = '';
-
-	if( CRYPT_EXT_DES == 1 )
-		return ($hash == crypt( $pass_complexifier.$password, $hash ));
-	else
-		return ($hash == crypt( $pass_complexifier[0].$password, $hash ));
-}
-
-
-// ----------------------------------------------------------------------------------
-
-$alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./";
-
-/**
- * 
+ * [get_des_salt description]
+ * @return string The salt
  */
 function get_des_salt() {
 	$alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./";
@@ -386,9 +361,11 @@ function get_des_salt() {
 }
 
 
+//----------------------------------------------------------------------------------
+
 /**
- * Create a random string, used for as a salt
- * @return The salt (string)
+ * [get_ext_des_salt description]
+ * @return string The salt
  */
 function get_ext_des_salt() {
 	$alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./";
@@ -404,117 +381,38 @@ function get_ext_des_salt() {
 // ----------------------------------------------------------------------------------
 
 /**
- * Make sure that all potential $form keys and $form['data'] keys exists and have a default value
- * @param array $form An assoc array with where criteria or a single key as string
- * @return 
+ * Check the user password against the encoded password
+ * @param  string $password The password provided by the user
+ * @param  string $hash     The hash from the data to check thr password against 
+ * @return boolean          True if the password is valid, false otherwise
  */
-function init_developer_form( $form ) {
-	if( is_object($form) ) // if $form comes from the database
-		$form = get_object_vars($form);
+function check_password( $password, $hash ) {
+	$pass_complexifier = "#:T{9 o]5A;-i|dT((5m7,!DF.&@x";
 
-	// first make sure that the databse fields exists (+ password2)
-	$db_fields = array( 'developer_id', 'name', 'email', 'password', 'password2', 'is_public', 'data');
-
-	foreach( $db_fields as $field ) {
-		if( !isset( $form[$field] ) )
-			$form[$field] = '';
-	}
-
-	// then take care of data
-	if( is_string($form['data']) && trim($form['data']) == '' )
-		$form['data'] = array();
-	elseif( is_string( $form['data'] ) )
-		$form['data'] = json_decode( $form['data'], true ); // true makes the returned value an array instead of an object
-
-    $data = $form['data'];
-
-    // string data
-    $string_keys = array( 'pitch', 'logo', 'blogfeed', 'website', 'country', 'teamsize');
-
-    foreach( $string_keys as $key ) {
-        if( !isset( $data[$key] ) )
-            $data[$key] = '';
-    }
-
-    // array data
-    $array_keys = array('technologies', 'operatingsystems', 'devices','stores');
-
-    foreach( $array_keys as $key ) {
-        if( !isset( $data[$key] ) )
-            $data[$key] = array();
-    }
-
-    // array( 'names'=>array(), 'urls'=>array() )
-    $names_urls_array_keys = array('socialnetworks');
-
-    foreach( $names_urls_array_keys as $key ) {
-        if( !isset( $data[$key] ) )
-            $data[$key] = array( 'names' => array() );
-    }
-
-
-    $form['data'] = $data;
-    return $form;
+	if( CRYPT_EXT_DES == 1 )
+		return ($hash == crypt( $pass_complexifier.$password, $hash ));
+	else
+		return ($hash == crypt( $pass_complexifier[0].$password, $hash ));
 }
 
 
-// ----------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------
 
 /**
- * Make sure that all potential $form keys and $form['data'] keys exists and have a default value
- * @param array $form An assoc array with where criteria or a single key as string
- * @return 
+ * [get_array_lang description]
+ * @param  [type] $array_keys [description]
+ * @param  [type] $lang_key   [description]
+ * @return [type]             [description]
  */
-function init_game_form( $form ) {
-	if( is_object($form) ) // if $form comes from the database
-		$form = get_object_vars($form);
+function get_array_lang( $array_keys, $lang_key ) {
+	$array = array();
 
-	// first make sure that the databse fields exists (+ password2)
-	$db_fields = array('game_id', 'developer_id', 'name', 'profile_privacy', 'data');
-
-	foreach( $db_fields as $field ) {
-		if( !isset( $form[$field] ) )
-			$form[$field] = '';
+	foreach ($array_keys as $key) {
+		$array[$key] = lang($lang_key.$key);
 	}
 
-	// then take care of data
-	if( is_string($form['data']) && trim($form['data']) == '' )
-		$form['data'] = array();
-	elseif( is_string( $form['data'] ) )
-		$form['data'] = json_decode( $form['data'], true );
-
-    $data = $form['data'];
-
-    // string data
-    $string_keys = array( 'pitch', 'logo', 'blogfeed', 'website',
-    'publishername', 'publisherurl', 'price', 'soundtrack', 'releasedate' );
-
-    foreach( $string_keys as $key ) {
-        if( !isset( $data[$key] ) )
-            $data[$key] = '';
-    }
-
-    // array data
-    $array_keys = array('languages', 'technologies', 'operatingsystems', 'devices',
-     'genres', 'themes', 'viewpoints', 'nbplayers', 'tags' );
-
-    foreach( $array_keys as $key ) {
-        if( !isset( $data[$key] ) )
-            $data[$key] = array();
-    }
-
-    // array( 'names'=>array(), 'urls'=>array() )
-    $names_urls_array_keys = array('screenshots', 'videos', 'socialnetworks', 'stores');
-
-    foreach( $names_urls_array_keys as $key ) {
-        if( !isset( $data[$key] ) )
-            $data[$key] = array( 'names' => array() );
-    }
-
-    $form['data'] = $data;
-    return $form;
+	return $array;
 }
-
 
 
 /* End of file main_helper.php */

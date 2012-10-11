@@ -86,3 +86,118 @@ function form_tooltip( $key ) {
 	$html = '<img src="'.img_link('tooltip.jpg').'" alt="Tooltip image" class="tooltip" title="'.lang( 'tooltip_'.$key ).'" >';
 	return $html;
 }
+
+
+// ----------------------------------------------------------------------------------
+
+/**
+ * Make sure that all potential $form keys and $form['data'] keys exists and have a default value
+ * @param array $form An assoc array with where criteria or a single key as string
+ * @return 
+ */
+function init_developer_form( $form ) {
+	if( is_object($form) ) // if $form comes from the database
+		$form = get_object_vars($form);
+
+	// first make sure that the databse fields exists (+ password2)
+	$db_fields = array( 'developer_id', 'name', 'email', 'password', 'password2', 'is_public', 'data');
+
+	foreach( $db_fields as $field ) {
+		if( !isset( $form[$field] ) )
+			$form[$field] = '';
+	}
+
+	// then take care of data
+	if( is_string($form['data']) && trim($form['data']) == '' )
+		$form['data'] = array();
+	elseif( is_string( $form['data'] ) )
+		$form['data'] = json_decode( $form['data'], true ); // true makes the returned value an array instead of an object
+
+    $data = $form['data'];
+
+    // string data
+    $string_keys = array( 'pitch', 'logo', 'blogfeed', 'website', 'country', 'teamsize');
+
+    foreach( $string_keys as $key ) {
+        if( !isset( $data[$key] ) )
+            $data[$key] = '';
+    }
+
+    // array data
+    $array_keys = array('technologies', 'operatingsystems', 'devices','stores');
+
+    foreach( $array_keys as $key ) {
+        if( !isset( $data[$key] ) )
+            $data[$key] = array();
+    }
+
+    // array( 'names'=>array(), 'urls'=>array() )
+    $names_urls_array_keys = array('socialnetworks');
+
+    foreach( $names_urls_array_keys as $key ) {
+        if( !isset( $data[$key] ) )
+            $data[$key] = array( 'names' => array() );
+    }
+
+
+    $form['data'] = $data;
+    return $form;
+}
+
+
+// ----------------------------------------------------------------------------------
+
+/**
+ * Make sure that all potential $form keys and $form['data'] keys exists and have a default value
+ * @param array $form An assoc array with where criteria or a single key as string
+ * @return 
+ */
+function init_game_form( $form ) {
+	if( is_object($form) ) // if $form comes from the database
+		$form = get_object_vars($form);
+
+	// first make sure that the databse fields exists (+ password2)
+	$db_fields = array('game_id', 'developer_id', 'name', 'profile_privacy', 'data');
+
+	foreach( $db_fields as $field ) {
+		if( !isset( $form[$field] ) )
+			$form[$field] = '';
+	}
+
+	// then take care of data
+	if( is_string($form['data']) && trim($form['data']) == '' )
+		$form['data'] = array();
+	elseif( is_string( $form['data'] ) )
+		$form['data'] = json_decode( $form['data'], true );
+
+    $data = $form['data'];
+
+    // string data
+    $string_keys = array( 'pitch', 'logo', 'blogfeed', 'website',
+    'publishername', 'publisherurl', 'price', 'soundtrack', 'releasedate' );
+
+    foreach( $string_keys as $key ) {
+        if( !isset( $data[$key] ) )
+            $data[$key] = '';
+    }
+
+    // array data
+    $array_keys = array('languages', 'technologies', 'operatingsystems', 'devices',
+     'genres', 'themes', 'viewpoints', 'nbplayers', 'tags' );
+
+    foreach( $array_keys as $key ) {
+        if( !isset( $data[$key] ) )
+            $data[$key] = array();
+    }
+
+    // array( 'names'=>array(), 'urls'=>array() )
+    $names_urls_array_keys = array('screenshots', 'videos', 'socialnetworks', 'stores');
+
+    foreach( $names_urls_array_keys as $key ) {
+        if( !isset( $data[$key] ) )
+            $data[$key] = array( 'names' => array() );
+    }
+
+    $form['data'] = $data;
+    return $form;
+}

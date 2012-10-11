@@ -1,5 +1,5 @@
 <?php
-$site_data = get_site_data();
+$form_data = get_static_data('forms');
 $page = get_page();
 $admin_page = get_admin_page();
 
@@ -124,12 +124,9 @@ $input_data = array(
 				<?php echo form_input_extended($input_data);?> 
 <?php
 
-
 // country
-if( trim($form['data']['country']) == '' )
-	$form['data']['country'] = 'usa';
 ?>
-				<?php echo form_dropdown( 'form[data][country]', $site_data->countries, $form['data']['country'], 'id="country"' ); ?> 
+				<?php echo form_dropdown( 'form[data][country]', get_array_lang($form_data->countries, 'countries_'), $form['data']['country'], 'id="country"' ); ?> 
 				<?php echo form_label( lang('adddeveloper_country'), 'country' ).' <br>'; ?> 
 
 <?php
@@ -145,7 +142,7 @@ foreach( $form['data']['socialnetworks']['names'] as $array_id => $site_id ) {
 	if( $form['data']['socialnetworks']['urls'][$array_id] == '' ) // that's the 3 "new" fields, it happens when $form comes from the form itself
 		continue;
 ?>
-				<?php echo form_dropdown( 'form[data][socialnetworks][names]['.$array_id.']', $site_data->socialnetworks, $site_id, 'id="socialnetwork_site_'.$array_id.'"' ); ?> 
+				<?php echo form_dropdown( 'form[data][socialnetworks][names]['.$array_id.']', get_array_lang($form_data->socialnetworks, 'socialnetworks_'), $site_id, 'id="socialnetwork_site_'.$array_id.'"' ); ?> 
 				<?php echo '<input type="url" name="form[data][socialnetworks][urls]['.$array_id.']" id="socialnetworks_url_'.$array_id.'" placehodder="Full profile url" value="'.$form['data']['socialnetworks']['urls'][$array_id].'"> <br> '; ?> 
 <?php
 }
@@ -153,7 +150,7 @@ foreach( $form['data']['socialnetworks']['names'] as $array_id => $site_id ) {
 $count = count( $form['data']['socialnetworks']['names'] );
 for( $i = $count; $i < $count+4; $i++ ) {
 ?>
-				<?php echo form_dropdown( 'form[data][socialnetworks][names][]', $site_data->socialnetworks, null, 'id="socialnetworks_site_'.$i.'"' ); ?> 
+				<?php echo form_dropdown( 'form[data][socialnetworks][names][]', get_array_lang($form_data->socialnetworks, 'socialnetworks_'), null, 'id="socialnetworks_site_'.$i.'"' ); ?> 
 				<?php echo '<input type="url" name="form[data][socialnetworks][urls][]" id="socialnetworks_url_'.$i.'" placehodder="Full profile url" value=""> <br> '; ?> 
 <?php
 }
@@ -162,14 +159,14 @@ for( $i = $count; $i < $count+4; $i++ ) {
 // other array fields
 $multiselect_form_items = array('technologies', 'operatingsystems', 'devices','stores');
 foreach( $multiselect_form_items as $key ) {
-	$size = count( $site_data->$key );
+	$size = count( $form_data->$key );
 	if( $size > 10 )
 		$size = 10;
 ?>
 				
 				<br>
 				<?php echo '<label for="'.$key.'">'.lang( 'adddeveloper_'.$key ).'</label> <br> ';
-				echo form_multiselect( 'form[data]['.$key.'][]', $site_data->$key, $form['data'][$key], 'id="'.$key.'" size="'.$size.'"' ); ?> <br> 
+				echo form_multiselect( 'form[data]['.$key.'][]', get_array_lang($form_data->$key, $key.'_'), $form['data'][$key], 'id="'.$key.'" size="'.$size.'"' ); ?> <br> 
 <?php
 }
 

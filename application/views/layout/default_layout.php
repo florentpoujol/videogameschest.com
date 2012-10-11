@@ -57,13 +57,13 @@ if( userdata( 'is_logged_in' ) ): ?>
 				<ul>
 <?php
 $class = '';
-foreach( get_site_data()->sitelanguages as $lang ) {
+foreach( get_static_data('site')->languages as $lang ) {
 	if( userdata( 'language' ) == $lang )
 		$class = 'class="selected"';
 	else
 		$class ='';
 ?>
-					<?php echo '<li><a href="'.site_url( 'admin/setlanguage/'.$lang ).'" title="'.$lang.'" '.$class.'>'.lang('language_'.$lang).'</a></li>'; ?>
+					<?php echo '<li><a href="'.site_url( 'admin/setlanguage/'.$lang ).'" title="'.$lang.'" '.$class.'>'.lang('languages_'.$lang).'</a></li>'; ?>
 
 <?php	
 } // end foreach
