@@ -5,7 +5,13 @@
 
 		<!-- Meta -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<?php if (get_page() == "admin"): ?>
 		<meta name='robots' content='noindex,nofollow' />
+<?php else: ?>
+		<meta name='robots' content='index,follow' />
+<?php endif; ?>
+		<meta name='robots' content='noindex,nofollow' />
+		
 <?php foreach( $metas as $meta ): ?>
 		<meta name='<?php echo $meta['name']; ?>' content='<?php echo $meta['content']; ?>' />
 <?php endforeach; ?>

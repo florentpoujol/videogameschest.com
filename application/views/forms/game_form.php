@@ -1,5 +1,5 @@
 <?php
-$site_data = get_site_data();
+$forms_data = get_static_data('forms');
 $page = get_page();
 $admin_page = get_admin_page();
 
@@ -85,14 +85,14 @@ if( userdata( 'is_admin' ) || $page == 'addgame' ):
 <?php
 
 // state of developement
-foreach( $site_data->developementstates as $state_key => $state_name ):
+foreach( $forms_data->developementstates as $state_key ):
 	$radio = array(
     'name'        => 'developementstate',
     'id'          => 'developementstate_'.$state_key,
     'value'       => $state_key,
     );
 ?>
-					<?php echo form_radio($radio).' '.form_label($state_name, 'developementstate_'.$state_key); ?> <br> 
+					<?php echo form_radio($radio).' '.form_label(lang('developementstates_'.$state_key), 'developementstate_'.$state_key); ?> <br> 
 <?php endforeach; ?>
 				</fieldset>
 
@@ -131,7 +131,7 @@ foreach( $namestext_urls_arrays as $item ):
 				<?php echo form_label( lang( 'addgame_'.$item ), $item );?> <br>
 <?php
 	foreach( $form['data'][$item]['names'] as $array_id => $name ):
-		if( $form['data'][$item]['urls'] == '' ) // that's the 4 "new" fields, it happens when $form comes from the form itself
+		if( $form['data'][$item]['urls'] == '' ) // that's the 4 "new" fields, it happens when $form comes from the form itself => actually no it is cleanned in the controller
 			continue;
 
 		// the name field
@@ -179,7 +179,7 @@ foreach( $namestext_urls_arrays as $item ):
 				<?php echo form_input_extended($input_data, ''); ?> <br>
 <?php
 	endfor;
-endforeach; // end foreach( $namestext_urls_arrays as $item ) { 
+endforeach; // end foreach $namestext_urls_arrays 
 
 
 // name dropdown/url arrays
@@ -195,7 +195,7 @@ foreach( $namesdropdown_urls_arrays as $array ):
 		if( $form['data'][$array]['urls'][$array_id] == '' ) // that's the 4 "new" fields, it happens when $form comes from the form itself
 			continue;
 ?>
-				<?php echo form_dropdown( 'form[data]['.$array.'][names]['.$array_id.']', $site_data->$array, $site_key, 'id="'.$array.'_site_'.$array_id.'"' ); ?> 
+				<?php echo form_dropdown( 'form[data]['.$array.'][names]['.$array_id.']', get_array_lang($forms_data->$array, $array."_"), $site_key, 'id="'.$array.'_site_'.$array_id.'"' ); ?> 
 				<?php echo '<input type="url" name="form[data]['.$array.'][urls]['.$array_id.']" id="'.$array.'_url_'.$array_id.'" placeholder="Profile URL" value="'.$form['data'][$array]['urls'][$array_id].'"> <br>'; ?> 
 <?php
 	endforeach;
@@ -203,7 +203,7 @@ foreach( $namesdropdown_urls_arrays as $array ):
 	$count = count( $form['data'][$array]['names'] );
 	for( $i = $count; $i < $count+4; $i++ ):
 ?>
-				<?php echo form_dropdown( 'form[data]['.$array.'][names][]', $site_data->$array, null, 'id="'.$array.'_site_'.$i.'"' ); ?> 
+				<?php echo form_dropdown( 'form[data]['.$array.'][names][]', get_array_lang($forms_data->$array, $array."_"), null, 'id="'.$array.'_site_'.$i.'"' ); ?> 
 				<?php echo '<input type="url" name="form[data]['.$array.'][urls][]" id="'.$array.'_url_'.$i.'" placeholder="Profile URL" value=""><br>'; ?> 
 <?php
 	endfor;
@@ -215,14 +215,14 @@ $array_keys = array('languages', 'technologies', 'operatingsystems', 'devices',
 'genres', 'themes', 'viewpoints', 'nbplayers', 'tags' );
 
 foreach( $array_keys as $key ):
-	$size = count( $site_data->$key );
+	$size = count( $forms_data->$key );
 	if( $size > 10 )
 		$size = 10;
 ?>
 				
 				<br>
 				<?php echo '<label for="'.$key.'">'.lang( 'addgame_'.$key ).'</label> <br> ';
-				echo form_multiselect( 'form[data]['.$key.'][]', $site_data->$key, $form['data'][$key], 'id="'.$key.'" size="'.$size.'"' ); ?> <br> 
+				echo form_multiselect( 'form[data]['.$key.'][]', get_array_lang($forms_data->$key, $key."_"), $form['data'][$key], 'id="'.$key.'" size="'.$size.'"' ); ?> <br> 
 <?php endforeach; ?>
 				<br>
 				<br>

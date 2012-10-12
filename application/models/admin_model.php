@@ -66,6 +66,36 @@ class Admin_model extends CI_Model {
 
         $this->db->delete( 'messages' );
     }
+
+
+    //----------------------------------------------------------------------------------
+
+    /**
+     * [insert_report description]
+     * @param  [type] $form [description]
+     * @return [type]       [description]
+     */
+    function insert_report( $report ) {
+        $type = $report["item_type"];
+        $db_report = get_db_row( $type."s", $type."_id", $report["item_id"] );
+
+        if ($db_report === false)
+            return;
+
+        $report_data = json_decode($db_report->"report_data", true);
+
+        if ( ! isset( $report_data[$report["report_type"]] ) )
+            $report_data[$report["report_type"]] = array();
+
+        $report_data[$report["report_type"]][] = $report["description"];
+
+        $db_report = array(
+            "report_count" => $db_report->report_count++,
+            "report_data"  => json_encode($report_data);
+        );
+
+        $this->db->update( $table, $db_report, $type."_id = ".$report["item_id"] );
+    }
 }
 
 /* End of file admin_model.php */

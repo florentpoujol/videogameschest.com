@@ -9,7 +9,7 @@ class Admin extends CI_Controller {
         set_admin_page( $this->router->fetch_method() );
         
         $lang = userdata( 'language' );
-        if( $lang )
+        if ($lang)
             $this->lang->load( 'main', $lang );
 	}
 
@@ -20,10 +20,10 @@ class Admin extends CI_Controller {
      * Main hub with no content but the admin menu
      */
     function index() {
-    	if( !userdata( 'is_logged_in' ) )
+    	if ( ! userdata( 'is_logged_in' ))
     		redirect( 'admin/login' );
 
-        if( userdata( 'is_admin' ) ) {
+        if (userdata( 'is_admin' )) {
             $this->layout
             ->view( 'forms/select_developer_to_edit_form' );
         }
@@ -41,36 +41,36 @@ class Admin extends CI_Controller {
      */
     function login() {
     	// redirect if alredy logged in
-    	if( userdata( 'is_logged_in' ) )
+    	if (userdata( 'is_logged_in' ))
     		redirect( 'admin' );
 
     	$error = '';
     	$name = post( 'name' );
 
-    	if( post( 'admin_login_form_submitted' ) ) {
+    	if (post( 'admin_login_form_submitted' )) {
             $field = 'name';
 
-            if( is_numeric( $name ) )
+            if (is_numeric( $name ))
                 $field = 'developer_id';
-            elseif( strpos( $name, '@' ) ) // the name is actually an email
+            elseif (strpos( $name, '@' )) // the name is actually an email
                 $field = 'email';
 
             $is_admin = false;
 	    	$user = get_db_row( 'developers', $field, $name );
 
-            if( !$user ) {
-                if( $field == 'developer_id' )
+            if ( ! $user) {
+                if ($field == 'developer_id')
                     $field = 'administrator_id';
 
                 $user = get_db_row( 'administrators', $field, $name );
                 $is_admin = true;
             }
 
-	    	if( $user ) {
-	    		if( check_password( post( 'password' ), $user->password ) ) {
+	    	if ($user) {
+	    		if (check_password( post( 'password' ), $user->password ) ) {
 	    			$userdata = array( 'is_logged_in' => '1' );
 	    			
-	    			if( $is_admin )
+	    			if ($is_admin)
 	    				$userdata['is_admin'] = '1';
 	    			else
 	    				$userdata['is_developer'] = '1';
@@ -110,30 +110,30 @@ class Admin extends CI_Controller {
      * Page to edit an admin account
      */
     function editadmin() {
-        if( !userdata( 'is_logged_in' ) )
+        if ( ! userdata( 'is_logged_in' ))
             redirect( 'admin/login' );
 
-        if( !userdata( 'is_admin' ) )
+        if ( ! userdata( 'is_admin' ))
             redirect( 'admin' );
 
         // the has been submitted
-        if( post( 'admin_form_submitted' ) ) {
+        if (post( 'admin_form_submitted' )) {
             // checking form
             $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[5]' );
             $this->form_validation->set_rules( 'form[email]', 'Email', 'trim|required|min_length[5]|valid_email' );
             
             $form = post( 'form' );
 
-            if( trim($form['password']) != '' ) {
+            if (trim($form['password']) != '' ) {
                 $this->form_validation->set_rules( 'form[password]', 'Password', 'min_length[5]' );
                 $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'min_length[5]' );
                 
-                if( $form['password'] != $form['password2'] )
+                if ($form['password'] != $form['password2'])
                     $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'matches[form[password]]' );
             }
             
             // form OK
-            if( $this->form_validation->run() ) {
+            if ($this->form_validation->run() ) {
                 // DO NOTHING, YET
                 $form['success'] = 'Your administrator account has been successfully updated.';
                 unset($form['password']);
@@ -167,10 +167,10 @@ class Admin extends CI_Controller {
      * Page to edit it's own account, redirect to the hub or editdeveloper
      */
     function edityouraccount() {
-        if( !userdata( 'is_logged_in' ) )
+        if ( ! userdata( 'is_logged_in' ))
             redirect( 'admin/login' );
 
-        if( userdata( 'is_developer' ) )
+        if (userdata( 'is_developer' ))
             redirect( 'admin/editdeveloper/'.userdata( 'user_id') );
         else //is admin
             redirect( 'admin/editadmin' );
@@ -183,17 +183,17 @@ class Admin extends CI_Controller {
      * Main hub with no content but the admin menu
      */
     function adddeveloper() {
-        if( post( 'developer_form_submitted' ) ) {
+        if (post( 'developer_form_submitted' )) {
             $form = post( 'form' );
 
             $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[5]|is_unique[developers.name]' );
             $this->form_validation->set_rules( 'form[email]', 'Email', 'trim|required|min_length[5]|valid_email|is_unique[developers.email]' );
 
-            if( trim($form['password']) != '' ) {
+            if (trim($form['password']) != '' ) {
                 $this->form_validation->set_rules( 'form[password]', 'Password', 'min_length[8]' );
                 $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'min_length[8]' );
                 
-                if( $form['password'] != $form['password2'] )
+                if ($form['password'] != $form['password2'])
                     $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'matches[form[password]]' ); // this fails when passwords matches ???
             }
 
@@ -201,10 +201,10 @@ class Admin extends CI_Controller {
             $form['data']['socialnetworks'] = clean_names_urls_array( $form['data']['socialnetworks'] );
 
             // save data if all is OK
-            if( $this->form_validation->run() ) {
+            if ($this->form_validation->run() ) {
                 $id = $this->developer_model->insert_developer( $form );
                 
-                if( post( 'from_adddeveloper_page' ) ) {
+                if (post( 'from_adddeveloper_page' )) {
                     $form = array('success' => lang('adddeveloper_form_success'));
                     $this->session->set_flashdata( 'adddeveloper_form', json_encode($form) );
 
@@ -216,7 +216,7 @@ class Admin extends CI_Controller {
             else { // error
                 unset($form['password']);
 
-                if( post( 'from_adddeveloper_page' ) ) {
+                if (post( 'from_adddeveloper_page' )) {
                     $form['errors'] = validation_errors(); // get errors from the form_validation class
                     $this->session->set_flashdata( 'adddeveloper_form', json_encode($form) );
                     redirect( 'adddeveloper' );
@@ -225,7 +225,7 @@ class Admin extends CI_Controller {
                     $this->layout->view( 'forms/developer_form', array('form'=>$form) )->load();
             }
         }
-        elseif( userdata( 'is_admin' ) ) 
+        elseif (userdata( 'is_admin' )) 
             $this->layout->view( 'forms/developer_form' )->load();
         else
             redirect( 'adddeveloper' );
@@ -239,44 +239,44 @@ class Admin extends CI_Controller {
      * @param int $id The id of the developer to edit
      */
     function editdeveloper( $id = null ) {
-        if( !userdata( 'is_logged_in' ) )
+        if ( ! userdata( 'is_logged_in' ))
             redirect( 'admin/login' );
 
         // redirect developer to their edit page only
-        if( userdata( 'is_developer' ) && $id != userdata( 'user_id' ) )
+        if (userdata( 'is_developer' ) && $id != userdata( 'user_id' ) )
             redirect( 'admin/editdeveloper/'.userdata( 'user_id' ) );
         
         //
-        if( post( "select_developer_to_edit_form_submitted" ) ) {
+        if (post( "select_developer_to_edit_form_submitted" )) {
             $id = trim( post( 'developer_id_text' ) );
 
-            if( $id == '' )
+            if ($id == '')
                 $id = post( 'developer_id_select' );
 
             redirect( 'admin/editdeveloper/'.$id );
         }
 
         
-        if( post( 'developer_form_submitted' ) ) {
+        if (post( 'developer_form_submitted' )) {
             $form = post( 'form' );
             $db_data = get_db_row( 'developers', 'developer_id', $form['developer_id'] );
 
             // cheking name
             $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[5]' );
-            if( $form['name'] != $db_data->name )
+            if ($form['name'] != $db_data->name)
                 $this->form_validation->set_rules( 'form[name]', 'Name', 'is_unique[developers.name]' );
             
             // cheking email
             $this->form_validation->set_rules( 'form[email]', 'Email', 'trim|required|min_length[5]|valid_email' );
-            if( $form['email'] != $db_data->email )
+            if ($form['email'] != $db_data->email)
                 $this->form_validation->set_rules( 'form[email]', 'Email', 'is_unique[developers.email]' );
     
             // checking password
-            if( trim($form['password']) != '' ) {
+            if (trim($form['password']) != '' ) {
                 $this->form_validation->set_rules( 'form[password]', 'Password', 'min_length[8]' );
                 $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'min_length[8]' );
                 
-                if( $form['password'] != $form['password2'] )
+                if ($form['password'] != $form['password2'])
                     $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'matches[form[password]]' );
             }
 
@@ -284,7 +284,7 @@ class Admin extends CI_Controller {
             $form['data']['socialnetworks'] = clean_names_urls_array( $form['data']['socialnetworks'] );
 
             // update data if all is OK
-            if( $this->form_validation->run() ) {
+            if ($this->form_validation->run() ) {
                 $this->developer_model->update_developer( $form, $db_data );
                 
                 unset( $form['password'] );
@@ -299,7 +299,7 @@ class Admin extends CI_Controller {
         } // end if form submitted
 
         // no form has been submitted, just show the form filled with data from the database
-        elseif( $id != null ) { // if user is a developer, this will always be the case (see redirect above)
+        elseif ($id != null) { // if user is a developer, this will always be the case (see redirect above)
             $form = get_db_row( 'developers', 'developer_id', $id );
 
             $this->layout
@@ -318,7 +318,7 @@ class Admin extends CI_Controller {
      * Page to add a game
      */
     function addgame() {
-        if( post( 'game_form_submitted' ) ) {
+        if (post( 'game_form_submitted' )) {
             $form = post( 'form' );
 
             $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[3]|is_unique[games.name]' );
@@ -330,10 +330,10 @@ class Admin extends CI_Controller {
             $form['data']['stores'] = clean_names_urls_array( $form['data']['stores'] );
 
             // save data if all is OK
-            if( $this->form_validation->run() ) {
+            if ($this->form_validation->run() ) {
                 $id = $this->game_model->insert_game( $form );
 
-                if( post( 'from_addgame_page' ) ) {
+                if (post( 'from_addgame_page' )) {
                     $form = array('success' => lang('addgame_form_success'));
                     $this->session->set_flashdata( 'addgame_form', json_encode($form) );
                     redirect( 'addgame' );
@@ -342,7 +342,7 @@ class Admin extends CI_Controller {
                     redirect( 'admin/editgame/'.$id );
             }
             else {
-                if( post( 'from_addgame_page' ) ) {
+                if (post( 'from_addgame_page' )) {
                     $form['errors'] = validation_errors(); // get errors from the form_validation class
                     $this->session->set_flashdata( 'addgame_form', json_encode($form) ); // a coockie can only hold 4Kb of data
                     redirect( 'addgame' );
@@ -354,39 +354,41 @@ class Admin extends CI_Controller {
                 }
             }
         }
-        elseif( userdata( 'is_admin' ) ) 
+        elseif (userdata( 'is_admin' )) 
             $this->layout->view( 'forms/game_form' )->load();
         else
             redirect( 'addgame' );
     }
 
 
+    //----------------------------------------------------------------------------------
+
     /**
      * Page to edit a game
      * @param int $id The id of the game to edit
      */
     function editgame( $id = null ) {
-        if( !userdata( 'is_logged_in' ) )
+        if ( ! userdata( 'is_logged_in' ))
             redirect( 'admin/login' );
 
 
-        if( post( "select_game_to_edit_form_submitted" ) ) {
+        if (post( "select_game_to_edit_form_submitted" )) {
             $id = trim( post( 'game_id_text' ) );
 
-            if( $id == '' )
+            if ($id == '')
                 $id = post( 'game_id_select' );
 
             redirect( 'admin/editgame/'.$id );
         }
 
         
-        if( post( 'game_form_submitted' ) ) {
+        if (post( 'game_form_submitted' )) {
             $form = post( 'form' );
             $db_data = get_db_row( 'games', 'game_id', $form['game_id'] );
 
             // cheking name
             $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[5]' );
-            if( $form['name'] != $db_data->name )
+            if ($form['name'] != $db_data->name)
                 $this->form_validation->set_rules( 'form[name]', 'Name', 'is_unique[games.name]' );
             
             $form['data']['screenshots'] = clean_names_urls_array( $form['data']['screenshots'] );
@@ -396,7 +398,7 @@ class Admin extends CI_Controller {
             $form['data']['stores'] = clean_names_urls_array( $form['data']['stores'] );
 
             // update data if all is OK
-            if( $this->form_validation->run() ) {
+            if ($this->form_validation->run() ) {
                 $this->game_model->update_game( $form, $db_data );
                 
                 $form['success'] = 'The game profile has been successfully updated.';
@@ -405,22 +407,22 @@ class Admin extends CI_Controller {
             }
             else
                 $this->layout->view( 'forms/game_form', array('form'=>$form) );
-        } // end if( post( 'game_form_submitted' ) ) {
+        } // end if (post( 'game_form_submitted' )) {
 
         // no form has been submitted, just show the form filled with data from the database
-        elseif( $id != null ) {
+        elseif ($id != null) {
             // prevent developer to edit a game they don't own
-            if( userdata( 'is_developer' ) ) {
+            if (userdata( 'is_developer' )) {
                 //$games = $this->main_model->get_dev_games( userdata( 'user_id' ) );
                 $games = get_db_rows( 'games', 'developer_id', userdata( 'user_id' ) );
                 $game_is_owned_by_dev = false;
 
                 foreach( $games->results() as $game ) {
-                    if( $game->id == userdata( 'user_id' ) )
+                    if ($game->id == userdata( 'user_id' ))
                         $game_is_owned_by_dev = true;
                 }
 
-                if( !$game_is_owned_by_dev ) {
+                if ( ! $game_is_owned_by_dev) {
                     $form['errors'] = "The game with id [$id] does not belong to you, you can't edit it.";
                     $this->layout->view( 'forms/select_game_to_edit_form', array('form'=>$form) );
                 }
@@ -428,7 +430,7 @@ class Admin extends CI_Controller {
 
             $form = get_db_row( 'games', 'game_id', $id );
 
-            if( $form == false ) {
+            if ($form == false) {
                 $form = array('errors'=>"No game with id [$id] was found.");
                 $this->layout->view( 'forms/select_game_to_edit_form', array('form'=>$form) );
             }
@@ -449,9 +451,7 @@ class Admin extends CI_Controller {
      * Page to set the current language
      */ 
     function setlanguage( $lang = null ) {
-        
-
-        if( !in_array( $lang, get_site_data()->sitelanguages ) )
+        if ( ! in_array( $lang, get_static_data('site')->languages ) )
             $lang = $this->config->item( 'language' ); // default language
 
         set_userdata( 'language', $lang );
@@ -465,22 +465,22 @@ class Admin extends CI_Controller {
      * Handle creating, deleting, and reading private messages
      */
     function messages() {
-        if( !userdata( 'is_logged_in' ) )
+        if ( ! userdata( 'is_logged_in' ))
             redirect( 'admin/login' );
 
         $form = array();
 
-        if( post( 'write_message_form_submitted' ) ) {
+        if (post( 'write_message_form_submitted' )) {
             $this->form_validation->set_rules( 'form[message]', 'Message text', 'trim|required|min_length[10]' );
 
-            if( $this->form_validation->run() ) {
+            if ($this->form_validation->run() ) {
                 $form = post( 'form' );
 
-                if( $form['recipient_id'] == "admins" )
+                if ($form['recipient_id'] == "admins")
                     $form['recipient_id'] = 0;
 
                 $form['sender_id'] = 0;
-                if( userdata( 'is_developer' ) ) 
+                if (userdata( 'is_developer' )) 
                     $form['sender_id'] = userdata( 'user_id' );
                 
                 $this->main_model->insert_message( $form );
@@ -489,7 +489,7 @@ class Admin extends CI_Controller {
         }
 
 
-        if( post( 'delete_inbox_form_submitted' ) || post( 'delete_outbox_form_submitted' ) ) {
+        if (post( 'delete_inbox_form_submitted' ) || post( 'delete_outbox_form_submitted' )) {
             $this->main_model->delete_messages( post( 'delete' ) );
             $form['success'] = 'Message(s) deleted successfully.';
         }
@@ -505,13 +505,44 @@ class Admin extends CI_Controller {
 
     /**
      * Handle creating, deleting, and reading reports
+     * @param  string $infos Url get parameters which ciontin the type of item and the id
+     * ie : "developer:5" "game:10"
      */
-    function reports() {
-        if( !userdata( 'is_logged_in' ) )
-            redirect( 'admin/login' );
+    function reports( $infos = null ) {
+        if ($infos !== null) {
+            $infos = explode(":", $infos);
 
-        if( !userdata( 'is_admin' ) )
-            redirect( 'admin' );
+            if ( ! isset($infos[0]) ) // item type : developer or game
+                $infos[0] = "";
+
+            if ( ! isset($infos[1]) ) // item id
+                $infos[1] = "";
+
+            // vérifier que l'id existe
+                
+            // if one of the $infos values is empty (because a problem in the url), the rport will not be saved
+            $this->layout
+            ->view("forms/report_form", array("item_type"=>$infos[0], "item_id"=>$infos[1]))
+            ->load();
+        }
+
+        elseif (post("report_form_submitted")) {
+            $form = post("form");
+
+            if ($form["item_type"] != "" && $form["item_id"] != "")
+                $this->admin_model->insert_report($form);
+            else {
+                $form["errors"] = "There has been an error. The item_type or item_id is not set.";
+                $this->layout->view("forms/report_form", array("form"=>$form))->load();
+            }
+        }
+
+        elseif (userdata('is_logged_in')) {
+            $this->layout->view("admin/reports")->load();
+        }
+
+        else
+            redirect('admin/login');
     }
 }
 

@@ -28,7 +28,7 @@ function img_link( $file ) {
  * @param bool $return_as_array=false Return the site data as an aray instead of an object
  * @return The site data object (or array)
  */
-function get_site_data_old( $return_as_array = false ) {
+/*function get_site_data_old( $return_as_array = false ) {
 	static $site_data = null;
 
 	if( $site_data != null ) {
@@ -64,7 +64,7 @@ function get_site_data_old( $return_as_array = false ) {
 		return get_object_vars( $site_data );
 	else
 		return $site_data;
-}
+}*/
 
 function get_static_data( $data_name = 'site', $return_as_array = false ) {
 	static $site_data = null;
@@ -411,6 +411,7 @@ function get_array_lang( $array_keys, $lang_key ) {
 		$array[$key] = lang($lang_key.$key);
 	}
 
+	asort($array);
 	return $array;
 }
 

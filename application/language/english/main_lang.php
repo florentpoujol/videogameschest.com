@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 // MENU
 
 $lang['menu_featured'] = 'Featured';
@@ -147,87 +144,68 @@ $lang['tooltip_developer_name'] = "This is a <br> useful \n tooltip";
 
 // LANGUAGES
 
-$languages = array(
-"french",
-"english",
-"german",
-"spanish",
-"italian",
-"russian",
-"japonese",
-"chinese"
-);
-foreach ($languages as $language)
-	$lang['languages_'.$language] = ucfirst($language);
+$lang['languages_french'] = "French";
+$lang['languages_english'] = "English";
+$lang['languages_german'] = "German";
+$lang['languages_spanish'] = "Spanish";
+$lang['languages_italian'] = "Italian";
+$lang['languages_russian'] = "Russian";
+$lang['languages_japonese'] = "Japonese";
+$lang['languages_chinese'] = "Chinese";
+
 
 
 // COUNTRIES
 
-$countries = array( 
-"australia",
-"austria",
-"belgium",
-"canada",
-"france",
-"germany",
-"greece",
-"holland",
-"ireland",
-"portugal",
-"russia",
-"spain",
-"switzerland",
-"uk",
-"usa"
-);
-foreach ($countries as $country)
-	$lang['countries_'.$country] = ucfirst($country);
-
+$lang['countries_australia'] = "Australia";
+$lang['countries_austria'] = "Austria";
+$lang['countries_belgium'] = "Belgium";
+$lang['countries_canada'] = "Canada";
+$lang['countries_france'] = "France";
+$lang['countries_germany'] = "Germany";
+$lang['countries_greece'] = "Greece";
+$lang['countries_holland'] = "Holland";
+$lang['countries_ireland'] = "Ireland";
+$lang['countries_portugal'] = "Portugal";
+$lang['countries_russia'] = "Russia";
+$lang['countries_spain'] = "Spain";
+$lang['countries_switzerland'] = "Switzerland";
 $lang['countries_uk'] = "United Kingdom";
 $lang['countries_usa'] = "United States of America";
 
 
 // OPERATING SYSTEMS
 
-$oss = array(
-"android",
-"blackberry",
-"linux",
-"mac",
-"windows",
-"windowsphone7"
-);
-foreach ($oss as $os)
-	$lang['operatingsystems_'.$os] = ucfirst($os);
-
+$lang['operatingsystems_android'] = "Android";
+$lang['operatingsystems_blackberry'] = "BlackBerry";
 $lang['operatingsystems_ios'] = "iOS";
+$lang['operatingsystems_linux'] = "Linux";
+$lang['operatingsystems_mac'] = "Mac OS";
+$lang['operatingsystems_windowsdesktop'] = "Windows desktop";
+$lang['operatingsystems_windows8metro'] = "Windows 8 Metro";
+$lang['operatingsystems_windowsphone'] = "Windows Phone";
+
 
 
 // DEVICES
-
-$oss = array(
-"browser",
-"mac",
-"ouya",
-"wii"
-);
-foreach ($oss as $os)
-	$lang['devices_'.$os] = ucfirst($os);
-
 
 $lang['devices_3ds'] = "3DS";
 $lang['devices_3dsxl'] = "3DS XL";
 $lang['devices_androidtablet'] = "Android Tablet";
 $lang['devices_androidsmartphone'] = "Android Smartphone";
 $lang['devices_blackberrysmartphone'] = "BlackBerry Smartphone";
+$lang['devices_browser'] = "Browser";
 $lang['devices_ds'] = "DS";
 $lang['devices_ipod'] = "iPod";
 $lang['devices_iphone'] = "iPhone";
 $lang['devices_ipad'] = "iPad";
+$lang['devices_mac'] = "Mac";
+$lang['devices_ouya'] = "Ouya";
 $lang['devices_pc'] = "PC";
 $lang['devices_ps3'] = "PS3";
 $lang['devices_psp'] = "PSP";
 $lang['devices_psvita'] = "PS Vita";
+$lang['devices_wii'] = "Wii";
 $lang['devices_wiiu'] = "Wii U";
 $lang['devices_windowsphonetablet'] = "Windows Phone Tablet";
 $lang['devices_windowsphonesmartphone'] = "Windows Phone Smartphone";
@@ -236,25 +214,19 @@ $lang['devices_xperiaplay'] = "Xperia Play";
 $lang['devices_xperiasmartphone'] = "Xperia Smartphone";
 
 
-// DEVICES
+// TECHOLOGIES
 
-$technologies = array(
-"blender",
-"flash",
-"flixel",
-"java",
-"python",
-"stencyl"
-);
-foreach ($technologies as $techno)
-	$lang['technologies_'.$techno] = ucfirst($techno);
-
-
+$lang['technologies_blender'] = "Blender Game Engine";
+$lang['technologies_flash'] = "Flash";
+$lang['technologies_flixel'] = "Flixel";
+$lang['technologies_java'] = "Java";
+$lang['technologies_python'] = "Python";
+$lang['technologies_stencyl'] = "Stencyl";
 $lang['technologies_adventuregamestudio'] = "Adventure Games Studio";
 $lang['technologies_air'] = "Adobe AIR";
 $lang['technologies_craftstudio'] = "CraftStudio";
 $lang['technologies_cryengine'] = "Cry Engine";
-$lang['technologies_custom'] = "Custom built";
+$lang['technologies_custom'] = "Custom-built/In-house";
 $lang['technologies_gamemaker'] = "GameMaker";
 $lang['technologies_html5'] = "HTML5 / JS";
 $lang['technologies_impactjs'] = "Impact JS";
@@ -271,21 +243,15 @@ $lang['technologies_xna'] = "XNA";
 
 // STORES
 
-$stores = array(
-"desura",
-"gameolith",
-"gamersgate",
-"impulse",
-"indiecity",
-"indievania",
-"kongregate",
-"newsground",
-"steam",
-);
-foreach ($stores as $store)
-	$lang['stores_'.$store] = ucfirst($store);
-
-
+$lang['stores_desura'] = "Desura";
+$lang['stores_gameolith'] = "Gameolith";
+$lang['stores_gamersgate'] = "Gamersgate";
+$lang['stores_impulse'] = "Impulse";
+$lang['stores_indiecity'] = "Indiecity";
+$lang['stores_indievania'] = "Indievania";
+$lang['stores_kongregate'] = "Kongregate";
+$lang['stores_newsground'] = "Newsground";
+$lang['stores_steam'] = "Steam";
 $lang['stores_amazonmarket'] = "Amazon Marketplace";
 $lang['stores_androidmarket'] = "Android Marketplace";
 $lang['stores_applestore'] = "Apple Store";
@@ -293,25 +259,109 @@ $lang['stores_armorgames'] = "Armor Games";
 $lang['stores_googleplay'] = "Google Play";
 $lang['stores_greenmangaming'] = "GreenManGaming";
 $lang['stores_website'] = "Company/Game Website";
+$lang['stores_windowsstore'] = "Windows 8 Store";
 $lang['stores_xbla'] = "xBox Live Arcade";
 $lang['stores_xblig'] = "xBox Live Indie Games";
 
 
 // SOCIAL NETWORKS
 
-$socialnetworks = array(
-"desura",
-"facebook",
-"pinterest",
-"reddit",
-"steam",
-"twitter"
-);
-foreach ($socialnetworks as $site)
-	$lang['socialnetworks_'.$site] = ucfirst($site);
-
-
+$lang['socialnetworks_desura'] = "Desura";
+$lang['socialnetworks_facebook'] = "Facebook";
+$lang['socialnetworks_pinterest'] = "Pinterest";
+$lang['socialnetworks_reddit'] = "Reddit";
+$lang['socialnetworks_steam'] = "Steam";
+$lang['socialnetworks_twitter'] = "Twitter";
 $lang['socialnetworks_googleplus'] = "Google+";
-$lang['socialnetworks_indiedb'] = "IndieDB";
+$lang['socialnetworks_indiedb'] = "Indie DB";
 $lang['socialnetworks_linkedin'] = "Linked In";
-$lang['socialnetworks_moddb'] = "ModDB";
+$lang['socialnetworks_moddb'] = "Mod DB";
+
+
+// Nb PLAYERS
+
+$lang['nbplayers_singleplayer'] = "Single player";
+$lang['nbplayers_coop'] = "Co-op";
+$lang['nbplayers_multiplayer'] = "Multiplayer";
+$lang['nbplayers_mmo'] = "MMO (Massively Multiplayer Online)";
+
+
+// DEVELOPEMENT STATES
+
+$lang['developementstates_concept'] = "Concept/Design phase";
+$lang['developementstates_prototype'] =	"Prototype phase";
+$lang['developementstates_earlyproduction'] = "Early production";
+$lang['developementstates_firstgameplay'] = "First gameplay";
+$lang['developementstates_publicplayablebuilt'] = "Public playable built";
+$lang['developementstates_released'] = "Released";
+$lang['developementstates_canceled'] = "Canceled";
+
+
+// THEMES
+
+$lang['themes_fantasy'] = "Fantasy";
+$lang['themes_medieval'] = "Medieval";
+$lang['themes_comic'] = "Comic";
+$lang['themes_futuristic'] = "Futuristic";
+$lang['themes_horror'] = "Horror";
+$lang['themes_mafia'] = "Mafia";
+$lang['themes_modern'] = "Modern";
+$lang['themes_scifi'] = "Sci-fi";
+$lang['themes_steampunk'] = "Steampunk";
+$lang['themes_western'] = "Western";
+
+
+// GENRES
+
+$lang['genres_action'] = "Action";
+$lang['genres_adventure'] = "Adventure";
+$lang['genres_arcade'] = "Arcade";
+$lang['genres_fighting'] = "Fighting";
+$lang['genres_platformer'] = "Platformer";
+$lang['genres_puzzle'] = "Puzzle";
+$lang['genres_racing'] = "Racing";
+$lang['genres_shooter'] = "Shooter";
+$lang['genres_simulation'] = "Simulation";
+$lang['genres_sport'] = "Sport";
+$lang['genres_strategy'] = "Strategy";
+$lang['genres_citybuilding'] = "City Building";
+$lang['genres_pointandclick'] = "Point-and-Click";
+$lang['genres_resources'] = "Resources Management";
+$lang['genres_roguelike'] = "Rogue-like";
+$lang['genres_roleplaying'] = "Role playing";
+$lang['genres_rts'] = "Real Time Strategy";
+$lang['genres_shootemup'] = "Shoot'Em'Up";
+$lang['genres_towerdefense'] = "Tower Defense";
+
+
+// POINT OF VIEW
+
+$lang['viewpoints_firstperson'] = "First Person";
+$lang['viewpoints_isometric'] = "Isometric";
+$lang['viewpoints_thirdperson'] = "Third Person";
+$lang['viewpoints_topdown'] = "Top-Down";
+
+
+// TAGS
+
+$lang['tags_2.5d'] = "2.5D";
+$lang['tags_2d'] = "2D";
+$lang['tags_3d'] = "3D";
+$lang['tags_casual'] = "Casual";
+$lang['tags_cellshading'] = "Cell Shading";
+$lang['tags_fun'] = "Fun";
+$lang['tags_hardcore'] = "Hardcore";
+$lang['tags_leveleditor'] = "Level Editor";
+$lang['tags_physics'] = "Physics";
+$lang['tags_sidescrolling'] = "Side-Scrolling";
+$lang['tags_turnbased'] = "Turn-Based";
+
+// REPORTS
+
+$lang["report_title"] = "Reports";
+$lang["report_description"] = "Description";
+$lang["report_type"] = "Type of report";
+$lang["report_noncritical"] = "Non critical";
+$lang["report_critical"] = "Critical";
+$lang["report_submit"] = "Submit this report";
+$lang["report_gobacktoprofile"] = "Go back to the profile";

@@ -1,13 +1,9 @@
 {
 	"languages": [
-		"english",
 		"chinese",
-		"french",
-		"german",
-		"italian",
+		"english",
 		"japonese",
-		"russian",
-		"spanish"
+		"russian"
 	],
 
 	"countries": [
@@ -34,8 +30,9 @@
 		"ios",
 		"linux",
 		"mac",
-		"windows",
-		"windowsphone7"
+		"windowsdesktop",
+		"windows8metro",
+		"windowsphone"
 	],
 	
 	"devices": [
@@ -74,7 +71,7 @@
 		"flash",
 		"flixel",
 		"gamemaker",
-		"html5/js",
+		"html5",
 		"impactjs",
 		"java",
 		"ogre3d",
@@ -107,6 +104,7 @@
 		"newsground",
 		"steam",
 		"website",
+		"windowsstore",
 		"xbla",
 		"xblig"
 	],
@@ -135,7 +133,7 @@
 		"concept",
 		"prototype",
 		"earlyproduction",
-		"internalplayablebuilt",
+		"firstgameplay",
 		"publicplayablebuilt",
 		"released",
  		"canceled"

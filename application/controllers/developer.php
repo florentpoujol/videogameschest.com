@@ -21,7 +21,7 @@ class Developer extends CI_Controller {
     function index( $name_or_id = null ) {
     	$where = array();
     	if( is_numeric( $name_or_id ) )
-    		$where['id'] = $name_or_id;
+    		$where['developer_id'] = $name_or_id;
     	else
     		$where['name'] = url_to_name( $name_or_id );
 

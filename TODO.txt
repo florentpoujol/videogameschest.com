@@ -6,13 +6,20 @@ Apple app store
 
 
 
+
+QUESTION
+
+sould i make a difference between windows (and windows phone) version <8 and >8
+
+
+
+
+
 STORIES
 
 - administrators can edit their account
 
 - visitors can see developer's games on the developer profile
-
-- developer can set a release date for their game
 
 - user can over a questions at the side of a field (in a from) and a tooltip show up explaing how to fill the field
 
@@ -36,6 +43,8 @@ STORIES
 
 STORIES DONE
 
+12/10/2012
+- developer can set a release date for their game
 
 09/10/2012
 - the developers table has the same structure as the games table
