@@ -114,18 +114,22 @@ class Admin_model extends CI_Model {
      * @param  string $what  [description]
      * @return [type]        [description]
      */
-    function get_reports() {
-        static $reports = null;
+    function get_reports($what, $order_by) {
+        $reports = array();
 
-        if ($reports != null)
-            return $reports;
-        
-        $db_devs = $this->db
-        ->from('developers')
-        ->where("report_count>0")
-        ->order_by("report", "asc");
+        $this->db
+        ->from('reports')
+        ->order_by($order_by);
 
-        $reports->report_data = json_decode($reports->report_data, true);
+        if ($what != 'both')
+            $this->db->where("recipient", $what);
+
+        $db_reports = $this->db->get();
+
+        foreach ($db_reports->result() as $report) {
+            $reports[] = $report;
+        }
+
         return $reports;
     }
 
@@ -137,14 +141,15 @@ class Admin_model extends CI_Model {
         $this->db
         ->from("reports")
         ->where("profile_type", "developer")
-        ->where("profile_id", $dev_id);
+        ->where("profile_id", $dev_id)
+        ->sort_by("date", "asc");
 
-        if ($get_admin_reports)
+        if ( ! $get_admin_reports)
             $this->db->where("recipient", "developer");
 
-        $dev_reports = $this->db->get();
+        $reports = $this->db->get();
 
-        foreach ($dev_reports->result() as $report) {
+        foreach ($reports->result() as $report) {
             $dev_reports[] = $report;
         }
 
@@ -153,17 +158,18 @@ class Admin_model extends CI_Model {
         ->where("developer_id", $dev_id)->get();
 
         foreach ($games->result() as $game) {
+            // then get the reports for each games
             $this->db
             ->from("reports")
             ->where("profile_type", "game")
             ->where("profile_id", $game->game_id);
 
-            if ($get_admin_reports)
+            if ( ! $get_admin_reports)
                 $this->db->where("recipient", "developer");
 
-            $game_reports = $this->db->get();
+            $reports = $this->db->get();
 
-            foreach ($game_reports->result() as $report)
+            foreach ($reports->result() as $report)
                 $dev_reports[] = $report;
         }
 

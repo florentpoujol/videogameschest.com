@@ -1,5 +1,20 @@
 		<div id="admin_report_form">
-<?php if (userdata("is_admin")): ?>
+			<h1>Reports</h1>
+
+<?php if (IS_ADMIN): ?>
+			<input type="checkbox" name="profile_type" value="developer"> Developer <br>
+			<input type="checkbox" name="profile_type" value="admin"> Admins <br>
+			<input type="checkbox" name="profile_type" value="both" checked="checked"> Both <br>
+			<br>
+			Sort by
+			<input type="radio" name="sort_by" value="date asc" checked="checked">Date Asc<br>
+			<input type="radio" name="sort_by" value="date desc">Date desc <br>
+
+
+
+
+<?php if (IS_ADMIN): ?>
+
 			<fieldset>
 				<legend>Critical reports</legend>
 	
@@ -19,6 +34,7 @@
 							<th>Delete ?</th>
 						</tr>
 <?php
+
 	foreach( $reports as $report ):
 		
 ?>
@@ -27,7 +43,7 @@
 							<td>'.$report->profile_id.'</td>
 							<td>'.$report->date.'</td>
 							<td>'.$report->recipient.'</td>
-							<td>'.$report->text.'</td>
+							<td>'.$report->description.'</td>
 							<td><input type="checkbox" name="delete[]" value="'.$report->profile_id.'"></td>
 
 						</tr>'; ?> 

@@ -12,10 +12,13 @@ class Admin extends CI_Controller {
         if ($lang)
             $this->lang->load( 'main', $lang );
 
-        if (userdata("is_admin"))
-            Define("IS_ADMIN", true);
-        else
-            Define("IS_ADMIN", true);
+        $keys = array("is_logged_in", "is_admin", "is_developer", "user_id");
+        foreach ($keys as $key) {
+            if (userdata($key))
+                Define(strtoupper($key), true);
+            else
+                Define(strtoupper($key), false);
+        }
 	}
 
 
@@ -25,10 +28,10 @@ class Admin extends CI_Controller {
      * Main hub with no content but the admin menu
      */
     function index() {
-    	if ( ! userdata( 'is_logged_in' ))
+    	if ( ! IS_LOGGED_IN)
     		redirect( 'admin/login' );
 
-        if (userdata( 'is_admin' )) {
+        if (IS_ADMIN) {
             $this->layout
             ->view( 'forms/select_developer_to_edit_form' );
         }
@@ -46,7 +49,7 @@ class Admin extends CI_Controller {
      */
     function login() {
     	// redirect if alredy logged in
-    	if (userdata( 'is_logged_in' ))
+    	if (IS_LOGGED_IN)
     		redirect( 'admin' );
 
     	$error = '';
@@ -115,10 +118,10 @@ class Admin extends CI_Controller {
      * Page to edit an admin account
      */
     function editadmin() {
-        if ( ! userdata( 'is_logged_in' ))
+        if ( ! IS_LOGGED_IN)
             redirect( 'admin/login' );
 
-        if ( ! userdata( 'is_admin' ))
+        if ( ! IS_ADMIN)
             redirect( 'admin' );
 
         // the has been submitted
@@ -156,7 +159,7 @@ class Admin extends CI_Controller {
         }
         // no form submitted
         else {
-            $id = userdata( 'user_id' );
+            $id = USER_ID;
             $form = get_db_row( 'administrators', 'id', $id );
             $form->id = $id;
             $form->password = '';
@@ -172,10 +175,10 @@ class Admin extends CI_Controller {
      * Page to edit it's own account, redirect to the hub or editdeveloper
      */
     function edityouraccount() {
-        if ( ! userdata( 'is_logged_in' ))
+        if ( ! IS_LOGGED_IN)
             redirect( 'admin/login' );
 
-        if (userdata( 'is_developer' ))
+        if (IS_DEVELOPER)
             redirect( 'admin/editdeveloper/'.userdata( 'user_id') );
         else //is admin
             redirect( 'admin/editadmin' );
@@ -230,7 +233,7 @@ class Admin extends CI_Controller {
                     $this->layout->view( 'forms/developer_form', array('form'=>$form) )->load();
             }
         }
-        elseif (userdata( 'is_admin' )) 
+        elseif (IS_ADMIN) 
             $this->layout->view( 'forms/developer_form' )->load();
         else
             redirect( 'adddeveloper' );
@@ -244,12 +247,12 @@ class Admin extends CI_Controller {
      * @param int $id The id of the developer to edit
      */
     function editdeveloper( $id = null ) {
-        if ( ! userdata( 'is_logged_in' ))
+        if ( ! IS_LOGGED_IN)
             redirect( 'admin/login' );
 
         // redirect developer to their edit page only
-        if (userdata( 'is_developer' ) && $id != userdata( 'user_id' ) )
-            redirect( 'admin/editdeveloper/'.userdata( 'user_id' ) );
+        if (IS_DEVELOPER && $id != USER_ID )
+            redirect( 'admin/editdeveloper/'.USER_ID );
         
         //
         if (post( "select_developer_to_edit_form_submitted" )) {
@@ -359,7 +362,7 @@ class Admin extends CI_Controller {
                 }
             }
         }
-        elseif (userdata( 'is_admin' )) 
+        elseif (IS_ADMIN) 
             $this->layout->view( 'forms/game_form' )->load();
         else
             redirect( 'addgame' );
@@ -373,7 +376,7 @@ class Admin extends CI_Controller {
      * @param int $id The id of the game to edit
      */
     function editgame( $id = null ) {
-        if ( ! userdata( 'is_logged_in' ))
+        if ( ! IS_LOGGED_IN)
             redirect( 'admin/login' );
 
 
@@ -417,13 +420,13 @@ class Admin extends CI_Controller {
         // no form has been submitted, just show the form filled with data from the database
         elseif ($id != null) {
             // prevent developer to edit a game they don't own
-            if (userdata( 'is_developer' )) {
-                //$games = $this->main_model->get_dev_games( userdata( 'user_id' ) );
-                $games = get_db_rows( 'games', 'developer_id', userdata( 'user_id' ) );
+            if (IS_DEVELOPER) {
+                //$games = $this->main_model->get_dev_games( USER_ID );
+                $games = get_db_rows( 'games', 'developer_id', USER_ID );
                 $game_is_owned_by_dev = false;
 
                 foreach( $games->results() as $game ) {
-                    if ($game->id == userdata( 'user_id' ))
+                    if ($game->id == USER_ID)
                         $game_is_owned_by_dev = true;
                 }
 
@@ -470,7 +473,7 @@ class Admin extends CI_Controller {
      * Handle creating, deleting, and reading private messages
      */
     function messages() {
-        if ( ! userdata( 'is_logged_in' ))
+        if ( ! IS_LOGGED_IN)
             redirect( 'admin/login' );
 
         $form = array();
@@ -485,8 +488,8 @@ class Admin extends CI_Controller {
                     $form['recipient_id'] = 0;
 
                 $form['sender_id'] = 0;
-                if (userdata( 'is_developer' )) 
-                    $form['sender_id'] = userdata( 'user_id' );
+                if (IS_DEVELOPER) 
+                    $form['sender_id'] = USER_ID;
                 
                 $this->main_model->insert_message( $form );
                 $form['success'] = 'Message sent successfully.';
@@ -526,23 +529,28 @@ class Admin extends CI_Controller {
             redirect($report_form["profile_type"].'/'.$report_form["profile_id"]."#report_form");
         }
 
-        elseif (userdata('is_logged_in')) {
-            // si admin => monter tous les reports triés par count
+        elseif (IS_LOGGED_IN) {
+            // si admin => monter tous les reports
             // si dev montrer tous les reports noncritical
-            //$reports = array("admin"=>array(), "developer"=>array());
-
+            $reports = array();
             
-            $dev_reports = $this->admin_model->get_developer_reports(1, true);
-            //$game_reports = $this->admin_model->get_reports('games');
-
             if (IS_ADMIN) {
-                
-                echo "admin const <br>";
+                //if (post("form_admin_report"))
 
+                $what = "admin";
+                $order_by = "date desc";
+
+                $reports = $this->admin_model->get_reports($what, $order_by);
+
+                //$reports = $this->admin_model->get_developer_reports(1, true);
             }
+            else
+                $reports = $this->admin_model->get_developer_reports(USER_ID);
+            
+
 
             $this->layout
-            ->view("forms/admin_report_form", array("reports"=>$dev_reports))
+            ->view("forms/admin_report_form", array("reports"=>$reports))
             ->load();
         }
 
