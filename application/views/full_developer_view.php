@@ -1,26 +1,26 @@
 <?php
-$site_data = get_site_data();
+$site_data = get_static_data('site');
 
-$db_dev->socialnetworks = json_decode( $db_dev->socialnetworks, true );
+//$db_dev->data["socialnetworks"] = json_decode( $db_dev->socialnetworks, true );
 ?>
 		<section id="full_developer_profile">
 			<h1><?php echo lang('developer_page_title');?></h1>
 
 			<header>
 				<span><?php echo $db_dev->name;?></span> 
-				<?php echo '<span><a href="'.$db_dev->website.'" title="'.lang('developer_website_title').'">'.$db_dev->name.'</a></span>'; ?> 
-				<span><?php echo lang('developer_teamsize').' : '.$db_dev->teamsize;?></span> 
-				<span><?php echo lang('developer_country').' : '.$site_data->countries[$db_dev->country];?></span>
+				<?php echo '<span><a href="'.$db_dev->data["website"].'" title="'.lang('developer_website_title').'">'.$db_dev->name.'</a></span>'; ?> 
+				<span><?php echo lang('developer_teamsize').' : '.$db_dev->data["teamsize"];?></span> 
+				<span><?php echo lang('developer_country').' : '.lang("countries_".$db_dev->data["country"]);?></span>
 			</header>
 
 			<article>
-				<div id="developer_pitch">
-					<?php echo '<img src="'.$db_dev->logo.'" alt="'.$db_dev->name.' logo" id="developer_logo" maxwidth="100px"/>';
-					echo parse_bbcode($db_dev->pitch); ?> 
+				<div id="profile_pitch">
+					<?php echo '<img src="'.$db_dev->data["logo"].'" alt="'.$db_dev->name.' logo" id="profile_logo" maxwidth="100px"/>';
+					echo parse_bbcode($db_dev->data["pitch"]); ?> 
 				</div>
 
-				<div id="developer_blogfeed">
-					<?php echo lang('developer_blogfeed'); ?>
+				<div id="profile_blogfeed">
+					<?php echo lang('game_blogfeed'); ?>
 					<ul>
 						<?php 
 						foreach( $db_dev->feed_items as $item ) {
@@ -30,28 +30,30 @@ $db_dev->socialnetworks = json_decode( $db_dev->socialnetworks, true );
 					 </ul>
 				</div>
 
-				<div id="developer_socialnetworks">
+				<div id="profile_socialnetworks">
 					<?php echo lang('developer_socialnetworks').' : '; ?> 
 					
 					<?php
-					$count = count($db_dev->socialnetworks['names']);
+					$count = count($db_dev->data['socialnetworks']['names']);
 					for( $i = 0; $i < $count; $i++ )
-						echo '<a href="'.$db_dev->socialnetworks['urls'][$i].'">'.$site_data->socialnetworks[$db_dev->socialnetworks['names'][$i]].'</a> ';
+						echo '<a href="'.$db_dev->data['socialnetworks']['urls'][$i].'">'.lang("socialnetworks_".$db_dev->data['socialnetworks']['names'][$i]).'</a> ';
 					?> 
 				</div>
+
 				<?php 
 				$categories = array('technologies', 'operatingsystems', 'devices', 'stores');
 
 				foreach( $categories as $category ):
+					if( count( $db_dev->data[$category] ) == 0 )
+						continue;
 				?> 
-				<div id="developer_<?php echo $category;?>">
+				<div id="profile_<?php echo $category;?>">
 					<?php echo lang('developer_'.$category).' : '; ?> 
 					
 					<?php
-					$items = explode( ',', $db_dev->$category );
 					$text = '';
-					foreach( $items as $item ) {
-						$text .= $site_data->{$category}[$item].', ';
+					foreach( $db_dev->data[$category] as $item ) {
+						$text .= lang($category."_$item")." ,";
 					}
 
 					echo rtrim( $text, ', ' );

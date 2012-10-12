@@ -10,8 +10,13 @@
 function get_form_errors( $form = null ) {
 	$errors = validation_errors();
 
-	if( isset( $form ) && isset( $form['errors'] ) )
+	if (!isset($form) || $form === false)
+		return;
+
+	if(is_array($form) && isset( $form['errors'] ) )
 		$errors .= "\n".$form['errors'];
+	else
+		$errors = "\n $form";
 
 	if( $errors != '' ) {
 		$errors =
@@ -31,17 +36,25 @@ function get_form_errors( $form = null ) {
  * @param array The $form array that may contains the 'success' key
  * @return string The formated success messages
  */
-function get_form_success( $form ) {
-	$html = '';
+function get_form_success( $form = null ) {
+	$success = "";
 
-	if( isset($form['success']) ) {
-		$html = 
+	if (!isset($form) || $form === false)
+		return;
+
+	if(is_array($form) && isset($form['success'])) //  isset($form['success']) returns true when $form is a string ?
+		$success = $form['success'];
+	else
+		$success = $form;
+	
+	if ($success != "") {
+		$success = 
 '<div class="form_success">
-	'.$form['success'].'
+	'.$success.'
 </div>';
 	}
 
-	return $html;
+	return $success;
 }
 
 

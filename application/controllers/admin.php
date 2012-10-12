@@ -509,7 +509,7 @@ class Admin extends CI_Controller {
      * ie : "developer:5" "game:10"
      */
     function reports( $infos = null ) {
-        if ($infos !== null) {
+        /*if ($infos !== null) {
             $infos = explode(":", $infos);
 
             if ( ! isset($infos[0]) ) // item type : developer or game
@@ -519,22 +519,26 @@ class Admin extends CI_Controller {
                 $infos[1] = "";
 
             // vérifier que l'id existe
-                
+
             // if one of the $infos values is empty (because a problem in the url), the rport will not be saved
             $this->layout
             ->view("forms/report_form", array("item_type"=>$infos[0], "item_id"=>$infos[1]))
             ->load();
-        }
+        }*/
 
-        elseif (post("report_form_submitted")) {
-            $form = post("form");
+        if (post("report_form_submitted")) {
+            $report_form = post("report_form");
 
-            if ($form["item_type"] != "" && $form["item_id"] != "")
-                $this->admin_model->insert_report($form);
-            else {
+            if (trim($report_form["description"]) != "") {
+                $this->admin_model->insert_report($report_form);
+                $this->session->set_flashdata('report_success', lang("report_form_success"));
+            }
+
+            redirect($report_form["item_type"].'/'.$report_form["item_id"]."#report_form");
+            /*else {
                 $form["errors"] = "There has been an error. The item_type or item_id is not set.";
                 $this->layout->view("forms/report_form", array("form"=>$form))->load();
-            }
+            }*/
         }
 
         elseif (userdata('is_logged_in')) {

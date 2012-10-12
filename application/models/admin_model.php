@@ -71,30 +71,33 @@ class Admin_model extends CI_Model {
     //----------------------------------------------------------------------------------
 
     /**
-     * [insert_report description]
-     * @param  [type] $form [description]
-     * @return [type]       [description]
+     * Insert a new report in the data base
+     * @param  array $report_form The data comming from the form
      */
-    function insert_report( $report ) {
-        $type = $report["item_type"];
-        $db_report = get_db_row( $type."s", $type."_id", $report["item_id"] );
+    function insert_report( $report_form ) {
+        $type = $report_form["item_type"];
+        $db_report = get_db_row( $type."s", $type."_id", $report_form["item_id"] );
 
         if ($db_report === false)
             return;
 
-        $report_data = json_decode($db_report->"report_data", true);
+        $report_data = json_decode($db_report->report_data, true);
+        $report_type = $report_form["type"];
+        
+        if ( ! isset( $report_data[$report_type] ) )
+            $report_data[$report_type] = array();
 
-        if ( ! isset( $report_data[$report["report_type"]] ) )
-            $report_data[$report["report_type"]] = array();
-
-        $report_data[$report["report_type"]][] = $report["description"];
+        $report_data[$report_type][] = $report_form["description"];
+        
+        $count = $db_report->report_count;
+        $count++;
 
         $db_report = array(
-            "report_count" => $db_report->report_count++,
-            "report_data"  => json_encode($report_data);
+            "report_count" => $count,
+            "report_data"  => json_encode($report_data)
         );
 
-        $this->db->update( $table, $db_report, $type."_id = ".$report["item_id"] );
+        $this->db->update( $type."s", $db_report, $type."_id = ".$report_form["item_id"] );
     }
 }
 

@@ -48,7 +48,7 @@ class Game_model extends CI_Model {
      * @return object/false the DB object or false if nothing is found
      */
     function get_game( $where, $value = null ) {
-        $game = $this->get_row( 'games', $where, $value );
+        $game = $this->main_model->get_row( 'games', $where, $value );
 
         if( $game == false )
             return false;

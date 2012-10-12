@@ -358,10 +358,11 @@ $lang['tags_turnbased'] = "Turn-Based";
 
 // REPORTS
 
-$lang["report_title"] = "Reports";
+$lang["report_title"] = "Report this profile";
 $lang["report_description"] = "Description";
 $lang["report_type"] = "Type of report";
 $lang["report_noncritical"] = "Non critical";
 $lang["report_critical"] = "Critical";
 $lang["report_submit"] = "Submit this report";
 $lang["report_gobacktoprofile"] = "Go back to the profile";
+$lang["report_form_success"] = "Thanks, you. The report has been saved.";

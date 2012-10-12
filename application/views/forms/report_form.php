@@ -1,27 +1,24 @@
 		<div id="report_form">
-			<h1><?php echo lang("report_title"); ?></h1>
+			<fieldset>
+				<legend><?php echo lang("report_title"); ?></legend>
 <?php
-if ( ! isset($item_type) )
-    $item_type = "";
-if ( ! isset($item_id) )
-    $item_id = "";
-
-if(isset($form))
-	echo get_form_errors($form);
-?>		
-
-			<?php echo form_open("admin/reports"); ?>
-				<label for="description"><?php echo lang("report_description");?></label> <br>
-				<textarea name="form[description]" id="description"></textarea> <br>
-				<br>
-				<?php echo lang("report_type"); ?> :<br>
-				<input type="radio" name="form[report_type]" value="noncritical" id="reporttype_noncritical" checked="checked"> <label for="reporttype_noncritical"><?php echo lang("report_noncritical");?></label> <br>
-				<input type="radio" name="form[report_type]" value="critical" id="reporttype_critical"> <label for="reporttype_critical"><?php echo lang("report_critical");?></label> <br>
-				<br>
-				<?php echo '<input type="hidden" name="form[item_type]" value="'.$item_type.'"'; ?>>
-				<?php echo '<input type="hidden" name="form[item_id]" value="'.$item_id.'"'; ?>>
-				<input type="submit" name="report_form_submitted" value="<?php echo lang("report_submit");?>">
-			</form>
-			<br>
-			<?php echo '<a href="'.site_url("$item_type/$item_id").'">'.lang("report_gobacktoprofile").'</a>'; ?>
-		</div> <!-- /#report_form -->
+echo get_form_errors( $this->session->flashdata('report_errors') );
+echo get_form_success( $this->session->flashdata('report_success') );
+$uri_strings = explode( "/", uri_string() ); // uri_string return the actual URL, not the rerouted one
+$item_id = $uri_strings[1];
+?>			
+				<?php echo form_open("admin/reports"); ?>
+					<label for="description"><?php echo lang("report_description");?></label> <br>
+					<textarea name="report_form[description]" id="description"></textarea> <br>
+					<br>
+					<?php echo lang("report_type"); ?> :<br>
+					<input type="radio" name="report_form[type]" value="noncritical" id="reporttype_noncritical" checked="checked"> <label for="reporttype_noncritical"><?php echo lang("report_noncritical");?></label> <br>
+					<input type="radio" name="report_form[type]" value="critical" id="reporttype_critical"> <label for="reporttype_critical"><?php echo lang("report_critical");?></label> <br>
+					<br>
+					<?php echo '<input type="hidden" name="report_form[item_type]" value="'.get_page().'"'; ?>>
+					<?php echo '<input type="hidden" name="report_form[item_id]" value="'.$item_id.'"'; ?>>
+					<input type="submit" name="report_form_submitted" value="<?php echo lang("report_submit");?>">
+				</form>
+			</fieldset>
+		</div> 
+		<!-- /#report_form -->

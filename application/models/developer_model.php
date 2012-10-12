@@ -46,6 +46,54 @@ class Developer_model extends CI_Model {
         if( count($form) > 0 )
             $this->db->update( 'developers', $form, 'developer_id = '.$id );
     }
+
+
+    // ----------------------------------------------------------------------------------
+
+    /**
+     * Return developers from the database
+     * Make sure that all potential data keys exists and have a default value
+     * @param array/string $where An assoc array with where criteria or a single key as string
+     * @param string $value=null If the $where parameter is a single key, this one is its value
+     * @return object/false the DB object or false if nothing is found
+     */
+    function get_developer( $where, $value = null ) {
+        $dev = $this->main_model->get_row( 'developers', $where, $value );
+
+        if( $dev == false )
+            return false;
+
+        $data = json_decode( $dev->data, true );
+
+        // make sure keys exists and set a default value if needed
+        $string_keys = array( 'pitch', 'logo', 'blogfeed', 'website', 'country' );
+
+        foreach( $string_keys as $key ) {
+            if( !isset( $data[$key] ) )
+                $data[$key] = '';
+        }
+
+        // arrays
+        $array_keys = array('technologies', 'operatingsystems', 'devices', 'stores' );
+
+        foreach( $array_keys as $key ) {
+            if( !isset( $data[$key] ) )
+                $data[$key] = array();
+        }
+
+        // array( 'names'=>array(), 'urls'=>array() )
+        $names_urls_array_keys = array('socialnetworks');
+
+        foreach( $names_urls_array_keys as $key ) {
+            if( !isset( $data[$key] ) )
+                $data[$key] = array( 'names' => array() );
+        }
+
+        $dev->data = $data;
+        $dev->report_data = json_decode($dev->report_data, true);
+
+        return $dev;
+    }
 }
 
 /* End of file developer_model.php */
