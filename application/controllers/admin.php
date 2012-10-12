@@ -11,6 +11,11 @@ class Admin extends CI_Controller {
         $lang = userdata( 'language' );
         if ($lang)
             $this->lang->load( 'main', $lang );
+
+        if (userdata("is_admin"))
+            Define("IS_ADMIN", true);
+        else
+            Define("IS_ADMIN", true);
 	}
 
 
@@ -509,22 +514,6 @@ class Admin extends CI_Controller {
      * ie : "developer:5" "game:10"
      */
     function reports( $infos = null ) {
-        /*if ($infos !== null) {
-            $infos = explode(":", $infos);
-
-            if ( ! isset($infos[0]) ) // item type : developer or game
-                $infos[0] = "";
-
-            if ( ! isset($infos[1]) ) // item id
-                $infos[1] = "";
-
-            // vérifier que l'id existe
-
-            // if one of the $infos values is empty (because a problem in the url), the rport will not be saved
-            $this->layout
-            ->view("forms/report_form", array("item_type"=>$infos[0], "item_id"=>$infos[1]))
-            ->load();
-        }*/
 
         if (post("report_form_submitted")) {
             $report_form = post("report_form");
@@ -534,15 +523,27 @@ class Admin extends CI_Controller {
                 $this->session->set_flashdata('report_success', lang("report_form_success"));
             }
 
-            redirect($report_form["item_type"].'/'.$report_form["item_id"]."#report_form");
-            /*else {
-                $form["errors"] = "There has been an error. The item_type or item_id is not set.";
-                $this->layout->view("forms/report_form", array("form"=>$form))->load();
-            }*/
+            redirect($report_form["profile_type"].'/'.$report_form["profile_id"]."#report_form");
         }
 
         elseif (userdata('is_logged_in')) {
-            $this->layout->view("admin/reports")->load();
+            // si admin => monter tous les reports triés par count
+            // si dev montrer tous les reports noncritical
+            //$reports = array("admin"=>array(), "developer"=>array());
+
+            
+            $dev_reports = $this->admin_model->get_developer_reports(1, true);
+            //$game_reports = $this->admin_model->get_reports('games');
+
+            if (IS_ADMIN) {
+                
+                echo "admin const <br>";
+
+            }
+
+            $this->layout
+            ->view("forms/admin_report_form", array("reports"=>$dev_reports))
+            ->load();
         }
 
         else

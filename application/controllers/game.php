@@ -25,7 +25,7 @@ class Game extends CI_Controller {
     	else
     		$where['name'] = url_to_name( $name_or_id );
 
-        $db_game = $this->main_model->get_game( $where );
+        $db_game = $this->game_model->get_game( $where );
         
         if( $db_game == false )
         	redirect( 'home/404/gamenotfound:'.$name_or_id );
@@ -51,6 +51,7 @@ class Game extends CI_Controller {
             
             $this->layout
             ->view( 'full_game_view', array('db_game'=>$db_game) )
+            ->view("forms/report_form")
             ->load();
         }
         else

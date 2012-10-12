@@ -124,10 +124,12 @@ $lang['game_operatingsystems'] = "Operating systems";
 $lang['game_devices'] = "Devices";
 $lang['game_stores'] = "Stores";
 $lang['game_genres'] = "Genres";
-$lang['game_themes'] = "Stores";
-$lang['game_viewpoints'] = "Stores";
-$lang['game_nbplayers'] = "Stores";
-$lang['game_tags'] = "tags";
+$lang['game_themes'] = "Themes";
+$lang['game_viewpoints'] = "Point of view";
+$lang['game_nbplayers'] = "Number of players";
+$lang['game_tags'] = "Tags";
+$lang['game_screenshots'] = "Screenshots";
+$lang['game_videos'] = "Videos";
 
 
 
@@ -360,9 +362,9 @@ $lang['tags_turnbased'] = "Turn-Based";
 
 $lang["report_title"] = "Report this profile";
 $lang["report_description"] = "Description";
-$lang["report_type"] = "Type of report";
-$lang["report_noncritical"] = "Non critical";
-$lang["report_critical"] = "Critical";
+$lang["report_recipient"] = "Report recipient";
+$lang["report_developer"] = "Developer/Admin";
+$lang["report_admin"] = "Admin Only";
 $lang["report_submit"] = "Submit this report";
 $lang["report_gobacktoprofile"] = "Go back to the profile";
 $lang["report_form_success"] = "Thanks, you. The report has been saved.";

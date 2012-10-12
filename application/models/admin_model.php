@@ -75,6 +75,11 @@ class Admin_model extends CI_Model {
      * @param  array $report_form The data comming from the form
      */
     function insert_report( $report_form ) {
+        $date = new DateTime();
+        $report_form["date"] = $date->format('Y-m-d H:i:s');
+        $this->db->insert( "reports", $report_form );
+    }
+    function insert_report_old( $report_form ) {
         $type = $report_form["item_type"];
         $db_report = get_db_row( $type."s", $type."_id", $report_form["item_id"] );
 
@@ -82,12 +87,12 @@ class Admin_model extends CI_Model {
             return;
 
         $report_data = json_decode($db_report->report_data, true);
-        $report_type = $report_form["type"];
-        
-        if ( ! isset( $report_data[$report_type] ) )
-            $report_data[$report_type] = array();
+        $report_recipient = $report_form["recipient"];
 
-        $report_data[$report_type][] = $report_form["description"];
+        if ( ! isset( $report_data[$report_recipient] ) )
+            $report_data[$report_recipient] = array();
+
+        $report_data[$report_recipient][] = $report_form["description"];
         
         $count = $db_report->report_count;
         $count++;
@@ -98,6 +103,71 @@ class Admin_model extends CI_Model {
         );
 
         $this->db->update( $type."s", $db_report, $type."_id = ".$report_form["item_id"] );
+    }
+
+
+    //----------------------------------------------------------------------------------
+
+    /**
+     * [get_reports description]
+     * @param  [type] $table [description]
+     * @param  string $what  [description]
+     * @return [type]        [description]
+     */
+    function get_reports() {
+        static $reports = null;
+
+        if ($reports != null)
+            return $reports;
+        
+        $db_devs = $this->db
+        ->from('developers')
+        ->where("report_count>0")
+        ->order_by("report", "asc");
+
+        $reports->report_data = json_decode($reports->report_data, true);
+        return $reports;
+    }
+
+
+    function get_developer_reports( $dev_id, $get_admin_reports = false ) {
+        $dev_reports = array();
+
+        // first get the developer reports
+        $this->db
+        ->from("reports")
+        ->where("profile_type", "developer")
+        ->where("profile_id", $dev_id);
+
+        if ($get_admin_reports)
+            $this->db->where("recipient", "developer");
+
+        $dev_reports = $this->db->get();
+
+        foreach ($dev_reports->result() as $report) {
+            $dev_reports[] = $report;
+        }
+
+        // get all games for this dev
+        $games = $this->db->select("game_id")->from("games")
+        ->where("developer_id", $dev_id)->get();
+
+        foreach ($games->result() as $game) {
+            $this->db
+            ->from("reports")
+            ->where("profile_type", "game")
+            ->where("profile_id", $game->game_id);
+
+            if ($get_admin_reports)
+                $this->db->where("recipient", "developer");
+
+            $game_reports = $this->db->get();
+
+            foreach ($game_reports->result() as $report)
+                $dev_reports[] = $report;
+        }
+
+        return $dev_reports;
     }
 }
 

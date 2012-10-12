@@ -1,5 +1,5 @@
 <?php
-$site_data = get_site_data();
+$site_data = get_static_data('site');
 ?>
 		<section id="full_profile">
 			<h1><?php echo lang('game_page_title');?></h1>
@@ -46,7 +46,7 @@ $site_data = get_site_data();
 					<?php
 					$count = count($db_game->data['socialnetworks']['names']);
 					for( $i = 0; $i < $count; $i++ )
-						echo '<a href="'.$db_game->data['socialnetworks']['urls'][$i].'">'.$site_data->socialnetworks[$db_game->data['socialnetworks']['names'][$i]].'</a> ';
+						echo '<a href="'.$db_game->data['socialnetworks']['urls'][$i].'">'.lang("socialnetworks_".$db_game->data['socialnetworks']['names'][$i]).'</a> ';
 					?> 
 				</div>
 				
@@ -56,7 +56,7 @@ $site_data = get_site_data();
 					<?php
 					$count = count($db_game->data['stores']['names']);
 					for( $i = 0; $i < $count; $i++ )
-						echo '<a href="'.$db_game->data['stores']['urls'][$i].'">'.$site_data->stores[$db_game->data['stores']['names'][$i]].'</a> ';
+						echo '<a href="'.$db_game->data['stores']['urls'][$i].'">'.lang("stores_".$db_game->data['stores']['names'][$i]).'</a> ';
 					?> 
 				</div>
 
@@ -74,7 +74,7 @@ $site_data = get_site_data();
 					<?php
 					$text = '';
 					foreach( $db_game->data[$category] as $item ) {
-						$text .= $site_data->{$category}[$item].', ';
+						$text .= lang($category."_$item").", ";
 					}
 
 					echo rtrim( $text, ', ' );
