@@ -7,8 +7,8 @@ class Admin_model extends CI_Model {
      * @param assoc array $form The raw data from the admin_form view
      */
     function update_admin( $form ) {
-        if( trim( $form['password'] ) != '' )
-            $form['password'] = $this->encrypt->sha1( $form['password'] );
+        /*if( trim( $form['password'] ) != '' )
+            $form['password'] = $this->encrypt->sha1( $form['password'] );*/
     }
 
 
@@ -19,7 +19,7 @@ class Admin_model extends CI_Model {
      * @param assoc array $form The raw data from the message_form view
      */
     function insert_message( $form ) {
-        $form['date'] = DateTime::__construct('Now')->format('Y-m-d H:i:s'); // DateTime::__construct('Now') = date_create()
+        $form['date'] = date_create()->format('Y-m-d H:i:s'); // date_create() = new DateTime()
         
         // first insert the copy of the sender
         $form['owner_id'] = $form['sender_id'];
@@ -79,40 +79,15 @@ class Admin_model extends CI_Model {
         $report_form["date"] = $date->format('Y-m-d H:i:s');
         $this->db->insert( "reports", $report_form );
     }
-    function insert_report_old( $report_form ) {
-        $type = $report_form["item_type"];
-        $db_report = get_db_row( $type."s", $type."_id", $report_form["item_id"] );
-
-        if ($db_report === false)
-            return;
-
-        $report_data = json_decode($db_report->report_data, true);
-        $report_recipient = $report_form["recipient"];
-
-        if ( ! isset( $report_data[$report_recipient] ) )
-            $report_data[$report_recipient] = array();
-
-        $report_data[$report_recipient][] = $report_form["description"];
-        
-        $count = $db_report->report_count;
-        $count++;
-
-        $db_report = array(
-            "report_count" => $count,
-            "report_data"  => json_encode($report_data)
-        );
-
-        $this->db->update( $type."s", $db_report, $type."_id = ".$report_form["item_id"] );
-    }
-
+    
 
     //----------------------------------------------------------------------------------
 
     /**
-     * [get_reports description]
-     * @param  [type] $table [description]
-     * @param  string $what  [description]
-     * @return [type]        [description]
+     * Retrieve all reports from the database
+     * @param  string $what
+     * @param  string $order_by 
+     * @return array  $reports  The reports
      */
     function get_reports($what, $order_by) {
         $reports = array();
@@ -126,14 +101,21 @@ class Admin_model extends CI_Model {
 
         $db_reports = $this->db->get();
 
-        foreach ($db_reports->result() as $report) {
+        foreach ($db_reports->result() as $report)
             $reports[] = $report;
-        }
 
         return $reports;
     }
 
 
+    //----------------------------------------------------------------------------------
+
+    /**
+     * Retrieve all reports for this developer and its games
+     * @param  string/int   $dev_id The developer id
+     * @param  boolean      $get_admin_reports 
+     * @return array        $dev_reports The reports
+     */
     function get_developer_reports( $dev_id, $get_admin_reports = false ) {
         $dev_reports = array();
 
@@ -174,6 +156,23 @@ class Admin_model extends CI_Model {
         }
 
         return $dev_reports;
+    }
+
+
+    //----------------------------------------------------------------------------------
+
+    /**
+     * Delete reports from the database
+     * @param assoc array/int/string $ids An array with the message's ids to delete or a single id
+     */
+    function delete_reports( $ids ) {
+        if ( ! is_array($ids) )
+            $ids = array($ids);
+
+        foreach ($ids as $id)
+            $this->db->or_where('report_id', $id);
+
+        $this->db->delete('reports');
     }
 }
 

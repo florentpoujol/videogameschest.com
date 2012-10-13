@@ -491,14 +491,14 @@ class Admin extends CI_Controller {
                 if (IS_DEVELOPER) 
                     $form['sender_id'] = USER_ID;
                 
-                $this->main_model->insert_message( $form );
+                $this->admin_model->insert_message( $form );
                 $form['success'] = 'Message sent successfully.';
             }
         }
 
 
         if (post( 'delete_inbox_form_submitted' ) || post( 'delete_outbox_form_submitted' )) {
-            $this->main_model->delete_messages( post( 'delete' ) );
+            $this->admin_model->delete_messages( post( 'delete' ) );
             $form['success'] = 'Message(s) deleted successfully.';
         }
 
@@ -518,7 +518,7 @@ class Admin extends CI_Controller {
      */
     function reports( $infos = null ) {
 
-        if (post("report_form_submitted")) {
+        if (post("new_report_form_submitted")) {
             $report_form = post("report_form");
 
             if (trim($report_form["description"]) != "") {
@@ -530,25 +530,21 @@ class Admin extends CI_Controller {
         }
 
         elseif (IS_LOGGED_IN) {
-            // si admin => monter tous les reports
-            // si dev montrer tous les reports noncritical
             $reports = array();
-            
+
+            if (post('delete_report_form_submitted')) {
+                $this->admin_model->delete_reports( post('delete') );
+                //$reports['success'] = 'Reports(s) deleted successfully.';
+            }
+
             if (IS_ADMIN) {
-                //if (post("form_admin_report"))
-
-                $what = "admin";
-                $order_by = "date desc";
-
+                $what = "both";
+                $order_by = "date asc";
                 $reports = $this->admin_model->get_reports($what, $order_by);
-
-                //$reports = $this->admin_model->get_developer_reports(1, true);
             }
             else
                 $reports = $this->admin_model->get_developer_reports(USER_ID);
-            
-
-
+        
             $this->layout
             ->view("forms/admin_report_form", array("reports"=>$reports))
             ->load();

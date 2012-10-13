@@ -9,22 +9,22 @@
  */
 function get_form_errors( $form = null ) {
 	$errors = validation_errors();
-
-	if (!isset($form) || $form === false)
+	
+	if ( ! isset($form) || $form === false)
 		return;
-
-	if(is_array($form) && isset( $form['errors'] ) )
+	
+	if (is_array($form) && isset( $form['errors'] ) )
 		$errors .= "\n".$form['errors'];
-	else
+	elseif (is_string($form) && trim($form) != "")
 		$errors = "\n $form";
-
+	
 	if( $errors != '' ) {
 		$errors =
 '<div class="form_errors">
 	'.$errors.'
 </div>';
 	}
-
+	
 	return $errors;
 }
 
@@ -39,12 +39,12 @@ function get_form_errors( $form = null ) {
 function get_form_success( $form = null ) {
 	$success = "";
 
-	if (!isset($form) || $form === false)
+	if ( ! isset($form) || $form === false)		
 		return;
 
 	if(is_array($form) && isset($form['success'])) //  isset($form['success']) returns true when $form is a string ?
 		$success = $form['success'];
-	else
+	elseif (is_string($form) && trim($form) != "")
 		$success = $form;
 	
 	if ($success != "") {

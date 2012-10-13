@@ -17,7 +17,7 @@ $item_id = $uri_strings[1];
 					<br>
 					<?php echo '<input type="hidden" name="report_form[profile_type]" value="'.get_page().'"'; ?>>
 					<?php echo '<input type="hidden" name="report_form[profile_id]" value="'.$item_id.'"'; ?>>
-					<input type="submit" name="report_form_submitted" value="<?php echo lang("report_submit");?>">
+					<input type="submit" name="new_report_form_submitted" value="<?php echo lang("report_submit");?>">
 				</form>
 			</fieldset>
 		</div> 

@@ -1,58 +1,53 @@
 		<div id="admin_report_form">
 			<h1>Reports</h1>
 
-<?php if (IS_ADMIN): ?>
-			<input type="checkbox" name="profile_type" value="developer"> Developer <br>
+			<!--<input type="checkbox" name="profile_type" value="developer"> Developer <br>
 			<input type="checkbox" name="profile_type" value="admin"> Admins <br>
 			<input type="checkbox" name="profile_type" value="both" checked="checked"> Both <br>
 			<br>
 			Sort by
 			<input type="radio" name="sort_by" value="date asc" checked="checked">Date Asc<br>
-			<input type="radio" name="sort_by" value="date desc">Date desc <br>
-
-
-
-
-<?php if (IS_ADMIN): ?>
-
-			<fieldset>
-				<legend>Critical reports</legend>
-	
+			<input type="radio" name="sort_by" value="date desc">Date desc <br>-->
 <?php
+echo get_form_success($reports);
+unset($reports["success"]);
 
-
-//if( $messages->num_rows() > 0 ): 
+if (count($reports) > 0):
+	$format = "d M Y - G\hi s\s";
+	if( userdata("language") == "english")
+		$format = "d M Y - g:ia s\s";
 ?>
-				<?php echo form_open( 'admin/reports' ); ?> 
-					<table>
-						<tr>
-							<th>Profile type</th>
-							<th>Profile Id</th>
-							<th>Date</th>
-							<th>Recipient</th>
-							<th>Text</th>
-							<th>Delete ?</th>
-						</tr>
+			<?php echo form_open( 'admin/reports' ); ?> 
+				<table>
+					<tr>
+						<th>Profile type</th>
+						<th>Profile Name</th>
+						<th>Date</th>
+						<?php echo (IS_ADMIN ? "<th>Recipient</th>": ""); ?> 
+						<th>Text</th>
+						<th>Delete ?</th>
+					</tr>
 <?php
-
 	foreach( $reports as $report ):
-		
+		$type = $report->profile_type;
+		$name = get_db_row( $type."s", $type."_id", $report->profile_id )->name;
 ?>
-						<?php echo '<tr>
-							<td>'.$report->profile_type.'</td>
-							<td>'.$report->profile_id.'</td>
-							<td>'.$report->date.'</td>
-							<td>'.$report->recipient.'</td>
-							<td>'.$report->description.'</td>
-							<td><input type="checkbox" name="delete[]" value="'.$report->profile_id.'"></td>
-
-						</tr>'; ?> 
+					<?php echo '<tr>
+						<td>'.$type.'</td>
+						<td>'.$name.'</td>
+						<td>'.date_create($report->date)->format($format).'</td>
+						'.
+						(IS_ADMIN ? '<td>'.$report->recipient.'</td>
+						': null)
+						.'<td>'.$report->description.'</td>
+						<td><input type="checkbox" name="delete[]" value="'.$report->report_id.'"></td>
+					</tr>'; ?> 
 <?php endforeach; ?>
-					</table>
-					<input type="submit" name="delete_inbox_form_submitted" value="Delete the selected reports">
-				</form>
-
-			</fieldset>
-<?php endif; // end if is admin ?>
-
+				</table>
+				<input type="submit" name="delete_report_form_submitted" value="Delete the selected reports">
+			</form>
+<?php else: // no report ?>
+			No report.
+<?php endif;  ?>
 		</div>
+		<!-- /#admin_report_form -->

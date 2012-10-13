@@ -96,7 +96,7 @@ if( $messages->num_rows() > 0 ):
 				<?php echo form_open( 'admin/messages' ); ?>
 					<table>
 						<tr>
-							<th>Sender name</th>
+							<th>Recipient name</th>
 							<th>Date</th>
 							<th>Message text</th>
 							<th>Delete ?</th>
