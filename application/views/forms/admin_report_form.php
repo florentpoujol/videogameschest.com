@@ -14,7 +14,7 @@ unset($reports["success"]);
 
 if (count($reports) > 0):
 	$format = "d M Y - G\hi s\s";
-	if( userdata("language") == "english")
+	if(LANGUAGE == "english")
 		$format = "d M Y - g:ia s\s";
 ?>
 			<?php echo form_open( 'admin/reports' ); ?> 

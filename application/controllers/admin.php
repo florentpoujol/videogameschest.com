@@ -1,24 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Admin extends CI_Controller {
+class Admin extends MY_Controller {
     
     function __construct() {
     	parent::__construct();
-
-        set_page( 'admin' );
         set_admin_page( $this->router->fetch_method() );
-        
-        $lang = userdata( 'language' );
-        if ($lang)
-            $this->lang->load( 'main', $lang );
-
-        $keys = array("is_logged_in", "is_admin", "is_developer", "user_id");
-        foreach ($keys as $key) {
-            if (userdata($key))
-                Define(strtoupper($key), true);
-            else
-                Define(strtoupper($key), false);
-        }
 	}
 
 

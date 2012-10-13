@@ -6,7 +6,7 @@ Apple app store
 
 
 
-
+=========================
 QUESTION
 
 sould i make a difference between windows (and windows phone) version <8 and >8
@@ -14,14 +14,47 @@ sould i make a difference between windows (and windows phone) version <8 and >8
 
 
 
-
+=========================
 STORIES
 
-- administrators can edit their account
+	PEER REVIEW
+- dev/admin can send a prvate game in peer review
+- dev/admin can remove a game from peer review
+- dev/admin can still update the game while in peer review
+- the game must stay in peer review as long as the peer perod is not over (unles it has been removed by the dev/admin )
+- all devs/admins can report a game while in peer review
+- all devs/admin can see a full game profile while in peer review
+- all devs
 
-- visitors can see developer's games on the developer profile
 
-- user can over a questions at the side of a field (in a from) and a tooltip show up explaing how to fill the field
+
+	LOG (library)
+- every actions are logged
+	- creating a new developer
+	- setting a developer as public
+	- updating a developer
+	
+	- creating a new game
+	- updating a game
+	- sending the game in peer review
+	- outcome of the peer review
+	
+	- creating a report (user id saved if logged)
+	- deleting report
+
+	- creating a message
+	- deleting messages
+
+
+	RSS FLUX (controler feed, method type of feed)
+- some actions can be followed by public RSS flux
+	- a game become public
+	- a developer become public
+
+- some actions can be followed by private/secret RSS flux
+	- a message is recieved (on flux for each devs/admins)
+	- a report is received (one flux by dev and it's games + one admin flux for all reports)
+	- a game enter the peer review (one global flux)
 
 
 	MESSAGES
@@ -34,14 +67,28 @@ STORIES
 
 
 	REPORTS
-- devs and admins can flag a report as "read"
+- devs can filter the reports :
+	
+- admins can filter the reports
+	- sort by criticalyty
+	- sort
 
+
+	DIVERS
+- administrators can edit their account
+- visitors can see developer's games on the developer profile
+- user can over a questions at the side of a field (in a from) and a tooltip show up explaing how to fill the field
+
+
+
+=========================
+STORIES DONE
+
+13/10/2012
 - devs can see reports that concerns one of their (dev/game profile)
 - admins sees every reports
+- admin and dev can display and delete reports
 
-
-
-STORIES DONE
 
 12/10/2012
 - developer can set a release date for their game
