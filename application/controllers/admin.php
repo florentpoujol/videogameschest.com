@@ -4,7 +4,8 @@ class Admin extends MY_Controller {
     
     function __construct() {
     	parent::__construct();
-        set_admin_page( $this->router->fetch_method() );
+        //set_admin_page( $this->router->fetch_method() );
+        //define("ADMIN_PAGE", )
 	}
 
 
@@ -14,10 +15,10 @@ class Admin extends MY_Controller {
      * Main hub with no content but the admin menu
      */
     function index() {
-    	if ( ! IS_LOGGED_IN)
+    	if ( ! ISLOGGEDIN)
     		redirect( 'admin/login' );
 
-        if (IS_ADMIN) {
+        if (ISADMIN) {
             $this->layout
             ->view( 'forms/select_developer_to_edit_form' );
         }
@@ -35,7 +36,7 @@ class Admin extends MY_Controller {
      */
     function login() {
     	// redirect if alredy logged in
-    	if (IS_LOGGED_IN)
+    	if (ISLOGGEDIN)
     		redirect( 'admin' );
 
     	$error = '';
@@ -49,7 +50,7 @@ class Admin extends MY_Controller {
             elseif (strpos( $name, '@' )) // the name is actually an email
                 $field = 'email';
 
-            $is_admin = false;
+            $ISADMIN = false;
 	    	$user = get_db_row( 'developers', $field, $name );
 
             if ( ! $user) {
@@ -57,15 +58,15 @@ class Admin extends MY_Controller {
                     $field = 'administrator_id';
 
                 $user = get_db_row( 'administrators', $field, $name );
-                $is_admin = true;
+                $ISADMIN = true;
             }
 
 	    	if ($user) {
 	    		if (check_password( post( 'password' ), $user->password ) ) {
-	    			$userdata = array( 'is_logged_in' => '1' );
+	    			$userdata = array( 'ISLOGGEDIN' => '1' );
 	    			
-	    			if ($is_admin)
-	    				$userdata['is_admin'] = '1';
+	    			if ($ISADMIN)
+	    				$userdata['ISADMIN'] = '1';
 	    			else
 	    				$userdata['is_developer'] = '1';
 
@@ -104,10 +105,10 @@ class Admin extends MY_Controller {
      * Page to edit an admin account
      */
     function editadmin() {
-        if ( ! IS_LOGGED_IN)
+        if ( ! ISLOGGEDIN)
             redirect( 'admin/login' );
 
-        if ( ! IS_ADMIN)
+        if ( ! ISADMIN)
             redirect( 'admin' );
 
         // the has been submitted
@@ -145,7 +146,7 @@ class Admin extends MY_Controller {
         }
         // no form submitted
         else {
-            $id = USER_ID;
+            $id = USERID;
             $form = get_db_row( 'administrators', 'id', $id );
             $form->id = $id;
             $form->password = '';
@@ -161,10 +162,10 @@ class Admin extends MY_Controller {
      * Page to edit it's own account, redirect to the hub or editdeveloper
      */
     function edityouraccount() {
-        if ( ! IS_LOGGED_IN)
+        if ( ! ISLOGGEDIN)
             redirect( 'admin/login' );
 
-        if (IS_DEVELOPER)
+        if (ISDEVELOPER)
             redirect( 'admin/editdeveloper/'.userdata( 'user_id') );
         else //is admin
             redirect( 'admin/editadmin' );
@@ -219,7 +220,7 @@ class Admin extends MY_Controller {
                     $this->layout->view( 'forms/developer_form', array('form'=>$form) )->load();
             }
         }
-        elseif (IS_ADMIN) 
+        elseif (ISADMIN) 
             $this->layout->view( 'forms/developer_form' )->load();
         else
             redirect( 'adddeveloper' );
@@ -233,12 +234,12 @@ class Admin extends MY_Controller {
      * @param int $id The id of the developer to edit
      */
     function editdeveloper( $id = null ) {
-        if ( ! IS_LOGGED_IN)
+        if ( ! ISLOGGEDIN)
             redirect( 'admin/login' );
 
         // redirect developer to their edit page only
-        if (IS_DEVELOPER && $id != USER_ID )
-            redirect( 'admin/editdeveloper/'.USER_ID );
+        if (ISDEVELOPER && $id != USERID )
+            redirect( 'admin/editdeveloper/'.USERID );
         
         //
         if (post( "select_developer_to_edit_form_submitted" )) {
@@ -348,7 +349,7 @@ class Admin extends MY_Controller {
                 }
             }
         }
-        elseif (IS_ADMIN) 
+        elseif (ISADMIN) 
             $this->layout->view( 'forms/game_form' )->load();
         else
             redirect( 'addgame' );
@@ -362,7 +363,7 @@ class Admin extends MY_Controller {
      * @param int $id The id of the game to edit
      */
     function editgame( $id = null ) {
-        if ( ! IS_LOGGED_IN)
+        if ( ! ISLOGGEDIN)
             redirect( 'admin/login' );
 
 
@@ -406,13 +407,13 @@ class Admin extends MY_Controller {
         // no form has been submitted, just show the form filled with data from the database
         elseif ($id != null) {
             // prevent developer to edit a game they don't own
-            if (IS_DEVELOPER) {
-                //$games = $this->main_model->get_dev_games( USER_ID );
-                $games = get_db_rows( 'games', 'developer_id', USER_ID );
+            if (ISDEVELOPER) {
+                //$games = $this->main_model->get_dev_games( USERID );
+                $games = get_db_rows( 'games', 'developer_id', USERID );
                 $game_is_owned_by_dev = false;
 
                 foreach( $games->results() as $game ) {
-                    if ($game->id == USER_ID)
+                    if ($game->id == USERID)
                         $game_is_owned_by_dev = true;
                 }
 
@@ -459,7 +460,7 @@ class Admin extends MY_Controller {
      * Handle creating, deleting, and reading private messages
      */
     function messages() {
-        if ( ! IS_LOGGED_IN)
+        if ( ! ISLOGGEDIN)
             redirect( 'admin/login' );
 
         $form = array();
@@ -474,8 +475,8 @@ class Admin extends MY_Controller {
                     $form['recipient_id'] = 0;
 
                 $form['sender_id'] = 0;
-                if (IS_DEVELOPER) 
-                    $form['sender_id'] = USER_ID;
+                if (ISDEVELOPER) 
+                    $form['sender_id'] = USERID;
                 
                 $this->admin_model->insert_message( $form );
                 $form['success'] = 'Message sent successfully.';
@@ -515,7 +516,7 @@ class Admin extends MY_Controller {
             redirect($report_form["profile_type"].'/'.$report_form["profile_id"]."#report_form");
         }
 
-        elseif (IS_LOGGED_IN) {
+        elseif (ISLOGGEDIN) {
             $reports = array();
 
             if (post('delete_report_form_submitted')) {
@@ -523,13 +524,13 @@ class Admin extends MY_Controller {
                 //$reports['success'] = 'Reports(s) deleted successfully.';
             }
 
-            if (IS_ADMIN) {
+            if (ISADMIN) {
                 $what = "both";
                 $order_by = "date asc";
                 $reports = $this->admin_model->get_reports($what, $order_by);
             }
             else
-                $reports = $this->admin_model->get_developer_reports(USER_ID);
+                $reports = $this->admin_model->get_developer_reports(USERID);
         
             $this->layout
             ->view("forms/admin_report_form", array("reports"=>$reports))

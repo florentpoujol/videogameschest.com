@@ -5,14 +5,14 @@
 
 		<!-- Meta -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<?php if (get_page() == "admin"): ?>
+<?php if (PAGE == "admin"): ?>
 		<meta name='robots' content='noindex,nofollow' />
 <?php else: ?>
 		<meta name='robots' content='index,follow' />
 <?php endif; ?>
 		<meta name='robots' content='noindex,nofollow' />
 		
-<?php foreach( $metas as $meta ): ?>
+<?php foreach ($metas as $meta): ?>
 		<meta name='<?php echo $meta['name']; ?>' content='<?php echo $meta['content']; ?>' />
 <?php endforeach; ?>
 		<!-- /Meta -->
@@ -31,7 +31,7 @@ catch (exception $ex) {
 }*/
 ?>
 		
-<?php foreach( $css as $url ): ?>
+<?php foreach ($css as $url): ?>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $url; ?>" />
 <?php endforeach; ?>		
 		<!-- /CSS -->
@@ -44,13 +44,13 @@ catch (exception $ex) {
 <?php
 $items = array('featured', 'search', 'adddeveloper', 'addgame', 'about');
 
-foreach( $items as $item ): ?>
+foreach ($items as $item): ?>
 					<?php echo '<li><a href="'.site_url($item).'" '.menu_selected($item).'>'.lang('menu_'.$item).'</a></li>'; ?>
 
 <?php
 endforeach;
 
-if( userdata( 'is_logged_in' ) ): ?>
+if (IS_LOGGED_IN): ?>
 					<li><a href="<?php echo site_url('admin'); ?>" <?php echo menu_selected('admin');?>>Admin</a></li>
 					<li><a href="<?php echo site_url('admin/logout'); ?>"><?php echo lang('menu_logout');?></a></li>
 <?php else: ?>
@@ -63,8 +63,8 @@ if( userdata( 'is_logged_in' ) ): ?>
 				<ul>
 <?php
 $class = '';
-foreach( get_static_data('site')->languages as $lang ) {
-	if( userdata( 'language' ) == $lang )
+foreach (get_static_data('site')->languages as $lang) {
+	if (userdata('language') == $lang)
 		$class = 'class="selected"';
 	else
 		$class ='';

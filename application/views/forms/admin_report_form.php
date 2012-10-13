@@ -23,7 +23,7 @@ if (count($reports) > 0):
 						<th>Profile type</th>
 						<th>Profile Name</th>
 						<th>Date</th>
-						<?php echo (IS_ADMIN ? "<th>Recipient</th>": ""); ?> 
+						<?php echo (ISADMIN ? "<th>Recipient</th>": ""); ?> 
 						<th>Text</th>
 						<th>Delete ?</th>
 					</tr>
@@ -37,7 +37,7 @@ if (count($reports) > 0):
 						<td>'.$name.'</td>
 						<td>'.date_create($report->date)->format($format).'</td>
 						'.
-						(IS_ADMIN ? '<td>'.$report->recipient.'</td>
+						(ISADMIN ? '<td>'.$report->recipient.'</td>
 						': null)
 						.'<td>'.$report->description.'</td>
 						<td><input type="checkbox" name="delete[]" value="'.$report->report_id.'"></td>
