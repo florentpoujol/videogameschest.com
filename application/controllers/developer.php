@@ -1,15 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Developer extends CI_Controller {
+class Developer extends MY_Controller {
     
     function __construct() {
         parent::__construct();
-
-        set_page('developer');
-        
-        $lang = userdata('language');
-        if ($lang)
-            $this->lang->load( 'main', $lang );
     }
 
 
@@ -31,7 +25,7 @@ class Developer extends CI_Controller {
             redirect( 'home/404/developernotfound:'.$name_or_id );
 
         // display page when the dev is public or the visitor an admin
-        if ($db_dev->is_public == 'public' || userdata('is_admin')) 
+        if ($db_dev->is_public == 'public' || IS_ADMIN) 
         {
             // get feed infos
             $this->load->library('RSSReader');

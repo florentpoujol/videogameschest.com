@@ -1,17 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Addgame extends CI_Controller {
+class Addgame extends MY_Controller {
     
     function __construct() {
     	parent::__construct();
-
-        $lang = userdata( 'language' );
-        if( $lang )
-            $this->lang->load( 'main', $lang );
-
-        set_page( 'addgame' );
-
-        $this->load->library( 'form_validation' );
 	}
 
 

@@ -1,24 +1,22 @@
 		<div id="select_game_to_edit_form">
-<?php
-echo get_form_errors().'
-';
-?>
+
 			<h2>Select the game to edit</h2>
 
 <?php
-if( isset($form) )
+if (isset($form))
 	echo get_form_errors($form);
 
 echo form_open( 'admin/editgame' );
 
-if( userdata( 'is_admin' ) ) // allow to edit any games
+if (IS_ADMIN) // allow to edit any games
 	$raw_games = get_db_rows( 'games' );
 else
-	$raw_games = get_db_rows( 'games', 'developer_id', userdata( 'user_id' ) );
+	$raw_games = get_db_rows( 'games', 'developer_id', USER_ID );
 
 $games = array();
-foreach( $raw_games->result() as $game ) {
-	$games[$game->game_id] = $game->name;
+if ($raw_games !== false) {
+	foreach ($raw_games->result() as $game)
+		$games[$game->game_id] = $game->name;
 }
 
 echo form_dropdown( 'game_id_select', $games, null, 'id="game_id_select"' );

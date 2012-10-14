@@ -17,44 +17,7 @@ sould i make a difference between windows (and windows phone) version <8 and >8
 =========================
 STORIES
 
-	PEER REVIEW
-- dev/admin can send a prvate game in peer review
-- dev/admin can remove a game from peer review
-- dev/admin can still update the game while in peer review
-- the game must stay in peer review as long as the peer perod is not over (unles it has been removed by the dev/admin )
-- all devs/admins can report a game while in peer review
-- all devs/admin can see a full game profile while in peer review
-- all devs
 
-
-
-	LOG (library)
-- every actions are logged
-	- creating a new developer
-	- setting a developer as public
-	- updating a developer
-	
-	- creating a new game
-	- updating a game
-	- sending the game in peer review
-	- outcome of the peer review
-	
-	- creating a report (user id saved if logged)
-	- deleting report
-
-	- creating a message
-	- deleting messages
-
-
-	RSS FLUX (controler feed, method type of feed)
-- some actions can be followed by public RSS flux
-	- a game become public
-	- a developer become public
-
-- some actions can be followed by private/secret RSS flux
-	- a message is recieved (on flux for each devs/admins)
-	- a report is received (one flux by dev and it's games + one admin flux for all reports)
-	- a game enter the peer review (one global flux)
 
 
 	MESSAGES

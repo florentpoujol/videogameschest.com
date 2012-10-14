@@ -1,15 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Game extends CI_Controller {
+class Game extends MY_Controller {
     
     function __construct() {
         parent::__construct();
-
-        set_page( 'game' );
-        
-        $lang = userdata( 'language' );
-        if( $lang )
-            $this->lang->load( 'main', $lang );
     }
 
 
@@ -36,17 +30,16 @@ class Game extends CI_Controller {
         // user is developer and the game is in review
         // user is developer and the game is its own (even if the game is still private)
         if( 
-            $db_game->profile_privacy == 'public' || userdata( 'is_admin' ) ||
+            $db_game->profile_privacy == 'public' || IS_ADMIN ||
             (
-                userdata( 'is_developer ' ) &&
+                IS_DEVELOPER &&
                 (
-                    $db_game->profile_privacy == 'in_review' || $db_game->developer_id == userdata( 'user_id' )
+                    $db_game->profile_privacy == 'in_review' || $db_game->developer_id == ID
                 )
             )
         ) 
         {
             // get feed infos
-            $this->load->library('RSSReader');
             $db_game->feed_items = $this->rssreader->parse( $db_game->data['blogfeed'] )->get_feed_items(6);
             
             $this->layout

@@ -75,8 +75,7 @@ class Admin_model extends CI_Model {
      * @param  array $report_form The data comming from the form
      */
     function insert_report( $report_form ) {
-        $date = new DateTime();
-        $report_form["date"] = $date->format('Y-m-d H:i:s');
+        $report_form["date"] = date_create()->format('Y-m-d H:i:s');
         $this->db->insert( "reports", $report_form );
     }
     

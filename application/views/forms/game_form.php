@@ -1,9 +1,8 @@
 <?php
-$forms_data = get_static_data('forms');
-$page = get_page();
-$admin_page = get_admin_page();
+$form_data = get_static_data('form');
 
-if( !isset($form) ) // when adding a profile, and no $form has been passed to the view
+
+if (!isset($form)) // when adding a profile, and no $form has been passed to the view
 	$form = array();
 
 $form = init_game_form($form);
@@ -14,7 +13,7 @@ $form = init_game_form($form);
 
 // page title
 $title = 'Edit a game';
-if( $admin_page == 'addgame' || $page == 'addgame' )
+if (METHOD == 'addgame' || CONTROLLER == 'addgame' )
 	$title = lang('addgame_form_title');
 ?>
 			<h1 id="page_title"><?php echo $title;?></h1>
@@ -30,20 +29,21 @@ echo get_form_success($form);
 
 
 // form opening tag
-if( $page == 'addgame')
-	$admin_page = 'addgame';
+$method = METHOD;
+if (CONTROLLER == 'addgame')
+	$method = 'addgame';
 
-echo form_open( 'admin/'.$admin_page );
+echo form_open( 'admin/'.$method );
 
 
 // profile id
-if( $admin_page == 'editgame' ): ?>
+if (METHOD == 'editgame' ): ?>
 			
 			Id : <?php echo $form['game_id'];?> <input type="hidden" name="form[game_id]" value="<?php echo $form['game_id'];?>"> <br>
 <?php endif;
 
 // required fields
-if( $page == 'addgame' )
+if (CONTROLLER == 'addgame' )
 	echo '<p>'.lang('addgame_required_field').'</p>';
 
 
@@ -60,14 +60,14 @@ $input = array(
 <?php
 
 // developer
-if( userdata( 'is_admin' ) || $page == 'addgame' ):
-	if( userdata( 'is_admin' ) )
+if (userdata( 'is_admin' ) || CONTROLLER == 'addgame' ):
+	if (userdata( 'is_admin' ))
 		$db_devs = get_db_rows( 'developers' );
 	else
 		$db_devs = get_db_rows( 'developers', 'is_public', 1 );
 
 	$developers = array();
-	if( is_object( $db_devs ) )
+	if (is_object( $db_devs ))
 		foreach( $db_devs->result() as $dev )
 			$developers[$dev->developer_id] = $dev->name;
 ?>
@@ -85,7 +85,7 @@ if( userdata( 'is_admin' ) || $page == 'addgame' ):
 <?php
 
 // state of developement
-foreach( $forms_data->developementstates as $state_key ):
+foreach( $form_data->developementstates as $state_key ):
 	$radio = array(
     'name'        => 'developementstate',
     'id'          => 'developementstate_'.$state_key,
@@ -131,7 +131,7 @@ foreach( $namestext_urls_arrays as $item ):
 				<?php echo form_label( lang( 'addgame_'.$item ), $item );?> <br>
 <?php
 	foreach( $form['data'][$item]['names'] as $array_id => $name ):
-		if( $form['data'][$item]['urls'] == '' ) // that's the 4 "new" fields, it happens when $form comes from the form itself => actually no it is cleanned in the controller
+		if ($form['data'][$item]['urls'] == '' ) // that's the 4 "new" fields, it happens when $form comes from the form itself => actually no it is cleanned in the controller
 			continue;
 
 		// the name field
@@ -192,10 +192,10 @@ foreach( $namesdropdown_urls_arrays as $array ):
 				<?php echo form_label( lang( 'addgame_'.$array ), $array ); ?> <br>
 <?php
 	foreach( $form['data'][$array]['names'] as $array_id => $site_key ):
-		if( $form['data'][$array]['urls'][$array_id] == '' ) // that's the 4 "new" fields, it happens when $form comes from the form itself
+		if ($form['data'][$array]['urls'][$array_id] == '' ) // that's the 4 "new" fields, it happens when $form comes from the form itself
 			continue;
 ?>
-				<?php echo form_dropdown( 'form[data]['.$array.'][names]['.$array_id.']', get_array_lang($forms_data->$array, $array."_"), $site_key, 'id="'.$array.'_site_'.$array_id.'"' ); ?> 
+				<?php echo form_dropdown( 'form[data]['.$array.'][names]['.$array_id.']', get_array_lang($form_data->$array, $array."_"), $site_key, 'id="'.$array.'_site_'.$array_id.'"' ); ?> 
 				<?php echo '<input type="url" name="form[data]['.$array.'][urls]['.$array_id.']" id="'.$array.'_url_'.$array_id.'" placeholder="Profile URL" value="'.$form['data'][$array]['urls'][$array_id].'"> <br>'; ?> 
 <?php
 	endforeach;
@@ -203,7 +203,7 @@ foreach( $namesdropdown_urls_arrays as $array ):
 	$count = count( $form['data'][$array]['names'] );
 	for( $i = $count; $i < $count+4; $i++ ):
 ?>
-				<?php echo form_dropdown( 'form[data]['.$array.'][names][]', get_array_lang($forms_data->$array, $array."_"), null, 'id="'.$array.'_site_'.$i.'"' ); ?> 
+				<?php echo form_dropdown( 'form[data]['.$array.'][names][]', get_array_lang($form_data->$array, $array."_"), null, 'id="'.$array.'_site_'.$i.'"' ); ?> 
 				<?php echo '<input type="url" name="form[data]['.$array.'][urls][]" id="'.$array.'_url_'.$i.'" placeholder="Profile URL" value=""><br>'; ?> 
 <?php
 	endfor;
@@ -215,29 +215,29 @@ $array_keys = array('languages', 'technologies', 'operatingsystems', 'devices',
 'genres', 'themes', 'viewpoints', 'nbplayers', 'tags' );
 
 foreach( $array_keys as $key ):
-	$size = count( $forms_data->$key );
-	if( $size > 10 )
+	$size = count( $form_data->$key );
+	if ($size > 10 )
 		$size = 10;
 ?>
 				
 				<br>
 				<?php echo '<label for="'.$key.'">'.lang( 'addgame_'.$key ).'</label> <br> ';
-				echo form_multiselect( 'form[data]['.$key.'][]', get_array_lang($forms_data->$key, $key."_"), $form['data'][$key], 'id="'.$key.'" size="'.$size.'"' ); ?> <br> 
+				echo form_multiselect( 'form[data]['.$key.'][]', get_array_lang($form_data->$key, $key."_"), $form['data'][$key], 'id="'.$key.'" size="'.$size.'"' ); ?> <br> 
 <?php endforeach; ?>
 				<br>
 				<br>
-<?php if( $page == 'addgame' ): ?>
+<?php if (CONTROLLER == 'addgame' ): ?>
 				<input type="hidden" name="from_addgame_page" value="true">
 <?php endif;
 
 $submit_value = 'Edit this game profile';
-if( $page == 'addgame' || $admin_page == 'addgame' )
+if (CONTROLLER == 'addgame' || METHOD == 'addgame' )
 	$submit_value = lang('addgame_submit');
 ?>
 		
 				<input type="submit" name="game_form_submitted" value="<?php echo $submit_value;?>">
 <?php
-if( $admin_page == 'editgame' && $form['profile_privacy'] == 'private' ):
+if (METHOD == 'editgame' && $form['profile_privacy'] == 'private' ):
 ?>
 				<input type="submit" name="send_game_in_review" value="Send this game profile in peer review">
 <?php endif; ?>

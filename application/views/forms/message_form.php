@@ -18,7 +18,7 @@ if(!isset($form))
 					<br>
 					<label for="recipient_id">Recipient</label> 
 <?php
-if( userdata( 'is_admin' ) ):?>
+if (IS_ADMIN):?>
 					<?php echo form_dropdown( 'form[recipient_id]', get_developers(), null, 'id="recipient_id"' ); ?> 
 <?php else: ?>
 					<?php echo '<input type="hidden" name="form[recipient_id]" value="admins">The message will be sent to the administrators'; ?> 
@@ -34,16 +34,16 @@ if( userdata( 'is_admin' ) ):?>
 				<legend>Inbox</legend>
 	
 <?php
-if( userdata( 'is_admin' ) )
-	$messages = $this->main_model->get_messages( array('owner_id'=>0, 'recipient_id'=>0), 'sender_id' );
+if (IS_ADMIN)
+	$messages = $this->admin_model->get_messages( array('owner_id'=>0, 'recipient_id'=>0), 'sender_id' );
 else {
-	$messages = $this->main_model->get_messages( array(
-		'owner_id' => userdata( 'user_id' ),
-		'recipient_id' => userdata( 'user_id' )
+	$messages = $this->admin_model->get_messages( array(
+		'owner_id' => USER_ID,
+		'recipient_id' => USER_ID
 	) );
 }
 
-if( $messages->num_rows() > 0 ): 
+if ($messages->num_rows() > 0): 
 ?>
 				<?php echo form_open( 'admin/messages' ); ?> 
 					<table>
@@ -54,12 +54,11 @@ if( $messages->num_rows() > 0 ):
 							<th>Delete ?</th>
 						</tr>
 <?php
-	foreach( $messages->result() as $msg ):
-		if( userdata( 'is_developer' ) ) {
+	foreach ($messages->result() as $msg):
+		if (IS_ADMIN)
+			$name = $msg->name; // sender name = developer name
+		else
 			$name = 'admin';
-		}else{
-			$name = $msg->name;
-		}
 ?>
 						<?php echo '<tr>
 							<td>'.$name.'</td>
@@ -82,16 +81,16 @@ if( $messages->num_rows() > 0 ):
 				<legend>Outbox</legend>
 
 <?php
-if( userdata( 'is_admin' ) )
-	$messages = $this->main_model->get_messages( array('owner_id'=>0, 'sender_id'=>0), 'recipient_id' );
+if (IS_ADMIN)
+	$messages = $this->admin_model->get_messages( array('owner_id'=>0, 'sender_id'=>0), 'recipient_id' );
 else {
-	$messages = $this->main_model->get_messages( array(
-		'owner_id' => userdata( 'user_id' ),
-		'sender_id' => userdata( 'user_id' )
+	$messages = $this->admin_model->get_messages( array(
+		'owner_id' => USER_ID,
+		'sender_id' => USER_ID
 	) );
 }
 
-if( $messages->num_rows() > 0 ): 
+if ($messages->num_rows() > 0): 
 ?>
 				<?php echo form_open( 'admin/messages' ); ?>
 					<table>
@@ -102,12 +101,11 @@ if( $messages->num_rows() > 0 ):
 							<th>Delete ?</th>
 						</tr>
 <?php
-	foreach( $messages->result() as $msg ):
-		if( userdata( 'is_developer' ) ) {
-			$name = 'admin';
-		}else{
+	foreach ($messages->result() as $msg):
+		if (IS_ADMIN)
 			$name = $msg->name;
-		}
+		else
+			$name = 'admin';
 ?>
 						<?php echo '<tr>
 							<td>'.$name.'</td>

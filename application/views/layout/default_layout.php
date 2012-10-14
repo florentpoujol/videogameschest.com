@@ -5,7 +5,7 @@
 
 		<!-- Meta -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<?php if (PAGE == "admin"): ?>
+<?php if (CONTROLLER == "admin"): ?>
 		<meta name='robots' content='noindex,nofollow' />
 <?php else: ?>
 		<meta name='robots' content='index,follow' />
@@ -80,7 +80,7 @@ foreach (get_static_data('site')->languages as $lang) {
 <?php if( userdata( 'is_logged_in' ) ): ?>
 			<nav id="admin_menu">
 				<ul>
-					<li><a href="<?php echo site_url('admin'); ?>" <?php echo admin_menu_selected('hub');?>>Admin hub</a></li>
+					<li><a href="<?php echo site_url('admin'); ?>" <?php echo admin_menu_selected('index');?>>Admin hub</a></li>
 	<?php if( userdata( 'is_admin' ) ): // admin only ?>
 					<li><a href="<?php echo site_url('admin/editadmin'); ?>" <?php echo admin_menu_selected('editadmin');?>>Edit your admin account</a></li>
 					<li><a href="<?php echo site_url('admin/adddeveloper'); ?>" <?php echo admin_menu_selected('adddeveloper');?>>Add a developer</a></li>

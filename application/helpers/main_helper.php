@@ -229,17 +229,17 @@ function get_admin_page() {
  * Allow to style the menu items matching the current page
  */
 function menu_selected( $item ) {
-	global $page;
+	//global $page;
 	$text = '';
-	if( $page == $item )
+	if (CONTROLLER == $item)
 		$text = 'id="menu_selected" ';
 	return $text;
 }
 
 function admin_menu_selected( $item ) {
-	global $admin_page;
+	//global $admin_page;
 	$text = '';
-	if( $admin_page == $item )
+	if (METHOD == $item)
 		$text = 'id="admin_menu_selected" ';
 	return $text;
 }

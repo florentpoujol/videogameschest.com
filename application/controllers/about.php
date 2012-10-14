@@ -1,15 +1,9 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class About extends CI_Controller {
+class About extends MY_Controller {
     
     function __construct() {
         parent::__construct();
-
-        $lang = userdata( 'language' );
-        if( $lang )
-            $this->lang->load( 'main', $lang );
-
-        set_page( 'about' );
     }
     
     public function index()

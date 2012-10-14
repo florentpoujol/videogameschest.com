@@ -15,9 +15,10 @@ class MY_Controller extends CI_Controller {
         }
 
         $this->lang->load("main", $lang);
+        define("LANGUAGE", $lang);
 
         // set some CONST
-        $keys = array("isloggedin", "isadmin", "isdeveloper", "id", "language");
+        $keys = array("is_logged_in", "is_admin", "is_developer");
 
         foreach ($keys as $key) {
             if (userdata($key))
@@ -26,12 +27,13 @@ class MY_Controller extends CI_Controller {
                 define(strtoupper($key), false);
    		}
 
+        if (is_numeric(userdata("user_id")))
+            define("USER_ID", userdata("user_id"));
+        else
+            define("USER_ID", 0);
 
         define("CONTROLLER", $this->router->fetch_class());
         define("METHOD", $this->router->fetch_method());
-
-        define("SITE", get_static_data('site'));
-        define("FORM", get_static_data('forms'));
 	}
 }
 
