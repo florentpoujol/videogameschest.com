@@ -23,57 +23,19 @@ function img_link( $file ) {
 // ----------------------------------------------------------------------------------
 
 /**
- * Get the site data (devices, stores list...)
- * the infos inside the file application/data/site_data.json
- * @param bool $return_as_array=false Return the site data as an aray instead of an object
- * @return The site data object (or array)
+ * Get data stored in json files
+ * @param string $data_name The name of the data which is also the name of the file
+ * @param bool $return_as_array=false Return the data as an aray instead of an object
+ * @return The data object (or array)
  */
-/*function get_site_data_old( $return_as_array = false ) {
-	static $site_data = null;
+function get_static_data( $data_name, $return_as_array = false ) {
+	static $data_cache = null;
 
-	if( $site_data != null ) {
+	if( $data_cache != null && isset($data_cache[$data_name]) ) {
 		if( $return_as_array )
-			return get_object_vars( $site_data );
+			return get_object_vars( $data_cache[$data_name] );
 		else
-			return $site_data;
-	}
-
-    $file_path = APPPATH.'data/site_data.json'; // in application folder
-    
-    if( !file_exists( $file_path ) )
-    	die( "site_data.json does not exists at path : ".$file_path );
-
-    $string_site_data = read_file( $file_path );
-
-    if( $string_site_data == false ) // $site_data may be false because read_file() failed, otherwise it is a string
-    	die( $file_path." could not be read !" );
-
-    $site_data = json_decode( $string_site_data );
-
-    // sort all arrays
-    $members = get_object_vars( $site_data );
-
-    foreach( $site_data as $member_name => $object_value) {
-    	$site_data->$member_name = get_object_vars( $object_value );
-    	asort( $site_data->$member_name ); 
-    	// asort() sort the array by values and keeps the key/value relation ships
-    	// sort() replace the keys by numbers
-	}
-
-    if( $return_as_array )
-		return get_object_vars( $site_data );
-	else
-		return $site_data;
-}*/
-
-function get_static_data( $data_name = 'site', $return_as_array = false ) {
-	static $site_data = null;
-
-	if( $site_data != null && isset( $site_data[$data_name] ) ) {
-		if( $return_as_array )
-			return get_object_vars( $site_data[$data_name] );
-		else
-			return $site_data[$data_name];
+			return $data_cache[$data_name];
 	}
 
     $file_path = APPPATH.'/../assets/json/'.$data_name.'.json';
@@ -84,15 +46,15 @@ function get_static_data( $data_name = 'site', $return_as_array = false ) {
     	die( "[$data_name.json] does not exists at path : $file_path" );
     
 
-    $string_site_data = file_get_contents( $file_path );
+    $string_data = file_get_contents( $file_path );
 
-    if( $string_site_data == false ) // $site_data may be false because read_file() failed, otherwise it is a string
+    if( $string_data == false ) // $string_data may be false because read_file() failed, otherwise it is a string
     	die( "[$file_path] could not be read !" );
 
-    $data = json_decode( $string_site_data );
+    $data = json_decode( $string_data );
 
 	//cache
-	$site_data[$data_name] = $data;
+	$data_cache[$data_name] = $data;
 
     if( $return_as_array )
 		return get_object_vars( $data );
@@ -193,7 +155,7 @@ function post( $key = null ) {
 /**
  * Allow to easily share the name of the current page
  */
-$page = '';
+/*$page = '';
 
 function set_page( $name ) {
 	global $page;
@@ -203,13 +165,13 @@ function set_page( $name ) {
 function get_page() {
 	global $page;
 	return $page;
-}
+}*/
 
 
 /**
  * Allow to easily share the name of the current admin page
  */
-$admin_page = '';
+/*$admin_page = '';
 
 function set_admin_page( $name ) {
 	global $admin_page;
@@ -219,7 +181,7 @@ function set_admin_page( $name ) {
 function get_admin_page() {
 	global $admin_page;
 	return $admin_page;
-}
+}*/
 
 
 // ----------------------------------------------------------------------------------

@@ -4,8 +4,6 @@ class MY_Controller extends CI_Controller {
 
 	function __construct() {
     	parent::__construct();
-
-    	set_page( $this->router->fetch_class() );
                 
         $lang = userdata("language");
         
