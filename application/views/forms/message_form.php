@@ -1,6 +1,12 @@
 		<div id="message_form">
 			<h1>Message center</h1>
 
+			<p>
+<?php
+$url = site_url("feed/newmessages/".USER_ID."/".userdata("profile_key"));
+?>
+				Here is your <a href="<?php echo $url; ?>" title="Messages RSS feed">messages RSS feed</a>.
+			</p>
 <?php
 if(!isset($form))
 	$form = '';

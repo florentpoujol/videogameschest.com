@@ -68,6 +68,34 @@ class Admin_model extends CI_Model {
     }
 
 
+    // ----------------------------------------------------------------------------------
+
+    /**
+     */
+    function get_feed_messages( $item_count, $user ) {
+        return;
+
+        if ($user->is_admin == true) {
+            $where = array(
+                "administrator_id"=>USER_ID, "sent_by_developer"=>1,
+                "developers", "developers.developer_id=messages.developer_id");
+        }
+        else {
+            $where = array("developer_id" => USER_ID, "sent_by_developer"=>0,
+                "administrators", "administrators.administrator_id=messages.administrator_id");
+        }
+
+
+        $this->db->from("messages")
+        ->where($where)
+        ->join($join_table, $join_field);
+
+
+
+        return $this->db->limit($item_count)->get();
+    }
+
+
     //----------------------------------------------------------------------------------
 
     /**

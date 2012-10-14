@@ -117,10 +117,9 @@ class Game_model extends CI_Model {
     //----------------------------------------------------------------------------------
 
     /**
-     * Return games from the database to be put in a rss feed
-     * Only public games, sorted by date Asc
+     * Return the last games from the database to be put in a rss feed
      * @param  int $item_count The number of games to returns
-     * @return object The databse object
+     * @return object The database object
      */
     function get_feed_games( $item_count ) {
         return $this->db

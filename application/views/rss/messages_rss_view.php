@@ -1,12 +1,9 @@
-<?php echo '<?xml version="1.0" encoding="utf-8"?>';?> 
+<?php echo '<?xml version="1.0" encoding="utf-8"?>'; ?> 
 <rss version="2.0">
     <channel>
         <title><?php echo $channel["title"]; ?></title>
-        <link><?php echo $channel["link"]; ?></link>
-        <description><?php echo $channel["description"]; ?></description>
         <lastBuildDate><?php echo $channel["lastBuildDate"]; ?></lastBuildDate>
-        <generator>http://codeigniter.com/</generator>
-        
+       
 <?php
 if (is_object($items)):
     foreach ($items->result() as $item):

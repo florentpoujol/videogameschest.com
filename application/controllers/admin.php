@@ -62,7 +62,7 @@ class Admin extends MY_Controller {
             }
 
 	    	if ($user) {
-	    		if (check_password( post( 'password' ), $user->password ) ) {
+	    		if (check_password( post("password"), $user->password ) ) {
 	    			$userdata = array( 'is_logged_in' => '1' );
 	    			
 	    			if ($is_admin)
@@ -71,6 +71,7 @@ class Admin extends MY_Controller {
 	    				$userdata['is_developer'] = '1';
 
                     $userdata['user_id'] = $user->$field_id;
+                    $userdata["profile_key"] = $user->profile_key;
 	    			set_userdata($userdata);
 
 	    			redirect('admin');
@@ -252,7 +253,7 @@ class Admin extends MY_Controller {
 
         
         if (post( 'developer_form_submitted' )) {
-            $form = post( 'form' );
+            $form = post("form");
             $db_data = get_db_row( 'developers', 'developer_id', $form['developer_id'] );
 
             // cheking name

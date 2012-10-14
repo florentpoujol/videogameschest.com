@@ -19,16 +19,17 @@ class Developer_model extends CI_Model {
      */
     function insert_developer( $form ) {
         // $form is the raw data from the developer form
-        // at this point we are sure we want to create the developer, 
         
         // encode password if it exist
-        if( trim( $form['password'] ) != '' )
+        if (trim( $form['password'] ) != '' )
             $form['password'] = hash_password( $form['password'] );
+        
 
-        $form['data'] = json_encode( $form['data'] );
+        $form["data"] = json_encode( $form["data"] );
         $form["creation_date"] = date_create()->format($this->datetime_format);
+        $form["profile_key"] = md5(mt_rand());
 
-        $this->db->insert( 'developers', $form );
+        $this->db->insert("developers", $form);
         return $this->db->insert_id();
     }
 
@@ -42,11 +43,13 @@ class Developer_model extends CI_Model {
      */
     function update_developer( $form, $db_data ) {
         // encode the password if it exists
-        if (trim( $form['password'] ) != "")
-            $form['password'] = hash_password( $form['password'] );
+        if (trim($form["password"] ) != "")
+            $form["password"] = hash_password($form["password"]);
+        else
+            unset($form["password"]);
 
-        $id = $form['developer_id'];
-        $form['data'] = json_encode( $form['data'] );
+        $id = $form["developer_id"];
+        $form["data"] = json_encode($form["data"]);
 
         if (isset($form["is_public"]) && $form["is_public"] == "1")
             $form["publication_date"] = date_create()->format($this->datetime_format);
@@ -55,9 +58,7 @@ class Developer_model extends CI_Model {
             if( $value == $db_data->$field )
                 unset( $form[$field] );
         }
-
-
-
+        
         if( count($form) > 0 )
             $this->db->update( 'developers', $form, 'developer_id = '.$id );
     }
@@ -108,6 +109,23 @@ class Developer_model extends CI_Model {
         $dev->report_data = json_decode($dev->report_data, true);
 
         return $dev;
+    }
+
+
+    //----------------------------------------------------------------------------------
+
+    /**
+     * Return the new developers from the database to be put in a rss feed
+     * @param  int  $item_count The number of games to returns
+     * @return object The database object
+     */
+    function get_feed_developers( $item_count ) {
+        return $this->db
+        ->from("developers")
+        ->where("is_public", "1")
+        ->order_by("publication_date", "asc")
+        ->limit($item_count)
+        ->get();
     }
 }
 
