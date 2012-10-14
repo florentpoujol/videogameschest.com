@@ -59,9 +59,9 @@ $input = array(
 
 <?php
 
-// developer
-if (userdata( 'is_admin' ) || CONTROLLER == 'addgame' ):
-	if (userdata( 'is_admin' ))
+// developer select
+if (IS_ADMIN || CONTROLLER == 'addgame' ):
+	if (IS_ADMIN)
 		$db_devs = get_db_rows( 'developers' );
 	else
 		$db_devs = get_db_rows( 'developers', 'is_public', 1 );

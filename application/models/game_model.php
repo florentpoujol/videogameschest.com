@@ -2,6 +2,16 @@
 
 class Game_model extends CI_Model {
     
+    private $datetime_format = "" ;
+
+    function __construct() {
+        parent::__construct();
+        $this->datetime_format = get_static_data('site')->date_formats->datetime_sql;
+    }
+
+
+    //----------------------------------------------------------------------------------
+
     /**
      * Create a game in the database
      * @param assoc array $data the raw data from the game_form view
@@ -11,6 +21,7 @@ class Game_model extends CI_Model {
         // $form is the raw data from the game form
         // at this point we are sure we want to create the game
         $form['data'] = json_encode( $form['data'] );
+        $form["creation_date"] = date_create()->format($this->datetime_format);
 
         $this->db->insert( 'games', $form );
         return $this->db->insert_id();
@@ -35,6 +46,23 @@ class Game_model extends CI_Model {
 
         if( count($form) > 0 )
             $this->db->update( 'games', $form, 'game_id = '.$id );
+    }
+
+
+    // ----------------------------------------------------------------------------------
+
+    /**
+     * Method called by the review proccess when a game become public
+     * @param  [type] $game_id [description]
+     * @return [type]          [description]
+     */
+    function publish_game( $game_id ) {
+        $db = array( 
+            "profile_privacy" => "public",
+            "publication_date" => date_create()->format($this->datetime_format)
+            );
+
+        $this->db->update("games", $db, "game_id=$game_id");
     }
 
 
@@ -83,6 +111,24 @@ class Game_model extends CI_Model {
 
         $game->data = $data;
         return $game;
+    }
+
+
+    //----------------------------------------------------------------------------------
+
+    /**
+     * Return games from the database to be put in a rss feed
+     * Only public games, sorted by date Asc
+     * @param  int $item_count The number of games to returns
+     * @return object The databse object
+     */
+    function get_feed_games( $item_count ) {
+        return $this->db
+        ->from("games")
+        ->where("profile_privacy", "public")
+        ->order_by("publication_date", "asc")
+        ->limit($item_count)
+        ->get();
     }
 }
 

@@ -2,6 +2,16 @@
 
 class Admin_model extends CI_Model {
     
+    private $datetime_format = "" ;
+
+    function __construct() {
+        parent::__construct();
+        $this->datetime_format = get_static_data('site')->date_formats->datetime_sql;
+    }
+
+
+    //----------------------------------------------------------------------------------
+    
     /**
      * Update an administrator in the database
      * @param assoc array $form The raw data from the admin_form view
@@ -19,7 +29,7 @@ class Admin_model extends CI_Model {
      * @param assoc array $form The raw data from the message_form view
      */
     function insert_message( $form ) {
-        $form['date'] = date_create()->format('Y-m-d H:i:s'); // date_create() = new DateTime()
+        $form['date'] = date_create()->format($this->datetime_format); // date_create() = new DateTime()
         $this->db->insert("messages", $form);
     }
 
@@ -65,7 +75,7 @@ class Admin_model extends CI_Model {
      * @param  array $report_form The data comming from the form
      */
     function insert_report( $report_form ) {
-        $report_form["date"] = date_create()->format('Y-m-d H:i:s');
+        $report_form["date"] = date_create()->format($this->datetime_format);
         $this->db->insert( "reports", $report_form );
     }
     

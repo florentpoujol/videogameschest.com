@@ -2,6 +2,16 @@
 
 class Developer_model extends CI_Model {
     
+    private $datetime_format = "" ;
+
+    function __construct() {
+        parent::__construct();
+        $this->datetime_format = get_static_data('site')->date_formats->datetime_sql;
+    }
+
+
+    //----------------------------------------------------------------------------------
+
     /**
      * Insert a new developer in the database
      * @param assoc array $form The raw data from the developer_form view
@@ -16,6 +26,7 @@ class Developer_model extends CI_Model {
             $form['password'] = hash_password( $form['password'] );
 
         $form['data'] = json_encode( $form['data'] );
+        $form["creation_date"] = date_create()->format($this->datetime_format);
 
         $this->db->insert( 'developers', $form );
         return $this->db->insert_id();
@@ -31,17 +42,21 @@ class Developer_model extends CI_Model {
      */
     function update_developer( $form, $db_data ) {
         // encode the password if it exists
-        if( trim( $form['password'] ) != '' )
+        if (trim( $form['password'] ) != "")
             $form['password'] = hash_password( $form['password'] );
-
 
         $id = $form['developer_id'];
         $form['data'] = json_encode( $form['data'] );
+
+        if (isset($form["is_public"]) && $form["is_public"] == "1")
+            $form["publication_date"] = date_create()->format($this->datetime_format);
 
         foreach( $form as $field => $value ) {
             if( $value == $db_data->$field )
                 unset( $form[$field] );
         }
+
+
 
         if( count($form) > 0 )
             $this->db->update( 'developers', $form, 'developer_id = '.$id );

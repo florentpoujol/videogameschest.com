@@ -15,7 +15,7 @@ $item_id = $uri_strings[1];
 					<input type="radio" name="report_form[recipient]" value="developer" id="report_developer" checked="checked"> <label for="report_developer"><?php echo lang("report_developer");?></label> <br>
 					<input type="radio" name="report_form[recipient]" value="admin" id="report_admin"> <label for="report_admin"><?php echo lang("report_admin");?></label> <br>
 					<br>
-					<?php echo '<input type="hidden" name="report_form[profile_type]" value="'.get_page().'"'; ?>>
+					<?php echo '<input type="hidden" name="report_form[profile_type]" value="'.CONTROLLER.'"'; ?>>
 					<?php echo '<input type="hidden" name="report_form[profile_id]" value="'.$item_id.'"'; ?>>
 					<input type="submit" name="new_report_form_submitted" value="<?php echo lang("report_submit");?>">
 				</form>
