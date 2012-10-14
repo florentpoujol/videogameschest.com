@@ -69,8 +69,11 @@ foreach (get_static_data('site')->languages as $lang) {
 		$class = 'class="selected"';
 	else
 		$class ='';
+
+	$current_url_escaped = str_replace("/", ":", uri_string()); // replace / by @ in the current url
+	$lang_url = site_url("admin/setlanguage/$lang:$current_url_escaped");
 ?>
-					<?php echo '<li><a href="'.site_url("admin/setlanguage/$lang:".uri_string() ).'" title="'.$lang.'" '.$class.'>'.lang('languages_'.$lang).'</a></li>'; ?>
+					<?php echo '<li><a href="'.$lang_url.'" title="'.$lang.'" '.$class.'>'.lang('languages_'.$lang).'</a></li>'; ?>
 
 <?php	
 } // end foreach

@@ -444,12 +444,21 @@ class Admin extends MY_Controller {
     /**
      * Page to set the current language
      */ 
-    function setlanguage( $lang = null ) {
-        if ( ! in_array( $lang, get_static_data('site')->languages ) )
+    function setlanguage( $infos = null ) {
+        $infos = explode(":", $infos);
+        $lang = $infos[0];
+        $url = index_page();
+
+        if (isset($infos[1])) {
+            unset($infos[0]);
+            $url = implode("/", $infos); // rebuilt the url
+        }
+
+        if ( ! in_array($lang, get_static_data('site')->languages))
             $lang = $this->config->item( 'language' ); // default language
 
-        set_userdata( 'language', $lang );
-        redirect( '' );
+        set_userdata("language", $lang);
+        redirect($url);
     }
 
 
