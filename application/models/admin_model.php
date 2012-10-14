@@ -20,14 +20,7 @@ class Admin_model extends CI_Model {
      */
     function insert_message( $form ) {
         $form['date'] = date_create()->format('Y-m-d H:i:s'); // date_create() = new DateTime()
-        
-        // first insert the copy of the sender
-        $form['owner_id'] = $form['sender_id'];
-        $this->db->insert( 'messages', $form );
-
-        // then the copy for the recipient
-        $form['owner_id'] = $form['recipient_id'];
-        $this->db->insert( 'messages', $form );
+        $this->db->insert("messages", $form);
     }
 
 
@@ -41,7 +34,7 @@ class Admin_model extends CI_Model {
      */
     function get_messages( $where, $join_field = null ) {
         $this->db
-        ->from( 'messages' )
+        ->from("messages")
         ->where( $where );
 
         if( $join_field != null )

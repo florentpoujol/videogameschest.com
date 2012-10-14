@@ -1,12 +1,12 @@
-		<section id="message_form">
+		<div id="message_form">
+			<h1>Message center</h1>
+
 <?php
 if(!isset($form))
 	$form = '';
 ?>
 			<?php echo get_form_errors($form);
 			echo get_form_success($form); ?>
-
-			<h1 id="page_title">Message center</h1>
 
 			<fieldset>
 				<legend>Write a message</legend>
@@ -16,12 +16,15 @@ if(!isset($form))
 					<label for="write_message">Message text</label> <br>
 					<textarea name="form[message]" id="write_message" placeholder="10 characters min" cols="30" rows="7"></textarea>
 					<br>
-					<label for="recipient_id">Recipient</label> 
+					<label for="recipient">Recipient : </label> 
 <?php
 if (IS_ADMIN):?>
-					<?php echo form_dropdown( 'form[recipient_id]', get_developers(), null, 'id="recipient_id"' ); ?> 
+					<input type="hidden" name="form[administrator_id]" value="<?php echo USER_ID;?>">
+					<?php echo form_dropdown( 'form[developer_id]', get_developers(), null, 'id="recipient"' ); ?> 
 <?php else: ?>
-					<?php echo '<input type="hidden" name="form[recipient_id]" value="admins">The message will be sent to the administrators'; ?> 
+					<input type="hidden" name="form[sent_by_developer]" value="1">
+					<input type="hidden" name="form[developer_id]" value="<?php echo USER_ID;?>">
+					<?php echo form_dropdown( 'form[administrator_id]', get_admins(), null, 'id="recipient"' ); ?> 
 <?php endif; ?>
 					<br>
 					<input type="submit" name="write_message_form_submitted" value="Send this message">

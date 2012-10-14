@@ -14,7 +14,7 @@ class Admin extends MY_Controller {
      */
     function index() {
     	if ( ! IS_LOGGED_IN)
-    		redirect( 'admin/login' );
+    		redirect("admin/login");
 
         if (IS_ADMIN) {
             $this->layout
@@ -96,7 +96,7 @@ class Admin extends MY_Controller {
      */
     function logout() {
     	$this->session->sess_destroy();
-    	redirect( 'admin/login' );
+    	redirect("admin/login");
     }
 
 
@@ -107,7 +107,7 @@ class Admin extends MY_Controller {
      */
     function editadmin() {
         if ( ! IS_LOGGED_IN)
-            redirect( 'admin/login' );
+            redirect("admin/login");
 
         if ( ! IS_ADMIN)
             redirect( 'admin' );
@@ -162,7 +162,7 @@ class Admin extends MY_Controller {
      */
     function edityouraccount() {
         if ( ! IS_LOGGED_IN)
-            redirect( 'admin/login' );
+            redirect("admin/login");
 
         if (IS_DEVELOPER)
             redirect( 'admin/editdeveloper/'.userdata( 'user_id') );
@@ -234,7 +234,7 @@ class Admin extends MY_Controller {
      */
     function editdeveloper( $id = null ) {
         if ( ! IS_LOGGED_IN)
-            redirect( 'admin/login' );
+            redirect("admin/login");
 
         // redirect developer to their edit page only
         if (IS_DEVELOPER && $id != USER_ID )
@@ -363,7 +363,7 @@ class Admin extends MY_Controller {
      */
     function editgame( $id = null ) {
         if ( ! IS_LOGGED_IN)
-            redirect( 'admin/login' );
+            redirect("admin/login");
 
 
         if (post( "select_game_to_edit_form_submitted" )) {
@@ -460,31 +460,22 @@ class Admin extends MY_Controller {
      */
     function messages() {
         if ( ! IS_LOGGED_IN)
-            redirect( 'admin/login' );
+            redirect("admin/login");
 
         $form = array();
 
-        if (post( 'write_message_form_submitted' )) {
-            $this->form_validation->set_rules( 'form[message]', 'Message text', 'trim|required|min_length[10]' );
+        if (post("write_message_form_submitted")) {
+            $this->form_validation->set_rules('form[message]', 'Message text', 'trim|required|min_length[10]');
 
-            if ($this->form_validation->run() ) {
-                $form = post( 'form' );
-
-                if ($form['recipient_id'] == "admins")
-                    $form['recipient_id'] = 0;
-
-                $form['sender_id'] = 0;
-                if (IS_DEVELOPER) 
-                    $form['sender_id'] = USER_ID;
-                
-                $this->admin_model->insert_message( $form );
+            if ($this->form_validation->run()) {
+                $this->admin_model->insert_message(post( 'form' ));
                 $form['success'] = 'Message sent successfully.';
             }
         }
 
 
-        if (post( 'delete_inbox_form_submitted' ) || post( 'delete_outbox_form_submitted' )) {
-            $this->admin_model->delete_messages( post( 'delete' ) );
+        if (post('delete_inbox_form_submitted') || post('delete_outbox_form_submitted')) {
+            $this->admin_model->delete_messages(post('delete'));
             $form['success'] = 'Message(s) deleted successfully.';
         }
 
