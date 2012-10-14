@@ -66,11 +66,11 @@ class Admin extends MY_Controller {
 	    			$userdata = array( 'is_logged_in' => '1' );
 	    			
 	    			if ($is_admin)
-	    				$userdata['is_admin'] = '1';
+	    				$userdata["is_admin"] = '1';
 	    			else
-	    				$userdata['is_developer'] = '1';
+	    				$userdata["is_developer"] = '1';
 
-                    $userdata['user_id'] = $user->$field_id;
+                    $userdata["user_id"] = $user->$field_id;
                     $userdata["profile_key"] = $user->profile_key;
 	    			set_userdata($userdata);
 
@@ -121,27 +121,27 @@ class Admin extends MY_Controller {
             
             $form = post( 'form' );
 
-            if (trim($form['password']) != '' ) {
+            if (trim($form["password"]) != '' ) {
                 $this->form_validation->set_rules( 'form[password]', 'Password', 'min_length[5]' );
                 $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'min_length[5]' );
                 
-                if ($form['password'] != $form['password2'])
+                if ($form["password"] != $form["password2"])
                     $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'matches[form[password]]' );
             }
             
             // form OK
             if ($this->form_validation->run() ) {
                 // DO NOTHING, YET
-                $form['success'] = 'Your administrator account has been successfully updated.';
-                $form['password'] = "";
-                unset($form['password2']);
+                $form["success"] = 'Your administrator account has been successfully updated.';
+                $form["password"] = "";
+                unset($form["password2"]);
 
                 $this->layout->view( 'forms/admin_form', array('form'=>$form) )->load();
             }
             else {
                 // just reload the form and let the form_validation class display the errors
-                $form['password'] = "";
-                $form['password2'] = "";
+                $form["password"] = "";
+                $form["password2"] = "";
 
                 $this->layout->view( 'forms/admin_form', array('form'=>post('form')) )->load();
             }
@@ -184,16 +184,16 @@ class Admin extends MY_Controller {
             $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[5]|is_unique[developers.name]' );
             $this->form_validation->set_rules( 'form[email]', 'Email', 'trim|required|min_length[5]|valid_email|is_unique[developers.email]' );
 
-            if (trim($form['password']) != '' ) {
+            if (trim($form["password"]) != '' ) {
                 $this->form_validation->set_rules( 'form[password]', 'Password', 'min_length[8]' );
                 $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'min_length[8]' );
                 
-                if ($form['password'] != $form['password2'])
+                if ($form["password"] != $form["password2"])
                     $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'matches[form[password]]' ); // this fails when passwords matches ???
             }
 
-            unset( $form['password2'] );
-            $form['data']['socialnetworks'] = clean_names_urls_array( $form['data']['socialnetworks'] );
+            unset( $form["password2"] );
+            $form["data"]["socialnetworks"] = clean_names_urls_array( $form["data"]["socialnetworks"] );
 
             // save data if all is OK
             if ($this->form_validation->run() ) {
@@ -209,10 +209,10 @@ class Admin extends MY_Controller {
                     redirect( 'admin/editdeveloper/'.$id );
             }
             else { // error
-                unset($form['password']);
+                unset($form["password"]);
 
                 if (post( 'from_adddeveloper_page' )) {
-                    $form['errors'] = validation_errors(); // get errors from the form_validation class
+                    $form["errors"] = validation_errors(); // get errors from the form_validation class
                     $this->session->set_flashdata( 'adddeveloper_form', json_encode($form) );
                     redirect( 'adddeveloper' );
                 }
@@ -245,50 +245,53 @@ class Admin extends MY_Controller {
         if (post( "select_developer_to_edit_form_submitted" )) {
             $id = trim( post( 'developer_id_text' ) );
 
-            if ($id == '')
-                $id = post( 'developer_id_select' );
+            if ($id == "")
+                $id = post("developer_id_select");
 
-            redirect( 'admin/editdeveloper/'.$id );
+            redirect("admin/editdeveloper/$id");
         }
 
         
-        if (post( 'developer_form_submitted' )) {
+        if (post("developer_form_submitted")) {
             $form = post("form");
-            $db_data = get_db_row( 'developers', 'developer_id', $form['developer_id'] );
+            $db_data = get_db_row( 'developers', 'developer_id', $form["developer_id"] );
 
             // cheking name
-            $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[5]' );
-            if ($form['name'] != $db_data->name)
-                $this->form_validation->set_rules( 'form[name]', 'Name', 'is_unique[developers.name]' );
+            $this->form_validation->set_rules('form[name]', 'Name', 'trim|required|min_length[5]');
+            if ($form["name"] != $db_data->name)
+                $this->form_validation->set_rules('form[name]', 'Name', 'is_unique[developers.name]');
             
             // cheking email
             $this->form_validation->set_rules( 'form[email]', 'Email', 'trim|required|min_length[5]|valid_email' );
-            if ($form['email'] != $db_data->email)
+            if ($form["email"] != $db_data->email)
                 $this->form_validation->set_rules( 'form[email]', 'Email', 'is_unique[developers.email]' );
     
             // checking password
-            if (trim($form['password']) != '' ) {
-                $this->form_validation->set_rules( 'form[password]', 'Password', 'min_length[8]' );
-                $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'min_length[8]' );
+            if (trim($form["password"]) != "") {
+                $this->form_validation->set_rules("form[password]", "Password", "min_length[5]");
+                $this->form_validation->set_rules("form[password2]", "Password confirmation", "min_length[5]");
                 
-                if ($form['password'] != $form['password2'])
-                    $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'matches[form[password]]' );
+                if ($form["password"] != $form["password2"])
+                    $this->form_validation->set_rules("form[password2]", "Password confirmation", "matches[form[password]]");
             }
+            else
+                unset($form["password"]);
 
-            unset( $form['password2'] );
-            $form['data']['socialnetworks'] = clean_names_urls_array( $form['data']['socialnetworks'] );
+            unset($form["password2"]);
+
+            $form["data"]["socialnetworks"] = clean_names_urls_array($form["data"]["socialnetworks"]);
 
             // update data if all is OK
-            if ($this->form_validation->run() ) {
-                $this->developer_model->update_developer( $form, $db_data );
+            if ($this->form_validation->run()) {
+                $this->developer_model->update_developer($form, $db_data);
                 
-                unset( $form['password'] );
-                $form['success'] = 'Your developer account has been successfully updated.';
+                unset($form["password"]);
+                $form["success"] = 'Your developer account has been successfully updated.';
                 
                 $this->layout->view( 'forms/developer_form', array('form'=>$form) )->load();
             }
             else {
-                unset( $form['password'] );
+                unset( $form["password"] );
                 $this->layout->view( 'forms/developer_form', array('form'=>$form) )->load();
             }
         } // end if form submitted
@@ -318,11 +321,11 @@ class Admin extends MY_Controller {
 
             $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[3]|is_unique[games.name]' );
             
-            $form['data']['screenshots'] = clean_names_urls_array( $form['data']['screenshots'] );
-            $form['data']['videos'] = clean_names_urls_array( $form['data']['videos'] );
+            $form["data"]["screenshots"] = clean_names_urls_array( $form["data"]["screenshots"] );
+            $form["data"]["videos"] = clean_names_urls_array( $form["data"]["videos"] );
 
-            $form['data']['socialnetworks'] = clean_names_urls_array( $form['data']['socialnetworks'] );
-            $form['data']['stores'] = clean_names_urls_array( $form['data']['stores'] );
+            $form["data"]["socialnetworks"] = clean_names_urls_array( $form["data"]["socialnetworks"] );
+            $form["data"]["stores"] = clean_names_urls_array( $form["data"]["stores"] );
 
             // save data if all is OK
             if ($this->form_validation->run() ) {
@@ -338,7 +341,7 @@ class Admin extends MY_Controller {
             }
             else {
                 if (post( 'from_addgame_page' )) {
-                    $form['errors'] = validation_errors(); // get errors from the form_validation class
+                    $form["errors"] = validation_errors(); // get errors from the form_validation class
                     $this->session->set_flashdata( 'addgame_form', json_encode($form) ); // a coockie can only hold 4Kb of data
                     redirect( 'addgame' );
                 }
@@ -379,24 +382,24 @@ class Admin extends MY_Controller {
         
         if (post( 'game_form_submitted' )) {
             $form = post( 'form' );
-            $db_data = get_db_row( 'games', 'game_id', $form['game_id'] );
+            $db_data = get_db_row( 'games', 'game_id', $form["game_id"] );
 
             // cheking name
             $this->form_validation->set_rules( 'form[name]', 'Name', 'trim|required|min_length[5]' );
-            if ($form['name'] != $db_data->name)
+            if ($form["name"] != $db_data->name)
                 $this->form_validation->set_rules( 'form[name]', 'Name', 'is_unique[games.name]' );
             
-            $form['data']['screenshots'] = clean_names_urls_array( $form['data']['screenshots'] );
-            $form['data']['videos'] = clean_names_urls_array( $form['data']['videos'] );
+            $form["data"]["screenshots"] = clean_names_urls_array( $form["data"]["screenshots"] );
+            $form["data"]["videos"] = clean_names_urls_array( $form["data"]["videos"] );
 
-            $form['data']['socialnetworks'] = clean_names_urls_array( $form['data']['socialnetworks'] );
-            $form['data']['stores'] = clean_names_urls_array( $form['data']['stores'] );
+            $form["data"]["socialnetworks"] = clean_names_urls_array( $form["data"]["socialnetworks"] );
+            $form["data"]["stores"] = clean_names_urls_array( $form["data"]["stores"] );
 
             // update data if all is OK
             if ($this->form_validation->run() ) {
                 $this->game_model->update_game( $form, $db_data );
                 
-                $form['success'] = 'The game profile has been successfully updated.';
+                $form["success"] = 'The game profile has been successfully updated.';
                 
                 $this->layout->view( 'forms/game_form', array('form'=>$form) );
             }
@@ -412,13 +415,13 @@ class Admin extends MY_Controller {
                 $games = get_db_rows( 'games', 'developer_id', USER_ID );
                 $game_is_owned_by_dev = false;
 
-                foreach( $games->results() as $game ) {
-                    if ($game->id == USER_ID)
+                foreach( $games->result() as $game ) {
+                    if ($game->developer_id == USER_ID)
                         $game_is_owned_by_dev = true;
                 }
 
                 if ( ! $game_is_owned_by_dev) {
-                    $form['errors'] = "The game with id [$id] does not belong to you, you can't edit it.";
+                    $form["errors"] = "The game with id [$id] does not belong to you, you can't edit it.";
                     $this->layout->view( 'forms/select_game_to_edit_form', array('form'=>$form) );
                 }
             }
@@ -479,14 +482,14 @@ class Admin extends MY_Controller {
 
             if ($this->form_validation->run()) {
                 $this->admin_model->insert_message(post( 'form' ));
-                $form['success'] = 'Message sent successfully.';
+                $form["success"] = 'Message sent successfully.';
             }
         }
 
 
         if (post('delete_inbox_form_submitted') || post('delete_outbox_form_submitted')) {
             $this->admin_model->delete_messages(post('delete'));
-            $form['success'] = 'Message(s) deleted successfully.';
+            $form["success"] = 'Message(s) deleted successfully.';
         }
 
         $messages = array("inbox"=>array(), "outbox"=>array());
@@ -546,7 +549,7 @@ class Admin extends MY_Controller {
 
             if (post('delete_report_form_submitted')) {
                 $this->admin_model->delete_reports( post('delete') );
-                //$reports['success'] = 'Reports(s) deleted successfully.';
+                //$reports["success"] = 'Reports(s) deleted successfully.';
             }
 
             if (IS_ADMIN) {

@@ -8,6 +8,14 @@ class Search extends MY_Controller {
     
     public function index()
     {
+    	$criteria = array(
+    		"select" => "name",
+    		"where" => array("developer_id" => 1),
+    		"limit" => 1
+    	);
+
+    	var_dump($this->main_model->get_rows("games", $criteria)->row()->name);
+
         $this->layout
         ->view( 'forms/search_form' )
         ->load();

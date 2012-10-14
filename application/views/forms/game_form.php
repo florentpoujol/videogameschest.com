@@ -77,7 +77,7 @@ if (IS_ADMIN || CONTROLLER == 'addgame' ):
 
 <?php else: // user is a developer on the admin panel ?>
 				<br> 
-				You are the developer. Id=<?php echo $form['developer_id'];?> Name=<?php echo $form['developer_name'];?>
+				You are the developer. Id=<?php echo $form['developer_id'];?>
 <?php endif; ?>
 				<br>
 				<fieldset>

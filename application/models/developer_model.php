@@ -18,10 +18,8 @@ class Developer_model extends CI_Model {
      * @return int/bool The id of the newly inserted row or false
      */
     function insert_developer( $form ) {
-        // $form is the raw data from the developer form
-        
         // encode password if it exist
-        if (trim( $form['password'] ) != '' )
+        if (isset($form["password"]) && trim( $form['password'] ) != '' )
             $form['password'] = hash_password( $form['password'] );
         
 
@@ -43,10 +41,9 @@ class Developer_model extends CI_Model {
      */
     function update_developer( $form, $db_data ) {
         // encode the password if it exists
-        if (trim($form["password"] ) != "")
+        if (isset($form["password"]) && trim($form["password"] ) != "")
             $form["password"] = hash_password($form["password"]);
-        else
-            unset($form["password"]);
+
 
         $id = $form["developer_id"];
         $form["data"] = json_encode($form["data"]);
