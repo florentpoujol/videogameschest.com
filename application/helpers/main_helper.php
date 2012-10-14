@@ -212,31 +212,36 @@ function admin_menu_selected( $item ) {
 /**
  * @return The developers as an array where key=id and value=name
  */
-function get_developers( $raw = false ) {
-	static $raw_devs = null;
+function get_users( $user_type, $raw = false ) {
+	/*static $raw_devs = null;
 	static $clean_devs = null;
 
 	if( $raw_devs != null && $raw == true )
 		return $raw_devs;
 
 	if( $clean_devs != null && $raw == false )
-		return $clean_devs;
+		return $clean_devs;*/
 
-	$raw_devs = get_db_rows( 'developers' );
+	$raw_devs = get_db_rows( $user_type );
 
 	if( $raw == true )
 		return $raw_devs;
 
 	$clean_devs = array();
+	$field_id = rtrim($user_type, "s")."_id";
 
 	if( is_object( $raw_devs ) ) {
 		foreach( $raw_devs->result() as $dev ) {
-			$clean_devs[$dev->developer_id] = $dev->name;
+			$clean_devs[$dev->$field_id] = $dev->name;
 		}
 	}
 
 	return $clean_devs;
 }
+function get_developers($raw = false) {
+	return get_users("developers", $raw);
+}
+
 
 
 // ----------------------------------------------------------------------------------

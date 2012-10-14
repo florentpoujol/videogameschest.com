@@ -32,15 +32,12 @@ class Admin_model extends CI_Model {
      * @param string $join_field The $field in the messages table to join to the developers table
      * @return object/false the DB object or false if nothing is found
      */
-    function get_messages( $where, $join_field = null ) {
-        $this->db
+    function get_messages( $where, $join_table, $join_field ) {
+        return $this->db
         ->from("messages")
-        ->where( $where );
-
-        if( $join_field != null )
-            $this->db->join( 'developers', 'developers.developer_id = messages.'.$join_field );
-
-        return $this->db->get();
+        ->where($where)
+        ->join($join_table, $join_field)
+        ->get();
     }
 
 

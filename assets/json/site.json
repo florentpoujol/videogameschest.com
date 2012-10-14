@@ -2,5 +2,10 @@
 	"languages": [
 		"english",
 		"french"
-	]
+	],
+
+	"date_formats": {
+		"english": "d M Y - g:ia s\\s",
+		"nonenglish": "d M Y - G\\hi s\\s"
+	}
 }

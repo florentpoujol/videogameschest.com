@@ -479,9 +479,34 @@ class Admin extends MY_Controller {
             $form['success'] = 'Message(s) deleted successfully.';
         }
 
+        $messages = array("inbox"=>array(), "outbox"=>array());
+
+        // inbox
+        if (IS_ADMIN) {
+            $messages["inbox"] = $this->admin_model->get_messages(
+                array("administrator_id"=>USER_ID, "sent_by_developer"=>1),
+                "developers", "developers.developer_id=messages.developer_id");
+        }
+        else {
+            $messages["inbox"] = $this->admin_model->get_messages(
+                array("developer_id" => USER_ID, "sent_by_developer"=>0),
+                "administrators", "administrators.administrator_id=messages.administrator_id");
+        }
+
+        // outbox
+        if (IS_ADMIN) {
+            $messages["outbox"] = $this->admin_model->get_messages(
+                array("administrator_id"=>USER_ID, "sent_by_developer"=>0),
+                "developers", "developers.developer_id=messages.developer_id");
+        }
+        else {
+            $messages["outbox"] = $this->admin_model->get_messages(
+                array("developer_id" => USER_ID, "sent_by_developer"=>1),
+                "administrators", "administrators.administrator_id=messages.administrator_id");
+        }
 
         $this->layout
-        ->view( 'forms/message_form', array('form'=>$form) )
+        ->view( 'forms/message_form', array('form'=>$form, "messages"=>$messages) )
         ->load();
     }
 

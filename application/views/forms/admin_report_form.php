@@ -13,9 +13,11 @@ echo get_form_success($reports);
 unset($reports["success"]);
 
 if (count($reports) > 0):
-	$format = "d M Y - G\hi s\s";
-	if(LANGUAGE == "english")
-		$format = "d M Y - g:ia s\s";
+	$site_data = get_static_data('site');
+	$format = $site_data->date_formats->nonenglish;
+
+	if (LANGUAGE == "english")
+		$format = $site_data->date_formats->english;
 ?>
 			<?php echo form_open( 'admin/reports' ); ?> 
 				<table>

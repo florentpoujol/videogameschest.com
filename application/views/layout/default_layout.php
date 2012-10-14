@@ -57,25 +57,27 @@ if (IS_LOGGED_IN): ?>
 					<li><a href="<?php echo site_url('admin/login'); ?>" <?php echo menu_selected('login');?>><?php echo lang('menu_login');?></a></li>
 <?php endif; ?>
 				</ul>
-			</nav> <!-- /#menu -->
+			</nav> 
+			<!-- /#menu --> 
 
 			<nav id="lang_menu">
 				<ul>
 <?php
 $class = '';
 foreach (get_static_data('site')->languages as $lang) {
-	if (userdata('language') == $lang)
+	if (LANGUAGE == $lang)
 		$class = 'class="selected"';
 	else
 		$class ='';
 ?>
-					<?php echo '<li><a href="'.site_url( 'admin/setlanguage/'.$lang ).'" title="'.$lang.'" '.$class.'>'.lang('languages_'.$lang).'</a></li>'; ?>
+					<?php echo '<li><a href="'.site_url("admin/setlanguage/$lang:".uri_string() ).'" title="'.$lang.'" '.$class.'>'.lang('languages_'.$lang).'</a></li>'; ?>
 
 <?php	
 } // end foreach
 ?>
 				</ul>
-			</nav> <!-- /#lang_menu -->
+			</nav> 
+			<!-- /#lang_menu --> 
 
 <?php if( userdata( 'is_logged_in' ) ): ?>
 			<nav id="admin_menu">

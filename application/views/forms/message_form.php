@@ -20,33 +20,32 @@ if(!isset($form))
 <?php
 if (IS_ADMIN):?>
 					<input type="hidden" name="form[administrator_id]" value="<?php echo USER_ID;?>">
-					<?php echo form_dropdown( 'form[developer_id]', get_developers(), null, 'id="recipient"' ); ?> 
+					<?php echo form_dropdown( 'form[developer_id]', get_users("developers"), null, 'id="recipient"' ); ?> 
 <?php else: ?>
 					<input type="hidden" name="form[sent_by_developer]" value="1">
 					<input type="hidden" name="form[developer_id]" value="<?php echo USER_ID;?>">
-					<?php echo form_dropdown( 'form[administrator_id]', get_admins(), null, 'id="recipient"' ); ?> 
+					<?php echo form_dropdown( 'form[administrator_id]', get_users("administrators"), null, 'id="recipient"' ); ?> 
 <?php endif; ?>
 					<br>
 					<input type="submit" name="write_message_form_submitted" value="Send this message">
 				</form>
 			</fieldset>
 
-			<br>
+			<p>
+				Deleting a message delete it from the database, it will not exists anymore for the sender nor for the recipient.
+			</p>
 
 			<fieldset>
 				<legend>Inbox</legend>
 	
 <?php
-if (IS_ADMIN)
-	$messages = $this->admin_model->get_messages( array('owner_id'=>0, 'recipient_id'=>0), 'sender_id' );
-else {
-	$messages = $this->admin_model->get_messages( array(
-		'owner_id' => USER_ID,
-		'recipient_id' => USER_ID
-	) );
-}
+$site_data = get_static_data('site');
+$format = $site_data->date_formats->nonenglish;
 
-if ($messages->num_rows() > 0): 
+if (LANGUAGE == "english")
+	$format = $site_data->date_formats->english;
+
+if ($messages["inbox"]->num_rows() > 0): 
 ?>
 				<?php echo form_open( 'admin/messages' ); ?> 
 					<table>
@@ -57,15 +56,11 @@ if ($messages->num_rows() > 0):
 							<th>Delete ?</th>
 						</tr>
 <?php
-	foreach ($messages->result() as $msg):
-		if (IS_ADMIN)
-			$name = $msg->name; // sender name = developer name
-		else
-			$name = 'admin';
+	foreach ($messages["inbox"]->result() as $msg):
 ?>
 						<?php echo '<tr>
-							<td>'.$name.'</td>
-							<td>'.$msg->date.'</td>
+							<td>'.$msg->name.'</td>
+							<td>'.date_create($msg->date)->format($format).'</td>
 							<td>'.$msg->message.'</td>
 							<td><input type="checkbox" name="delete[]" value="'.$msg->message_id.'"></td>
 						</tr>'; ?> 
@@ -84,16 +79,7 @@ if ($messages->num_rows() > 0):
 				<legend>Outbox</legend>
 
 <?php
-if (IS_ADMIN)
-	$messages = $this->admin_model->get_messages( array('owner_id'=>0, 'sender_id'=>0), 'recipient_id' );
-else {
-	$messages = $this->admin_model->get_messages( array(
-		'owner_id' => USER_ID,
-		'sender_id' => USER_ID
-	) );
-}
-
-if ($messages->num_rows() > 0): 
+if ($messages["outbox"]->num_rows() > 0): 
 ?>
 				<?php echo form_open( 'admin/messages' ); ?>
 					<table>
@@ -104,15 +90,11 @@ if ($messages->num_rows() > 0):
 							<th>Delete ?</th>
 						</tr>
 <?php
-	foreach ($messages->result() as $msg):
-		if (IS_ADMIN)
-			$name = $msg->name;
-		else
-			$name = 'admin';
+	foreach ($messages["outbox"]->result() as $msg):
 ?>
 						<?php echo '<tr>
-							<td>'.$name.'</td>
-							<td>'.$msg->date.'</td>
+							<td>'.$msg->name.'</td>
+							<td>'.date_create($msg->date)->format($format).'</td>
 							<td>'.$msg->message.'</td>
 							<td><input type="checkbox" name="delete[]" value="'.$msg->message_id.'"></td>
 						</tr>'; ?> 
