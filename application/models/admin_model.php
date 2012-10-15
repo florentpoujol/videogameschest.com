@@ -118,27 +118,27 @@ class Admin_model extends CI_Model {
     //----------------------------------------------------------------------------------
 
     /**
-     * Retrieve all reports from the database
-     * @param  string $what
-     * @param  string $order_by 
-     * @return array  $reports  The reports
+     * Get reports from the database
+     * @param  string $what What report type
+     * @return object       The database object
      */
-    function get_reports($what, $order_by) {
+    function get_reports($what = null) {
         $reports = array();
 
         $this->db
-        ->from('reports')
-        ->order_by($order_by);
+        ->select("*")
+        ->select("profiles.type as profile_type")
+        ->select("profiles.name as profile_name")
+        ->from("reports")
+        ->join("profiles", "reports.profile_id = profiles.profile_id")
+        ->order_by("date asc");
 
-        if ($what != 'both')
-            $this->db->where("recipient", $what);
+        if (isset($what))
+            $this->db->where("type", $what);
 
         $db_reports = $this->db->get();
 
-        foreach ($db_reports->result() as $report)
-            $reports[] = $report;
-
-        return $reports;
+        return $db_reports;
     }
 
 
