@@ -544,7 +544,7 @@ class Admin extends MY_Controller {
                 $this->session->set_flashdata("report_success", lang("report_form_success"));
             }
 
-            redirect($report_form["profile_type"].'/'.$report_form["profile_id"]."#report_form");
+            redirect($report_form["url"]."#report_form");
         }
 
         elseif (IS_LOGGED_IN) {
