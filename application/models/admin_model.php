@@ -109,7 +109,9 @@ class Admin_model extends CI_Model {
      */
     function insert_report( $report_form ) {
         $report_form["date"] = date_create()->format($this->datetime_format);
-        $this->db->insert( "reports", $report_form );
+        unset($report_form["url"]);
+
+        $this->db->insert("reports", $report_form);
     }
     
 
