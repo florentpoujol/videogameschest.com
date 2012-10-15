@@ -87,7 +87,7 @@ foreach (get_static_data('site')->languages as $lang) {
 				<ul>
 					<li><a href="<?php echo site_url('admin'); ?>" <?php echo admin_menu_selected('index');?>>Admin hub</a></li>
 	<?php if( userdata( 'is_admin' ) ): // admin only ?>
-					<li><a href="<?php echo site_url('admin/editadmin'); ?>" <?php echo admin_menu_selected('editadmin');?>>Edit your admin account</a></li>
+					<li><a href="<?php echo site_url('admin/edituser'); ?>" <?php echo admin_menu_selected('edituser');?>>Edit your user account</a></li>
 					<li><a href="<?php echo site_url('admin/adddeveloper'); ?>" <?php echo admin_menu_selected('adddeveloper');?>>Add a developer</a></li>
 					<li><a href="<?php echo site_url('admin/editdeveloper'); ?>" <?php echo admin_menu_selected('editdeveloper');?>>Edit a developer</a></li>
 					<li><a href="<?php echo site_url('admin/reports'); ?>" <?php echo admin_menu_selected('reports');?>>Reports</a></li>
