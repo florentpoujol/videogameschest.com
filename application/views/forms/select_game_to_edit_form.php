@@ -8,9 +8,9 @@
 			<?php echo form_open("admin/editgame"); ?> 
 <?php
 if (IS_ADMIN) // allow to edit any games
-	$raw_games = get_db_rows("profile_id, name", "profiles");
+	$raw_games = get_db_rows("profile_id, name", "profiles", "type = 'game'");
 else
-	$raw_games = get_db_rows("profile_id, name", "profiles", "developer_id = '".USER_ID."'");
+	$raw_games = get_db_rows("profile_id, name", "profiles", "type = 'game' AND user_id = '".USER_ID."'");
 
 $games = array();
 if ($raw_games !== false) {
