@@ -8,11 +8,11 @@
 			Sort by
 			<input type="radio" name="sort_by" value="date asc" checked="checked">Date Asc<br>
 			<input type="radio" name="sort_by" value="date desc">Date desc <br>-->
-			<?php echo get_form_success($reports); ?> 
+			<?php //echo get_form_success($reports); ?> 
 <?php
-unset($reports["success"]);
+//unset($reports["success"]);
 
-if (count($reports) > 0):
+if ($reports->num_rows() > 0):
 	$site_data = get_static_data('site');
 	$format = $site_data->date_formats->nonenglish;
 
@@ -25,12 +25,12 @@ if (count($reports) > 0):
 						<th>Profile type</th>
 						<th>Profile Name</th>
 						<th>Date</th>
-						<?php echo (IS_ADMIN ? "<th>Type</th>": ""); ?> 
+						<?php echo (IS_ADMIN ? "<th>Report Type</th>": ""); ?> 
 						<th>Text</th>
 						<th>Delete ?</th>
 					</tr>
 <?php
-	foreach( $reports as $report ):
+	foreach ($reports->result() as $report):
 		//$name = get_db_row( "name", "profiles", "profile_id", $report->profile_id )->name;
 ?>
 					<?php echo '<tr>
