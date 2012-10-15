@@ -210,36 +210,27 @@ function admin_menu_selected( $item ) {
 // ----------------------------------------------------------------------------------
 
 /**
- * @return The developers as an array where key=id and value=name
  */
-function get_users( $user_type, $raw = false ) {
-	/*static $raw_devs = null;
-	static $clean_devs = null;
+function get_users_array( $user_type ) {
+	static $users = null;
 
-	if( $raw_devs != null && $raw == true )
-		return $raw_devs;
+	if (is_array($users) && isset($users[$user_type])))
+		return $users[$user_type];
 
-	if( $clean_devs != null && $raw == false )
-		return $clean_devs;*/
+	$raw_users = get_db_rows("user_id, name", "users", "type = '$user_type'");
 
-	$raw_devs = get_db_rows( $user_type );
+	if ($raw_users === false)
+		return $raw_users;
 
-	if( $raw == true )
-		return $raw_devs;
+	$users[$user_type] = array();
 
-	$clean_devs = array();
-	$field_id = rtrim($user_type, "s")."_id";
+	foreach ($raw_users->result() as $user)
+		$users[$user_type][$user->user_id] = $user->name;
 
-	if( is_object( $raw_devs ) ) {
-		foreach( $raw_devs->result() as $dev ) {
-			$clean_devs[$dev->$field_id] = $dev->name;
-		}
-	}
-
-	return $clean_devs;
+	return $users[$user_type];
 }
-function get_developers($raw = false) {
-	return get_users("developers", $raw);
+function get_developers() {
+	return get_users_array("dev");
 }
 
 
