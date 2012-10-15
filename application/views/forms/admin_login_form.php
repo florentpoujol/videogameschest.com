@@ -1,8 +1,9 @@
 		<div id="admin_login">
-			<?php if( $error != '' )
-				echo '<p class="form_errors">'.$error.'</p>'; ?>
+<?php if ($error != ''): ?>
+			<?php echo '<p class="form_errors">'.$error.'</p>'; ?>
+<?php endif; ?>
 
-			<?php echo form_open( 'admin/login' ); ?>
+			<?php echo form_open("admin/login"); ?>
 				<label for="name">Name</label> <br>
 				<input type="text" name="name" placeholder="your developer name" value="<?php echo $name; ?>"/> <br>
 				<br>

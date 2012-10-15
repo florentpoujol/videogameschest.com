@@ -53,11 +53,14 @@ class Main_model extends CI_Model {
     // ----------------------------------------------------------------------------------
 
     /**
-     * Return the DB object related to one row
-     * @param string $table The table where to look
-     * @param array/string $where=null An assoc array with where criteria or a single key as string
-     * @param string $value=null If the $where parameter is a single key, this one is its value
-     * @return object/false the DB object or false if nothing is found
+     * Return the DB object related to a single row
+     * @param  string/array $select   The SELECT criterion or an array of criteria
+     * @param  string       $from     The FROM criterion, the table to search in
+     * @param  string/array $where    The WHERE criteria
+     * @param  string       $order_by The ORDER_BY criteria
+     * @param  string       $limit    The LIMIT criterion
+     * @param  string       $limit_end The LIMIT end criterion
+     * @return Object/boolean $result The database object, or false if nothing is found
      */
     function get_row( $select, $from = null, $where = null, $order_by = null, $limit = null, $limit_end = null ) {
         $result = $this->get_rows( $select, $from, $where, $order_by, $limit, $limit_end );
