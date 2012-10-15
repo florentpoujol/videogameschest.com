@@ -20,6 +20,9 @@ class Admin_model extends CI_Model {
         if (isset($form["password"]) && trim($form["password"]) != "")
             $form["password"] = hash_password($form["password"]);
 
+        unset($form["type"]);
+        unset($form["key"]);
+        unset($form["creation_date"]);
         $this->db->update("users", $form, "user_id = ".$form["user_id"]);
     }
 
