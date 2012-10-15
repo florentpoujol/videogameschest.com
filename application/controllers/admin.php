@@ -16,10 +16,8 @@ class Admin extends MY_Controller {
     	if ( ! IS_LOGGED_IN)
     		redirect("admin/login");
 
-        if (IS_ADMIN) {
-            $this->layout
-            ->view("forms/select_developer_to_edit_form");
-        }
+        if (IS_ADMIN)
+            $this->layout->view("forms/select_developer_to_edit_form");
 
         $this->layout->view("forms/select_game_to_edit_form")->load();
     }
@@ -94,35 +92,35 @@ class Admin extends MY_Controller {
     /**
      * Page to edit an admin account
      */
-    function editadmin() {
+    function edituser() {
         if ( ! IS_LOGGED_IN)
             redirect("admin/login");
 
-        if ( ! IS_ADMIN)
-            redirect("admin");
-
         // the has been submitted
-        if (post("admin_form_submitted")) {
+        if (post("user_form_submitted")) {
             // checking form
-            $this->form_validation->set_rules( 'form[name]', "Name", 'trim|required|min_length[5]' );
-            $this->form_validation->set_rules( 'form[email]', "Email", 'trim|required|min_length[5]|valid_email' );
+            $this->form_validation->set_rules( 'form[name]', "Name", "trim|required|min_length[5]");
+            $this->form_validation->set_rules( 'form[email]', "Email", "trim|required|min_length[5]|valid_email");
             
             $form = post("form");
 
-            if (trim($form["password"]) != '' ) {
-                $this->form_validation->set_rules( 'form[password]', "Password", 'min_length[5]' );
-                $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'min_length[5]' );
+            if (trim($form["password"]) != "" ) {
+                $this->form_validation->set_rules("form[password]", "Password", "min_length[5]");
+                $this->form_validation->set_rules("form[password2]", "Password confirmation", "min_length[5]");
                 
                 if ($form["password"] != $form["password2"])
-                    $this->form_validation->set_rules( 'form[password2]', 'Password confirmation', 'matches[form[password]]' );
+                    $this->form_validation->set_rules("form[password2]", "Password confirmation", "matches[form[password]]");
             }
+
             
             // form OK
-            if ($this->form_validation->run() ) {
-                // DO NOTHING, YET
-                $form["success"] = 'Your administrator account has been successfully updated.';
-                $form["password"] = "";
+            if ($this->form_validation->run()) {
                 unset($form["password2"]);
+                // DO NOTHING, YET
+                //$this->admin_model->edit_user($form);
+
+                $form["success"] = 'Your user account has been successfully updated.';
+                //$form["password"] = "";
 
                 $this->layout->view( 'forms/admin_form', array("form"=>$form) )->load();
             }
@@ -131,15 +129,15 @@ class Admin extends MY_Controller {
                 $form["password"] = "";
                 $form["password2"] = "";
 
-                $this->layout->view( 'forms/admin_form', array("form"=>post("form")) )->load();
+                $this->layout->view("forms/user_form", array("form"=>$form))->load();
             }
         }
         // no form submitted
         else {
-            $form = get_db_row( "administrators", "administrator_id", USER_ID );
+            $form = get_db_row("*", "users", "user_id = '".USER_ID."'");
             $form->password = "";
 
-            $this->layout->view( 'forms/admin_form', array("form"=>$form) )->load();
+            $this->layout->view("forms/user_form", array("form"=>$form))->load();
         }
     }
 
@@ -227,7 +225,7 @@ class Admin extends MY_Controller {
 
         // redirect developer to their edit page only
         if (IS_DEVELOPER && $id != USER_ID )
-            redirect( 'admin/editdeveloper/'.USER_ID );
+            redirect("admin/editdeveloper/".USER_ID);
         
         //
         if (post( "select_developer_to_edit_form_submitted" )) {
@@ -286,7 +284,7 @@ class Admin extends MY_Controller {
 
         // no form has been submitted, just show the form filled with data from the database
         elseif ($id != null) { // if user is a developer, this will always be the case (see redirect above)
-            $form = get_db_row( "developers", "developer_id", $id );
+            $form = get_db_row("developers", "developer_id", $id );
 
             $this->layout
             ->view( 'forms/developer_form', array("form"=>$form) )
