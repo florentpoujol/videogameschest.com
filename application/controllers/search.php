@@ -12,10 +12,10 @@ class Search extends MY_Controller {
             "from" => "games",
     		"select" => "name",
     		"where" => array("developer_id" => 1),
-    		"limit" => 1
+    		
     	);
 
-    	var_dump($this->main_model->get_rows($criteria)->row()->name);
+    	var_dump(get_db_rows($criteria));
 
         $this->layout
         ->view( 'forms/search_form' )

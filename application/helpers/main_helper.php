@@ -87,21 +87,21 @@ function get_assoc_array( $array ) {
  * Helper function for the main model
  * @return The database object
  */
-function get_db_rows( $table, $where = null, $value = null ) {
-	return get_instance()->main_model->get_rows( $table, $where, $value );
+function get_db_rows( $select, $from = null, $where = null, $order_by = null, $limit = null, $limit_end = null ) {
+	return get_instance()->main_model->get_rows( $select, $from, $where, $order_by, $limit, $limit_end );
 }
 
-function get_db_row( $table, $where, $value = null, $rowId = null ) {
-	return get_instance()->main_model->get_row( $table, $where, $value, $rowId );
+function get_db_row( $select, $from = null, $where = null, $order_by = null, $limit = null, $limit_end = null ) {
+	return get_instance()->main_model->get_row( $select, $from, $where, $order_by, $limit, $limit_end );
 }
 
-function get_db_info( $table, $searched_field, $where, $value = null ) {
+/*function get_db_info( $table, $searched_field, $where, $value = null ) {
 	return get_instance()->main_model->get_info( $table, $searched_field, $where, $value );
 }
 
 function get_db_data( $table, $where, $value = null ) {
 	return get_instance()->main_model->get_data( $table, $where, $value );
-}
+}*/
 
 
 // ----------------------------------------------------------------------------------

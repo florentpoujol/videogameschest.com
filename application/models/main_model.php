@@ -4,11 +4,12 @@ class Main_model extends CI_Model {
     
     /**
      * Return the DB object related to several rows
-     * @param  string/array $select   The select criterion or an array of criteria
+     * @param  string/array $select   The SELECT criterion or an array of criteria
      * @param  string       $from     The FROM criterion, the table to search in
      * @param  string/array $where    The WHERE criteria
      * @param  string       $order_by The ORDER_BY criteria
-     * @param  string       $limit    The LIMIT criteria
+     * @param  string       $limit    The LIMIT criterion
+     * @param  string       $limit_end The LIMIT end criterion
      * @return Object/boolean $result The database object, or false if nothing is found
      */
     function get_rows( $select, $from = null, $where = null, $order_by = null, $limit = null, $limit_end = null ) {
@@ -48,32 +49,6 @@ class Main_model extends CI_Model {
         return $result;
     }
 
-    /**
-     * Return the DB object related to several rows
-     * @param string $table The table where to look
-     * @param array/string $where=null An assoc array with where criteria or a single key as string
-     * @param string $value=null If the $where parameter is a single key, this one is its value
-     * @return object/false the DB object or false if nothing is found
-     */
-    function get_rows_old( $table, $where = null, $value = null ) {
-        $this->db->from( $table );
-
-        if( isset( $where ) ) {
-            if( !is_array( $where ) && isset( $value ) )
-                $where = array( $where => $value );
-            
-            foreach( $where as $field => $value )
-                $this->db->where( $field, $value );
-        }
-
-        $result = $this->db->get();
-
-        if( $result->num_rows() <= 0 )
-            return false;
-
-        return $result;
-    }
-
 
     // ----------------------------------------------------------------------------------
 
@@ -84,8 +59,8 @@ class Main_model extends CI_Model {
      * @param string $value=null If the $where parameter is a single key, this one is its value
      * @return object/false the DB object or false if nothing is found
      */
-    function get_row( $table, $where, $value = null ) {
-        $result = $this->get_rows( $table, $where, $value );
+    function get_row( $select, $from = null, $where = null, $order_by = null, $limit = null, $limit_end = null ) {
+        $result = $this->get_rows( $select, $from, $where, $order_by, $limit, $limit_end );
 
         if( $result == false )
             return false;
@@ -105,14 +80,14 @@ class Main_model extends CI_Model {
      * @param string $value=null If the $where parameter is a single key, this one is its value
      * @return object/false the DB object or false if nothing is found
      */
-    function get_info( $table, $searched_field, $where, $value = null ) {
-        $result = $this->get_row( $table, $where, $value );
+    /*function get_info( $select, $from, $where, $order_by, $limit, $limit_end ) {
+        $result = $this->get_row( $select, $from, $where, $order_by, $limit, $limit_end );
 
         if( $result == false )
             return false;
         else
             return $result->$searched_field;
-    }  
+    }  */
 }
 
 /* End of file main_model.php */
