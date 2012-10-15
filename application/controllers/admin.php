@@ -116,13 +116,12 @@ class Admin extends MY_Controller {
             // form OK
             if ($this->form_validation->run()) {
                 unset($form["password2"]);
-                // DO NOTHING, YET
-                //$this->admin_model->edit_user($form);
+                $this->admin_model->update_user($form);
 
                 $form["success"] = 'Your user account has been successfully updated.';
-                //$form["password"] = "";
+                $form["password"] = "";
 
-                $this->layout->view( 'forms/admin_form', array("form"=>$form) )->load();
+                $this->layout->view( 'forms/user_form', array("form"=>$form) )->load();
             }
             else {
                 // just reload the form and let the form_validation class display the errors
