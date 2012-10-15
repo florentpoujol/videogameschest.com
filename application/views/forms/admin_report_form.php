@@ -1,5 +1,5 @@
 		<div id="admin_report_form">
-			<h2>Reports</h2>
+			<h1>Reports</h1>
 
 			<!--<input type="checkbox" name="profile_type" value="developer"> Developer <br>
 			<input type="checkbox" name="profile_type" value="admin"> Admins <br>
@@ -8,8 +8,8 @@
 			Sort by
 			<input type="radio" name="sort_by" value="date asc" checked="checked">Date Asc<br>
 			<input type="radio" name="sort_by" value="date desc">Date desc <br>-->
+			<?php echo get_form_success($reports); ?> 
 <?php
-echo get_form_success($reports);
 unset($reports["success"]);
 
 if (count($reports) > 0):
@@ -25,21 +25,20 @@ if (count($reports) > 0):
 						<th>Profile type</th>
 						<th>Profile Name</th>
 						<th>Date</th>
-						<?php echo (IS_ADMIN ? "<th>Recipient</th>": ""); ?> 
+						<?php echo (IS_ADMIN ? "<th>Type</th>": ""); ?> 
 						<th>Text</th>
 						<th>Delete ?</th>
 					</tr>
 <?php
 	foreach( $reports as $report ):
-		$type = $report->profile_type;
-		$name = get_db_row( $type."s", $type."_id", $report->profile_id )->name;
+		//$name = get_db_row( "name", "profiles", "profile_id", $report->profile_id )->name;
 ?>
 					<?php echo '<tr>
-						<td>'.$type.'</td>
-						<td>'.$name.'</td>
+						<td>'.$report->profile_type.'</td>
+						<td>'.$report->profile_name.'</td>
 						<td>'.date_create($report->date)->format($format).'</td>
 						'.
-						(IS_ADMIN ? '<td>'.$report->recipient.'</td>
+						(IS_ADMIN ? '<td>'.$report->type.'</td>
 						': null)
 						.'<td>'.$report->description.'</td>
 						<td><input type="checkbox" name="delete[]" value="'.$report->report_id.'"></td>
