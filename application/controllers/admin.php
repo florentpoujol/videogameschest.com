@@ -551,25 +551,20 @@ class Admin extends MY_Controller {
             $reports = array();
 
             if (post("delete_report_form_submitted")) {
-                $this->admin_model->delete_reports( post("delete") );
+                $this->admin_model->delete_reports(post("delete"));
                 //$reports["success"] = 'Reports(s) deleted successfully.';
             }
 
-            if (IS_ADMIN) {
-                $what = "both";
-                $order_by = "date asc";
-                $reports = $this->admin_model->get_reports($what, $order_by);
-            }
+            if (IS_ADMIN)
+                $reports = $this->admin_model->get_reports();
             else
                 $reports = $this->admin_model->get_developer_reports(USER_ID);
         
-            $this->layout
-            ->view("forms/admin_report_form", array("reports"=>$reports))
-            ->load();
+            $this->layout->view("forms/admin_report_form", array("reports"=>$reports))->load();
         }
 
         else
-            redirect('admin/login');
+            redirect("admin/login");
     }
 }
 
