@@ -210,11 +210,14 @@ function admin_menu_selected( $item ) {
 // ----------------------------------------------------------------------------------
 
 /**
+ * Returna an array from the users table where keys are user_id and values user name
+ * @param  string $user_type 			The user type (field users.type)
+ * @return array  $users[$user_type]    The user array
  */
 function get_users_array( $user_type ) {
 	static $users = null;
 
-	if (is_array($users) && isset($users[$user_type])))
+	if (is_array($users) && isset($users[$user_type]))
 		return $users[$user_type];
 
 	$raw_users = get_db_rows("user_id, name", "users", "type = '$user_type'");
@@ -229,10 +232,6 @@ function get_users_array( $user_type ) {
 
 	return $users[$user_type];
 }
-function get_developers() {
-	return get_users_array("dev");
-}
-
 
 
 // ----------------------------------------------------------------------------------
