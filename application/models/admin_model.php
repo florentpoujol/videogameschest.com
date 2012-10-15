@@ -13,12 +13,14 @@ class Admin_model extends CI_Model {
     //----------------------------------------------------------------------------------
     
     /**
-     * Update an administrator in the database
-     * @param assoc array $form The raw data from the admin_form view
+     * Update a user in the database
+     * @param assoc array $form The raw data from the user_form view
      */
-    function update_admin( $form ) {
-        /*if( trim( $form['password'] ) != '' )
-            $form['password'] = $this->encrypt->sha1( $form['password'] );*/
+    function update_user( $form ) {
+        if (isset($form["password"]) && trim($form["password"]) != "")
+            $form["password"] = hash_password($form["password"]);
+
+        $this->db->update("users", $form, "user_id = ".$form["user_id"]);
     }
 
 
