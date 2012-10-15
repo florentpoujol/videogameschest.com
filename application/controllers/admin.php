@@ -98,12 +98,19 @@ class Admin extends MY_Controller {
 
         // the has been submitted
         if (post("user_form_submitted")) {
+            $form = post("form");
+            $db_data = get_db_row("*", "users", "user_id = '".USER_ID."'");
+
             // checking form
             $this->form_validation->set_rules( 'form[name]', "Name", "trim|required|min_length[5]");
-            $this->form_validation->set_rules( 'form[email]', "Email", "trim|required|min_length[5]|valid_email");
-            
-            $form = post("form");
+            if ($form["name"] != $db_data->name)
+                $this->form_validation->set_rules('form[name]', "Name", 'is_unique[users.name]');
 
+            $this->form_validation->set_rules( 'form[email]', "Email", "trim|required|min_length[5]|valid_email");
+            if ($form["name"] != $db_data->name)
+                $this->form_validation->set_rules('form[name]', "Email", 'is_unique[users.email]');
+            
+            
             if (trim($form["password"]) != "" ) {
                 $this->form_validation->set_rules("form[password]", "Password", "min_length[5]");
                 $this->form_validation->set_rules("form[password2]", "Password confirmation", "min_length[5]");
@@ -111,7 +118,8 @@ class Admin extends MY_Controller {
                 if ($form["password"] != $form["password2"])
                     $this->form_validation->set_rules("form[password2]", "Password confirmation", "matches[form[password]]");
             }
-
+            else
+                unset($form["password"]);
             
             // form OK
             if ($this->form_validation->run()) {
@@ -121,7 +129,7 @@ class Admin extends MY_Controller {
                 $form["success"] = 'Your user account has been successfully updated.';
                 $form["password"] = "";
 
-                $this->layout->view( 'forms/user_form', array("form"=>$form) )->load();
+                $this->layout->view("forms/user_form", array("form"=>$form))->load();
             }
             else {
                 // just reload the form and let the form_validation class display the errors
