@@ -147,7 +147,7 @@ class Admin extends MY_Controller {
     /**
      * Page to edit it's own account, redirect to the hub or editdeveloper
      */
-    function edityouraccount() {
+    /*function edityouraccount() {
         if ( ! IS_LOGGED_IN)
             redirect("admin/login");
 
@@ -155,7 +155,7 @@ class Admin extends MY_Controller {
             redirect( 'admin/editdeveloper/'.userdata( "user_id") );
         else //is admin
             redirect( 'admin/editadmin' );
-    }
+    }*/
 
 
     // ----------------------------------------------------------------------------------
