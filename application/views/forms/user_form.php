@@ -29,6 +29,8 @@ foreach ($form_items as $item) {
 				<input type="email" name="form[email]" id="email" placeholder="Email" value="<?php echo $form['email'];?>"> <label for="email">Email</label> <br>
 				<input type="password" name="form[password]" id="password" placeholder="Write here only to update" value=""> <label for="password">Password</label> <br>
 				<input type="password" name="form[password2]" id="password2" placeholder="Same as above" > <label for="password2">Password confirmation</label> <br>
+				<br>
+				<input type="password" name="form[oldpassword]" id="oldpassword" placeholder="Your old password" > <label for="oldpassword">To update your password, enter your old password here</label> <br>
 				<input type="submit" name="user_form_submitted" value="Submit">
 			</form>
 		</div>
