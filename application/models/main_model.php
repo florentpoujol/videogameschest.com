@@ -65,7 +65,7 @@ class Main_model extends CI_Model {
     function get_row( $select, $from = null, $where = null, $order_by = null, $limit = null, $limit_end = null ) {
         $result = $this->get_rows( $select, $from, $where, $order_by, $limit, $limit_end );
 
-        if( $result == false )
+        if ($result == false)
             return false;
         else
             return $result->row();

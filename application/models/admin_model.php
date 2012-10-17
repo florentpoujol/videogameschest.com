@@ -119,26 +119,32 @@ class Admin_model extends CI_Model {
 
     /**
      * Get reports from the database
-     * @param  string $what What report type
-     * @return object       The database object
+     * @param  string $what What report type (dev or admin)
+     * @return array       The reports in an array
      */
     function get_reports($what = null) {
         $reports = array();
 
         $this->db
         ->select("*")
+        ->from("reports")
+        ->order_by("date asc")
+
         ->select("profiles.type as profile_type")
         ->select("profiles.name as profile_name")
-        ->from("reports")
         ->join("profiles", "reports.profile_id = profiles.profile_id")
-        ->order_by("date asc");
+        ;
+        
 
         if (isset($what))
             $this->db->where("type", $what);
 
         $db_reports = $this->db->get();
-
-        return $db_reports;
+        
+        foreach ($db_reports->result() as $report)
+            $reports[] = $report;
+        
+        return $reports;
     }
 
 
@@ -146,44 +152,45 @@ class Admin_model extends CI_Model {
 
     /**
      * Retrieve all reports for this developer and its games
-     * @param  string/int   $dev_id The developer id
-     * @param  boolean      $get_admin_reports 
-     * @return array        $dev_reports The reports
+     * @param  string/int   $dev_id      The developer id
+     * @return array        $dev_reports The reports in an array
      */
-    function get_developer_reports( $dev_id, $get_admin_reports = false ) {
+    function get_developer_reports( $dev_id ) {
         $dev_reports = array();
 
         // first get the developer reports
-        $this->db
+        $db_reports = $this->db
+
+        ->select("*")
         ->from("reports")
-        ->where("profile_type", "developer")
-        ->where("profile_id", $dev_id)
-        ->sort_by("date", "asc");
+        ->where("reports.profile_id", $dev_id)
+        ->where("reports.type", "dev")
+        ->order_by("date asc")
 
-        if ( ! $get_admin_reports)
-            $this->db->where("recipient", "developer");
+        ->select("profiles.type as profile_type")
+        ->select("profiles.name as profile_name")
+        ->join("profiles", "reports.profile_id = profiles.profile_id")
 
-        $reports = $this->db->get();
+        ->get();
 
-        foreach ($reports->result() as $report) {
+        foreach ($db_reports->result() as $report) 
             $dev_reports[] = $report;
-        }
+        
 
-        // get all games for this dev
-        $games = $this->db->select("game_id")->from("games")
-        ->where("developer_id", $dev_id)->get();
+        // get all games for this dev ...
+        $games = $this->db
+        ->select("profile_id")
+        ->from("profiles")
+        ->where("user_id", $dev_id)
+        ->get();
 
         foreach ($games->result() as $game) {
-            // then get the reports for each games
-            $this->db
+            // ... then get the reports for each games
+            $db_reports = $this->db
             ->from("reports")
-            ->where("profile_type", "game")
-            ->where("profile_id", $game->game_id);
-
-            if ( ! $get_admin_reports)
-                $this->db->where("recipient", "developer");
-
-            $reports = $this->db->get();
+            ->where("type", "dev")
+            ->where("profile_id", $game->profile_id)
+            ->get();
 
             foreach ($reports->result() as $report)
                 $dev_reports[] = $report;

@@ -12,14 +12,14 @@
 <?php
 //unset($reports["success"]);
 
-if ($reports->num_rows() > 0):
-	$site_data = get_static_data('site');
+if (count($reports) > 0):
+	$site_data = get_static_data("site");
 	$format = $site_data->date_formats->nonenglish;
 
 	if (LANGUAGE == "english")
 		$format = $site_data->date_formats->english;
 ?>
-			<?php echo form_open( 'admin/reports' ); ?> 
+			<?php echo form_open("admin/reports"); ?> 
 				<table>
 					<tr>
 						<th>Profile type</th>
@@ -30,7 +30,7 @@ if ($reports->num_rows() > 0):
 						<th>Delete ?</th>
 					</tr>
 <?php
-	foreach ($reports->result() as $report):
+	foreach ($reports as $report):
 		//$name = get_db_row( "name", "profiles", "profile_id", $report->profile_id )->name;
 ?>
 					<?php echo '<tr>
@@ -52,3 +52,4 @@ if ($reports->num_rows() > 0):
 <?php endif;  ?>
 		</div>
 		<!-- /#admin_report_form -->
+

@@ -71,7 +71,7 @@ class Admin extends MY_Controller {
 
 
     	$this->layout
-    	->view( 'forms/admin_login_form', array("error"=>$error, "name"=>$name ))
+    	->view( 'forms/login_form', array("error"=>$error, "name"=>$name ))
     	->load();
     }
 
@@ -157,22 +157,6 @@ class Admin extends MY_Controller {
             $this->layout->view("forms/user_form", array("form"=>$form))->load();
         }
     }
-
-
-    // ----------------------------------------------------------------------------------
-
-    /**
-     * Page to edit it's own account, redirect to the hub or editdeveloper
-     */
-    /*function edityouraccount() {
-        if ( ! IS_LOGGED_IN)
-            redirect("admin/login");
-
-        if (IS_DEVELOPER)
-            redirect( 'admin/editdeveloper/'.userdata( "user_id") );
-        else //is admin
-            redirect( 'admin/editadmin' );
-    }*/
 
 
     // ----------------------------------------------------------------------------------
@@ -555,7 +539,8 @@ class Admin extends MY_Controller {
                 //$reports["success"] = 'Reports(s) deleted successfully.';
             }
 
-            if (IS_ADMIN)
+            if (IS_DEVELOPER
+                )
                 $reports = $this->admin_model->get_reports();
             else
                 $reports = $this->admin_model->get_developer_reports(USER_ID);
