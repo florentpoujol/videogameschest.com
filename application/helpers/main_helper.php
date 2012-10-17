@@ -211,26 +211,24 @@ function admin_menu_selected( $item ) {
 
 /**
  * Returna an array from the users table where keys are user_id and values user name
- * @param  string $user_type 			The user type (field users.type)
- * @return array  $users[$user_type]    The user array
+ * @param  string/array $where 	The user type (field users.type) or an array with other WHERE critera
+ * @return array  $users    	The user array
  */
-function get_users_array( $user_type ) {
-	static $users = null;
+function get_users_array( $where ) {
+	if (is_string($where))
+		$where = array("type"=>$where);
 
-	if (is_array($users) && isset($users[$user_type]))
-		return $users[$user_type];
-
-	$raw_users = get_db_rows("user_id, name", "users", "type = '$user_type'");
+	$raw_users = get_db_rows("user_id, name", "users", $where);
 
 	if ($raw_users === false)
-		return $raw_users;
+		return false;
 
-	$users[$user_type] = array();
+	$users = array();
 
 	foreach ($raw_users->result() as $user)
-		$users[$user_type][$user->user_id] = $user->name;
+		$users[$user->user_id] = $user->name;
 
-	return $users[$user_type];
+	return $users;
 }
 
 
