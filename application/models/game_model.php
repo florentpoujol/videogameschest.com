@@ -71,7 +71,7 @@ class Game_model extends CI_Model {
     /**
      * Return game from the database
      * @param array $where The WHERE criteria
-     * @return object/false the DB object or false if nothing is found
+     * @return array/false The array containing all the game profile's infos or false
      */
     function get_game( $where ) {
         $game = $this->main_model->get_row("*", "profiles", $where);
