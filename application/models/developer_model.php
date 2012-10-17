@@ -7,6 +7,7 @@ class Developer_model extends CI_Model {
     function __construct() {
         parent::__construct();
         $this->datetime_format = get_static_data('site')->date_formats->datetime_sql;
+        $this->date_format = get_static_data('site')->date_formats->date_sql;
     }
 
 
@@ -22,12 +23,24 @@ class Developer_model extends CI_Model {
         if (isset($form["password"]) && trim( $form['password'] ) != '' )
             $form['password'] = hash_password( $form['password'] );
         
+        $form["creation_date"] = date_create()->format($this->datetime_format);
+        $form["key"] = md5(mt_rand());
+        $form["type"] = "dev";
+
+        $user_infos = $form;
+        unset($user_infos["data"]);
+        
+        $this->db->insert("users", $user_infos);
+
+        $form["user_id"] = $this->db->insert_id();
+        $form["privacy"] = "private";
+        unset($form["email"]);
+        unset($form["password"]);
+        unset($form["key"]);
 
         $form["data"] = json_encode( $form["data"] );
-        $form["creation_date"] = date_create()->format($this->datetime_format);
-        $form["profile_key"] = md5(mt_rand());
-
-        $this->db->insert("developers", $form);
+        
+        $this->db->insert("profiles", $form);
         return $this->db->insert_id();
     }
 
