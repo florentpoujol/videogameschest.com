@@ -96,72 +96,48 @@ class Admin extends MY_Controller {
     // ----------------------------------------------------------------------------------
 
     /**
-     * Page to edit an admin account
+     * Page to add a user account
      */
     function adduser() {
         if ( ! IS_LOGGED_IN)
             redirect("admin/login");
 
+        if ( ! IS_ADMIN)
+            redirect("admin");
+
         // the has been submitted
         if (post("user_form_submitted")) {
             $form = post("form");
-            $db_user = get_db_row("*", "users", "user_id = '".USER_ID."'");
-
+            
             // checking form
-            $this->form_validation->set_rules( "form[name]", "Name", "trim|required|min_length[5]");
-            if ($form["name"] != $db_user->name)
-                $this->form_validation->set_rules("form[name]", "Name", 'is_unique[users.name]');
-
-            $this->form_validation->set_rules( "form[email]", "Email", "trim|required|min_length[5]|valid_email");
-            if ($form["name"] != $db_user->name)
-                $this->form_validation->set_rules("form[name]", "Email", 'is_unique[users.email]');
-            
-            
-            $old_password_ok = true;
-
+            $this->form_validation->set_rules( "form[name]", "Name", "trim|required|min_length[5]|is_unique[users.name]");
+            $this->form_validation->set_rules( "form[email]", "Email", "trim|required|min_length[5]|valid_email|is_unique[users.email]");
+                   
             if (trim($form["password"]) != "") {
                 $this->form_validation->set_rules("form[password]", "Password", "min_length[5]");
                 $this->form_validation->set_rules("form[password2]", "Password confirmation", "min_length[5]");
-                $this->form_validation->set_rules("form[oldpassword]", "Old Password", "min_length[5]");
-                
+
                 if ($form["password"] != $form["password2"])
                     $this->form_validation->set_rules("form[password2]", "Password confirmation", "matches[form[password]]");
-
-                if ( ! check_password($form["oldpassword"], $db_user->password)) {
-                       $form["errors"] = "The oldpassword field does not match your current password.";
-                    $old_password_ok = false;
-                }
             }
-            else
-                unset($form["password"]);
             
             // form OK
-            if ($this->form_validation->run() && $old_password_ok) {
+            if ($this->form_validation->run()) {
                 unset($form["password2"]);
-                unset($form["oldpassword"]);
-                $this->admin_model->update_user($form);
-
-                $form["success"] = 'Your user account has been successfully updated.';
-                $form["password"] = "";
-
-                $this->layout->view("forms/user_form", array("form"=>$form))->load();
+                $id = $this->admin_model->insert_user($form);
+                redirect("admin/edituser/$id");
             }
             else {
                 // just reload the form and let the form_validation class display the errors
                 $form["password"] = "";
                 $form["password2"] = "";
-                $form["oldpassword"] = "";
-
                 $this->layout->view("forms/user_form", array("form"=>$form))->load();
             }
         }
-        // no form submitted
-        else {
-            $form = get_db_row("*", "users", "user_id = '".USER_ID."'");
-            $form->password = "";
 
-            $this->layout->view("forms/user_form", array("form"=>$form))->load();
-        }
+        // no form submitted
+        else
+            $this->layout->view("forms/user_form")->load();
     }
 
     // ----------------------------------------------------------------------------------
