@@ -4,7 +4,7 @@ $form_data = get_static_data('form');
 if (!isset($form))
 	$form = array();
 
-$form = init_developer_form($form);
+$form = check_dev_infos($form);
 
 ?>
 		<section id="developer_form">
