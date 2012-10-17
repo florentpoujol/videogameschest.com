@@ -13,6 +13,24 @@ class Admin_model extends CI_Model {
     //----------------------------------------------------------------------------------
     
     /**
+     * Insert a user in the database
+     * @param assoc array $form The raw data from the user_form view
+     */
+    function insert_user( $form ) {
+        if (isset($form["password"]) && trim($form["password"]) != "")
+            $form["password"] = hash_password($form["password"]);
+
+        $form["key"] = md5(mt_rand());
+        $form["creation_date"] = date_create()->format($this->datetime_format);
+
+        $this->db->insert("users", $form);
+        return $this->db->insert_id();
+    }
+
+
+    //----------------------------------------------------------------------------------
+    
+    /**
      * Update a user in the database
      * @param assoc array $form The raw data from the user_form view
      */
@@ -20,7 +38,6 @@ class Admin_model extends CI_Model {
         if (isset($form["password"]) && trim($form["password"]) != "")
             $form["password"] = hash_password($form["password"]);
 
-        unset($form["type"]);
         unset($form["key"]);
         unset($form["creation_date"]);
         $this->db->update("users", $form, "user_id = ".$form["user_id"]);
