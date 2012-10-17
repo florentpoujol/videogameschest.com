@@ -82,16 +82,17 @@ foreach (get_static_data('site')->languages as $lang) {
 			</nav> 
 			<!-- /#lang_menu --> 
 
-<?php if( userdata( 'is_logged_in' ) ): ?>
+<?php if (IS_LOGGED_IN): ?>
 			<nav id="admin_menu">
 				<ul>
 					<li><a href="<?php echo site_url('admin'); ?>" <?php echo admin_menu_selected('admin_index');?>>Admin hub</a></li>
-	<?php if( userdata( 'is_admin' ) ): // admin only ?>
-					<li><a href="<?php echo site_url('admin/edituser'); ?>" <?php echo admin_menu_selected('edituser');?>>Edit your user account</a></li>
+					<li><a href="<?php echo site_url('admin/edituser'); ?>" <?php echo admin_menu_selected('edituser');?>>Edit user</a></li>
+	<?php if (IS_ADMIN): // admin only ?>
+					<li><a href="<?php echo site_url('admin/adduser'); ?>" <?php echo admin_menu_selected('adduser');?>>Create user</a></li>
 					<li><a href="<?php echo site_url('admin/adddeveloper'); ?>" <?php echo admin_menu_selected('adddeveloper');?>>Add a developer</a></li>
 					<li><a href="<?php echo site_url('admin/editdeveloper'); ?>" <?php echo admin_menu_selected('editdeveloper');?>>Edit a developer</a></li>
 					<li><a href="<?php echo site_url('admin/reports'); ?>" <?php echo admin_menu_selected('reports');?>>Reports</a></li>
-	<?php elseif( userdata( 'is_developer' ) ): ?>
+	<?php elseif (IS_DEVELOPER): ?>
 					<li><a href="<?php echo site_url('admin/editdeveloper/'.userdata('user_id')); ?>" <?php echo admin_menu_selected('editdeveloper');?>>Edit your developer account</a></li>
 	<?php endif; ?>		
 					<li><a href="<?php echo site_url('admin/addgame'); ?>" <?php echo admin_menu_selected('addgame');?>>Add a game</a></li>
@@ -100,7 +101,7 @@ foreach (get_static_data('site')->languages as $lang) {
 					<li><a href="<?php echo site_url('admin/messages'); ?>" <?php echo admin_menu_selected('messages');?>>Messages</a></li>
 				<ul>
 			</nav> <!-- /#admin_menu -->
-<?php endif; // end if( userdata( 'is_logged_in' ) ):?>
+<?php endif; // end if( IS_LOGGED_IN ):?>
 		</header>
 
 		<!-- Body hook -->
@@ -113,7 +114,7 @@ foreach (get_static_data('site')->languages as $lang) {
 		<script src="http://code.jquery.com/jquery-1.8.2.min.js" type="text/javascript"></script>
 		<!--<script src="<?php echo js_link('jquery.tooltipster.min');?>" type="text/javascript"></script>-->
 
-<?php foreach( $js as $url ): ?>
+<?php foreach ($js as $url): ?>
 		<script type="text/javascript" src="<?php echo $url; ?>"></script> 
 <?php endforeach; ?>
 
