@@ -108,7 +108,7 @@ function form_tooltip( $key ) {
  * @param array $form An assoc array with where criteria or a single key as string
  * @return 
  */
-function init_developer_form( $form ) {
+function check_dev_infos( $form ) {
 	if( is_object($form) ) // if $form comes from the database
 		$form = get_object_vars($form);
 
