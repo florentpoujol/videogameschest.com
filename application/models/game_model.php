@@ -79,7 +79,7 @@ class Game_model extends CI_Model {
         if ($game == false)
             return false;
 
-        return init_game($game);
+        return check_game_infos($game);
     }
 
 
