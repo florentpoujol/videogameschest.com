@@ -41,8 +41,8 @@ class Game extends MY_Controller {
             ->view("forms/report_form")
             ->load();
         }
-        // else
-        //     redirect("home/404/gameprivate:$name_or_id");
+        else
+            redirect("home/404/gameprivate:$name_or_id");
     }
 }
 
