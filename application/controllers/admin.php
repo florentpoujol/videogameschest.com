@@ -4,6 +4,12 @@ class Admin extends MY_Controller {
     
     function __construct() {
     	parent::__construct();
+
+        $method = $this->router->fetch_method();
+        if ($method == "index")
+            $method = "admin_index";
+        
+        define("METHOD", $method);
 	}
 
 

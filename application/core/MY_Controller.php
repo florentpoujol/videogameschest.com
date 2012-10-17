@@ -31,7 +31,9 @@ class MY_Controller extends CI_Controller {
             define("USER_ID", 0);
 
         define("CONTROLLER", $this->router->fetch_class());
-        define("METHOD", $this->router->fetch_method());
+        
+        if (CONTROLLER != "admin")
+            define("METHOD", $this->router->fetch_method());
 	}
 }
 
