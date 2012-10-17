@@ -166,21 +166,21 @@ function init_developer_form( $form ) {
  * @return 
  */
 function check_game_infos( $form ) {
-	if( is_object($form) ) // if $form comes from the database
+	if (is_object($form)) // if $form comes from the database
 		$form = get_object_vars($form);
 
 	// first make sure that the databse fields exists (+ password2)
 	$db_fields = array("profile_id", "type", "user_id", "name", "creation_date", "profile_privacy", "publication_date", "data");
 
-	foreach( $db_fields as $field ) {
-		if( !isset( $form[$field] ) )
+	foreach ($db_fields as $field) {
+		if( ! isset($form[$field]))
 			$form[$field] = '';
 	}
 
 	// then take care of data
-	if( is_string($form["data"]) && trim($form["data"]) == '' )
+	if (is_string($form["data"]) && trim($form["data"]) == "")
 		$form["data"] = array();
-	elseif( is_string( $form["data"] ) )
+	elseif (is_string($form["data"]))
 		$form["data"] = json_decode( $form["data"], true );
 
     $data = $form["data"];
@@ -189,26 +189,26 @@ function check_game_infos( $form ) {
     $string_keys = array( "pitch", "logo", "blogfeed", "website",
     "publishername", "publisherurl", "price", "soundtrack", "releasedate" );
 
-    foreach( $string_keys as $key ) {
-        if( !isset( $data[$key] ) )
-            $data[$key] = '';
+    foreach ($string_keys as $key) {
+        if( ! isset($data[$key]))
+            $data[$key] = "";
     }
 
     // array data
     $array_keys = array("languages", "technologies", "operatingsystems", "devices",
      "genres", "themes", "viewpoints", "nbplayers", "tags" );
 
-    foreach( $array_keys as $key ) {
-        if( !isset( $data[$key] ) )
+    foreach ($array_keys as $key) {
+        if( ! isset($data[$key]))
             $data[$key] = array();
     }
 
-    // array( "names"=>array(), "urls"=>array() )
+    // arrays "names/url"
     $names_urls_array_keys = array("screenshots", "videos", "socialnetworks", "stores");
 
-    foreach( $names_urls_array_keys as $key ) {
-        if( !isset( $data[$key] ) )
-            $data[$key] = array( "names" => array() );
+    foreach ($names_urls_array_keys as $key) {
+        if( ! isset($data[$key]))
+            $data[$key] = array("names" => array());
     }
 
     $form["data"] = $data;
