@@ -5,20 +5,20 @@ $site_data = get_static_data('site');
 			<h1><?php echo lang('game_page_title');?></h1>
 
 			<header>
-				<span><?php echo $db_game->name;?></span> 
-				<?php echo '<span><a href="'.$db_game->data['website'].'" title="'.lang('game_website_title').'">'.$db_game->name.'</a></span>'; ?> 
+				<span><?php echo $db_game["name"];?></span> 
+				<?php echo '<span><a href="'.$db_game["data"]['website'].'" title="'.lang('game_website_title').'">'.$db_game["name"].'</a></span>'; ?> 
 			</header>
 
 			<article>
 				<div id="profile_pitch">
-					<?php echo parse_bbcode($db_game->data['pitch']); ?> 
+					<?php echo parse_bbcode($db_game["data"]['pitch']); ?> 
 				</div>
 
 				<div id="profile_blogfeed">
 					<?php echo lang('game_blogfeed'); ?>
 					<ul>
 						<?php 
-						foreach( $db_game->feed_items as $item ) {
+						foreach( $db_game["feed_items"] as $item ) {
 						 	echo '<li><a href="'.$item['link'].'">'.$item['title'].'</a></li>';
 						}
 						?>
@@ -30,10 +30,10 @@ $site_data = get_static_data('site');
 					
 					<div id="screenshots_display">
 					<?php
-					$count = count($db_game->data['screenshots']['names']);
+					$count = count($db_game["data"]['screenshots']['names']);
 					for( $i = 0; $i < $count; $i++ ) {
-						$name = $db_game->data['screenshots']['names'][$i];
-						$url = $db_game->data['screenshots']['urls'][$i];
+						$name = $db_game["data"]['screenshots']['names'][$i];
+						$url = $db_game["data"]['screenshots']['urls'][$i];
 
 						echo '<a href="'.$url.'" title="'.$name.'" rel="color_screenshots_group"><img src="'.$url.'" alt="'.$name.'" class="profile_screenshot" /></a> ';
 					}
@@ -44,9 +44,9 @@ $site_data = get_static_data('site');
 					<?php echo lang('game_socialnetworks').' : '; ?> 
 					
 					<?php
-					$count = count($db_game->data['socialnetworks']['names']);
+					$count = count($db_game["data"]['socialnetworks']['names']);
 					for( $i = 0; $i < $count; $i++ )
-						echo '<a href="'.$db_game->data['socialnetworks']['urls'][$i].'">'.lang("socialnetworks_".$db_game->data['socialnetworks']['names'][$i]).'</a> ';
+						echo '<a href="'.$db_game["data"]['socialnetworks']['urls'][$i].'">'.lang("socialnetworks_".$db_game["data"]['socialnetworks']['names'][$i]).'</a> ';
 					?> 
 				</div>
 				
@@ -54,9 +54,9 @@ $site_data = get_static_data('site');
 					<?php echo lang('game_stores').' : '; ?> 
 					
 					<?php
-					$count = count($db_game->data['stores']['names']);
+					$count = count($db_game["data"]['stores']['names']);
 					for( $i = 0; $i < $count; $i++ )
-						echo '<a href="'.$db_game->data['stores']['urls'][$i].'">'.lang("stores_".$db_game->data['stores']['names'][$i]).'</a> ';
+						echo '<a href="'.$db_game["data"]['stores']['urls'][$i].'">'.lang("stores_".$db_game["data"]['stores']['names'][$i]).'</a> ';
 					?> 
 				</div>
 
@@ -65,7 +65,7 @@ $site_data = get_static_data('site');
  				'genres', 'themes', 'viewpoints', 'nbplayers',  'tags' );
 
 				foreach( $categories as $category ):
-					if( count( $db_game->data[$category] ) == 0 )
+					if( count( $db_game["data"][$category] ) == 0 )
 						continue;
 				?> 
 				<div id="profile_<?php echo $category;?>">
@@ -73,7 +73,7 @@ $site_data = get_static_data('site');
 					
 					<?php
 					$text = '';
-					foreach( $db_game->data[$category] as $item ) {
+					foreach( $db_game["data"][$category] as $item ) {
 						$text .= lang($category."_$item").", ";
 					}
 
