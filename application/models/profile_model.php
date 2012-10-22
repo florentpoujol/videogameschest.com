@@ -6,47 +6,41 @@ class Profile_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
-        $this->datetime_format = get_static_data('site')->date_formats->datetime_sql;
-        $this->date_format = get_static_data('site')->date_formats->date_sql;
+        $this->datetime_format = get_static_data("site")->date_formats->datetime_sql;
+        $this->date_format = get_static_data("site")->date_formats->date_sql;
     }
 
 
     //----------------------------------------------------------------------------------
 
     /**
-     * Insert a new developer in the database
-     * @param assoc array $form The raw data from the developer_form view
+     * Insert a new profile in the database
+     * @param assoc array $form The raw data from the developer_form or game_form view
      * @return int/bool The id of the newly inserted row or false
      */
-    function insert_developer( $form ) {
-        // encode password if it exist
-        if (isset($form["password"]) && trim( $form['password'] ) != '' )
-            $form['password'] = hash_password( $form['password'] );
-        
-        $form["creation_date"] = date_create()->format($this->datetime_format);
-        $form["key"] = md5(mt_rand());
-        $form["type"] = "dev";
+    function insert_profile( $form ) {
+        // create user first if it is a dev
+        if (isset($form["type"]) && $form["type"] == "dev") {
+            $user_infos = $form;
+            unset($user_infos["data"]);
+            
+            $form["user_id"] = $this->admin_model->insert_user("users", $user_infos);
+        }
+        elseif ( ! isset($form["type"]) )
+            $form["type"] = "game";
 
-        $user_infos = $form;
-        unset($user_infos["data"]);
-        
-        $this->db->insert("users", $user_infos);
-
-        $form["user_id"] = $this->db->insert_id();
-        $form["privacy"] = "private";
+        // now insert profile
         unset($form["email"]);
         unset($form["password"]);
-        unset($form["key"]);
+        $form["privacy"] = "private";
+        $form["creation_date"] = date_create()->format($this->date_format);
 
-        $form["data"] = json_encode( $form["data"] );
+        $form["data"] = json_encode($form["data"]);
         
         $this->db->insert("profiles", $form);
         return $this->db->insert_id();
     }
-    function machin
-    {
 
-    }
 
     // ----------------------------------------------------------------------------------
 
@@ -55,25 +49,20 @@ class Profile_model extends CI_Model {
      * @param assoc array $form The raw data from the developer_form view
      * @param object $db_data The db object to check $form against
      */
-    function update_developer( $form, $db_data ) {
-        // encode the password if it exists
-        if (isset($form["password"]) && trim($form["password"] ) != "")
-            $form["password"] = hash_password($form["password"]);
-
-
-        $id = $form["developer_id"];
+    function update_profile( $form, $db_data ) {
+        $id = $form["id"];
         $form["data"] = json_encode($form["data"]);
 
-        if (isset($form["is_public"]) && $form["is_public"] == "1")
-            $form["publication_date"] = date_create()->format($this->datetime_format);
+        //if (isset($form["privacy"]) && $form["privacy"] == "public")
+        //    $form["publication_date"] = date_create()->format($this->datetime_format);
 
-        foreach( $form as $field => $value ) {
-            if( $value == $db_data->$field )
-                unset( $form[$field] );
+        foreach ($form as $field => $value) {
+            if ($value == $db_data->$field)
+                unset($form[$field]);
         }
         
-        if( count($form) > 0 )
-            $this->db->update( 'developers', $form, 'developer_id = '.$id );
+        if (count($form) > 0)
+            $this->db->update("profiles", $form, "id = '$id'");
     }
 
 
@@ -94,17 +83,36 @@ class Profile_model extends CI_Model {
     }
 
 
+    // ----------------------------------------------------------------------------------
+
+    /**
+     * Return game from the database
+     * @param array $where The WHERE criteria
+     * @return array/false The array containing all the game profile's infos or false
+     */
+    function get_game( $where ) {
+        $game = $this->main_model->get_row("*", "profiles", $where);
+
+        if ($game == false)
+            return false;
+
+        return check_game_infos($game);
+    }
+
+
     //----------------------------------------------------------------------------------
 
     /**
-     * Return the new developers from the database to be put in a rss feed
+     * Return the new profiles from the database to be put in a rss feed
      * @param  int  $item_count The number of games to returns
+     * @param  string $profile_type The profile type (dev or game)
      * @return object The database object
      */
-    function get_feed_developers( $item_count ) {
+    function get_new_profiles( $item_count, $profile_type ) {
         return $this->db
-        ->from("developers")
-        ->where("is_public", "1")
+        ->from("profiles")
+        ->where("type", $profile_type)
+        ->where("privacy", "public")
         ->order_by("publication_date", "asc")
         ->limit($item_count)
         ->get();

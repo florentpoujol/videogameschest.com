@@ -2,11 +2,10 @@
 
 class Developer_model extends CI_Model {
     
-    private $datetime_format = "" ;
+    private $date_format = "" ;
 
     function __construct() {
         parent::__construct();
-        $this->datetime_format = get_static_data('site')->date_formats->datetime_sql;
         $this->date_format = get_static_data('site')->date_formats->date_sql;
     }
 
@@ -18,35 +17,24 @@ class Developer_model extends CI_Model {
      * @param assoc array $form The raw data from the developer_form view
      * @return int/bool The id of the newly inserted row or false
      */
-    function insert_developer( $form ) {
-        // encode password if it exist
-        if (isset($form["password"]) && trim( $form['password'] ) != '' )
-            $form['password'] = hash_password( $form['password'] );
-        
-        $form["creation_date"] = date_create()->format($this->datetime_format);
-        $form["key"] = md5(mt_rand());
+    function insert( $form ) {
         $form["type"] = "dev";
 
-        $user_infos = $form;
-        unset($user_infos["data"]);
+        if ( ! isset($form["user_id"])) // $form comes from adddeveloper, need to add a new user first
+            $form["user_id"] = $this->user_model->insert($form);
         
-        $this->db->insert("users", $user_infos);
-
-        $form["user_id"] = $this->db->insert_id();
         $form["privacy"] = "private";
+        $form["creation_date"] = date_create()->format($this->date_format);
         unset($form["email"]);
         unset($form["password"]);
-        unset($form["key"]);
 
-        $form["data"] = json_encode( $form["data"] );
+        if (isset($form["data"])) // data is not set when adding a dev profil from admin/adduser
+            $form["data"] = json_encode($form["data"]);
         
         $this->db->insert("profiles", $form);
         return $this->db->insert_id();
     }
-    function machin
-    {
 
-    }
 
     // ----------------------------------------------------------------------------------
 
@@ -55,42 +43,39 @@ class Developer_model extends CI_Model {
      * @param assoc array $form The raw data from the developer_form view
      * @param object $db_data The db object to check $form against
      */
-    function update_developer( $form, $db_data ) {
-        // encode the password if it exists
-        if (isset($form["password"]) && trim($form["password"] ) != "")
-            $form["password"] = hash_password($form["password"]);
-
-
-        $id = $form["developer_id"];
+    function update( $form, $db_data ) {
+        $id = $form["id"];
         $form["data"] = json_encode($form["data"]);
 
-        if (isset($form["is_public"]) && $form["is_public"] == "1")
-            $form["publication_date"] = date_create()->format($this->datetime_format);
-
-        foreach( $form as $field => $value ) {
-            if( $value == $db_data->$field )
-                unset( $form[$field] );
+        foreach ($form as $field => $value) {
+            if ($value == $db_data->$field)
+                unset($form[$field]);
         }
         
-        if( count($form) > 0 )
-            $this->db->update( 'developers', $form, 'developer_id = '.$id );
+        if (count($form) > 0)
+            $this->db->update("profiles", $form, "id = '$id'");
     }
 
 
     // ----------------------------------------------------------------------------------
 
     /**
-     * Return a developer from the database
+     * Return developer(s) from the database
      * @param array $where The WHERE criteria
-     * @return array The array containing all the developer profile's infos or false
+     * @param boolean   $prep_data_for_form  Tell wether preparing the data 
+     * @return array/false The array containing all the game profile's infos or false
      */
-    function get_developer( $where ) {
-        $dev = $this->main_model->get_row("*", "profiles", $where);
+    function get( $where, $prep_data_for_form = false ) {
+        $where["type"] = "dev";
+        $dev = $this->db->from("profiles")->where($where)->get()->row();
 
         if ($dev == false)
             return false;
 
-        return check_dev_infos($dev);
+        if ($prep_data_for_form)
+            $dev = init_dev_infos($dev);
+        
+        return $dev;
     }
 
 

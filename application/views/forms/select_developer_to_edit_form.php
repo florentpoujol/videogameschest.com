@@ -1,7 +1,11 @@
 		<div id="select_developer_to_edit_form">
 			<h1>Select the developer to edit</h1>
 		
-			<?php echo form_open("admin/editdeveloper"); ?>
+			<?php 
+			if (isset($form))
+				echo get_form_errors($form); 
+
+			echo form_open("admin/editdeveloper"); ?>
 
 				<?php echo form_dropdown("developer_id_select", get_users_array("dev"), null, 'id="developer_id_select"' ); ?>
 				<?php echo ' <label for="developer_id_select">Select the developer</label>'; ?>

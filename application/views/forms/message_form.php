@@ -9,7 +9,7 @@ $url = site_url("feed/newmessages/".USER_ID."/".userdata("profile_key"));
 			</p>
 <?php
 if(!isset($form))
-	$form = '';
+	$form = "";
 ?>
 			<?php echo get_form_errors($form);
 			echo get_form_success($form); ?>
@@ -23,14 +23,13 @@ if(!isset($form))
 					<textarea name="form[message]" id="write_message" placeholder="10 characters min" cols="30" rows="7"></textarea>
 					<br>
 					<label for="recipient">Recipient : </label> 
-<?php
-if (IS_ADMIN):?>
+<?php if (IS_ADMIN):?>
 					<input type="hidden" name="form[administrator_id]" value="<?php echo USER_ID;?>">
-					<?php echo form_dropdown( 'form[developer_id]', get_users("developers"), null, 'id="recipient"' ); ?> 
+					<?php echo form_dropdown( 'form[developer_id]', get_users_array("dev"), null, 'id="recipient"' ); ?> 
 <?php else: ?>
 					<input type="hidden" name="form[sent_by_developer]" value="1">
 					<input type="hidden" name="form[developer_id]" value="<?php echo USER_ID;?>">
-					<?php echo form_dropdown( 'form[administrator_id]', get_users("administrators"), null, 'id="recipient"' ); ?> 
+					<?php echo form_dropdown( 'form[administrator_id]', get_users_array("admin"), null, 'id="recipient"' ); ?> 
 <?php endif; ?>
 					<br>
 					<input type="submit" name="write_message_form_submitted" value="Send this message">
@@ -68,7 +67,7 @@ if ($messages["inbox"]->num_rows() > 0):
 							<td>'.$msg->name.'</td>
 							<td>'.date_create($msg->date)->format($format).'</td>
 							<td>'.$msg->message.'</td>
-							<td><input type="checkbox" name="delete[]" value="'.$msg->message_id.'"></td>
+							<td><input type="checkbox" name="delete[]" value="'.$msg->id.'"></td>
 						</tr>'; ?> 
 <?php endforeach; ?>
 					</table>
@@ -102,7 +101,7 @@ if ($messages["outbox"]->num_rows() > 0):
 							<td>'.$msg->name.'</td>
 							<td>'.date_create($msg->date)->format($format).'</td>
 							<td>'.$msg->message.'</td>
-							<td><input type="checkbox" name="delete[]" value="'.$msg->message_id.'"></td>
+							<td><input type="checkbox" name="delete[]" value="'.$msg->id.'"></td>
 						</tr>'; ?> 
 <?php endforeach; ?>
 					</table>

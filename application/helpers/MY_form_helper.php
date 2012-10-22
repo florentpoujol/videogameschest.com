@@ -108,12 +108,12 @@ function form_tooltip( $key ) {
  * @param array $form An assoc array with where criteria or a single key as string
  * @return 
  */
-function check_dev_infos( $form ) {
+function init_dev_infos( $form ) {
 	if( is_object($form) ) // if $form comes from the database
 		$form = get_object_vars($form);
 
 	// first make sure that the databse fields exists (+ password2)
-	$db_fields = array( "developer_id", "name", "email", "password", 'password2', "is_public", "data");
+	$db_fields = array( "id", "name", "email", "type", "user_id", "password", "password2", "privacy", "data");
 
 	foreach( $db_fields as $field ) {
 		if( !isset( $form[$field] ) )
@@ -165,12 +165,12 @@ function check_dev_infos( $form ) {
  * @param array $form An assoc array with where criteria or a single key as string
  * @return 
  */
-function check_game_infos( $form ) {
+function init_game_infos( $form ) {
 	if (is_object($form)) // if $form comes from the database
 		$form = get_object_vars($form);
 
 	// first make sure that the databse fields exists (+ password2)
-	$db_fields = array("profile_id", "type", "user_id", "name", "creation_date", "profile_privacy", "publication_date", "data");
+	$db_fields = array("id", "type", "user_id", "name", "creation_date", "profile_privacy", "publication_date", "data");
 
 	foreach ($db_fields as $field) {
 		if( ! isset($form[$field]))

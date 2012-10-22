@@ -4,7 +4,7 @@ $form_data = get_static_data("form");
 if (!isset($form))
 	$form = array();
 
-$form = check_dev_infos($form);
+$form = init_dev_infos($form);
 
 ?>
 		<section id="developer_form">
@@ -41,7 +41,7 @@ if (CONTROLLER == "adddeveloper")
 // profile id
 if (METHOD == "editdeveloper"): ?>
 
-				Profile Id : <?php echo $form["profile_id"];?> <input type="hidden" name="form[profile_id]" value="<?php echo $form["profile_id"];?>"> <br>
+				Profile Id : <?php echo $form["id"];?> <input type="hidden" name="form[id]" value="<?php echo $form["id"];?>"> <br>
 <?php endif;
 
 // required fields
@@ -72,6 +72,12 @@ if (CONTROLLER == "adddeveloper"):
 <?php
 endif;
 
+// user
+?>
+
+				<?php echo form_dropdown( "form[user_id]", get_users_array("dev"), $form["user_id"], 'id="user_id"' ); ?> 
+				<label for="user_id">User</label> <br> 
+<?php
 // profile privacy
 if (METHOD == "editdeveloper"):
 	if ($form["privacy"] == "private"): ?>

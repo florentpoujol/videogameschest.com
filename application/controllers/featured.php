@@ -4,6 +4,7 @@ class Featured extends MY_Controller {
     
     function index()
     {
+        
         $this->layout->load();
     }
 

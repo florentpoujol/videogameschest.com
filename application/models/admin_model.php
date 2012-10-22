@@ -3,44 +3,12 @@
 class Admin_model extends CI_Model {
     
     private $datetime_format = "" ;
+    private $date_format = "";
 
     function __construct() {
         parent::__construct();
         $this->datetime_format = get_static_data('site')->date_formats->datetime_sql;
-    }
-
-
-    //----------------------------------------------------------------------------------
-    
-    /**
-     * Insert a user in the database
-     * @param assoc array $form The raw data from the user_form view
-     */
-    function insert_user( $form ) {
-        if (isset($form["password"]) && trim($form["password"]) != "")
-            $form["password"] = hash_password($form["password"]);
-
-        $form["key"] = md5(mt_rand());
-        $form["creation_date"] = date_create()->format($this->datetime_format);
-
-        $this->db->insert("users", $form);
-        return $this->db->insert_id();
-    }
-
-
-    //----------------------------------------------------------------------------------
-    
-    /**
-     * Update a user in the database
-     * @param assoc array $form The raw data from the user_form view
-     */
-    function update_user( $form ) {
-        if (isset($form["password"]) && trim($form["password"]) != "")
-            $form["password"] = hash_password($form["password"]);
-
-        unset($form["key"]);
-        unset($form["creation_date"]);
-        $this->db->update("users", $form, "user_id = ".$form["user_id"]);
+        $this->date_format = get_static_data('site')->date_formats->date_sql;
     }
 
 
@@ -64,11 +32,11 @@ class Admin_model extends CI_Model {
      * @param string $join_field The $field in the messages table to join to the developers table
      * @return object/false the DB object or false if nothing is found
      */
-    function get_messages( $where, $join_table, $join_field ) {
+    function get_messages( $where, $join_field ) {
         return $this->db
         ->from("messages")
         ->where($where)
-        ->join($join_table, $join_field)
+        ->join("users", "users.id = messages.$join_field")
         ->get();
     }
 
@@ -80,13 +48,13 @@ class Admin_model extends CI_Model {
      * @param assoc array/int/string $ids An array with the message's ids to delete or a single id
      */
     function delete_messages( $ids ) {
-        if( !is_array( $ids ) )
+        if( ! is_array($ids) )
             $ids = array($ids);
 
-        foreach( $ids as $id )
-            $this->db->or_where( 'message_id', $id );
+        foreach ($ids as $id)
+            $this->db->or_where("id", $id);
 
-        $this->db->delete( 'messages' );
+        $this->db->delete("messages");
     }
 
 
@@ -149,7 +117,7 @@ class Admin_model extends CI_Model {
 
         ->select("profiles.type as profile_type")
         ->select("profiles.name as profile_name")
-        ->join("profiles", "reports.profile_id = profiles.profile_id")
+        ->join("profiles", "reports.profile_id = profiles.id")
         ;
         
 
@@ -186,7 +154,7 @@ class Admin_model extends CI_Model {
 
         ->select("profiles.type as profile_type")
         ->select("profiles.name as profile_name")
-        ->join("profiles", "reports.profile_id = profiles.profile_id")
+        ->join("profiles", "reports.profile_id = profiles.id")
 
         ->get();
 
@@ -194,19 +162,19 @@ class Admin_model extends CI_Model {
             $dev_reports[] = $report;
         
 
-        // get all games for this dev ...
-        $games = $this->db
-        ->select("profile_id")
+        // get all profiles for this dev ...
+        $profiles = $this->db
+        ->select("id")
         ->from("profiles")
         ->where("user_id", $dev_id)
         ->get();
 
-        foreach ($games->result() as $game) {
-            // ... then get the reports for each games
+        foreach ($profiles->result() as $profile) {
+            // ... then get the reports for each profiles
             $db_reports = $this->db
             ->from("reports")
             ->where("type", "dev")
-            ->where("profile_id", $game->profile_id)
+            ->where("profile_id", $profile->id)
             ->get();
 
             foreach ($reports->result() as $report)
@@ -228,9 +196,9 @@ class Admin_model extends CI_Model {
             $ids = array($ids);
 
         foreach ($ids as $id)
-            $this->db->or_where('report_id', $id);
+            $this->db->or_where("id", $id);
 
-        $this->db->delete('reports');
+        $this->db->delete("reports");
     }
 }
 

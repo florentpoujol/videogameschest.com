@@ -5,7 +5,7 @@ if (!isset($form))
 elseif( is_object($form) )
 	$form = get_object_vars($form);
 
-$form_items = array("user_id", "name", "email", "password", "password2", "key", "creation_date", "type");
+$form_items = array("id", "name", "email", "password", "password2", "key", "creation_date", "type");
 
 foreach ($form_items as $item) {
 	if( ! isset($form[$item]) )
@@ -26,10 +26,10 @@ foreach ($form_items as $item) {
 
 			<?php echo form_open("admin/".METHOD); ?>
 			<?php if (METHOD == 'edituser'): ?>
-				<?php echo '<input type="hidden" name="form[creation_date]" value="'.$form['creation_date'].'">Your account creation date : '.$form["creation_date"]; ?> <br>
-				<?php echo '<input type="hidden" name="form[user_id]" value="'.$form['user_id'].'"> Your user Id : '.$form["user_id"]; ?> <br>
-				<?php echo '<input type="hidden" name="form[key]" value="'.$form['key'].'"> Your user key : '.$form["key"]; ?> <br>
-				<?php echo '<input type="hidden" name="form[type]" value="'.$form['type'].'">Your have a '.$form["type"].' account.'; ?> <br>
+				<?php echo '<input type="hidden" name="form[creation_date]" value="'.$form["creation_date"].'">Your account creation date : '.$form["creation_date"]; ?> <br>
+				<?php echo '<input type="hidden" name="form[id]" value="'.$form["id"].'"> Your user Id : '.$form["id"]; ?> <br>
+				<?php echo '<input type="hidden" name="form[key]" value="'.$form["key"].'"> Your user key : '.$form["key"]; ?> <br>
+				<?php echo '<input type="hidden" name="form[type]" value="'.$form["type"].'">Your have a '.$form["type"].' account.'; ?> <br>
 			<?php endif; ?>
 				<?php if (IS_ADMIN): ?>
 				<input type="text" name="form[type]" id="account_type" placeholder="dev or admin" value="<?php echo $form['type']; ?>"> <label for="account_type">Account type</label> <br>

@@ -8,14 +8,14 @@
 			<?php echo form_open("admin/editgame"); ?> 
 <?php
 if (IS_ADMIN) // allow to edit any games
-	$raw_games = get_db_rows("profile_id, name", "profiles", "type = 'game'");
+	$raw_games = get_db_rows("id, name", "profiles", "type = 'game'");
 else
-	$raw_games = get_db_rows("profile_id, name", "profiles", "type = 'game' AND user_id = '".USER_ID."'");
+	$raw_games = get_db_rows("id, name", "profiles", "type = 'game' AND user_id = '".USER_ID."'");
 
 $games = array();
 if ($raw_games !== false) {
 	foreach ($raw_games->result() as $game)
-		$games[$game->profile_id] = $game->name;
+		$games[$game->id] = $game->name;
 }
 ?>
 				<?php echo form_dropdown("game_id_select", $games, null, 'id="game_id_select"'); ?> 

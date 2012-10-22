@@ -93,8 +93,7 @@ $lang['addgame_videos_url'] = 'URL';
 
 $lang['addgame_submit'] = 'Create this game profile';
 
-$lang['addgame_form_success'] = 'Thanks you, the developer has successfully been added, an email will be send to let them now. \n 
-They must first check the data then make their account public before you can add one of their game.';
+$lang['addgame_form_success'] = 'Thanks you, the game has successfully been added. The developers must first check the data then make the profile public before he shows up in the search.';
 
 
 // DEVELOPER PROFILE (page "developer")

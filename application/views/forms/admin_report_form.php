@@ -1,17 +1,8 @@
 		<div id="admin_report_form">
 			<h1>Reports</h1>
 
-			<!--<input type="checkbox" name="profile_type" value="developer"> Developer <br>
-			<input type="checkbox" name="profile_type" value="admin"> Admins <br>
-			<input type="checkbox" name="profile_type" value="both" checked="checked"> Both <br>
-			<br>
-			Sort by
-			<input type="radio" name="sort_by" value="date asc" checked="checked">Date Asc<br>
-			<input type="radio" name="sort_by" value="date desc">Date desc <br>-->
-			<?php //echo get_form_success($reports); ?> 
+			<?php echo get_form_success($success); ?> 
 <?php
-//unset($reports["success"]);
-
 if (count($reports) > 0):
 	$site_data = get_static_data("site");
 	$format = $site_data->date_formats->nonenglish;
@@ -41,7 +32,7 @@ if (count($reports) > 0):
 						(IS_ADMIN ? '<td>'.$report->type.'</td>
 						': null)
 						.'<td>'.$report->description.'</td>
-						<td><input type="checkbox" name="delete[]" value="'.$report->report_id.'"></td>
+						<td><input type="checkbox" name="delete[]" value="'.$report->id.'"></td>
 					</tr>'; ?> 
 <?php endforeach; ?>
 				</table>

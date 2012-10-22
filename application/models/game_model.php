@@ -2,11 +2,11 @@
 
 class Game_model extends CI_Model {
     
-    private $datetime_format = "" ;
+    private $date_format = "" ;
 
     function __construct() {
         parent::__construct();
-        $this->datetime_format = get_static_data("site")->date_formats->datetime_sql;
+        $this->date_format = get_static_data("site")->date_formats->date_sql;
     }
 
 
@@ -17,13 +17,15 @@ class Game_model extends CI_Model {
      * @param assoc array $data the raw data from the game_form view
      * @return int or bool the id of the newly inserted row or false
      */
-    function insert_game( $form ) {
+    function insert( $form ) {
         // $form is the raw data from the game form
         // at this point we are sure we want to create the game
-        $form["data"] = json_encode( $form["data"] );
-        $form["creation_date"] = date_create()->format($this->datetime_format);
+        $form["type"] = "game";
+        $form["privacy"] = "private";
+        $form["creation_date"] = date_create()->format($this->date_format);
+        $form["data"] = json_encode($form["data"]);
 
-        $this->db->insert( "games", $form );
+        $this->db->insert("profiles", $form );
         return $this->db->insert_id();
     }
 
@@ -35,17 +37,17 @@ class Game_model extends CI_Model {
      * @param assoc array $form The raw data from the developer_form view
      * @param object $db_data The db object to check $form against
      */
-    function update_game( $form, $db_data ) {
-        $id = $form["game_id"];
-        $form["data"] = json_encode( $form["data"] );
+    function update( $form, $db_data ) {
+        $id = $form["id"];
+        $form["data"] = json_encode($form["data"]);
 
-        foreach( $form as $field => $value ) {
-            if( $value == $db_data->$field )
-                unset( $form[$field] );
+        foreach ($form as $field => $value) {
+            if ($value == $db_data->$field)
+                unset($form[$field]);
         }
 
-        if( count($form) > 0 )
-            $this->db->update( "games", $form, 'game_id = '.$id );
+        if (count($form) > 0)
+            $this->db->update("profiles", $form, "id = $id");
     }
 
 
@@ -56,13 +58,13 @@ class Game_model extends CI_Model {
      * @param  [type] $game_id [description]
      * @return [type]          [description]
      */
-    function publish_game( $game_id ) {
+    function publish( $game_id ) {
         $db = array( 
-            "profile_privacy" => "public",
-            "publication_date" => date_create()->format($this->datetime_format)
+            "privacy" => "public",
+            "publication_date" => date_create()->format($this->date_format)
             );
 
-        $this->db->update("games", $db, "game_id=$game_id");
+        $this->db->update("profiles", $db, "id = '$game_id'");
     }
 
 
@@ -71,15 +73,20 @@ class Game_model extends CI_Model {
     /**
      * Return game from the database
      * @param array $where The WHERE criteria
+     * @param boolean   $prep_data_for_form  Tell wether preparing the data 
      * @return array/false The array containing all the game profile's infos or false
      */
-    function get_game( $where ) {
-        $game = $this->main_model->get_row("*", "profiles", $where);
+    function get( $where, $prep_data_for_form = false ) {
+        $where["type"] = "game";
+        $game = $this->db->from("profiles")->where($where)->get()->row();
 
         if ($game == false)
             return false;
 
-        return check_game_infos($game);
+        if ($prep_data_for_form)
+            $game = init_game_infos($game);
+        
+        return $game;
     }
 
 
@@ -92,8 +99,8 @@ class Game_model extends CI_Model {
      */
     function get_feed_games( $item_count ) {
         return $this->db
-        ->from("games")
-        ->where("profile_privacy", "public")
+        ->from("profiles")
+        ->where("privacy", "public")
         ->order_by("publication_date", "asc")
         ->limit($item_count)
         ->get();

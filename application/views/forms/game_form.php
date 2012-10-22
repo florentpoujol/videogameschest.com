@@ -5,7 +5,7 @@ $form_data = get_static_data("form");
 if (!isset($form)) // when adding a profile, and no $form has been passed to the view
 	$form = array();
 
-$form = check_game_infos($form);
+$form = init_game_infos($form);
 
 ?>
 		<section id="developer_form">
@@ -39,7 +39,7 @@ echo form_open("admin/$method");
 // profile id
 if (METHOD == "editgame" ): ?>
 			
-			Id : <?php echo $form["game_id"];?> <input type="hidden" name="form[game_id]" value="<?php echo $form["game_id"];?>"> <br>
+			Id : <?php echo $form["id"];?> <input type="hidden" name="form[id]" value="<?php echo $form["id"];?>"> <br>
 <?php endif;
 
 // required fields

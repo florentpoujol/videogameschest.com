@@ -218,7 +218,7 @@ function get_users_array( $where ) {
 	if (is_string($where))
 		$where = array("type"=>$where);
 
-	$raw_users = get_db_rows("user_id, name", "users", $where);
+	$raw_users = get_db_rows("id, name", "users", $where);
 
 	if ($raw_users === false)
 		return false;
@@ -226,7 +226,7 @@ function get_users_array( $where ) {
 	$users = array();
 
 	foreach ($raw_users->result() as $user)
-		$users[$user->user_id] = $user->name;
+		$users[$user->id] = $user->name;
 
 	return $users;
 }
@@ -287,18 +287,31 @@ function parse_bbcode( $input ) {
  * Hash the password and return the hash and the salt
  * @return An assoc array containing the salt and the password hash
  */
-function hash_password( $password ) {
+function hash_password( $password, salt = "" ) {
 	$pass_complexifier = "#:T{9 o]5A;-i|dT((5m7,!DF.&@x";
-	// mixes the pass_complexifier to the password to be hashed so that it is very long and unique
-	// and *impossible* to match with a rainbow table if the site's source code is unknow
+	$complexifier = "ï & £ . '   µ ( [ à : ¤ Ç _ è Ô ) ë = } + , Î ; # ² ] À ! § * { ù % $ | é @ ê - î ô ö ç î";
 	
-	// It uses only one character with CRYPT_DES because this algo only cares for 8 characters
-	// made the pass slightly harder to guess without source code, even with source, there is still 7 characters to guess
-	
-	if( CRYPT_EXT_DES == 1 ) // CRYPT_EXT_DES hash more than 8 characters
-		$hash = crypt( $pass_complexifier.$password, get_ext_des_salt() );
-	else
-		$hash = crypt( $pass_complexifier[0].$password, get_des_salt() );
+	if (CRYPT_EXT_DES == 1) { // CRYPT_EXT_DES hash more than 8 characters
+		$old_password = $password;
+		for ($i = 0; $i < strlen($old_password); $i++) {
+			if ($i%2 == 0) // if $i is pair
+				$password .= $complexifier[$i];
+
+			$password .= $old_password[$i];
+		}
+		// ie : "password" becomes "pïa&s£s.w'o rµd"
+		$hash = crypt($password, "_".get_random_string(8));
+	}
+	else {
+		$password = $password[3]."}".$password[2].$password[0].";".$password[1].$password[4]
+		
+		if (isset($password[5]))
+			$password = $password[5].$password;
+		else
+			$password += "ê";
+
+		$hash = crypt($password, get_random_string(2)); // with CRYPT_STD_DES, only 8 characters are hashed
+	}
 
 	return $hash;
 }
@@ -307,29 +320,18 @@ function hash_password( $password ) {
 // ----------------------------------------------------------------------------------
 
 /**
- * [get_des_salt description]
- * @return string The salt
+ * Hash the password and return the hash and the salt
+ * @return An assoc array containing the salt and the password hash
  */
-function get_des_salt() {
-	$alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./";
-	return $alphabet[mt_rand( 0, strlen($alphabet)-1 )].$alphabet[mt_rand( 0, strlen($alphabet)-1 )];
-}
-
-
-//----------------------------------------------------------------------------------
-
-/**
- * [get_ext_des_salt description]
- * @return string The salt
- */
-function get_ext_des_salt() {
-	$alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./";
-	$salt = '_';
+function complexify_password( $password ) {
 	
-	for( $i = 0; $i < 8; $i++ )
-		$salt .= $alphabet[mt_rand( 0, strlen($alphabet)-1 )];
+	// mixes the pass_complexifier to the password to be hashed so that it is very long and unique
+	// and *impossible* to match with a rainbow table if the site's source code is unknow
 	
-	return $salt;
+	// It uses only one character with CRYPT_DES because this algo only cares for 8 characters
+	// made the pass slightly harder to guess without source code, even with source, there is still 7 characters to guess
+	
+	
 }
 
 
@@ -348,6 +350,24 @@ function check_password( $password, $hash ) {
 		return ($hash == crypt( $pass_complexifier.$password, $hash ));
 	else
 		return ($hash == crypt( $pass_complexifier[0].$password, $hash ));
+}
+
+
+//----------------------------------------------------------------------------------
+
+/**
+ * [get_ext_des_salt description]
+ * @return string The salt
+ */
+function get_random_string( $length ) {
+	return "testtest";
+	$alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./";
+	$string = "";
+
+	for ($i = 0; $i < $length; $i++)
+		$string .= $alphabet[mt_rand(0, strlen($alphabet)-1)];
+	
+	return $string;
 }
 
 
