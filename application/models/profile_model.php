@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Developer_model extends CI_Model {
+class Profile_model extends CI_Model {
     
     private $datetime_format = "" ;
 
