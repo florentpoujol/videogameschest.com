@@ -39,7 +39,7 @@ echo form_open("admin/$method");
 // profile id
 if (METHOD == "editgame" ): ?>
 			
-			Id : <?php echo $form["id"];?> <input type="hidden" name="form[id]" value="<?php echo $form["id"];?>"> <br>
+			Game profile id : <?php echo $form["id"];?> <input type="hidden" name="form[id]" value="<?php echo $form["id"];?>"> <br>
 <?php endif;
 
 // required fields

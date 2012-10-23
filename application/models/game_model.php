@@ -78,15 +78,18 @@ class Game_model extends CI_Model {
      */
     function get( $where, $prep_data_for_form = false ) {
         $where["type"] = "game";
-        $game = $this->db->from("profiles")->where($where)->get()->row();
+        $games = $this->db->from("profiles")->where($where)->get();
 
-        if ($game == false)
+        if ($games == false)
             return false;
 
+        if ($games->num_rows() == 1)
+            $games = $games->row();
+
         if ($prep_data_for_form)
-            $game = init_game_infos($game);
+            $games = init_game_infos($games);
         
-        return $game;
+        return $games;
     }
 
 

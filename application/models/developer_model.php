@@ -60,22 +60,25 @@ class Developer_model extends CI_Model {
     // ----------------------------------------------------------------------------------
 
     /**
-     * Return developer(s) from the database
+     * Return developer from the database
      * @param array $where The WHERE criteria
      * @param boolean   $prep_data_for_form  Tell wether preparing the data 
      * @return array/false The array containing all the game profile's infos or false
      */
     function get( $where, $prep_data_for_form = false ) {
         $where["type"] = "dev";
-        $dev = $this->db->from("profiles")->where($where)->get()->row();
+        $devs = $this->db->from("profiles")->where($where)->get();
 
-        if ($dev == false)
+        if ($devs == false)
             return false;
 
+        if ($devs->num_rows() == 1)
+            $devs = $devs->row();
+
         if ($prep_data_for_form)
-            $dev = init_dev_infos($dev);
+            $devs = init_dev_infos($devs);
         
-        return $dev;
+        return $devs;
     }
 
 

@@ -361,9 +361,11 @@ $lang['tags_turnbased'] = "Turn-Based";
 
 $lang["report_title"] = "Report this profile";
 $lang["report_description"] = "Description";
+$lang["report_description_placeholder"] = "10 characters minimum";
 $lang["report_recipient"] = "Report recipient";
 $lang["report_developer"] = "Developer/Admin";
 $lang["report_admin"] = "Admin Only";
 $lang["report_submit"] = "Submit this report";
 $lang["report_gobacktoprofile"] = "Go back to the profile";
 $lang["report_form_success"] = "Thanks, you. The report has been saved.";
+

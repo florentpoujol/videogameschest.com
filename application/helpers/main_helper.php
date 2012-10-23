@@ -284,54 +284,15 @@ function parse_bbcode( $input ) {
 // ----------------------------------------------------------------------------------
 
 /**
- * Hash the password and return the hash and the salt
- * @return An assoc array containing the salt and the password hash
+ * Complexify the password then hash it 
+ * @param  string $password The password to be hashed
+ * @return string The password hash
  */
-function hash_password( $password, salt = "" ) {
-	$pass_complexifier = "#:T{9 o]5A;-i|dT((5m7,!DF.&@x";
-	$complexifier = "ï & £ . '   µ ( [ à : ¤ Ç _ è Ô ) ë = } + , Î ; # ² ] À ! § * { ù % $ | é @ ê - î ô ö ç î";
-	
-	if (CRYPT_EXT_DES == 1) { // CRYPT_EXT_DES hash more than 8 characters
-		$old_password = $password;
-		for ($i = 0; $i < strlen($old_password); $i++) {
-			if ($i%2 == 0) // if $i is pair
-				$password .= $complexifier[$i];
-
-			$password .= $old_password[$i];
-		}
-		// ie : "password" becomes "pïa&s£s.w'o rµd"
-		$hash = crypt($password, "_".get_random_string(8));
-	}
-	else {
-		$password = $password[3]."}".$password[2].$password[0].";".$password[1].$password[4]
-		
-		if (isset($password[5]))
-			$password = $password[5].$password;
-		else
-			$password += "ê";
-
-		$hash = crypt($password, get_random_string(2)); // with CRYPT_STD_DES, only 8 characters are hashed
-	}
-
-	return $hash;
-}
-
-
-// ----------------------------------------------------------------------------------
-
-/**
- * Hash the password and return the hash and the salt
- * @return An assoc array containing the salt and the password hash
- */
-function complexify_password( $password ) {
-	
-	// mixes the pass_complexifier to the password to be hashed so that it is very long and unique
-	// and *impossible* to match with a rainbow table if the site's source code is unknow
-	
-	// It uses only one character with CRYPT_DES because this algo only cares for 8 characters
-	// made the pass slightly harder to guess without source code, even with source, there is still 7 characters to guess
-	
-	
+function hash_password( $password ) {
+	if (CRYPT_EXT_DES == 1) // CRYPT_EXT_DES hash more than 8 characters
+		return crypt(complexify_password($password), "_".get_random_string(8));
+	else
+		return crypt(complexify_password($password), get_random_string(2)); // with CRYPT_STD_DES, only 8 characters are hashed
 }
 
 
@@ -344,23 +305,57 @@ function complexify_password( $password ) {
  * @return boolean          True if the password is valid, false otherwise
  */
 function check_password( $password, $hash ) {
-	$pass_complexifier = "#:T{9 o]5A;-i|dT((5m7,!DF.&@x";
-
-	if( CRYPT_EXT_DES == 1 )
-		return ($hash == crypt( $pass_complexifier.$password, $hash ));
+	if (CRYPT_EXT_DES == 1)
+		return ($hash == crypt( complexify_password($password), $hash ));
 	else
-		return ($hash == crypt( $pass_complexifier[0].$password, $hash ));
+		return ($hash == crypt( complexify_password($password), $hash ));
+}
+
+
+// ----------------------------------------------------------------------------------
+
+/**
+ * Complexify and lengthen the password
+ * @param  string $password The password to be complexified
+ * @return string $password The complexified password
+ */
+function complexify_password( $password ) {
+	$complexifier = "ï & £ . '   µ ( [ à : ¤ Ç _ è Ô ) ë = } + , Î ; # ² ] À ! § * { ù % $ | é @ ê - î ô ö ç î ^";
+
+	if (CRYPT_EXT_DES == 1) { 
+		// CRYPT_EXT_DES hash more than 8 characters
+		// add complexifier characters into password
+		// ie : "password" becomes "pïa&s£s.w'o rµd"
+		$old_password = $password;
+		for ($i = 0; $i < strlen($old_password); $i++) {
+			if ($i%2 == 0 && isset($complexifier[$i])) // if $i is pair
+				$password .= $complexifier[$i];
+
+			$password .= $old_password[$i];
+		}
+	}
+	else {
+		// CRYPT_STD_DES hash only 8 characters
+		$password = $password[3]."}".$password[2].$password[0].";".$password[1].$password[4];
+		
+		if (isset($password[5]))
+			$password = $password[5].$password;
+		else
+			$password += "ê";
+	}
+
+	return $password;
 }
 
 
 //----------------------------------------------------------------------------------
 
 /**
- * [get_ext_des_salt description]
- * @return string The salt
+ * Return a random string of the requested length
+ * @param int $length The length f the random strng to be returned
+ * @return string The generated string
  */
 function get_random_string( $length ) {
-	return "testtest";
 	$alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./";
 	$string = "";
 
@@ -374,10 +369,10 @@ function get_random_string( $length ) {
 //----------------------------------------------------------------------------------
 
 /**
- * [get_array_lang description]
- * @param  [type] $array_keys [description]
- * @param  [type] $lang_key   [description]
- * @return [type]             [description]
+ * Return an array whose keys are provided in the first argument and the corresponding values are the corresponding localized string
+ * @param  array $array_keys Array containing localization keys
+ * @param  string $lang_key  A prefix to the localization key
+ * @return assoc array       The assoc array containing the keys/localization strings
  */
 function get_array_lang( $array_keys, $lang_key ) {
 	$array = array();

@@ -2,24 +2,17 @@
 
 class Developer extends MY_Controller {
     
-    function __construct() {
-        parent::__construct();
-    }
-
-
-    // ----------------------------------------------------------------------------------
-
     /**
-     * Main hub with no content but the admin menu
+     * Default method
      */
     function index( $name_or_id = null ) {
     	$where = array();
-    	if(is_numeric($name_or_id))
-    		$where["profile_id"] = $name_or_id;
+    	if (is_numeric($name_or_id))
+    		$where["id"] = $name_or_id;
     	else
     		$where["name"] = url_to_name($name_or_id);
 
-        $db_dev = $this->developer_model->get_developer($where);
+        $db_dev = $this->developer_model->get($where, true);
         
         if ($db_dev === false)
             redirect("home/404/developernotfound:$name_or_id");
@@ -30,6 +23,7 @@ class Developer extends MY_Controller {
             $db_dev["feed_items"] = $this->rssreader->parse( $db_dev["data"]["blogfeed"] )->get_feed_items(6);
             
             $this->layout
+            ->set_title($db_dev["name"]." - VideoGamesChest")
             ->view("full_developer_view", array("db_dev"=>$db_dev))
             ->view("forms/report_form")
             ->load();

@@ -124,7 +124,7 @@ class Admin extends MY_Controller {
             // form OK
             if ($this->form_validation->run()) {
                 unset($form["password2"]);
-                $id = $this->admin_model->insert_user($form);
+                $id = $this->user_model->insert_user($form);
 
                 if ($form["type"] == "dev") {
                     $form["user_id"] = $id;
@@ -155,10 +155,10 @@ class Admin extends MY_Controller {
         if ( ! IS_LOGGED_IN)
             redirect("admin/login");
 
-        // the has been submitted
+        // the form has been submitted
         if (post("user_form_submitted")) {
             $form = post("form");
-            $db_user = get_db_row("*", "users", "id = '".USER_ID."'");
+            $db_user = $this->user_model->get(array("id" => USER_ID));
 
             // checking form
             $this->form_validation->set_rules( "form[name]", "Name", "trim|required|min_length[5]");
@@ -213,9 +213,9 @@ class Admin extends MY_Controller {
         // edit the current user or any user if user is an admin
         else {
             if (IS_ADMIN && isset($user_id))
-                $form = $this->main_model->get_row("*", "users", "id = '$user_id'");
+                $form = $this->user_model->get(array("id" => $user_id));
             else
-                $form = $this->main_model->get_row("*", "users", "id = '".USER_ID."'");
+                $form = $this->user_model->get(array("id" => USER_ID));
             
             $form->password = "";
             $this->layout->view("forms/user_form", array("form"=>$form))->load();
@@ -575,10 +575,15 @@ class Admin extends MY_Controller {
 
         if (post("new_report_form_submitted")) {
             $report_form = post("report_form");
+            $this->form_validation->set_rules("report_form[description]", 'Report description', "trim|required|min_length[10]");
 
-            if (trim($report_form["description"]) != "") {
+            if ($this->form_validation->run()) {
                 $this->admin_model->insert_report($report_form);
                 $this->session->set_flashdata("report_success", lang("report_form_success"));
+            }
+            else {
+                $this->session->set_flashdata("report_errors", validation_errors());
+
             }
 
             redirect($report_form["url"]."#report_form");
@@ -593,7 +598,7 @@ class Admin extends MY_Controller {
                 $report_delete_success = true;
             }
 
-            if (IS_DEVELOPER)
+            if (IS_ADMIN)
                 $reports = $this->admin_model->get_reports();
             else
                 $reports = $this->admin_model->get_developer_reports(USER_ID);

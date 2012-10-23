@@ -20,7 +20,7 @@ class User_model extends CI_Model {
         if (isset($form["password"]) && trim($form["password"]) != "")
             $form["password"] = hash_password($form["password"]);
         else
-            $form["password"] = hash_password(get_random_string(10));
+            $form["password"] = hash_password("pasSw0rd");
 
 
         $form["key"] = md5(mt_rand());
@@ -32,6 +32,9 @@ class User_model extends CI_Model {
         unset($form["data"]);
 
         $this->db->insert("users", $form);
+
+        // @TODO send mail to user with password
+        
         return $this->db->insert_id();
     }
 
@@ -60,7 +63,15 @@ class User_model extends CI_Model {
      * @return array/false The array containing all the users infos or false
      */
     function get( $where ) {
-        return $this->db->from("users")->where($where)->get()->row();
+        $users = $this->db->from("users")->where($where)->get();
+
+        if ($users === false)
+            return false;
+        
+        if ($users->num_rows() == 1)
+            $users = $users->row();
+
+        return $users;       
     }
 }
 

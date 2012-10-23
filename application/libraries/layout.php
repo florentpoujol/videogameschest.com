@@ -126,7 +126,13 @@ class Layout
      * Load the layout
      * Call after all View() methods
      */
-    public function load() {
+    public function load( $layout = "", $data = null ) {
+        if ($layout != "")
+            $this->layout = $layout;
+
+        if (is_array($data))
+            $this->data = array_merge($this->data, $data);
+
         $this->CI->load->View( '../views/layout/'.$this->layout, $this->data );
     }
 

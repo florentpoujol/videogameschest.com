@@ -112,6 +112,8 @@ class Admin_model extends CI_Model {
 
         $this->db
         ->select("*")
+        ->select("reports.id as report_id")
+        ->select("reports.type as report_type")
         ->from("reports")
         ->order_by("date asc")
 
@@ -147,6 +149,8 @@ class Admin_model extends CI_Model {
         $db_reports = $this->db
 
         ->select("*")
+        ->select("reports.id as report_id")
+        ->select("reports.type as report_type")
         ->from("reports")
         ->where("reports.profile_id", $dev_id)
         ->where("reports.type", "dev")

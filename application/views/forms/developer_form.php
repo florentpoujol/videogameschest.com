@@ -41,7 +41,7 @@ if (CONTROLLER == "adddeveloper")
 // profile id
 if (METHOD == "editdeveloper"): ?>
 
-				Profile Id : <?php echo $form["id"];?> <input type="hidden" name="form[id]" value="<?php echo $form["id"];?>"> <br>
+				Developer profile id : <?php echo $form["id"];?> <input type="hidden" name="form[id]" value="<?php echo $form["id"];?>"> <br>
 <?php endif;
 
 // required fields

@@ -10,7 +10,7 @@
 function get_form_errors( $form = null ) {
 	$errors = validation_errors();
 	
-	if ( ! isset($form) || $form === false)
+	if ($errors == "" && ( ! isset($form) || $form === false))
 		return;
 	
 	if (is_array($form) && isset( $form["errors"] ) )

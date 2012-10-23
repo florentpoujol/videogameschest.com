@@ -19,6 +19,12 @@ foreach ($form_items as $item) {
 			<h1>Create user account</h1>
 		<?php endif; ?>
 
+		<?php if (METHOD == 'edituser' && $form["type"] == "dev"): ?>
+			<p>
+				Your "developer" user account a different entity than your developer profile, while both are created at the same time, with the same name.
+			</p>
+		<?php endif; ?>
+
 			<!-- forms errors and success -->
 			<?php echo get_form_errors($form); ?> 
 			<?php echo get_form_success($form); ?> 
@@ -26,10 +32,13 @@ foreach ($form_items as $item) {
 
 			<?php echo form_open("admin/".METHOD); ?>
 			<?php if (METHOD == 'edituser'): ?>
-				<?php echo '<input type="hidden" name="form[creation_date]" value="'.$form["creation_date"].'">Your account creation date : '.$form["creation_date"]; ?> <br>
-				<?php echo '<input type="hidden" name="form[id]" value="'.$form["id"].'"> Your user Id : '.$form["id"]; ?> <br>
-				<?php echo '<input type="hidden" name="form[key]" value="'.$form["key"].'"> Your user key : '.$form["key"]; ?> <br>
-				<?php echo '<input type="hidden" name="form[type]" value="'.$form["type"].'">Your have a '.$form["type"].' account.'; ?> <br>
+				<?php echo '<input type="hidden" name="form[creation_date]" value="'.$form["creation_date"].'">Account creation date : '.$form["creation_date"]; ?> <br>
+				<?php echo '<input type="hidden" name="form[id]" value="'.$form["id"].'">Account/User Id : '.$form["id"]; ?> <br>
+				Keep in mind that it's not the same as your developer profile id. <br>
+				<br>
+				<?php echo '<input type="hidden" name="form[key]" value="'.$form["key"].'">Account key : '.$form["key"]; ?> <br>
+				It's a secret key used to retreive "secret" data as your message's RSS feed. <br>
+				<br>				
 			<?php endif; ?>
 				<?php if (IS_ADMIN): ?>
 				<input type="text" name="form[type]" id="account_type" placeholder="dev or admin" value="<?php echo $form['type']; ?>"> <label for="account_type">Account type</label> <br>
