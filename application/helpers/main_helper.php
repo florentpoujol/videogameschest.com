@@ -1,4 +1,4 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
 /**
@@ -148,40 +148,6 @@ function set_userdata( $key, $value = null ) {
 function post( $key = null ) {
 	return get_instance()->input->post( $key );
 }
-
-
-// ----------------------------------------------------------------------------------
-
-/**
- * Allow to easily share the name of the current page
- */
-/*$page = '';
-
-function set_page( $name ) {
-	global $page;
-	$page = $name;
-}
-
-function get_page() {
-	global $page;
-	return $page;
-}*/
-
-
-/**
- * Allow to easily share the name of the current admin page
- */
-/*$admin_page = '';
-
-function set_admin_page( $name ) {
-	global $admin_page;
-	$admin_page = $name;
-}
-
-function get_admin_page() {
-	global $admin_page;
-	return $admin_page;
-}*/
 
 
 // ----------------------------------------------------------------------------------

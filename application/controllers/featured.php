@@ -5,9 +5,11 @@ class Featured extends MY_Controller {
     function index()
     {
 
+        $input = "{{ test }}
+        <br>
+        {{url()}}";
 
-        
-        $this->layout->load();
+        echo $this->template->parse($input);
     }
 
     function pagenotfound( $reason = "noreason" ) {
