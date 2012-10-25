@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html> 
 	<head>
-		<title><?php echo $pageTitle; ?></title>
+		<title><?php echo $page_title; ?></title>
 
 		<!-- Meta -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />

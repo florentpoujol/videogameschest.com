@@ -4,27 +4,21 @@ class Layout
 {
     private $CI;
     private $data;
-    //private $headerData;
-    //private $tabMenuData;
     private $layout;
 
     public function __construct() {
         $this->CI =& get_instance(); // =& permet un passage par référence
         //get_instance() permet d'obtenir le super objet de code igniter
 
-        //$this->data['headStart'] = '';
         $this->data['metas'] = array();
         $this->data['css'] = array();
-        //$this->data['headEnd'] = '';
-
 
         $this->data['body_views'] = '';
         $this->data['js'] = array();
-        //$this->data['bodyEnd'] = '';
 
         //	Le titre par défaut est composé du nom de la méthode et du nom du contrôleur.
         //	La fonction ucfirst permet d'ajouter une majuscule.
-        $this->data['pageTitle'] = ucfirst( $this->CI->router->fetch_method() ).' - '.ucfirst( $this->CI->router->fetch_class() );
+        $this->data['page_title'] = ucfirst( $this->CI->router->fetch_method() ).' - '.ucfirst( $this->CI->router->fetch_class() );
 
         // default layout is "views/layout/default_layout.php"
         $this->layout = 'default_layout';
@@ -37,7 +31,9 @@ class Layout
     // ----------------------------------------------------------------------------------
 
     /**
-     *
+     * Set the layout data key/value pairs
+     * @param string $key   The data key
+     * @param mixed $value The data value
      */
     public function set_data( $key, $value ) {
         $this->data[$key] = $value;        
@@ -47,23 +43,23 @@ class Layout
 
     /**
      * Set a custom title for the page
-     * @param The page's title
+     * @param string $title The page's title
      */
     public function set_title( $title ) {
-        $this->data['pageTitle'] = $title;
+        $this->data['page_title'] = $title;
         return $this;
     }
 
+
     /**
      * Set meta tags for the page
-     * @param The meta tag's name
-     * @param The meta tag's content
+     * @param string/array $name The meta tag's name or an array with several name/content pairs
+     * @param string $content The meta tag's content
      */
     public function set_metas( $name, $content = null ) {
-        if( is_string( $name ) )
-            $this->data['metas'][] = array( 'name' => $name, 'content' => $content );
-
-        if( is_array( $name ) )
+        if (is_string($name))
+            $this->data['metas'][] = array('name' => $name, 'content' => $content);
+        elseif (is_array($name))
             $this->data['metas'][] = $name;
 
         return $this;
@@ -82,7 +78,7 @@ class Layout
 
     /**
      * Set the JavaScript files to loaded on that page
-     * @param the name of the file
+     * @param string $file The name of the file
      */
     public function set_js( $file ) {
         $this->data['js'][] = js_link( $file );
@@ -93,13 +89,12 @@ class Layout
     // ----------------------------------------------------------------------------------
 
     /**
-     * set the layout file to use
-     * default is "views/layout/default_layout.php"
-     *
-     * @param the layout name
+     * Set the layout file to use
+     * Default is "views/layout/default_layout.php"
+     * @param string $layout The layout name
      */
     public function set_layout( $layout ) {
-        if( is_string( $layout ) )
+        if (is_string($layout) && trim($layout) != "")
             $this->layout = $layout;
 
         return $this;
@@ -110,13 +105,12 @@ class Layout
      * Add a view to the specified hook in the layout
      * Can be called several time to add several views to the same hook
      * Always call before the Load() method
-     *
-     * @param The layout's hook to which add the view
-     * @param The name of the view file
-     * @param the date variable to pass to that view
+     * @param string $view_name The name of the view file
+     * @param array $data The data variable to pass to that view
+     * @param string $hook The layout's hook to which add the view
      */
     public function view( $view_name, $data = array(), $hook = 'body_views' ) {
-        $this->data[$hook] .= $this->CI->load->View( $view_name, $data, true ).'
+        $this->data[$hook] .= $this->CI->load->view($view_name, $data, true);.'
         ';
         return $this;
     }
@@ -135,49 +129,7 @@ class Layout
 
         $this->CI->load->View( '../views/layout/'.$this->layout, $this->data );
     }
-
-
-
-
-    /* = = = = = = = = = = = = = = = = = = = =
-    TAB SYSTEM
-    = = = = = = = = = = = = = = = = = = = = */
-
-
-    /*// register tabs of the page, update variable $tabMenuData
-    // called from the controller's constructor
-    // always call before SetCurrentTab() and SetTabMenu()
-    public function InitCurrentTab( $tabs )
-    {
-        foreach( $tabs as $tab )
-            $this->tabMenuData[$tab.'_current'] = '';
-
-        return $this;
-    }
-
-
-    // set the current tab, update the value of the proper tabMenuData index
-    // always call after SetCurrentTab() and before SetTabMenu()
-    public function SetCurrentTab( $tab )
-    {
-        $this->tabMenuData[$tab.'_current'] = 'tab_menu_current_tab';
-        return $this;
-    }
-
-
-    // set the tab menu view
-    // must be set in each controller page function, can't be set in the controller's constructor because it includes the $tabMenuData variable, only updated by the 2 previous functions
-    // always call after InitCurrentTab() and SetCurrentTab()
-    // also set the tab_layout
-    public function SetTabMenu( $viewName, $data = array() )
-    {
-        if( $data == null && $this->tabMenuData != null )
-        $data = $this->tabMenuData;
-
-        $this->data['tabMenu'] = $this->CI->load->View( $viewName, $data, true ).'
-        ';
-        $this->setLayout( 'tab_layout' );
-        return $this;
-    }*/
 }
-?>
+
+/* End of file Layout.php */
+/* Location: ./application/libraries/Layout.php */

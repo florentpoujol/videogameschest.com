@@ -8,10 +8,11 @@ class About extends MY_Controller {
     
     public function index()
     {
-        
-        $this->layout
-        ->view( 'about_view' )
-        ->load();
+        echo "test";
+        //$this->twiggy->display();
+        //echo $this->load->view("about_view", array("data"=>"this is a data"), true);
+
+        //$this->layout->view( 'about_view' )->load();
     }
 }
 
