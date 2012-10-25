@@ -2,19 +2,13 @@
 
 class About extends MY_Controller {
     
-    function __construct() {
-        parent::__construct();
-    }
-    
-    public function index()
+    function index()
     {
-        echo "test";
-        //$this->twiggy->display();
-        //echo $this->load->view("about_view", array("data"=>"this is a data"), true);
+        
 
-        //$this->layout->view( 'about_view' )->load();
+        $this->layout->view("about_view")->load();
     }
 }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+/* End of file about.php */
+/* Location: ./application/controllers/about.php */

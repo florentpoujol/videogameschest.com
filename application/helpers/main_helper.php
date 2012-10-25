@@ -29,7 +29,8 @@ function img_link( $file ) {
  * @return The data object (or array)
  */
 function get_static_data( $data_name, $return_as_array = false ) {
-	static $data_cache = null;
+	return get_instance()->static_model->$data_name;
+	/*static $data_cache = null;
 
 	if( $data_cache != null && isset($data_cache[$data_name]) ) {
 		if( $return_as_array )
@@ -59,7 +60,7 @@ function get_static_data( $data_name, $return_as_array = false ) {
     if( $return_as_array )
 		return get_object_vars( $data );
 	else
-		return $data;
+		return $data;*/
 }
 
 

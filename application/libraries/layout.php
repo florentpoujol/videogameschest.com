@@ -110,7 +110,7 @@ class Layout
      * @param string $hook The layout's hook to which add the view
      */
     public function view( $view_name, $data = array(), $hook = 'body_views' ) {
-        $this->data[$hook] .= $this->CI->load->view($view_name, $data, true);.'
+        $this->data[$hook] .= $this->CI->load->view($view_name, $data, true).'
         ';
         return $this;
     }

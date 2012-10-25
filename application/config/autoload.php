@@ -97,7 +97,7 @@ $autoload['config'] = array();
 |
 */
 
-$autoload['language'] = array();
+$autoload['language'] = array('main');
 
 
 /*
@@ -110,7 +110,8 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('main_model', 'profile_model', 'developer_model', 'user_model', 'game_model', 'admin_model');
+$autoload['model'] = array('static_model', 'main_model', 'profile_model', 'developer_model', 'user_model',
+ 'game_model', 'admin_model' );
 
 
 /* End of file autoload.php */

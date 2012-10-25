@@ -6,8 +6,8 @@ class Profile_model extends CI_Model {
 
     function __construct() {
         parent::__construct();
-        $this->datetime_format = get_static_data("site")->date_formats->datetime_sql;
-        $this->date_format = get_static_data("site")->date_formats->date_sql;
+        $this->datetime_format = $this->static_model->site->date_formats->datetime_sql;
+        $this->date_format = $this->static_model->site->date_formats->date_sql;
     }
 
 
