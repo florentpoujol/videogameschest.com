@@ -1,16 +1,15 @@
 <!DOCTYPE html>
-<html> 
+<html lang="<?php echo LANGUAGE?>"> 
 	<head>
 		<title><?php echo $page_title; ?></title>
 
 		<!-- Meta -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<?php if (CONTROLLER == "admin"): ?>
+<?php if (true/*CONTROLLER == "admin"*/): ?>
 		<meta name='robots' content='noindex,nofollow' />
 <?php else: ?>
 		<meta name='robots' content='index,follow' />
 <?php endif; ?>
-		<meta name='robots' content='noindex,nofollow' />
 		
 <?php foreach ($metas as $meta): ?>
 		<meta name='<?php echo $meta['name']; ?>' content='<?php echo $meta['content']; ?>' />
@@ -18,9 +17,10 @@
 		<!-- /Meta -->
 
 		<!-- CSS -->		
-		<!--<link rel="stylesheet" type="text/css" media="screen" href="<?php echo css_link( 'main' ); ?>" />-->
-		<link rel="stylesheet/less" type="text/css" media="screen" href="<?php echo css_link('main', '.less');?>" />
-		<!--<link rel="stylesheet" type="text/css" href="<?php echo css_link('tooltipster');?>" />-->
+		<!--<link rel="stylesheet" type="text/css" media="screen" href="<?php echo css_link("main"); ?>" />-->
+		<link rel="stylesheet/less" type="text/css" media="screen" href="<?php echo css_link("main", ".less");?>" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo css_link("bootstrap.min"); ?>" />
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo css_link("bootstrap-responsive.min"); ?>" />
 <?php
 /*try {
     $this->lessphp->instance->ccompile(base_url().'assets/css/main.less', base_url().'assets/css/mainCompiled.css');
@@ -41,10 +41,11 @@ catch (exception $ex) {
 		<header>
 			<nav id="menu">
 				<ul>
-<?php
-$items = array('featured', 'search', 'adddeveloper', 'addgame', 'about');
+					<?php
+					$items = array('home', 'search', 'adddeveloper', 'addgame', 'about');
 
-foreach ($items as $item): ?>
+					foreach ($items as $item): 
+					?>
 					<?php echo '<li><a href="'.site_url($item).'" '.menu_selected($item).'>'.lang('menu_'.$item).'</a></li>'; ?>
 
 <?php
@@ -111,9 +112,8 @@ foreach (get_static_data('site')->languages as $lang) {
 
 		<!-- JavaScript -->
 		<script src="http://lesscss.googlecode.com/files/less-1.3.0.min.js" type="text/javascript"></script>
-		
-		<script src="http://code.jquery.com/jquery-1.8.2.min.js" type="text/javascript"></script>
-		<!--<script src="<?php echo js_link('jquery.tooltipster.min');?>" type="text/javascript"></script>-->
+		<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+		<script src="<?php echo js_link("bootstrap.min");?>" type="text/javascript"></script>
 
 <?php foreach ($js as $url): ?>
 		<script type="text/javascript" src="<?php echo $url; ?>"></script> 
