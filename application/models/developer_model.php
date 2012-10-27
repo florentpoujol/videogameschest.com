@@ -69,14 +69,14 @@ class Developer_model extends CI_Model {
         $where["type"] = "dev";
         $devs = $this->db->from("profiles")->where($where)->get();
 
-        if ($devs == false)
+        if ($devs->num_rows() == 0)
             return false;
 
         if ($devs->num_rows() == 1)
             $devs = $devs->row();
 
         if ($prep_data_for_form)
-            $devs = init_dev_infos($devs);
+            $devs = set_default_dev_infos($devs);
         
         return $devs;
     }

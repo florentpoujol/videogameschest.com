@@ -80,14 +80,14 @@ class Game_model extends CI_Model {
         $where["type"] = "game";
         $games = $this->db->from("profiles")->where($where)->get();
 
-        if ($games == false)
+        if ($games->num_rows() == 0)
             return false;
 
         if ($games->num_rows() == 1)
             $games = $games->row();
 
         if ($prep_data_for_form)
-            $games = init_game_infos($games);
+            $games = set_default_game_infos($games);
         
         return $games;
     }
