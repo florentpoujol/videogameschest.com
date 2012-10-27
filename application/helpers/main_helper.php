@@ -454,7 +454,7 @@ function set_default_game_infos( $form ) {
     $data = $form["data"];
 
     // string data
-    $string_keys = array( "pitch", "logo", "blogfeed", "website",
+    $string_keys = array("developmentstate", "pitch", "logo", "blogfeed", "website",
     "publishername", "publisherurl", "price", "soundtrack", "releasedate" );
 
     foreach ($string_keys as $key) {

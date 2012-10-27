@@ -70,7 +70,8 @@ $lang['addgame_blogfeed'] = 'Blog RSS/Atom feed';
 $lang['addgame_publishername'] = 'Publisher name';
 $lang['addgame_publisherurl'] = "Publisher's website url";
 $lang['addgame_soundtrack'] = 'Soundtrack URL';
-$lang['addgame_price'] = 'Price (this is a text field, write whatever is appropriate)';
+$lang['addgame_price'] = 'Price';
+$lang["help_addgame_price"] = "This is a text field, write whatever is appropriate.";
 $lang['addgame_releasedate'] = 'Release date';
 
 $lang['addgame_country'] = 'Country';

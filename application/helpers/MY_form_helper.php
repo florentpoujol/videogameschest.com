@@ -123,28 +123,42 @@ function set_form_success($success) {
 /**
  * Wrapper around form_input() and form_label() of the Form helper
  */
-function form_input_extended( $input, $br = ' <br>' ) {
-	if( !isset( $input["name"] ) )
+function form_input_extended( $input, $control_group = true ) {
+	if ( ! isset($input["name"]))
 		$input["name"] = 'form['.$input["id"].']';
 
 	$lang = lang($input["lang"]);
 	unset($input["lang"]);
 
-	if( !isset( $input["placeholder"] ) )
+	if ( ! isset($input["placeholder"]))
 		$input["placeholder"] = $lang;
 
-	if( !isset( $input["type"] ) || $input["type"] == "text" || $input["type"] == "url" )
-		$input["maxlength"] = '255';
+	if ( ! isset($input["type"]) || $input["type"] == "text" || $input["type"] == "url" )
+		$input["maxlength"] = "255";
 	
-	$tooltip = isset( $input["tooltip"] ) ? $input["tooltip"]: '';
-	unset( $input["tooltip"] );
+	$help = isset($input["help"]) ? $input["help"]: "";
+	unset($input["help"]);
 
-	$html = form_input($input).' '.form_label( $lang, $input["id"] );
+	$input["class"] = "controls";
 
-	if( $tooltip != '' )
-		$html .= ' '.form_tooltip( $tooltip );
 
-	return $html.$br;
+	$html = '<label class="control-label" for="'.$input["id"].'">'.$lang.'</label>
+	'.form_input($input);
+
+	if ($help != "")
+		$help = '
+<span class="help-inline">'.$help.'</span>';
+
+	if ($control_group) {
+		$html = 
+'<div class="control-group">
+	'.$html.$help.'
+</div>
+<!-- /.control-group -->
+';
+	}
+
+	return $html;
 }
 
 

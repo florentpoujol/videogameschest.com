@@ -18,10 +18,11 @@
 
 		<!-- CSS -->		
 		<!--<link rel="stylesheet" type="text/css" media="screen" href="<?php echo css_link("main"); ?>" >-->
-		<!-- <link rel="stylesheet/less" type="text/css" media="screen" href="<?php echo css_link("main", ".less");?>" > -->
+		
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo css_link("bootstrap.min"); ?>" >
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo css_link("bootstrap-responsive.min"); ?>" >
-
+		<link rel="stylesheet/less" type="text/css" media="screen" href="<?php echo css_link("main", ".less");?>" >
+		
 <?php foreach ($css as $url): ?>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $url; ?>" >
 <?php endforeach; ?>
