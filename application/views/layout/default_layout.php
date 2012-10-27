@@ -4,111 +4,138 @@
 		<title><?php echo $page_title; ?></title>
 
 		<!-- Meta -->
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<?php if (true/*CONTROLLER == "admin"*/): ?>
-		<meta name='robots' content='noindex,nofollow' />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+<?php if (ENVIRONMENT == "development" || CONTROLLER == "admin"): ?>
+		<meta name="robots" content="noindex,nofollow" >
 <?php else: ?>
-		<meta name='robots' content='index,follow' />
+		<meta name="robots" content="index,follow" >
 <?php endif; ?>
 		
 <?php foreach ($metas as $meta): ?>
-		<meta name='<?php echo $meta['name']; ?>' content='<?php echo $meta['content']; ?>' />
+		<meta name="<?php echo $meta["name"]; ?>" content="<?php echo $meta["content"]; ?>" >
 <?php endforeach; ?>
 		<!-- /Meta -->
 
 		<!-- CSS -->		
-		<!--<link rel="stylesheet" type="text/css" media="screen" href="<?php echo css_link("main"); ?>" />-->
-		<link rel="stylesheet/less" type="text/css" media="screen" href="<?php echo css_link("main", ".less");?>" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo css_link("bootstrap.min"); ?>" />
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo css_link("bootstrap-responsive.min"); ?>" />
-<?php
-/*try {
-    $this->lessphp->instance->ccompile(base_url().'assets/css/main.less', base_url().'assets/css/mainCompiled.css');
-}
-catch (exception $ex) {
-     exit('lessc fatal error:
-     '.$ex->getMessage());
-}*/
-?>
-		
+		<!--<link rel="stylesheet" type="text/css" media="screen" href="<?php echo css_link("main"); ?>" >-->
+		<!-- <link rel="stylesheet/less" type="text/css" media="screen" href="<?php echo css_link("main", ".less");?>" > -->
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo css_link("bootstrap.min"); ?>" >
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo css_link("bootstrap-responsive.min"); ?>" >
+
 <?php foreach ($css as $url): ?>
-		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $url; ?>" />
-<?php endforeach; ?>		
+		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $url; ?>" >
+<?php endforeach; ?>
 		<!-- /CSS -->
 	</head>
 	
 	<body>
-		<header>
-			<nav id="menu">
-				<ul>
-					<?php
-					$items = array('home', 'search', 'adddeveloper', 'addgame', 'about');
+		<header class="container navbar nav-inner">
+				<ul class="nav">
+					<!-- Generic menu -->
+<?php
+$menu_items = array('home', 'search', 'adddeveloper', 'addgame', 'about');
 
-					foreach ($items as $item): 
-					?>
-					<?php echo '<li><a href="'.site_url($item).'" '.menu_selected($item).'>'.lang('menu_'.$item).'</a></li>'; ?>
-
+foreach ($menu_items as $menu_item): 
+?>
+					<?php echo '<li '.controller_selected($menu_item).'><a href="'.site_url($menu_item).'">'.lang('menu_'.$menu_item).'</a></li>'; ?> 
 <?php
 endforeach;
 
 if (IS_LOGGED_IN): ?>
-					<li><a href="<?php echo site_url('admin'); ?>" <?php echo menu_selected('admin');?>>Admin</a></li>
-					<li><a href="<?php echo site_url('admin/logout'); ?>"><?php echo lang('menu_logout');?></a></li>
-<?php else: ?>
-					<li><a href="<?php echo site_url('admin/login'); ?>" <?php echo menu_selected('login');?>><?php echo lang('menu_login');?></a></li>
-<?php endif; ?>
-				</ul>
-			</nav> 
-			<!-- /#menu --> 
-
-			<nav id="lang_menu">
-				<ul>
+					<!-- Admin menu -->
+					<li class="dropdown <?php echo controller_selected("admin", true); ?>">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							Admin
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li <?php echo method_selected('admin_index');?>><a href="<?php echo site_url('admin'); ?>">Admin hub</a></li>
+							<li <?php echo method_selected('edituser');?>><a href="<?php echo site_url('admin/edituser'); ?>">Edit user</a></li>
+							<li <?php echo method_selected('addgame');?>><a href="<?php echo site_url('admin/addgame'); ?>">Add a game</a></li>
+							<li <?php echo method_selected('editgame');?>><a href="<?php echo site_url('admin/editgame'); ?>">Edit a game</a></li>
+							<li <?php echo method_selected('gamequeue');?>><a href="<?php echo site_url('admin/gamequeue'); ?>">Game queue</a></li>
+							<li <?php echo method_selected('reports');?>><a href="<?php echo site_url('admin/reports'); ?>">Reports</a></li>
+							<li<?php echo method_selected('messages');?> ><a href="<?php echo site_url('admin/messages'); ?>">Messages</a></li>
+	<?php if (IS_ADMIN):  ?>
+							<li <?php echo method_selected('adduser');?>><a href="<?php echo site_url('admin/adduser'); ?>">Create user</a></li>
+							<li <?php echo method_selected('adddeveloper');?>><a href="<?php echo site_url('admin/adddeveloper'); ?>">Add a developer</a></li>
+							<li <?php echo method_selected('editdeveloper');?>><a href="<?php echo site_url('admin/editdeveloper'); ?>">Edit a developer</a></li>
+	<?php elseif (IS_DEVELOPER): ?>
+							<li <?php echo method_selected('editdeveloper');?>><a href="<?php echo site_url('admin/editdeveloper/'.userdata('user_id')); ?>">Edit your dev profile</a></li>
+	<?php endif; // end if is admin or dev ?>
+							<li class="divider"></li>
+							<li><a href="<?php echo site_url('admin/logout'); ?>"><?php echo lang('menu_logout');?></a></li>
+						</ul>
+					</li>
+					
+					<!-- /Admin menu -->
+<?php else: // is not logged in?>
+					<li><a href="<?php echo site_url('admin/login'); ?>"><?php echo lang('menu_login');?></a></li>
+<?php endif; ?> 
+					<!-- /Generic menu --> 
+					
+					<!-- Language menu -->
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<?php echo lang("menu_languages"); ?> 
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+				
 <?php
-$class = '';
-foreach (get_static_data('site')->languages as $lang) {
-	if (LANGUAGE == $lang)
-		$class = 'class="selected"';
-	else
-		$class ='';
-
-	$current_url_escaped = str_replace("/", ":", uri_string()); // replace / by @ in the current url
+foreach ($this->static_model->site->languages as $lang):
+	$lang == LANGUAGE ? $is_active_lang = 'class="active"': $is_active_lang = "";
+	$current_url_escaped = str_replace("/", ":", uri_string()); // replace / by : in the current url
 	$lang_url = site_url("admin/setlanguage/$lang:$current_url_escaped");
 ?>
-					<?php echo '<li><a href="'.$lang_url.'" title="'.$lang.'" '.$class.'>'.lang('languages_'.$lang).'</a></li>'; ?>
-
+							<?php echo '<li '.$is_active_lang.'><a href="'.$lang_url.'" title="'.$lang.'">'.lang('languages_'.$lang).'</a></li>'; ?> 
 <?php	
-} // end foreach
+endforeach;
 ?>
+						</ul>
+					</li>
+					<!-- /#lang_menu --> 
+<?php if (false): ?>
+					<!-- Admin menu -->
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							Admin
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li <?php echo method_selected('admin_index');?>><a href="<?php echo site_url('admin'); ?>">Admin hub</a></li>
+							<li <?php echo method_selected('edituser');?>><a href="<?php echo site_url('admin/edituser'); ?>" <?php echo admin_menu_selected('edituser');?>>Edit user</a></li>
+							<li><a href="<?php echo site_url('admin/addgame'); ?>" <?php echo admin_menu_selected('addgame');?>>Add a game</a></li>
+							<li><a href="<?php echo site_url('admin/editgame'); ?>" <?php echo admin_menu_selected('editgame');?>>Edit a game</a></li>
+							<li><a href="<?php echo site_url('admin/gamequeue'); ?>" <?php echo admin_menu_selected('gamequeue');?>>Game queue</a></li>
+							<li><a href="<?php echo site_url('admin/reports'); ?>" <?php echo admin_menu_selected('reports');?>>Reports</a></li>
+							<li><a href="<?php echo site_url('admin/messages'); ?>" <?php echo admin_menu_selected('messages');?>>Messages</a></li>
+<?php 	if (IS_ADMIN):  ?>
+							<li ><a href="<?php echo site_url('admin/adduser'); ?>" <?php echo admin_menu_selected('adduser');?>>Create user</a></li>
+							<li><a href="<?php echo site_url('admin/adddeveloper'); ?>" <?php echo admin_menu_selected('adddeveloper');?>>Add a developer</a></li>
+							<li><a href="<?php echo site_url('admin/editdeveloper'); ?>" <?php echo admin_menu_selected('editdeveloper');?>>Edit a developer</a></li>
+<?php 	elseif (IS_DEVELOPER): ?>
+							<li><a href="<?php echo site_url('admin/editdeveloper/'.userdata('user_id')); ?>" <?php echo admin_menu_selected('editdeveloper');?>>Edit your dev profile</a></li>
+<?php 	endif; ?>				
+						</ul>
+					</li>
+					<!-- /#admin_menu -->
+<?php endif; // end IS_LOGGED_IN ?>
 				</ul>
-			</nav> 
-			<!-- /#lang_menu --> 
 
-<?php if (IS_LOGGED_IN): ?>
-			<nav id="admin_menu">
-				<ul>
-					<li><a href="<?php echo site_url('admin'); ?>" <?php echo admin_menu_selected('admin_index');?>>Admin hub</a></li>
-					<li><a href="<?php echo site_url('admin/edituser'); ?>" <?php echo admin_menu_selected('edituser');?>>Edit user</a></li>
-	<?php if (IS_ADMIN): // admin only ?>
-					<li><a href="<?php echo site_url('admin/adduser'); ?>" <?php echo admin_menu_selected('adduser');?>>Create user</a></li>
-					<li><a href="<?php echo site_url('admin/adddeveloper'); ?>" <?php echo admin_menu_selected('adddeveloper');?>>Add a developer</a></li>
-					<li><a href="<?php echo site_url('admin/editdeveloper'); ?>" <?php echo admin_menu_selected('editdeveloper');?>>Edit a developer</a></li>
-					
-	<?php elseif (IS_DEVELOPER): ?>
-					<li><a href="<?php echo site_url('admin/editdeveloper/'.userdata('user_id')); ?>" <?php echo admin_menu_selected('editdeveloper');?>>Edit your dev profile</a></li>
-	<?php endif; ?>		
-					<li><a href="<?php echo site_url('admin/addgame'); ?>" <?php echo admin_menu_selected('addgame');?>>Add a game</a></li>
-					<li><a href="<?php echo site_url('admin/editgame'); ?>" <?php echo admin_menu_selected('editgame');?>>Edit a game</a></li>
-					<li><a href="<?php echo site_url('admin/gamequeue'); ?>" <?php echo admin_menu_selected('gamequeue');?>>Game queue</a></li>
-					<li><a href="<?php echo site_url('admin/reports'); ?>" <?php echo admin_menu_selected('reports');?>>Reports</a></li>
-					<li><a href="<?php echo site_url('admin/messages'); ?>" <?php echo admin_menu_selected('messages');?>>Messages</a></li>
-				<ul>
-			</nav> <!-- /#admin_menu -->
-<?php endif; // end if( IS_LOGGED_IN ):?>
+				<form class="navbar-search pull-left">
+					<input type="text" class="search-query" placeholder="Search">
+				</form>
+			
+			<!-- /.nav-inner -->
 		</header>
 
-		<!-- Body hook -->
-<?php echo $body_views; ?>
-		<!-- /Body hook -->
+		<div class="container" id="page_content">
+			<!-- Body hook -->
+			<?php echo $body_views; ?>
+			<!-- /Body hook -->
+		</div>
+		<!-- /#page_content .container -->
 
 		<!-- JavaScript -->
 		<script src="http://lesscss.googlecode.com/files/less-1.3.0.min.js" type="text/javascript"></script>
@@ -118,11 +145,8 @@ foreach (get_static_data('site')->languages as $lang) {
 <?php foreach ($js as $url): ?>
 		<script type="text/javascript" src="<?php echo $url; ?>"></script> 
 <?php endforeach; ?>
-
+		
 		<script type="text/javascript">
-			/*$(document).ready(function() {
-				$('.tooltip').tooltipster();
-			});*/
 		</script>
 		<!-- /JavaScript -->
 	</body>

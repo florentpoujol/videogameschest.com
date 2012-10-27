@@ -165,6 +165,21 @@ function menu_selected( $item ) {
 	return $text;
 }
 
+function controller_selected($menu_item, $already_inside_class = false) {
+	if (CONTROLLER == $menu_item) {
+		if ($already_inside_class)
+			return "active";
+		else
+			return 'class="active"';
+	}
+	return "";
+}
+function method_selected($menu_item) {
+	if (METHOD == $menu_item)
+		return 'class="active"';
+	return "";
+}
+
 function admin_menu_selected( $item ) {
 	//global $admin_page;
 	$text = '';

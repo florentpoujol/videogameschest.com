@@ -2,6 +2,7 @@
 
 // MENU
 
+$lang['menu_home'] = 'Home';
 $lang['menu_featured'] = 'Featured';
 $lang['menu_search'] = 'Search';
 $lang['menu_about'] = 'About';
@@ -9,6 +10,7 @@ $lang['menu_adddeveloper'] = 'Add a developer';
 $lang['menu_addgame'] = 'Add a game';
 $lang['menu_login'] = 'Log In';
 $lang['menu_logout'] = 'Log Out';
+$lang['menu_languages'] = 'Languages';
 
 
 
