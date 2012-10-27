@@ -138,7 +138,7 @@ $lang['game_videos'] = "Videos";
 
 
 
-// TOOLTIPS      use \n to insert  
+// TOOLTIPS      use \n to insert
 
 $lang['tooltip_developer_name'] = "This is a <br> useful \n tooltip";
 

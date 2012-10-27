@@ -70,7 +70,7 @@ if (IS_LOGGED_IN): ?>
 					
 					<!-- /Admin menu -->
 <?php else: // is not logged in?>
-					<li><a href="<?php echo site_url('admin/login'); ?>"><?php echo lang('menu_login');?></a></li>
+					<li><a href="<?php echo site_url('admin/login'); ?>"><i class="icon-user"></i><?php echo lang('menu_login');?></a></li>
 <?php endif; ?> 
 					<!-- /menu --> 
 					
