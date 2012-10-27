@@ -1,16 +1,18 @@
 <?php if ( ! defined("BASEPATH")) exit('No direct script access allowed');
 
-class Admin extends MY_Controller {
-    
-    function __construct() {
-    	parent::__construct();
+class Admin extends MY_Controller
+{
+    public function __construct()
+	{
+        parent::__construct();
 
         $method = $this->router->fetch_method();
-        if ($method == "index")
+        if ($method == "index") {
             $method = "admin_index";
-        
+        }
+
         define("METHOD", $method);
-	}
+    }
 
 
     // ----------------------------------------------------------------------------------
@@ -18,12 +20,15 @@ class Admin extends MY_Controller {
     /**
      * Main hub with no content but the admin menu
      */
-    function index() {
-    	if ( ! IS_LOGGED_IN)
-    		redirect("admin/login");
+    public function index()
+    {
+        if ( ! IS_LOGGED_IN) {
+            redirect("admin/login");
+        }
 
-        if (IS_ADMIN)
+        if (IS_ADMIN) {
             $this->layout->view("forms/select_developer_to_edit_form");
+        }
 
         $this->layout->view("forms/select_game_to_edit_form")->load();
     }
@@ -34,51 +39,55 @@ class Admin extends MY_Controller {
     /**
      * The login screen
      */
-    function login() {
-    	// redirect if alredy logged in
-    	if (IS_LOGGED_IN)
-    		redirect("admin");
+    public function login()
+	{
+        // redirect if alredy logged in
+        if (IS_LOGGED_IN) {
+            redirect("admin");
+        }
 
-    	$name = post("name");
+        $name = post("name");
 
-    	if (post("admin_login_form_submitted")) {
+        if (post("admin_login_form_submitted")) {
             $field = "name";
 
-            if (is_numeric($name))
+            if (is_numeric($name)) {
                 $field = "id";
-            elseif (strpos($name, "@")) // the name is actually an email
+            } elseif (strpos($name, "@")) { // the name is actually an email
                 $field = "email";
+            }
 
             $this->form_validation->set_rules("name", $field, "trim|required");
             $this->form_validation->set_rules("password", "Password", "trim|required|min_length[5]");
               
-	    	if ($this->form_validation->run()) {
+            if ($this->form_validation->run()) {
                 $user = $this->user_model->get("$field = '$name'");
                 var_dump($user);
                 if ($user) {
-    	    		if (check_password(post("password"), $user->password)) {
-    	    			$userdata = array("is_logged_in" => "1");
-    	    			
-    	    			if ($user->type == "admin")
-    	    				$userdata["is_admin"] = "1";
-    	    			else
-    	    				$userdata["is_developer"] = "1";
+                    if (check_password(post("password"), $user->password)) {
+                        $userdata = array("is_logged_in" => "1");
+                        
+                        if ($user->type == "admin") {
+                            $userdata["is_admin"] = "1";
+                        } else {
+                            $userdata["is_developer"] = "1";
+                        }
 
                         $userdata["user_id"] = $user->id;
                         $userdata["user_key"] = $user->key;
-    	    			set_userdata($userdata);
+                        set_userdata($userdata);
 
-    	    			redirect("admin");
-    	    		}
-    	    		else
-    	    			set_form_error("The password provided for user $field [$name] is incorrect.");
-    	    	}
-    	    	else
-    	    		set_form_error("No user with the $field [$name] has been found.");
+                        redirect("admin");
+                    }
+                    else
+                        set_form_error("The password provided for user $field [$name] is incorrect.");
+                }
+                else
+                    set_form_error("No user with the $field [$name] has been found.");
             } // end form is valid
-    	}
+        }
 
-    	$this->layout->view( "forms/login_form", array("name"=>$name ))->load();
+        $this->layout->view( "forms/login_form", array("name"=>$name ))->load();
     }
 
 
@@ -87,9 +96,10 @@ class Admin extends MY_Controller {
     /**
      * Disconnect the user
      */
-    function logout() {
-    	$this->session->sess_destroy();
-    	redirect("admin/login");
+    public function logout()
+	{
+        $this->session->sess_destroy();
+        redirect("admin/login");
     }
 
 
@@ -98,12 +108,15 @@ class Admin extends MY_Controller {
     /**
      * Page to add a user account
      */
-    function adduser() {
-        if ( ! IS_LOGGED_IN)
+    public function adduser()
+	{
+        if ( ! IS_LOGGED_IN) {
             redirect("admin/login");
+        }
 
-        if ( ! IS_ADMIN)
+        if ( ! IS_ADMIN) {
             redirect("admin");
+        }
 
         // the has been submitted
         if (post("user_form_submitted")) {
@@ -117,8 +130,9 @@ class Admin extends MY_Controller {
                 $this->form_validation->set_rules("form[password]", "Password", "min_length[5]");
                 $this->form_validation->set_rules("form[password2]", "Password confirmation", "min_length[5]");
 
-                if ($form["password"] != $form["password2"])
+                if ($form["password"] != $form["password2"]) {
                     $this->form_validation->set_rules("form[password2]", "Password confirmation", "matches[form[password]]");
+                }
             }
             
             // form OK
@@ -142,8 +156,9 @@ class Admin extends MY_Controller {
         }
 
         // no form submitted
-        else
+        else {
             $this->layout->view("forms/user_form")->load();
+        }
     }
 
     // ----------------------------------------------------------------------------------
@@ -151,9 +166,11 @@ class Admin extends MY_Controller {
     /**
      * Page to edit an admin account
      */
-    function edituser( $user_id = null ) {
-        if ( ! IS_LOGGED_IN)
+    public function edituser($user_id = null)
+	{
+        if ( ! IS_LOGGED_IN) {
             redirect("admin/login");
+        }
 
         // the form has been submitted
         if (post("user_form_submitted")) {
@@ -162,12 +179,14 @@ class Admin extends MY_Controller {
 
             // checking form
             $this->form_validation->set_rules( "form[name]", "Name", "trim|required|min_length[5]");
-            if ($form["name"] != $db_user->name)
+            if ($form["name"] != $db_user->name) {
                 $this->form_validation->set_rules("form[name]", "Name", 'is_unique[users.name]');
+            }
 
             $this->form_validation->set_rules( "form[email]", "Email", "trim|required|min_length[5]|valid_email");
-            if ($form["name"] != $db_user->name)
+            if ($form["name"] != $db_user->name) {
                 $this->form_validation->set_rules("form[name]", "Email", 'is_unique[users.email]');
+            }
             
             
             $old_password_ok = true;
@@ -177,8 +196,9 @@ class Admin extends MY_Controller {
                 $this->form_validation->set_rules("form[password2]", "Password confirmation", "min_length[5]");
                 $this->form_validation->set_rules("form[oldpassword]", "Old Password", "min_length[5]");
                 
-                if ($form["password"] != $form["password2"])
+                if ($form["password"] != $form["password2"]) {
                     $this->form_validation->set_rules("form[password2]", "Password confirmation", "matches[form[password]]");
+                }
 
                 if ( ! check_password($form["oldpassword"], $db_user->password)) {
                        $form["errors"] = "The oldpassword field does not match your current password.";
@@ -212,10 +232,12 @@ class Admin extends MY_Controller {
         // no form submitted
         // edit the current user or any user if user is an admin
         else {
-            if (IS_ADMIN && isset($user_id))
+            if (IS_ADMIN && isset($user_id)) {
                 $form = $this->user_model->get(array("id" => $user_id));
-            else
+            }
+            else {
                 $form = $this->user_model->get(array("id" => USER_ID));
+            }
             
             $form->password = "";
             $this->layout->view("forms/user_form", array("form"=>$form))->load();
@@ -228,21 +250,24 @@ class Admin extends MY_Controller {
     /**
      * Main hub with no content but the admin menu
      */
-    function adddeveloper() {
+    public function adddeveloper()
+	{
         if (post("developer_form_submitted")) {
             $form = post("form");
 
             $this->form_validation->set_rules("form[name]", "Name", "trim|required|min_length[5]|is_unique[users.name]" );
             
-            if ( ! isset($form["user_id"])) // $form comes from /addeveloper    but if user_id isset, $form comes from admin/adddeveloper
+            if ( ! isset($form["user_id"])) { // $form comes from /addeveloper    but if user_id isset, $form comes from admin/adddeveloper
                 $this->form_validation->set_rules("form[email]", "Email", "trim|required|min_length[5]|valid_email|is_unique[users.email]" );
+            }
 
             if (isset($form["password"]) && trim($form["password"]) != "") {
                 $this->form_validation->set_rules("form[password]", "Password", "min_length[5]");
                 $this->form_validation->set_rules("form[password2]", 'Password confirmation', "min_length[5]");
                 
-                if ($form["password"] != $form["password2"])
+                if ($form["password"] != $form["password2"]) {
                     $this->form_validation->set_rules("form[password2]", "Password confirmation", "matches[form[password]]"); // this fails when passwords matches ???
+                }            
             }
 
             unset($form["password2"]);
@@ -258,8 +283,9 @@ class Admin extends MY_Controller {
 
                     redirect("adddeveloper");
                 }
-                else
+                else {
                     redirect("admin/editdeveloper/$id");
+                }
             }
             else { // error
                 unset($form["password"]);
@@ -269,14 +295,17 @@ class Admin extends MY_Controller {
                     $this->session->set_flashdata("adddeveloper_form", json_encode($form));
                     redirect("adddeveloper");
                 }
-                else
+                else {
                     $this->layout->view("forms/developer_form", array("form"=>$form))->load();
+                }
             }
-        }
-        elseif (IS_ADMIN) 
+        } 
+        elseif (IS_ADMIN) {
             $this->layout->view("forms/developer_form")->load();
-        else
+        } 
+        else {
             redirect("adddeveloper");
+        }
     }
 
 
@@ -286,10 +315,11 @@ class Admin extends MY_Controller {
      * Page to edit a developer account
      * @param int $profile_id The profile id of the developer to edit
      */
-    function editdeveloper( $profile_id = null ) {
-        if ( ! IS_LOGGED_IN)
+    public function editdeveloper($profile_id = null)
+	{
+        if ( ! IS_LOGGED_IN) {
             redirect("admin/login");
-
+        }
 
         if (post("select_developer_to_edit_form_submitted")) {
             $profile_id = trim(post("developer_id_text"));
@@ -310,9 +340,9 @@ class Admin extends MY_Controller {
 
             // cheking name
             $this->form_validation->set_rules("form[name]", "Name", "trim|required|min_length[5]");
-            if ($form["name"] != $db_data->name)
+            if ($form["name"] != $db_data->name) {
                 $this->form_validation->set_rules("form[name]", "Name", "is_unique[profiles.name]");
-            
+            }
 
             $form["data"]["socialnetworks"] = clean_names_urls_array($form["data"]["socialnetworks"]);
 
@@ -333,8 +363,9 @@ class Admin extends MY_Controller {
 
         // no form has been submitted, just show the form filled with data from the database
         elseif ($profile_id != null) { // if user is a developer, this will always be the case (see redirect above)
-            if (IS_DEVELOPER)
+            if (IS_DEVELOPER) {
                 $profile_id = $this->user_model->get(array("id"=>USER_ID))->dev_profile_id;
+            }
 
             $dev = $this->developer_model->get(array("id"=>$profile_id));
 
@@ -349,8 +380,9 @@ class Admin extends MY_Controller {
             ->load();
         }
 
-        else // show to the admins the form to chose which devs to edit
+        else { // show to the admins the form to chose which devs to edit
             $this->layout->view("forms/select_developer_to_edit_form")->load();
+        }
     }
 
 
@@ -359,7 +391,8 @@ class Admin extends MY_Controller {
     /**
      * Page to add a game
      */
-    function addgame() {
+    public function addgame()
+	{
         if (post("game_form_submitted")) {
             $form = post("form");
 
@@ -380,8 +413,9 @@ class Admin extends MY_Controller {
                     $this->session->set_flashdata( "addgame_form", json_encode($form) );
                     redirect("addgame");
                 }
-                else
+                else {
                     redirect( "admin/editgame/".$id );
+                }
             }
             else {
                 if (post("from_addgame_page")) {
@@ -396,10 +430,12 @@ class Admin extends MY_Controller {
                 }
             }
         }
-        elseif (IS_ADMIN) 
+        elseif (IS_ADMIN) {
             $this->layout->view( "forms/game_form" )->load();
-        else
+        }
+        else {
             redirect("addgame");
+        }
     }
 
 
@@ -409,16 +445,18 @@ class Admin extends MY_Controller {
      * Page to edit a game
      * @param int $id The id of the game to edit
      */
-    function editgame( $id = null ) {
-        if ( ! IS_LOGGED_IN)
+    public function editgame($id = null)
+	{
+        if ( ! IS_LOGGED_IN) {
             redirect("admin/login");
-
+        }
 
         if (post("select_game_to_edit_form_submitted")) {
             $id = trim(post("game_id_text"));
 
-            if ($id == "")
+            if ($id == "") {
                 $id = post("game_id_select");
+            }
 
             redirect("admin/editgame/$id");
         }
@@ -430,8 +468,9 @@ class Admin extends MY_Controller {
 
             // cheking name
             $this->form_validation->set_rules( "form[name]", "Name", "trim|required|min_length[5]" );
-            if ($form["name"] != $db_data->name)
+            if ($form["name"] != $db_data->name) {
                 $this->form_validation->set_rules( "form[name]", "Name", 'is_unique[profiles.name]' );
+            }
             
             $form["data"]["screenshots"] = clean_names_urls_array( $form["data"]["screenshots"] );
             $form["data"]["videos"] = clean_names_urls_array( $form["data"]["videos"] );
@@ -447,8 +486,9 @@ class Admin extends MY_Controller {
                 
                 $this->layout->view( "forms/game_form", array("form"=>$form) );
             }
-            else
+            else {
                 $this->layout->view( "forms/game_form", array("form"=>$form) );
+            }
         } // end if (post("game_form_submitted")) {
 
         // no form has been submitted, just show the form filled with data from the database
@@ -472,12 +512,14 @@ class Admin extends MY_Controller {
                 $form = array("errors"=>"No game with id [$id] was found.");
                 $this->layout->view("forms/select_game_to_edit_form", array("form"=>$form));
             }
-            else
+            else {
                 $this->layout->view("forms/game_form", array("form"=>$game));
+            }
         }
         // show the form to chose which game to edit
-        else
+        else {
             $this->layout->view("forms/select_game_to_edit_form");
+        }
 
         $this->layout->load();
     }
@@ -488,7 +530,8 @@ class Admin extends MY_Controller {
     /**
      * Page to set the current language
      */ 
-    function setlanguage( $infos = null ) {
+    public function setlanguage( $infos = null )
+	{
         $infos = explode(":", $infos);
         $lang = $infos[0];
         $url = index_page();
@@ -498,8 +541,9 @@ class Admin extends MY_Controller {
             $url = implode("/", $infos); // rebuilt the url
         }
 
-        if ( ! in_array($lang, get_static_data("site")->languages))
+        if ( ! in_array($lang, get_static_data("site")->languages)) {
             $lang = $this->config->item("language"); // default language
+        }
 
         set_userdata("language", $lang);
         redirect($url);
@@ -511,9 +555,11 @@ class Admin extends MY_Controller {
     /**
      * Handle creating, deleting, and reading private messages
      */
-    function messages() {
-        if ( ! IS_LOGGED_IN)
+    public function messages()
+	{
+        if ( ! IS_LOGGED_IN) {
             redirect("admin/login");
+        }
 
         $form = array();
 
@@ -571,8 +617,8 @@ class Admin extends MY_Controller {
      * @param  string $infos Url get parameters which ciontin the type of item and the id
      * ie : "developer:5" "game:10"
      */
-    function reports( $infos = null ) {
-
+    public function reports( $infos = null )
+	{
         if (post("new_report_form_submitted")) {
             $report_form = post("report_form");
             $this->form_validation->set_rules("report_form[description]", 'Report description', "trim|required|min_length[10]");
@@ -598,20 +644,22 @@ class Admin extends MY_Controller {
                 $report_delete_success = true;
             }
 
-            if (IS_ADMIN)
+            if (IS_ADMIN) {
                 $reports = $this->admin_model->get_reports();
-            else
+            } else {
                 $reports = $this->admin_model->get_developer_reports(USER_ID);
+            }
             
             $success = "";
-            if ($report_delete_success)
+            if ($report_delete_success) {
                 $success = 'Reports(s) deleted successfully.';
+            }
 
             $this->layout->view("forms/admin_report_form", array("reports"=>$reports, "success"=>$success))->load();
         }
-
-        else
+        else {
             redirect("admin/login");
+        }
     }
 }
 

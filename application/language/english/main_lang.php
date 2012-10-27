@@ -13,34 +13,61 @@ $lang['menu_logout'] = 'Log Out';
 $lang['menu_languages'] = 'Languages';
 
 
+// HELP
+
+$lang["help_required_field"] = "Required field";
+
+
 
 // DEVELOPER FORM, page "adddeveloper"
 
 
-$lang['adddeveloper_form_title'] = 'Create a developer profile';
+$lang['adddeveloper_form_legend'] = 'Create a developer profile';
 
 $lang['adddeveloper_required_field'] = 'The developer\'s name and email are required fields.';
 
-$lang['adddeveloper_name'] = 'Name (company name, if applicable)';
-$lang['adddeveloper_placeholder_name'] = 'Name (company name)';
-$lang['adddeveloper_email'] = 'Email';
-$lang['adddeveloper_pitch'] = 'Explain about the developer\'s phylosophy, goals...';
-$lang['adddeveloper_logo'] = 'Logo URL';
-$lang['adddeveloper_website'] = 'Website URL';
-$lang['adddeveloper_blogfeed'] = 'Blog RSS/Atom feed';
-$lang['adddeveloper_country'] = 'Country';
-$lang['adddeveloper_teamsize'] = 'Size of the team';
+$lang['developer_name'] = "Name";
+$lang["help_developer_name"] = "Company name, if applicable.";
 
-$lang['adddeveloper_socialnetworks'] = 'Social networks profiles';
-$lang['adddeveloper_technologies'] = 'The technologies the developer works with :';
-$lang['adddeveloper_operatingsystems'] = 'The operating systems the developer\'s games run on (not applicable for most consoles) : ';
-$lang['adddeveloper_devices'] = 'The devices the developer\'s games are playable on : ';
-$lang['adddeveloper_stores'] = 'The stores the developer sells their games on : ';
+$lang['developer_email'] = 'Email';
+$lang['developer_pitch'] = 'Explain about the developer\'s phylosophy, goals...';
+$lang['developer_logo'] = 'Logo URL';
+$lang['developer_website'] = 'Website URL';
+
+$lang['developer_blogfeed'] = 'Blog RSS/Atom feed';
+$lang['developer_profile_blogfeed'] = "Lastest articles from the blog";
+
+$lang['developer_country'] = 'Country';
+$lang['developer_teamsize'] = 'Teamsize';
+
+$lang['developer_socialnetworks'] = 'Social networks';
+$lang['developer_socialnetworks_url_placeholder'] = 'Full profile URL';
+
+$lang['developer_technologies'] = "Technologies";
+$lang['help_developer_technologies'] = 'The technologies the developer works with';
+
+$lang['developer_operatingsystems'] = "Operating systems";
+$lang['help_developer_operatingsystems'] = 'The operating systems the developer\'s games run on (not applicable for most consoles) : ';
+
+$lang['developer_devices'] = "Devices";
+$lang['help_developer_devices'] = 'The devices the developer\'s games are playable on : ';
+
+$lang['developer_stores'] = "Stores";
+$lang['help_developer_stores'] = 'The stores the developer sells their games on : ';
+
 
 $lang['adddeveloper_submit'] = 'Create this developer profile';
 
-$lang['adddeveloper_form_success'] = 'Thanks you, the developer has successfully been added, an email will be send to let them now. \n 
+$lang['adddeveloper_success'] = 'Thanks you, the developer has successfully been added, an email will be send to let them now. \n 
 They must first check the data then make their account public before you can add one of their game.';
+
+
+$lang['developer_profile_title'] = "Developer";
+$lang['developer_website_title'] = "Go to the developer's website";
+
+
+
+
 
 
 
@@ -99,19 +126,6 @@ $lang['addgame_submit'] = 'Create this game profile';
 $lang['addgame_form_success'] = 'Thanks you, the game has successfully been added. The developers must first check the data then make the profile public before he shows up in the search.';
 
 
-// DEVELOPER PROFILE (page "developer")
-
-$lang['developer_page_title'] = "Developer";
-$lang['developer_website_title'] = "Go to the developer's website";
-$lang['developer_teamsize'] = "Size of the team";
-$lang['developer_country'] = "Country";
-$lang['developer_blogfeed'] = "Lastest articles from the blog";
-
-$lang['developer_socialnetworks'] = "Social networks";
-$lang['developer_technologies'] = "Technologies";
-$lang['developer_operatingsystems'] = "Operating systems";
-$lang['developer_devices'] = "Devices";
-$lang['developer_stores'] = "Stores";
 
 
 // GAME PROFILE (page "game")
@@ -138,10 +152,6 @@ $lang['game_videos'] = "Videos";
 // SEARCH (page "search")
 
 
-
-// TOOLTIPS      use \n to insert
-
-$lang['tooltip_developer_name'] = "This is a <br> useful \n tooltip";
 
 
 

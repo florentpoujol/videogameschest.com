@@ -7,15 +7,18 @@
  * @param string $ext optionnal The extension of the file
  * @return string The full url
  */
-function css_link( $file, $ext = '.css' ) {
+function css_link( $file, $ext = '.css' )
+{
 	return base_url().'assets/css/'.$file.$ext;
 }
 
-function js_link( $file, $ext = '.js' ) {
+function js_link( $file, $ext = '.js' )
+{
 	return base_url().'assets/js/'.$file.$ext;
 }
 
-function img_link( $file ) {
+function img_link( $file )
+{
 	return base_url().'assets/img/'.$file;
 }
 
@@ -28,7 +31,8 @@ function img_link( $file ) {
  * @param bool $return_as_array=false Return the data as an aray instead of an object
  * @return The data object (or array)
  */
-function get_static_data( $data_name, $return_as_array = false ) {
+function get_static_data( $data_name, $return_as_array = false )
+{
 	return get_instance()->static_model->$data_name;
 	/*static $data_cache = null;
 
@@ -72,7 +76,8 @@ function get_static_data( $data_name, $return_as_array = false ) {
  * @param the array
  * @return the associative array
  */
-function get_assoc_array( $array ) {
+function get_assoc_array( $array )
+{
 	$assoc_array = array();
 	foreach( $array as $value ) {
 		$assoc_array[$value] = $value;
@@ -88,19 +93,23 @@ function get_assoc_array( $array ) {
  * Helper function for the main model
  * @return The database object
  */
-function get_db_rows( $select, $from = null, $where = null, $order_by = null, $limit = null, $limit_end = null ) {
+function get_db_rows( $select, $from = null, $where = null, $order_by = null, $limit = null, $limit_end = null )
+{
 	return get_instance()->main_model->get_rows( $select, $from, $where, $order_by, $limit, $limit_end );
 }
 
-function get_db_row( $select, $from = null, $where = null, $order_by = null, $limit = null, $limit_end = null ) {
+function get_db_row( $select, $from = null, $where = null, $order_by = null, $limit = null, $limit_end = null )
+{
 	return get_instance()->main_model->get_row( $select, $from, $where, $order_by, $limit, $limit_end );
 }
 
-/*function get_db_info( $table, $searched_field, $where, $value = null ) {
+/*function get_db_info( $table, $searched_field, $where, $value = null )
+{
 	return get_instance()->main_model->get_info( $table, $searched_field, $where, $value );
 }
 
-function get_db_data( $table, $where, $value = null ) {
+function get_db_data( $table, $where, $value = null )
+{
 	return get_instance()->main_model->get_data( $table, $where, $value );
 }*/
 
@@ -113,11 +122,13 @@ function get_db_data( $table, $where, $value = null ) {
  * @param the url segment
  * @return the name
  */
-function url_to_name( $url ) {
+function url_to_name( $url )
+{
 	$url = str_replace( array( '-', '%20' ), ' ', $url );
 	return $url;
 }
-function name_to_url( $name ) {
+function name_to_url( $name )
+{
 	return url_title( $name );
 }
 
@@ -128,11 +139,13 @@ function name_to_url( $name ) {
 /**
  * Helper functions for the Session library
  */
-function userdata( $key = null ) {
+function userdata( $key = null )
+{
 	return get_instance()->session->userdata( $key );
 }
 
-function set_userdata( $key, $value = null ) {
+function set_userdata( $key, $value = null )
+{
 	if( is_array( $key ) )
 		get_instance()->session->set_userdata( $key );
 	else
@@ -146,7 +159,8 @@ function set_userdata( $key, $value = null ) {
 /**
  * Helper function for the Input library
  */
-function post( $key = null ) {
+function post( $key = null )
+{
 	return get_instance()->input->post( $key );
 }
 
@@ -157,7 +171,8 @@ function post( $key = null ) {
  * Return a text if the current page or admin_page match the name passed as parameter
  * Allow to style the menu items matching the current page
  */
-function menu_selected( $item ) {
+function menu_selected( $item )
+{
 	//global $page;
 	$text = '';
 	if (CONTROLLER == $item)
@@ -165,7 +180,8 @@ function menu_selected( $item ) {
 	return $text;
 }
 
-function controller_selected($menu_item, $already_inside_class = false) {
+function controller_selected($menu_item, $already_inside_class = false)
+{
 	if (CONTROLLER == $menu_item) {
 		if ($already_inside_class)
 			return "active";
@@ -174,13 +190,15 @@ function controller_selected($menu_item, $already_inside_class = false) {
 	}
 	return "";
 }
-function method_selected($menu_item) {
+function method_selected($menu_item)
+{
 	if (METHOD == $menu_item)
 		return 'class="active"';
 	return "";
 }
 
-function admin_menu_selected( $item ) {
+function admin_menu_selected( $item )
+{
 	//global $admin_page;
 	$text = '';
 	if (METHOD == $item)
@@ -196,7 +214,8 @@ function admin_menu_selected( $item ) {
  * @param  string/array $where 	The user type (field users.type) or an array with other WHERE critera
  * @return array  $users    	The user array
  */
-function get_users_array( $where ) {
+function get_users_array( $where )
+{
 	if (is_string($where))
 		$where = array("type"=>$where);
 
@@ -222,7 +241,8 @@ function get_users_array( $where ) {
  * @param assoc array $array
  * @return the array cleaned up
  */
-function clean_names_urls_array( $array ) {
+function clean_names_urls_array( $array )
+{
     $max_count = count( $array['names'] );
 
     for( $i = 0; $i < $max_count; $i++ ) {
@@ -252,7 +272,8 @@ function clean_names_urls_array( $array ) {
  * @param string $input the input text
  * @return string the input string with the bbCode replaced by html tags
  */
-function parse_bbcode( $input ) {
+function parse_bbcode( $input )
+{
 	$input = preg_replace( "#\[b\](.+)\[/b\]#", "<strong>$1</strong>" ,$input);
 	$input = preg_replace( "#\[i\](.+)\[/i\]#", "<em>$1</em>" ,$input);
 	$input = preg_replace( "#https?://[^ ]+#i", '<a href="$0">$0</a>' ,$input);
@@ -270,7 +291,8 @@ function parse_bbcode( $input ) {
  * @param  string $password The password to be hashed
  * @return string The password hash
  */
-function hash_password( $password ) {
+function hash_password( $password )
+{
 	if (CRYPT_EXT_DES == 1) // CRYPT_EXT_DES hash more than 8 characters
 		return crypt(complexify_password($password), "_".get_random_string(8));
 	else
@@ -286,7 +308,8 @@ function hash_password( $password ) {
  * @param  string $hash     The hash from the data to check thr password against 
  * @return boolean          True if the password is valid, false otherwise
  */
-function check_password( $password, $hash ) {
+function check_password( $password, $hash )
+{
 	if (CRYPT_EXT_DES == 1)
 		return ($hash == crypt( complexify_password($password), $hash ));
 	else
@@ -301,7 +324,8 @@ function check_password( $password, $hash ) {
  * @param  string $password The password to be complexified
  * @return string $password The complexified password
  */
-function complexify_password( $password ) {
+function complexify_password( $password )
+{
 	$complexifier = "ï & £ . '   µ ( [ à : ¤ Ç _ è Ô ) ë = } + , Î ; # ² ] À ! § * { ù % $ | é @ ê - î ô ö ç î ^";
 
 	if (CRYPT_EXT_DES == 1) { 
@@ -337,7 +361,8 @@ function complexify_password( $password ) {
  * @param int $length The length f the random strng to be returned
  * @return string The generated string
  */
-function get_random_string( $length ) {
+function get_random_string( $length )
+{
 	$alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./";
 	$string = "";
 
@@ -356,7 +381,8 @@ function get_random_string( $length ) {
  * @param  string $lang_key  A prefix to the localization key
  * @return assoc array       The assoc array containing the keys/localization strings
  */
-function get_array_lang( $array_keys, $lang_key ) {
+function get_array_lang( $array_keys, $lang_key )
+{
 	$array = array();
 
 	foreach ($array_keys as $key) {
@@ -376,7 +402,8 @@ function get_array_lang( $array_keys, $lang_key ) {
  * @param array $form An assoc array with where criteria or a single key as string
  * @return 
  */
-function set_default_dev_infos( $form ) {
+function set_default_dev_infos( $form )
+{
 	if( is_object($form) ) // if $form comes from the database
 		$form = get_object_vars($form);
 
@@ -433,7 +460,8 @@ function set_default_dev_infos( $form ) {
  * @param array $form An assoc array with where criteria or a single key as string
  * @return 
  */
-function set_default_game_infos( $form ) {
+function set_default_game_infos( $form )
+{
 	if (is_object($form)) // if $form comes from the database
 		$form = get_object_vars($form);
 

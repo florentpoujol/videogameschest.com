@@ -154,7 +154,7 @@ function form_input_extended( $input, $control_group = true ) {
 '<div class="control-group">
 	'.$html.$help.'
 </div>
-<!-- /.control-group -->
+<!-- /.control-group '.$input["name"].' -->
 ';
 	}
 

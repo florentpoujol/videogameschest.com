@@ -1,30 +1,35 @@
-		<section id="game_form">
+			<section id="game_form">
 <?php
 $form_data = $this->static_model->form;
 
-if (!isset($form)) // when adding a profile, and no $form has been passed to the view
+if ( ! isset($form)) { // when adding a profile, and no $form has been passed to the view
 	$form = array();
+}
 
 $form = set_default_game_infos($form);
 
 
 // form opening tag
 $method = METHOD;
-if (CONTROLLER == "addgame")
+if (CONTROLLER == "addgame") {
 	$method = "addgame";
+}
 ?>
 			<?php echo form_open("admin/$method", array("class"=>"form-horizontal")); ?> 
 <?php
 
 // form legend
 $legend = 'Edit a game';
-if (METHOD == "addgame" || CONTROLLER == "addgame" )
+if (METHOD == "addgame" || CONTROLLER == "addgame" ) {
 	$legend = lang("addgame_form_title");
+}
 ?>
 				<legend><?php echo $legend; ?></legend>
 
-				<?php echo get_form_errors(); ?> 
-				<?php echo get_form_success(); ?> 
+				<!-- display form errors and success -->
+                <?php echo get_form_errors($form); ?> 
+                <?php echo get_form_success($form); ?> 
+                <!-- / -->
 
 <?php
 // profile id
@@ -35,9 +40,9 @@ if (METHOD == "editgame"): ?>
 endif;
 
 // required fields
-if (CONTROLLER == "addgame" )
+if (CONTROLLER == "addgame") {
 	echo '<p>'.lang("addgame_required_field").'</p>';
-
+}
 
 // name
 $input = array(
@@ -52,14 +57,15 @@ $input = array(
 
 // developer select
 if (IS_ADMIN || CONTROLLER == "addgame" ):
-	if (IS_ADMIN)
-		$developers = get_users_array("dev");
-	else
-		$developers = get_users_array(array("type"=>"dev", "privacy"=>"public"));
 ?>
 				<div class="control-group">
 					<label class="control-label" for="developer"><?php echo lang("addgame_developer"); ?></label>
-					<?php echo form_dropdown( 'form[user_id]', $developers, $form["user_id"], 'id="developer" class="controls"' ); ?> 
+<?php if (CONTROLLER == "admin" || IS_DEVELOPER): ?>
+					<span class="controls">You (user id : <?php echo USER_ID; ?>)</span>
+					<input type="hidden" name="form[user_id]" value="<?php echo USER_ID; ?>">
+<?php else: ?>
+					<?php echo form_dropdown( 'form[user_id]', get_users_array("dev"), $form["user_id"], 'id="developer" class="controls"' ); ?> 
+<?php endif; ?>
 					<!--<span class="help-inline">This field display the users which are developers, not the developer profiles.</span>-->
 				</div>
 <?php else: // user is a developer on the admin panel ?>
@@ -72,8 +78,9 @@ if (IS_ADMIN || CONTROLLER == "addgame" ):
 // state of developement
 $dev_states = array();
 
-foreach ($form_data->developmentstates as $state_key)
+foreach ($form_data->developmentstates as $state_key) {
 	$dev_states[$state_key] = lang("developementstates_$state_key");
+}
 ?>
 					<?php echo form_dropdown('form[data][developmentstate]', $dev_states, $form["data"]["developmentstate"], 'id="developmentstate" class="controls"'); ?> 
 				</div>

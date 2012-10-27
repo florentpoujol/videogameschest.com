@@ -22,7 +22,7 @@
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo css_link("bootstrap.min"); ?>" >
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo css_link("bootstrap-responsive.min"); ?>" >
 		<link rel="stylesheet/less" type="text/css" media="screen" href="<?php echo css_link("main", ".less");?>" >
-		
+
 <?php foreach ($css as $url): ?>
 		<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $url; ?>" >
 <?php endforeach; ?>
@@ -56,7 +56,7 @@ if (IS_LOGGED_IN): ?>
 							<li <?php echo method_selected('editgame');?>><a href="<?php echo site_url('admin/editgame'); ?>">Edit a game</a></li>
 							<li <?php echo method_selected('gamequeue');?>><a href="<?php echo site_url('admin/gamequeue'); ?>">Game queue</a></li>
 							<li <?php echo method_selected('reports');?>><a href="<?php echo site_url('admin/reports'); ?>">Reports</a></li>
-							<li<?php echo method_selected('messages');?> ><a href="<?php echo site_url('admin/messages'); ?>">Messages</a></li>
+							<li <?php echo method_selected('messages');?>><a href="<?php echo site_url('admin/messages'); ?>">Messages</a></li>
 	<?php if (IS_ADMIN):  ?>
 							<li <?php echo method_selected('adduser');?>><a href="<?php echo site_url('admin/adduser'); ?>">Create user</a></li>
 							<li <?php echo method_selected('adddeveloper');?>><a href="<?php echo site_url('admin/adddeveloper'); ?>">Add a developer</a></li>
