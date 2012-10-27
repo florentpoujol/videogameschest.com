@@ -8,24 +8,63 @@
  * @return string The formated error messages
  */
 function get_form_errors( $form = null ) {
-	$errors = validation_errors();
-	
-	if ($errors == "" && ( ! isset($form) || $form === false))
-		return;
-	
-	if (is_array($form) && isset( $form["errors"] ) )
-		$errors .= "\n".$form["errors"];
-	elseif (is_string($form) && trim($form) != "")
-		$errors = "\n $form";
-	
-	if( $errors != '' ) {
-		$errors =
-'<div class="form_errors">
-	'.$errors.'
-</div>';
+	$userdata_errors = userdata("form_errors");
+	$validation_errors = validation_errors(); // get errors from the form_validation class
+	$errors = "";
+
+	if ($userdata_errors != "" || $validation_errors != "") {
+		$errors .= '<div class="alert alert-error">
+		<button type="button" class="close" data-dismiss="error">×</button>
+		';
+
+		if ($userdata_errors != "") {
+			$userdata_errors = json_decode($userdata_errors, true);
+			foreach ($userdata_errors as $error) {
+				$errors .= $error.' <br>
+				';
+			}
+		}
+
+		$errors .= $validation_errors."
+		</div>
+		";
 	}
-	
+
+	set_userdata("form_errors", "");
+
 	return $errors;
+}
+
+
+//----------------------------------------------------------------------------------
+
+/**
+ * Register an error to be displayed the next time get_form_error is called
+ * @param string $error The error
+ */
+function set_form_error($error) {
+	$userdata_errors = userdata("form_errors");
+	
+	if ($userdata_errors != "") {
+		$userdata_errors = json_decode($userdata_errors, true);
+		$userdata_errors[] = '"'.$error.'"';
+		set_userdata("form_errors", json_encode($userdata_errors));
+	}
+	else
+		set_userdata("form_errors", '["'.$error.'"]');
+}
+
+
+//----------------------------------------------------------------------------------
+
+
+function escape_json_chars($input) {
+	$input = str_replace("[", "\[", $input);
+	$input = str_replace("]", "\]", $input);
+	$input = str_replace("{", "\{", $input);
+	$input = str_replace("}", "\}", $input);
+	$input = str_replace('"', '\"', $input);
+	return $input;
 }
 
 
@@ -214,3 +253,6 @@ function init_game_infos( $form ) {
     $form["data"] = $data;
     return $form;
 }
+
+
+//----------------------------------------------------------------------------------
