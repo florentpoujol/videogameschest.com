@@ -39,7 +39,6 @@ class Admin extends MY_Controller {
     	if (IS_LOGGED_IN)
     		redirect("admin");
 
-    	$error = "";
     	$name = post("name");
 
     	if (post("admin_login_form_submitted")) {
@@ -50,35 +49,36 @@ class Admin extends MY_Controller {
             elseif (strpos($name, "@")) // the name is actually an email
                 $field = "email";
 
-            $is_admin = false;
-	    	$user = $this->main_model->get_row("id, password, type, key", "users", "$field = '$name'");
+            $this->form_validation->set_rules("name", $field, "trim|required");
+            $this->form_validation->set_rules("password", "Password", "trim|required|min_length[5]");
+              
+	    	if ($this->form_validation->run()) {
+                $user = $this->user_model->get("$field = '$name'");
+                var_dump($user);
+                if ($user) {
+    	    		if (check_password(post("password"), $user->password)) {
+    	    			$userdata = array("is_logged_in" => "1");
+    	    			
+    	    			if ($user->type == "admin")
+    	    				$userdata["is_admin"] = "1";
+    	    			else
+    	    				$userdata["is_developer"] = "1";
 
-	    	if ($user) {
-	    		if (check_password( post("password"), $user->password ) ) {
-	    			$userdata = array( "is_logged_in" => "1" );
-	    			
-	    			if ($user->type == "admin")
-	    				$userdata["is_admin"] = "1";
-	    			else
-	    				$userdata["is_developer"] = "1";
+                        $userdata["user_id"] = $user->id;
+                        $userdata["user_key"] = $user->key;
+    	    			set_userdata($userdata);
 
-                    $userdata["user_id"] = $user->id;
-                    $userdata["user_key"] = $user->key;
-	    			set_userdata($userdata);
-
-	    			redirect("admin");
-	    		}
-	    		else
-	    			$error = "The password provided for user $field [$name] is incorrect.";
-	    	}
-	    	else
-	    		$error = "No user with the $field [$name] has been found.";
+    	    			redirect("admin");
+    	    		}
+    	    		else
+    	    			set_form_error("The password provided for user $field [$name] is incorrect.");
+    	    	}
+    	    	else
+    	    		set_form_error("No user with the $field [$name] has been found.");
+            } // end form is valid
     	}
 
-
-    	$this->layout
-    	->view( "forms/login_form", array("error"=>$error, "name"=>$name ))
-    	->load();
+    	$this->layout->view( "forms/login_form", array("name"=>$name ))->load();
     }
 
 

@@ -65,7 +65,7 @@ class User_model extends CI_Model {
     function get( $where ) {
         $users = $this->db->from("users")->where($where)->get();
 
-        if ($users === false)
+        if ($users->num_rows() == 0)
             return false;
         
         if ($users->num_rows() == 1)
