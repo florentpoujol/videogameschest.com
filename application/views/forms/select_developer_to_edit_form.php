@@ -1,19 +1,19 @@
+
 		<div id="select_developer_to_edit_form">
-			<h1>Select the developer to edit</h1>
-		
-			<?php 
-			if (isset($form))
-				echo get_form_errors($form); 
+			<?php echo form_open("admin/editdeveloper", array("class"=>"form-horizontal")); ?> 
+				<legend>Select developer to edit</legend>
 
-			echo form_open("admin/editdeveloper"); ?>
+				<?php echo get_form_errors(); ?> 
 
-				<?php echo form_dropdown("developer_id_select", get_users_array("dev"), null, 'id="developer_id_select"' ); ?>
-				<?php echo ' <label for="developer_id_select">Select the developer</label>'; ?>
+				<div class="control-group">
+					<?php echo ' <label class="control-label" for="developer_id_select">Select the developer</label>'; ?> 
+					<?php echo form_dropdown("developer_id_select", get_users_array("dev"), null, 'id="developer_id_select" class="controls"' ); ?> 
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="developer_id_text">Or write its id</label> 
+					<input type="number" class="controls" min="1" name="developer_id_text" id="developer_id_text"> 					
+				</div>
 
-				<br>
-				<input type="number" min="1" name="developer_id_text" id="developer_id_text"> <label for="developer_id_text">Or write its id</label> <br>
-				<br>
 				<input type="submit" name="select_developer_to_edit_form_submitted" value="Edit this developer"> <br>
-				<!--<input type="submit" name="edit_own_account_form_submitted" value="Edit my own account">-->
 			</form>
 		</div>
