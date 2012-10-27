@@ -14,7 +14,6 @@ function get_form_errors( $form = null ) {
 
 	if ($userdata_errors != "" || $validation_errors != "") {
 		$errors .= '<div class="alert alert-error">
-		<button type="button" class="close" data-dismiss="error">×</button>
 		';
 
 		if ($userdata_errors != "") {
@@ -76,24 +75,46 @@ function escape_json_chars($input) {
  * @return string The formated success messages
  */
 function get_form_success( $form = null ) {
+	$userdata_success = userdata("form_success");
 	$success = "";
 
-	if ( ! isset($form) || $form === false)		
-		return;
+	if ($userdata_success != "") {
+		$success .= '<div class="alert alert-success">
+		';
 
-	if(is_array($form) && isset($form["success"])) //  isset($form["success"]) returns true when $form is a string ?
-		$success = $form["success"];
-	elseif (is_string($form) && trim($form) != "")
-		$success = $form;
-	
-	if ($success != "") {
-		$success = 
-'<div class="form_success">
-	'.$success.'
-</div>';
+		$userdata_success = json_decode($userdata_success, true);
+		foreach ($userdata_success as $a_success) {
+			$success .= $a_success.' <br>
+			';
+		}
+		
+		$success .= "</div>
+		";
 	}
 
+	set_userdata("form_success", "");
+
 	return $success;
+}
+
+
+
+//----------------------------------------------------------------------------------
+
+/**
+ * Register a success to be displayed the next time get_form_success is called
+ * @param string $succes The succes
+ */
+function set_form_success($success) {
+	$userdata_success = userdata("form_succes");
+	
+	if ($userdata_success != "") {
+		$userdata_success = json_decode($userdata_success, true);
+		$userdata_success[] = '"'.$success.'"';
+		set_userdata("form_succes", json_encode($userdata_success));
+	}
+	else
+		set_userdata("form_succes", '["'.$success.'"]');
 }
 
 
