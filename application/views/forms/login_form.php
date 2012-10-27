@@ -1,16 +1,22 @@
-		<div id="admin_login">
-<?php if ($error != ''): ?>
-			<?php echo '<p class="form_errors">'.$error.'</p>'; ?>
-<?php endif; ?>
 
-			<?php echo form_open("admin/login"); ?>
-				<label for="name">Name</label> <br>
-				<input type="text" name="name" placeholder="your developer name" value="<?php echo $name; ?>"/> <br>
-				<br>
-				<label for="password">Password</label> <br>
-				<input type="password" name="password" placeholder="your password" /> <br>
-				<br>
-				<input type="submit" name="admin_login_form_submitted" value="Log in" /> <br>
-				<input type="submit" name="admin_login_form_lostpassword" value="I lost my password" />
-			</form>
-		</div> <!-- /#admin_login -->
+			<div id="admin_login">
+				<?php echo form_open("admin/login", array("class"=>"form-horizontal")); ?> 
+					<legend><?php echo lang("menu_login"); ?></legend>
+
+                    <?php echo get_form_errors(); ?> 
+
+					<div class="control-group">
+						<label class="control-label" for="name">User name, email, or id</label>
+						<input type="text" class="controls" id="name" name="name" placeholder="Your user name, email, or id" value="<?php echo $name; ?>">
+					</div>
+					
+					<div class="control-group">
+						<label class="control-label" for="password">Password</label>
+						<input type="password" class="controls" id="password" name="password" placeholder="Your password" >
+					</div>
+					
+					<input type="submit" name="admin_login_form_submitted" value="Log in" class="btn btn-primary">
+					<input type="submit" name="admin_login_form_lostpassword" value="I lost my password" >
+				</form>
+                </div> 
+                <!-- /#admin_login -->

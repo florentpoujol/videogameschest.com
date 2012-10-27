@@ -31,7 +31,7 @@
 	<body>
 		<header class="container navbar nav-inner">
 				<ul class="nav">
-					<!-- Generic menu -->
+					<!-- Menu -->
 <?php
 $menu_items = array('home', 'search', 'adddeveloper', 'addgame', 'about');
 
@@ -72,7 +72,7 @@ if (IS_LOGGED_IN): ?>
 <?php else: // is not logged in?>
 					<li><a href="<?php echo site_url('admin/login'); ?>"><?php echo lang('menu_login');?></a></li>
 <?php endif; ?> 
-					<!-- /Generic menu --> 
+					<!-- /menu --> 
 					
 					<!-- Language menu -->
 					<li class="dropdown">
@@ -95,40 +95,13 @@ endforeach;
 						</ul>
 					</li>
 					<!-- /#lang_menu --> 
-<?php if (false): ?>
-					<!-- Admin menu -->
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							Admin
-							<b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu">
-							<li <?php echo method_selected('admin_index');?>><a href="<?php echo site_url('admin'); ?>">Admin hub</a></li>
-							<li <?php echo method_selected('edituser');?>><a href="<?php echo site_url('admin/edituser'); ?>" <?php echo admin_menu_selected('edituser');?>>Edit user</a></li>
-							<li><a href="<?php echo site_url('admin/addgame'); ?>" <?php echo admin_menu_selected('addgame');?>>Add a game</a></li>
-							<li><a href="<?php echo site_url('admin/editgame'); ?>" <?php echo admin_menu_selected('editgame');?>>Edit a game</a></li>
-							<li><a href="<?php echo site_url('admin/gamequeue'); ?>" <?php echo admin_menu_selected('gamequeue');?>>Game queue</a></li>
-							<li><a href="<?php echo site_url('admin/reports'); ?>" <?php echo admin_menu_selected('reports');?>>Reports</a></li>
-							<li><a href="<?php echo site_url('admin/messages'); ?>" <?php echo admin_menu_selected('messages');?>>Messages</a></li>
-<?php 	if (IS_ADMIN):  ?>
-							<li ><a href="<?php echo site_url('admin/adduser'); ?>" <?php echo admin_menu_selected('adduser');?>>Create user</a></li>
-							<li><a href="<?php echo site_url('admin/adddeveloper'); ?>" <?php echo admin_menu_selected('adddeveloper');?>>Add a developer</a></li>
-							<li><a href="<?php echo site_url('admin/editdeveloper'); ?>" <?php echo admin_menu_selected('editdeveloper');?>>Edit a developer</a></li>
-<?php 	elseif (IS_DEVELOPER): ?>
-							<li><a href="<?php echo site_url('admin/editdeveloper/'.userdata('user_id')); ?>" <?php echo admin_menu_selected('editdeveloper');?>>Edit your dev profile</a></li>
-<?php 	endif; ?>				
-						</ul>
-					</li>
-					<!-- /#admin_menu -->
-<?php endif; // end IS_LOGGED_IN ?>
 				</ul>
 
 				<form class="navbar-search pull-left">
 					<input type="text" class="search-query" placeholder="Search">
 				</form>
-			
-			<!-- /.nav-inner -->
 		</header>
+		<!-- /header .container .navbar .nav-inner -->
 
 		<div class="container" id="page_content">
 			<!-- Body hook -->
