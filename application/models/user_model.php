@@ -1,12 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class User_model extends CI_Model {
+class User_model extends CI_Model
+{
     
     private $date_format = "" ;
 
-    function __construct() {
+    function __construct() 
+    {
         parent::__construct();
-        $this->date_format = get_static_data('site')->date_formats->date_sql;
+        $this->date_format = $this->static_model->site->date_formats->date_sql;
     }
 
 
@@ -16,17 +18,20 @@ class User_model extends CI_Model {
      * Insert a user in the database
      * @param assoc array $form The raw data from the user_form view
      */
-    function insert( $form ) {
-        if (isset($form["password"]) && trim($form["password"]) != "")
+    function insert( $form ) 
+    {
+        if (isset($form["password"]) && trim($form["password"]) != "") {
             $form["password"] = hash_password($form["password"]);
-        else
+        } else {
             $form["password"] = hash_password("pasSw0rd");
+        }
 
 
         $form["key"] = md5(mt_rand());
 
-        while ($this->main_model->get_row("key", "users", "key = '".$form["key"]."'") !== false)
+        while ($this->main_model->get_row("key", "users", "key = '".$form["key"]."'") !== false) {
             $form["key"] = md5(mt_rand());
+        }
 
         $form["creation_date"] = date_create()->format($this->date_format);
         unset($form["data"]);
@@ -45,9 +50,11 @@ class User_model extends CI_Model {
      * Update a user in the database
      * @param assoc array $form The raw data from the user_form view
      */
-    function update( $form ) {
-        if (isset($form["password"]) && trim($form["password"]) != "")
+    function update($form)
+    {
+        if (isset($form["password"]) && trim($form["password"]) != "") {
             $form["password"] = hash_password($form["password"]);
+        }
 
         unset($form["key"]);
         unset($form["creation_date"]);
@@ -62,14 +69,17 @@ class User_model extends CI_Model {
      * @param array $where The WHERE criteria
      * @return array/false The array containing all the users infos or false
      */
-    function get( $where ) {
+    function get($where)
+    {
         $users = $this->db->from("users")->where($where)->get();
 
-        if ($users->num_rows() == 0)
+        if ($users->num_rows() == 0) {
             return false;
+        }
         
-        if ($users->num_rows() == 1)
+        if ($users->num_rows() == 1) {
             $users = $users->row();
+        }
 
         return $users;       
     }

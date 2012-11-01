@@ -9,17 +9,17 @@
  */
 function css_link( $file, $ext = '.css' )
 {
-	return base_url().'assets/css/'.$file.$ext;
+    return base_url().'assets/css/'.$file.$ext;
 }
 
 function js_link( $file, $ext = '.js' )
 {
-	return base_url().'assets/js/'.$file.$ext;
+    return base_url().'assets/js/'.$file.$ext;
 }
 
 function img_link( $file )
 {
-	return base_url().'assets/img/'.$file;
+    return base_url().'assets/img/'.$file;
 }
 
 
@@ -33,38 +33,38 @@ function img_link( $file )
  */
 function get_static_data( $data_name, $return_as_array = false )
 {
-	return get_instance()->static_model->$data_name;
-	/*static $data_cache = null;
+    return get_instance()->static_model->$data_name;
+    /*static $data_cache = null;
 
-	if( $data_cache != null && isset($data_cache[$data_name]) ) {
-		if( $return_as_array )
-			return get_object_vars( $data_cache[$data_name] );
-		else
-			return $data_cache[$data_name];
-	}
+    if( $data_cache != null && isset($data_cache[$data_name]) ) {
+        if( $return_as_array )
+            return get_object_vars( $data_cache[$data_name] );
+        else
+            return $data_cache[$data_name];
+    }
 
     $file_path = APPPATH.'/../assets/json/'.$data_name.'.json';
-   	// DO NOT USE base_url() !!
-   	// file_exists will return false, even if the file is accessible
+    // DO NOT USE base_url() !!
+    // file_exists will return false, even if the file is accessible
  
     if( !file_exists( $file_path ) )
-    	die( "[$data_name.json] does not exists at path : $file_path" );
+        die( "[$data_name.json] does not exists at path : $file_path" );
     
 
     $string_data = file_get_contents( $file_path );
 
     if( $string_data == false ) // $string_data may be false because read_file() failed, otherwise it is a string
-    	die( "[$file_path] could not be read !" );
+        die( "[$file_path] could not be read !" );
 
     $data = json_decode( $string_data );
 
-	//cache
-	$data_cache[$data_name] = $data;
+    //cache
+    $data_cache[$data_name] = $data;
 
     if( $return_as_array )
-		return get_object_vars( $data );
-	else
-		return $data;*/
+        return get_object_vars( $data );
+    else
+        return $data;*/
 }
 
 
@@ -78,11 +78,11 @@ function get_static_data( $data_name, $return_as_array = false )
  */
 function get_assoc_array( $array )
 {
-	$assoc_array = array();
-	foreach( $array as $value ) {
-		$assoc_array[$value] = $value;
-	}
-	return $assoc_array;
+    $assoc_array = array();
+    foreach( $array as $value ) {
+        $assoc_array[$value] = $value;
+    }
+    return $assoc_array;
 }
 
 
@@ -95,22 +95,22 @@ function get_assoc_array( $array )
  */
 function get_db_rows( $select, $from = null, $where = null, $order_by = null, $limit = null, $limit_end = null )
 {
-	return get_instance()->main_model->get_rows( $select, $from, $where, $order_by, $limit, $limit_end );
+    return get_instance()->main_model->get_rows( $select, $from, $where, $order_by, $limit, $limit_end );
 }
 
 function get_db_row( $select, $from = null, $where = null, $order_by = null, $limit = null, $limit_end = null )
 {
-	return get_instance()->main_model->get_row( $select, $from, $where, $order_by, $limit, $limit_end );
+    return get_instance()->main_model->get_row( $select, $from, $where, $order_by, $limit, $limit_end );
 }
 
 /*function get_db_info( $table, $searched_field, $where, $value = null )
 {
-	return get_instance()->main_model->get_info( $table, $searched_field, $where, $value );
+    return get_instance()->main_model->get_info( $table, $searched_field, $where, $value );
 }
 
 function get_db_data( $table, $where, $value = null )
 {
-	return get_instance()->main_model->get_data( $table, $where, $value );
+    return get_instance()->main_model->get_data( $table, $where, $value );
 }*/
 
 
@@ -124,12 +124,12 @@ function get_db_data( $table, $where, $value = null )
  */
 function url_to_name( $url )
 {
-	$url = str_replace( array( '-', '%20' ), ' ', $url );
-	return $url;
+    $url = str_replace( array( '-', '%20' ), ' ', $url );
+    return $url;
 }
 function name_to_url( $name )
 {
-	return url_title( $name );
+    return url_title( $name );
 }
 
 
@@ -141,15 +141,15 @@ function name_to_url( $name )
  */
 function userdata( $key = null )
 {
-	return get_instance()->session->userdata( $key );
+    return get_instance()->session->userdata( $key );
 }
 
 function set_userdata( $key, $value = null )
 {
-	if( is_array( $key ) )
-		get_instance()->session->set_userdata( $key );
-	else
-		get_instance()->session->set_userdata( $key, $value );
+    if( is_array( $key ) )
+        get_instance()->session->set_userdata( $key );
+    else
+        get_instance()->session->set_userdata( $key, $value );
 }
 
 
@@ -161,7 +161,7 @@ function set_userdata( $key, $value = null )
  */
 function post( $key = null )
 {
-	return get_instance()->input->post( $key );
+    return get_instance()->input->post( $key );
 }
 
 
@@ -173,37 +173,37 @@ function post( $key = null )
  */
 function menu_selected( $item )
 {
-	//global $page;
-	$text = '';
-	if (CONTROLLER == $item)
-		$text = 'id="menu_selected" ';
-	return $text;
+    //global $page;
+    $text = '';
+    if (CONTROLLER == $item)
+        $text = 'id="menu_selected" ';
+    return $text;
 }
 
 function controller_selected($menu_item, $already_inside_class = false)
 {
-	if (CONTROLLER == $menu_item) {
-		if ($already_inside_class)
-			return "active";
-		else
-			return 'class="active"';
-	}
-	return "";
+    if (CONTROLLER == $menu_item) {
+        if ($already_inside_class)
+            return "active";
+        else
+            return 'class="active"';
+    }
+    return "";
 }
 function method_selected($menu_item)
 {
-	if (METHOD == $menu_item)
-		return 'class="active"';
-	return "";
+    if (METHOD == $menu_item)
+        return 'class="active"';
+    return "";
 }
 
 function admin_menu_selected( $item )
 {
-	//global $admin_page;
-	$text = '';
-	if (METHOD == $item)
-		$text = 'id="admin_menu_selected" ';
-	return $text;
+    //global $admin_page;
+    $text = '';
+    if (METHOD == $item)
+        $text = 'id="admin_menu_selected" ';
+    return $text;
 }
 
 
@@ -211,25 +211,25 @@ function admin_menu_selected( $item )
 
 /**
  * Returna an array from the users table where keys are user_id and values user name
- * @param  string/array $where 	The user type (field users.type) or an array with other WHERE critera
- * @return array  $users    	The user array
+ * @param  string/array $where  The user type (field users.type) or an array with other WHERE critera
+ * @return array  $users        The user array
  */
 function get_users_array( $where )
 {
-	if (is_string($where))
-		$where = array("type"=>$where);
+    if (is_string($where))
+        $where = array("type"=>$where);
 
-	$raw_users = get_db_rows("id, name", "users", $where);
+    $raw_users = get_db_rows("id, name", "users", $where);
 
-	if ($raw_users === false)
-		return false;
+    if ($raw_users === false)
+        return false;
 
-	$users = array();
+    $users = array();
 
-	foreach ($raw_users->result() as $user)
-		$users[$user->id] = $user->name;
+    foreach ($raw_users->result() as $user)
+        $users[$user->id] = $user->name;
 
-	return $users;
+    return $users;
 }
 
 
@@ -247,7 +247,7 @@ function clean_names_urls_array( $array )
 
     for( $i = 0; $i < $max_count; $i++ ) {
         if( isset( $array['names'][$i] ) &&
-         	(trim( $array['names'][$i] ) == '' || trim( $array['urls'][$i] ) == '') ) 
+            (trim( $array['names'][$i] ) == '' || trim( $array['urls'][$i] ) == '') ) 
         {
             unset( $array['names'][$i] );
             unset( $array['urls'][$i] );
@@ -274,13 +274,13 @@ function clean_names_urls_array( $array )
  */
 function parse_bbcode( $input )
 {
-	$input = preg_replace( "#\[b\](.+)\[/b\]#", "<strong>$1</strong>" ,$input);
-	$input = preg_replace( "#\[i\](.+)\[/i\]#", "<em>$1</em>" ,$input);
-	$input = preg_replace( "#https?://[^ ]+#i", '<a href="$0">$0</a>' ,$input);
-	//$input = preg_replace( "#\[url\](.+)\[/url\]#", '<a href="$1">$1</a>' ,$input);
-	$input = preg_replace( "#\[url=(.+)\](.+)\[/url\]#", '<a href="$1">$2</a>' ,$input);
-	$input = preg_replace( "#/n#", '<br>' ,$input);
-	return $input;
+    $input = preg_replace( "#\[b\](.+)\[/b\]#", "<strong>$1</strong>" ,$input);
+    $input = preg_replace( "#\[i\](.+)\[/i\]#", "<em>$1</em>" ,$input);
+    $input = preg_replace( "#https?://[^ ]+#i", '<a href="$0">$0</a>' ,$input);
+    //$input = preg_replace( "#\[url\](.+)\[/url\]#", '<a href="$1">$1</a>' ,$input);
+    $input = preg_replace( "#\[url=(.+)\](.+)\[/url\]#", '<a href="$1">$2</a>' ,$input);
+    $input = preg_replace( "#/n#", '<br>' ,$input);
+    return $input;
 }
 
 
@@ -293,10 +293,10 @@ function parse_bbcode( $input )
  */
 function hash_password( $password )
 {
-	if (CRYPT_EXT_DES == 1) // CRYPT_EXT_DES hash more than 8 characters
-		return crypt(complexify_password($password), "_".get_random_string(8));
-	else
-		return crypt(complexify_password($password), get_random_string(2)); // with CRYPT_STD_DES, only 8 characters are hashed
+    if (CRYPT_EXT_DES == 1) // CRYPT_EXT_DES hash more than 8 characters
+        return crypt(complexify_password($password), "_".get_random_string(8));
+    else
+        return crypt(complexify_password($password), get_random_string(2)); // with CRYPT_STD_DES, only 8 characters are hashed
 }
 
 
@@ -310,10 +310,10 @@ function hash_password( $password )
  */
 function check_password( $password, $hash )
 {
-	if (CRYPT_EXT_DES == 1)
-		return ($hash == crypt( complexify_password($password), $hash ));
-	else
-		return ($hash == crypt( complexify_password($password), $hash ));
+    if (CRYPT_EXT_DES == 1)
+        return ($hash == crypt( complexify_password($password), $hash ));
+    else
+        return ($hash == crypt( complexify_password($password), $hash ));
 }
 
 
@@ -326,31 +326,31 @@ function check_password( $password, $hash )
  */
 function complexify_password( $password )
 {
-	$complexifier = "ï & £ . '   µ ( [ à : ¤ Ç _ è Ô ) ë = } + , Î ; # ² ] À ! § * { ù % $ | é @ ê - î ô ö ç î ^";
+    $complexifier = "ï & £ . '   µ ( [ à : ¤ Ç _ è Ô ) ë = } + , Î ; # ² ] À ! § * { ù % $ | é @ ê - î ô ö ç î ^";
 
-	if (CRYPT_EXT_DES == 1) { 
-		// CRYPT_EXT_DES hash more than 8 characters
-		// add complexifier characters into password
-		// ie : "password" becomes "pïa&s£s.w'o rµd"
-		$old_password = $password;
-		for ($i = 0; $i < strlen($old_password); $i++) {
-			if ($i%2 == 0 && isset($complexifier[$i])) // if $i is pair
-				$password .= $complexifier[$i];
+    if (CRYPT_EXT_DES == 1) { 
+        // CRYPT_EXT_DES hash more than 8 characters
+        // add complexifier characters into password
+        // ie : "password" becomes "pïa&s£s.w'o rµd"
+        $old_password = $password;
+        for ($i = 0; $i < strlen($old_password); $i++) {
+            if ($i%2 == 0 && isset($complexifier[$i])) // if $i is pair
+                $password .= $complexifier[$i];
 
-			$password .= $old_password[$i];
-		}
-	}
-	else {
-		// CRYPT_STD_DES hash only 8 characters
-		$password = $password[3]."}".$password[2].$password[0].";".$password[1].$password[4];
-		
-		if (isset($password[5]))
-			$password = $password[5].$password;
-		else
-			$password += "ê";
-	}
+            $password .= $old_password[$i];
+        }
+    }
+    else {
+        // CRYPT_STD_DES hash only 8 characters
+        $password = $password[3]."}".$password[2].$password[0].";".$password[1].$password[4];
+        
+        if (isset($password[5]))
+            $password = $password[5].$password;
+        else
+            $password += "ê";
+    }
 
-	return $password;
+    return $password;
 }
 
 
@@ -363,13 +363,13 @@ function complexify_password( $password )
  */
 function get_random_string( $length )
 {
-	$alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./";
-	$string = "";
+    $alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789./";
+    $string = "";
 
-	for ($i = 0; $i < $length; $i++)
-		$string .= $alphabet[mt_rand(0, strlen($alphabet)-1)];
-	
-	return $string;
+    for ($i = 0; $i < $length; $i++)
+        $string .= $alphabet[mt_rand(0, strlen($alphabet)-1)];
+    
+    return $string;
 }
 
 
@@ -383,14 +383,14 @@ function get_random_string( $length )
  */
 function get_array_lang( $array_keys, $lang_key )
 {
-	$array = array();
+    $array = array();
 
-	foreach ($array_keys as $key) {
-		$array[$key] = lang($lang_key.$key);
-	}
+    foreach ($array_keys as $key) {
+        $array[$key] = lang($lang_key.$key);
+    }
 
-	asort($array);
-	return $array;
+    asort($array);
+    return $array;
 }
 
 
@@ -404,22 +404,22 @@ function get_array_lang( $array_keys, $lang_key )
  */
 function set_default_dev_infos( $form )
 {
-	if( is_object($form) ) // if $form comes from the database
-		$form = get_object_vars($form);
+    if( is_object($form) ) // if $form comes from the database
+        $form = get_object_vars($form);
 
-	// first make sure that the databse fields exists (+ password2)
-	$db_fields = array( "id", "name", "email", "type", "user_id", "password", "password2", "privacy", "data");
+    // first make sure that the databse fields exists (+ password2)
+    $db_fields = array( "id", "name", "email", "type", "user_id", "password", "password2", "privacy", "data");
 
-	foreach( $db_fields as $field ) {
-		if( !isset( $form[$field] ) )
-			$form[$field] = '';
-	}
+    foreach( $db_fields as $field ) {
+        if( !isset( $form[$field] ) )
+            $form[$field] = '';
+    }
 
-	// then take care of data
-	if( is_string($form["data"]) && trim($form["data"]) == '' )
-		$form["data"] = array();
-	elseif( is_string( $form["data"] ) )
-		$form["data"] = json_decode( $form["data"], true ); // true makes the returned value an array instead of an object
+    // then take care of data
+    if( is_string($form["data"]) && trim($form["data"]) == '' )
+        $form["data"] = array();
+    elseif( is_string( $form["data"] ) )
+        $form["data"] = json_decode( $form["data"], true ); // true makes the returned value an array instead of an object
 
     $data = $form["data"];
 
@@ -462,22 +462,22 @@ function set_default_dev_infos( $form )
  */
 function set_default_game_infos( $form )
 {
-	if (is_object($form)) // if $form comes from the database
-		$form = get_object_vars($form);
+    if (is_object($form)) // if $form comes from the database
+        $form = get_object_vars($form);
 
-	// first make sure that the databse fields exists (+ password2)
-	$db_fields = array("id", "type", "user_id", "name", "creation_date", "profile_privacy", "publication_date", "data");
+    // first make sure that the databse fields exists (+ password2)
+    $db_fields = array("id", "type", "user_id", "name", "creation_date", "profile_privacy", "publication_date", "data");
 
-	foreach ($db_fields as $field) {
-		if( ! isset($form[$field]))
-			$form[$field] = '';
-	}
+    foreach ($db_fields as $field) {
+        if( ! isset($form[$field]))
+            $form[$field] = '';
+    }
 
-	// then take care of data
-	if (is_string($form["data"]) && trim($form["data"]) == "")
-		$form["data"] = array();
-	elseif (is_string($form["data"]))
-		$form["data"] = json_decode( $form["data"], true );
+    // then take care of data
+    if (is_string($form["data"]) && trim($form["data"]) == "")
+        $form["data"] = array();
+    elseif (is_string($form["data"]))
+        $form["data"] = json_decode( $form["data"], true );
 
     $data = $form["data"];
 
@@ -509,6 +509,11 @@ function set_default_game_infos( $form )
 
     $form["data"] = $data;
     return $form;
+}
+
+
+function do_something($input) {
+    echo "do something + ".$input;
 }
 
 /* End of file main_helper.php */

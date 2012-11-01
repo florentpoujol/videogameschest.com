@@ -19,140 +19,144 @@ $lang["help_required_field"] = "Required field";
 
 
 
-// DEVELOPER FORM, page "adddeveloper"
+// DEVELOPER 
+    
+    // GENERIC DEVELOPER STRINGS
+
+    $lang['developer_name'] = "Name";
+    $lang["help_developer_name"] = "Company name, if applicable.";
+
+    $lang['developer_email'] = 'Email';
+    $lang['developer_pitch'] = 'Explain about the developer\'s phylosophy, goals...';
+    $lang['developer_logo'] = 'Logo URL';
+    $lang['developer_website'] = 'Website URL';
+
+    $lang['developer_blogfeed'] = 'Blog RSS/Atom feed';
+    $lang['developer_profile_blogfeed'] = "Lastest articles from the blog";
+
+    $lang['developer_country'] = 'Country';
+    $lang['developer_teamsize'] = 'Teamsize';
+
+    $lang['developer_socialnetworks'] = 'Social networks';
+    $lang['developer_socialnetworks_url_placeholder'] = 'Full profile URL';
+
+    $lang['developer_technologies'] = "Technologies";
+    $lang['help_developer_technologies'] = 'The technologies the developer works with';
+
+    $lang['developer_operatingsystems'] = "Operating systems";
+    $lang['help_developer_operatingsystems'] = 'The operating systems the developer\'s games run on (not applicable for most consoles)';
+
+    $lang['developer_devices'] = "Devices";
+    $lang['help_developer_devices'] = 'The devices the developer\'s games are playable on';
+
+    $lang['developer_stores'] = "Stores";
+    $lang['help_developer_stores'] = 'The stores the developer sells their games on';
 
 
-$lang['adddeveloper_form_legend'] = 'Create a developer profile';
+    // ADD DEVELOPER SPECIFIC TERMS
 
-$lang['adddeveloper_required_field'] = 'The developer\'s name and email are required fields.';
+    $lang['adddeveloper_legend'] = 'Create a developer profile';
 
-$lang['developer_name'] = "Name";
-$lang["help_developer_name"] = "Company name, if applicable.";
+    $lang['adddeveloper_required_field'] = 'The developer\'s name and email are required fields.';
+    $lang['adddeveloper_submit'] = 'Create this developer profile';
 
-$lang['developer_email'] = 'Email';
-$lang['developer_pitch'] = 'Explain about the developer\'s phylosophy, goals...';
-$lang['developer_logo'] = 'Logo URL';
-$lang['developer_website'] = 'Website URL';
-
-$lang['developer_blogfeed'] = 'Blog RSS/Atom feed';
-$lang['developer_profile_blogfeed'] = "Lastest articles from the blog";
-
-$lang['developer_country'] = 'Country';
-$lang['developer_teamsize'] = 'Teamsize';
-
-$lang['developer_socialnetworks'] = 'Social networks';
-$lang['developer_socialnetworks_url_placeholder'] = 'Full profile URL';
-
-$lang['developer_technologies'] = "Technologies";
-$lang['help_developer_technologies'] = 'The technologies the developer works with';
-
-$lang['developer_operatingsystems'] = "Operating systems";
-$lang['help_developer_operatingsystems'] = 'The operating systems the developer\'s games run on (not applicable for most consoles) : ';
-
-$lang['developer_devices'] = "Devices";
-$lang['help_developer_devices'] = 'The devices the developer\'s games are playable on : ';
-
-$lang['developer_stores'] = "Stores";
-$lang['help_developer_stores'] = 'The stores the developer sells their games on : ';
+    $lang['adddeveloper_success'] = 'Thanks you, the developer has successfully been added, an email will be send to let them now. \n 
+    They must first check the data then make their account public before you can add one of their game.';
 
 
-$lang['adddeveloper_submit'] = 'Create this developer profile';
+    // DEVELOPER PROFILE SPECIFIC TERMS
 
-$lang['adddeveloper_success'] = 'Thanks you, the developer has successfully been added, an email will be send to let them now. \n 
-They must first check the data then make their account public before you can add one of their game.';
-
-
-$lang['developer_profile_title'] = "Developer";
-$lang['developer_website_title'] = "Go to the developer's website";
-
-
-
-
-
-
-
-// GAME FORM (mostly page "addgame")
-
-
-$lang['addgame_form_title'] = 'Create a game profile';
-
-$lang['addgame_required_field'] = 'The developer\'s name and email are required fields.';
-
-$lang['addgame_name'] = 'Game title';
-$lang['addgame_developer'] = 'Developer';
-$lang['addgame_pitch'] = 'Game story, features...';
-
-$lang['addgame_developementstates_legend'] = "Developement state";
-$lang['addgame_developementstates_concept'] = "Concept/Design phase";
-$lang['addgame_developementstates_prototype'] = "Prototype phase";
-$lang['addgame_developementstates_earlyproduction'] = "Early production";
-$lang['addgame_developementstates_internalplayablebuilt'] = "Internal playable built";
-$lang['addgame_developementstates_publicplayablebuilt'] = "Public playable built";
-$lang['addgame_developementstates_released'] = "Released";
-$lang['addgame_developementstates_canceled'] = "Canceled";
-
-$lang['addgame_logo'] = 'Logo URL';
-$lang['addgame_website'] = 'Website URL';
-$lang['addgame_blogfeed'] = 'Blog RSS/Atom feed';
-$lang['addgame_publishername'] = 'Publisher name';
-$lang['addgame_publisherurl'] = "Publisher's website url";
-$lang['addgame_soundtrack'] = 'Soundtrack URL';
-$lang['addgame_price'] = 'Price';
-$lang["help_addgame_price"] = "This is a text field, write whatever is appropriate.";
-$lang['addgame_releasedate'] = 'Release date';
-
-$lang['addgame_country'] = 'Country';
-$lang['addgame_socialnetworks'] = 'Social networks profiles : ';
-$lang['addgame_languages'] = 'The languages the game is playable in : ';
-$lang['addgame_stores'] = 'The stores the game is purchable from : ';
-$lang['addgame_technologies'] = 'The technologies the game is made with : ';
-$lang['addgame_operatingsystems'] = 'The operating systems the game runs on (not applicable for most console games) : ';
-$lang['addgame_devices'] = 'The devices the game is playable on : ';
-$lang['addgame_nbplayers'] = 'How many players can play the game at the same time :';
-$lang['addgame_themes'] = 'Theme :';
-$lang['addgame_genres'] = 'Genre : ';
-$lang['addgame_tags'] = 'Tags : ';
-$lang['addgame_viewpoints'] = 'The player\'s point of vue : ';
-
-$lang['addgame_screenshots'] = 'Screenshots : ';
-$lang['addgame_screenshots_name'] = 'Title';
-$lang['addgame_screenshots_url'] = 'URL';
-$lang['addgame_videos'] = 'Video and trailers : ';
-$lang['addgame_videos_name'] = 'Title';
-$lang['addgame_videos_url'] = 'URL';
-
-$lang['addgame_submit'] = 'Create this game profile';
-
-$lang['addgame_form_success'] = 'Thanks you, the game has successfully been added. The developers must first check the data then make the profile public before he shows up in the search.';
+    $lang['developer_profile_title'] = "Developer";
+    $lang['developer_website_title'] = "Go to the developer's website";
 
 
 
 
-// GAME PROFILE (page "game")
+// GAME 
 
-$lang['game_page_title'] = "Game";
-$lang['game_website_title'] = "Go to the game's website";
-$lang['game_blogfeed'] = "Lastest articles from the blog";
+    // GENERIC GAME STRINGS
 
-$lang['game_socialnetworks'] = "Social networks";
-$lang['game_technologies'] = "Technologies";
-$lang['game_operatingsystems'] = "Operating systems";
-$lang['game_devices'] = "Devices";
-$lang['game_stores'] = "Stores";
-$lang['game_genres'] = "Genres";
-$lang['game_themes'] = "Themes";
-$lang['game_viewpoints'] = "Point of view";
-$lang['game_nbplayers'] = "Number of players";
-$lang['game_tags'] = "Tags";
-$lang['game_screenshots'] = "Screenshots";
-$lang['game_videos'] = "Videos";
+    $lang['game_name'] = 'Game title';
+    $lang['game_developer'] = 'Developer';
+    $lang['game_pitch'] = 'Game story, features...';
+
+    $lang['game_developementstates_legend'] = "Developement state";
+    $lang['game_developementstates_concept'] = "Concept/Design phase";
+    $lang['game_developementstates_prototype'] = "Prototype phase";
+    $lang['game_developementstates_earlyproduction'] = "Early production";
+    $lang['game_developementstates_internalplayablebuilt'] = "Internal playable built";
+    $lang['game_developementstates_publicplayablebuilt'] = "Public playable built";
+    $lang['game_developementstates_released'] = "Released";
+    $lang['game_developementstates_canceled'] = "Canceled";
+
+    $lang['game_logo'] = 'Logo URL';
+    $lang['game_website'] = 'Website URL';
+    $lang['game_blogfeed'] = 'Blog RSS/Atom feed';
+    $lang['game_publishername'] = 'Publisher name';
+    $lang['game_publisherurl'] = "Publisher's website url";
+    $lang['game_soundtrack'] = 'Soundtrack URL';
+
+    $lang['game_price'] = 'Price';
+    $lang["help_game_price"] = "This is a text field, write whatever is appropriate.";
+
+    $lang['game_releasedate'] = 'Release date';
+    $lang['game_country'] = 'Country';
+
+    $lang['game_socialnetworks'] = "Social networks";
+    $lang['game_socialnetworks_placeholder_url'] = 'Full profile URL';
+
+    $lang["game_languages"] = "Languages";
+    $lang['help_game_languages'] = 'The languages the game is playable in';
+
+    $lang['game_stores'] = "Stores";
+    $lang['help_game_stores'] = 'The stores the game is purchable from';
+
+    $lang['game_technologies'] = "Technologies";
+    $lang['help_game_technologies'] = 'The technologies the game is made with';
+
+    $lang['game_operatingsystems'] = "Operating systems";
+    $lang['help_game_operatingsystems'] = 'The operating systems the game runs on (not applicable for most console games)';
+
+    $lang['game_devices'] = "Devices";
+    $lang['help_game_devices'] = 'The devices the game is playable on';
+
+    $lang['game_nbplayers'] = "Number of players";
+    $lang['help_game_nbplayers'] = 'How many players can play the game at the same time :';
+
+    $lang['game_themes'] = "Themes";
+    $lang['help_game_themes'] = ' ';
+
+    $lang['game_genres'] = "Genres";
+    $lang['help_game_genres'] = ' ';
+
+    $lang['game_tags'] = "Tags";
+    $lang['help_game_tags'] = ' ';
+
+    $lang['game_viewpoints'] = "Point of view";
+    $lang['help_game_viewpoints'] = ' ';
+
+    $lang['game_screenshots'] = "Screenshots";
+    $lang['game_screenshots_name'] = 'Title';
+    $lang['game_screenshots_url'] = 'URL';
+    $lang['game_videos'] = 'Video and trailers';
+    $lang['game_videos_name'] = 'Title';
+    $lang['game_videos_url'] = 'URL';
 
 
+    // ADD GAME SPECIFIC TERMS
 
-// SEARCH (page "search")
+    $lang['addgame_title'] = 'Create a game profile';
+    $lang['addgame_submit'] = 'Create this game profile';
+
+    $lang['addgame_success'] = 'Thanks you, the game has successfully been added. The developers must first check the data then make the profile public before he shows up in the search.';
 
 
+    // GAME PROFILE SPECIFIC TERMS
 
+    $lang['game_profile_title'] = "Game";
+    $lang['game_website_title'] = "Go to the game's website";
+
+    $lang['game_blogfeed'] = "Lastest articles from the blog";
 
 
 
@@ -303,7 +307,7 @@ $lang['nbplayers_mmo'] = "MMO (Massively Multiplayer Online)";
 // DEVELOPEMENT STATES
 
 $lang['developementstates_concept'] = "Concept/Design phase";
-$lang['developementstates_prototype'] =	"Prototype phase";
+$lang['developementstates_prototype'] = "Prototype phase";
 $lang['developementstates_earlyproduction'] = "Early production";
 $lang['developementstates_firstgameplay'] = "First gameplay";
 $lang['developementstates_publicplayablebuilt'] = "Public playable built";
@@ -376,8 +380,8 @@ $lang["report_title"] = "Report this profile";
 $lang["report_description"] = "Description";
 $lang["report_description_placeholder"] = "10 characters minimum";
 $lang["report_recipient"] = "Report recipient";
-$lang["report_developer"] = "Developer/Admin";
-$lang["report_admin"] = "Admin Only";
+$lang["report_developer"] = "Developer and Admins";
+$lang["report_admin"] = "Admins only";
 $lang["report_submit"] = "Submit this report";
 $lang["report_gobacktoprofile"] = "Go back to the profile";
 $lang["report_form_success"] = "Thanks, you. The report has been saved.";

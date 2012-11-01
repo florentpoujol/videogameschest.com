@@ -3,7 +3,7 @@
 class Admin extends MY_Controller
 {
     public function __construct()
-	{
+    {
         parent::__construct();
 
         $method = $this->router->fetch_method();
@@ -40,7 +40,7 @@ class Admin extends MY_Controller
      * The login screen
      */
     public function login()
-	{
+    {
         // redirect if alredy logged in
         if (IS_LOGGED_IN) {
             redirect("admin");
@@ -97,7 +97,7 @@ class Admin extends MY_Controller
      * Disconnect the user
      */
     public function logout()
-	{
+    {
         $this->session->sess_destroy();
         redirect("admin/login");
     }
@@ -109,7 +109,7 @@ class Admin extends MY_Controller
      * Page to add a user account
      */
     public function adduser()
-	{
+    {
         if ( ! IS_LOGGED_IN) {
             redirect("admin/login");
         }
@@ -167,7 +167,7 @@ class Admin extends MY_Controller
      * Page to edit an admin account
      */
     public function edituser($user_id = null)
-	{
+    {
         if ( ! IS_LOGGED_IN) {
             redirect("admin/login");
         }
@@ -251,7 +251,7 @@ class Admin extends MY_Controller
      * Main hub with no content but the admin menu
      */
     public function adddeveloper()
-	{
+    {
         if (post("developer_form_submitted")) {
             $form = post("form");
 
@@ -276,11 +276,10 @@ class Admin extends MY_Controller
             // save data if all is OK
             if ($this->form_validation->run()) {
                 $id = $this->developer_model->insert($form);
-                
-                if (post("from_adddeveloper_page")) {
-                    $form = array("success" => lang("adddeveloper_form_success"));
-                    $this->session->set_flashdata( "adddeveloper_form", json_encode($form) );
+                set_form_success(lang("adddeveloper_success"));
 
+                if (post("from_adddeveloper_page")) {
+                    $this->session->set_flashdata("adddeveloper_form", json_encode($form));
                     redirect("adddeveloper");
                 }
                 else {
@@ -288,10 +287,10 @@ class Admin extends MY_Controller
                 }
             }
             else { // error
+                // errors from the form_validation class are automaticaly handled by get_form_errors()
                 unset($form["password"]);
 
                 if (post("from_adddeveloper_page")) {
-                    $form["errors"] = validation_errors(); // get errors from the form_validation class
                     $this->session->set_flashdata("adddeveloper_form", json_encode($form));
                     redirect("adddeveloper");
                 }
@@ -300,7 +299,7 @@ class Admin extends MY_Controller
                 }
             }
         } 
-        elseif (IS_ADMIN) {
+        elseif (IS_LOGGED_IN) {
             $this->layout->view("forms/developer_form")->load();
         } 
         else {
@@ -316,7 +315,7 @@ class Admin extends MY_Controller
      * @param int $profile_id The profile id of the developer to edit
      */
     public function editdeveloper($profile_id = null)
-	{
+    {
         if ( ! IS_LOGGED_IN) {
             redirect("admin/login");
         }
@@ -392,7 +391,7 @@ class Admin extends MY_Controller
      * Page to add a game
      */
     public function addgame()
-	{
+    {
         if (post("game_form_submitted")) {
             $form = post("form");
 
@@ -430,8 +429,8 @@ class Admin extends MY_Controller
                 }
             }
         }
-        elseif (IS_ADMIN) {
-            $this->layout->view( "forms/game_form" )->load();
+        elseif (IS_LOGGED_IN) {
+            $this->layout->view("forms/game_form")->load();
         }
         else {
             redirect("addgame");
@@ -446,7 +445,7 @@ class Admin extends MY_Controller
      * @param int $id The id of the game to edit
      */
     public function editgame($id = null)
-	{
+    {
         if ( ! IS_LOGGED_IN) {
             redirect("admin/login");
         }
@@ -531,7 +530,7 @@ class Admin extends MY_Controller
      * Page to set the current language
      */ 
     public function setlanguage( $infos = null )
-	{
+    {
         $infos = explode(":", $infos);
         $lang = $infos[0];
         $url = index_page();
@@ -556,7 +555,7 @@ class Admin extends MY_Controller
      * Handle creating, deleting, and reading private messages
      */
     public function messages()
-	{
+    {
         if ( ! IS_LOGGED_IN) {
             redirect("admin/login");
         }
@@ -618,7 +617,7 @@ class Admin extends MY_Controller
      * ie : "developer:5" "game:10"
      */
     public function reports( $infos = null )
-	{
+    {
         if (post("new_report_form_submitted")) {
             $report_form = post("report_form");
             $this->form_validation->set_rules("report_form[description]", 'Report description', "trim|required|min_length[10]");

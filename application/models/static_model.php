@@ -7,7 +7,8 @@ class Static_model extends CI_Model {
 
     private $files = array("site", "form");
 
-    function __construct() {
+    function __construct()
+    {
         parent::__construct();
 
         $files_path = APPPATH . "/static_data/json/";
@@ -17,13 +18,15 @@ class Static_model extends CI_Model {
             // DO NOT USE base_url() !!
             // file_exists will return false, even if the file is accessible
          
-            if ( ! file_exists($file_path))
+            if ( ! file_exists($file_path)) {
                 die("No file exists at path : $file_path");
+            }
             
             $string_data = file_get_contents($file_path);
 
-            if ($string_data == false) // $string_data may be false because read_file() failed, otherwise it is a string
+            if ($string_data == false) { // $string_data may be false because read_file() failed, otherwise it is a string
                 die("[$file_path] could not be read !");
+            }
 
             $this->data[$file_name] = json_decode($string_data);
         }
@@ -38,18 +41,22 @@ class Static_model extends CI_Model {
      * @param  string $key The data key (the name of the file the data was in)
      * @return mixed       The data (json object or null)
      */
-    public function __get( $key ) {
-        if (isset($this->data[$key]))
+    public function __get( $key )
+    {
+        if (isset($this->data[$key])) {
             return $this->data[$key];
-        else
+        } else {
             return null;
+        }
     }
 
-    public function get( $key ) {
-        if (isset($this->data[$key]))
+    public function get($key)
+    {
+        if (isset($this->data[$key])) {
             return $this->data[$key];
-        else
+        } else {
             return null;
+        }
     }
 }
 

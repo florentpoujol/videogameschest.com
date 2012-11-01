@@ -3,7 +3,7 @@
 				<?php echo form_open("admin/login", array("class"=>"form-horizontal")); ?> 
 					<legend><?php echo lang("menu_login"); ?></legend>
 
-                    <?php echo get_form_errors(); ?> 
+					<?php echo get_form_errors(); ?> 
 
 					<div class="control-group">
 						<label class="control-label" for="name">User name, email, or id</label>
@@ -18,5 +18,5 @@
 					<input type="submit" name="admin_login_form_submitted" value="Log in" class="btn btn-primary">
 					<input type="submit" name="admin_login_form_lostpassword" value="I lost my password" >
 				</form>
-                </div> 
-                <!-- /#admin_login -->
+			</div> 
+			<!-- /#admin_login -->
