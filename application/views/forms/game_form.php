@@ -15,7 +15,7 @@ if (CONTROLLER == "addgame") {
     $method = "addgame";
 }
 ?>
-            <?php echo form_open("admin/$method", array("class"=>"form-horizontal")); ?> 
+            {{ form_open("admin/$method", array("class"=>"form-horizontal")) }} 
 <?php
 
 // form legend
@@ -24,18 +24,18 @@ if (METHOD == "addgame" || CONTROLLER == "addgame" ) {
     $legend = lang("addgame_title");
 }
 ?>
-                <legend><?php echo $legend; ?></legend>
+                <legend>{{ legend }}</legend>
 
                 <!-- display form errors and success -->
-                <?php echo get_form_errors($form); ?> 
-                <?php echo get_form_success($form); ?> 
+                {{ get_form_errors($form) }} 
+                {{ get_form_success($form) }} 
                 <!-- / -->
 
 <?php
 // profile id
 if (METHOD == "editgame"): ?>
-                Game profile id : <?php echo $form["id"]; ?> 
-                <input type="hidden" name="form[id]" value="<?php echo $form["id"]; ?>"> <br> 
+                Game profile id : {{ form.id }} 
+                <input type="hidden" name="form[id]" value="{{ form.id }}"> <br> 
 <?php 
 endif;
 
@@ -48,27 +48,25 @@ $input = array(
     "required"=>"required",
 );
 ?>
-                <?php echo form_input_extended($input); ?> 
+                {{ form_input_extended($input) }} 
 
-<?php
-// developer select
-// show the select form to anyone but the logged in developer
-if (IS_DEVELOPER): ?>
+{#// developer select// show the select form to anyone but the logged in developer #}
+{% if IS_DEVELOPER %}
                 <div class="control-group">
-                    <label class="control-label" for="developer"><?php echo lang("game_developer"); ?></label>
+                    <label class="control-label" for="developer">{{ lang("game_developer") }}</label>
                     <span class="controls">You are the developer of this game.</span> <br>
-                    <input type="hidden" name="form[user_id]" value="<?php echo USER_ID; ?>">
+                    <input type="hidden" name="form[user_id]" value="{{ USER_ID }}">
                 </div>
-<?php else: // user is not logged in or an admin ?>
+{% else %} {# // user is not logged in or an admin #}
                 <div class="control-group">
-                    <label class="control-label" for="developer"><?php echo lang("game_developer"); ?></label>
-                    <?php echo form_dropdown('form[user_id]', get_users_array("dev"), $form["user_id"], 'id="developer" class="controls" required="required"'); ?> 
-                    <span class="help-inline"><span class="label label-important"><?php echo lang("help_required_field"); ?></span></span>
+                    <label class="control-label" for="developer">{{ lang("game_developer") }}</label>
+                    {{ form_dropdown('form[user_id]', get_users_array("dev"), $form["user_id"], 'id="developer" class="controls" required="required"') }}
+                    <span class="help-inline"><span class="label label-important">{{ lang("help_required_field") }}</span></span>
                 </div>
-<?php endif; ?>
+{% endif %}
                 
                 <div class="control-group">
-                    <label class="control-label" for="developementstate"><?php echo lang("game_developementstates_legend"); ?></label>
+                    <label class="control-label" for="developementstate">{{ lang("game_developementstates_legend") }}</label>
 <?php
 // state of developement
 $dev_states = array();
@@ -77,12 +75,12 @@ foreach ($form_data->developmentstates as $state_key) {
     $dev_states[$state_key] = lang("developementstates_$state_key");
 }
 ?>
-                    <?php echo form_dropdown('form[data][developmentstate]', $dev_states, $form["data"]["developmentstate"], 'id="developmentstate" class="controls"'); ?> 
+                    {{ form_dropdown('form[data][developmentstate]', $dev_states, $form["data"]["developmentstate"], 'id="developmentstate" class="controls"') }}
                 </div>
 
                 <div class="control-group">
-                    <label class="control-label" for="pitch"><?php echo lang("game_pitch"); ?></label> <br>
-                    <textarea class="controls" name="form[data][pitch]" id="pitch" placeholder="<?php echo lang("game_pitch"); ?>" rows="7" cols="50"><?php echo $form["data"]["pitch"]; ?></textarea>
+                    <label class="control-label" for="pitch">{{ lang("game_pitch") }}</label> <br>
+                    <textarea class="controls" name="form[data][pitch]" id="pitch" placeholder="{{ lang("game_pitch") }}" rows="7" cols="50">{{ form.data.pitch }}</textarea>
                 </div>
 <?php
 // string fields
@@ -90,7 +88,7 @@ $inputs = array("logo"=>"url", "website"=>"url", "blogfeed"=>"url", "publisherna
  "publisherurl"=>"url", "soundtrack"=>"url",
  "price"=>"text", "releasedate"=>"date");
 
-foreach( $inputs as $name => $type ):
+foreach ($inputs as $name => $type):
     $input_data = array(
         "type"=>$type,
         "name"=>'form[data]['.$name.']',
@@ -103,10 +101,8 @@ foreach( $inputs as $name => $type ):
         $input_data["help"] = lang("help_game_price");
 ?>
                 
-                <?php echo form_input_extended($input_data); ?> 
-<?php
-endforeach;
-?>
+                {{ form_input_extended($input_data) }} 
+{% endfor %}
 
 <hr>
 <?php
@@ -118,7 +114,7 @@ foreach ($namestext_urls_arrays as $item):
 ?>
                 
                 <div class="control-group">
-                    <label class="control-label"><?php echo lang("game_".$item); ?></label>
+                    <label class="control-label">{{ lang("game_".$item) }}</label>
                     <div class="controls form-inline">
                         
 <?php
@@ -135,7 +131,7 @@ foreach ($namestext_urls_arrays as $item):
             "placeholder"=>lang("game_".$item."_url")
         );
 ?>
-                        <?php echo form_label(lang("game_".$item."_name"), $item."_names_".$array_id); ?> <?php echo form_input($input_data); ?>
+                        {{ form_label(lang("game_".$item."_name"), $item."_names_".$array_id) }} {{ form_input($input_data) }} 
 <?php
         // the url field
         $input_data = array(
@@ -147,7 +143,7 @@ foreach ($namestext_urls_arrays as $item):
             "placeholder"=>lang("game_".$item."_url")
         );
 ?>
-                        <?php echo form_label(lang("game_".$item."_url"), $item."_urls_".$array_id); ?> <?php echo form_input($input_data); ?> <br>
+                        {{ form_label(lang("game_".$item."_url"), $item."_urls_".$array_id) }} {{ form_input($input_data) }} <br>
 <?php
     endforeach;
 
@@ -160,7 +156,7 @@ foreach ($namestext_urls_arrays as $item):
             "placeholder"=>lang("game_".$item."_name")
         );
 ?>
-                        <?php echo form_label(lang("game_".$item."_name"), $item."_names_".$i); ?> <?php echo form_input($input_data); ?> 
+                        {{ form_label(lang("game_".$item."_name"), $item."_names_".$i) }} {{ form_input($input_data) }} 
 <?php
 
         // the url field
@@ -172,11 +168,11 @@ foreach ($namestext_urls_arrays as $item):
             "placeholder"=>lang("game_".$item."_url")
         );
 ?>
-                        <?php echo form_label(lang("game_".$item."_url"), $item."_urls_".$i); ?> <?php echo form_input($input_data); ?> <br>
+                        {{ form_label(lang("game_".$item."_url"), $item."_urls_".$i) }} {{ form_input($input_data) }} <br>
 <?php endfor; ?>
                     </div>
                 </div>
-                <!-- /.form-control <?php echo $iem; ?> -->
+                <!-- /.form-control {{ iem }} -->
 
 <?php
 endforeach; // end foreach $namestext_urls_arrays 
@@ -189,7 +185,7 @@ foreach ($namesdropdown_urls_arrays as $array):
 ?>
                 
                 <div class="control-group">
-                    <label class="control-label"><?php echo lang("game_".$array); ?></label>
+                    <label class="control-label">{{ lang("game_".$array) }}</label>
                     <div class="controls form-inline">
 <?php
     foreach ($form["data"][$array]["names"] as $array_id => $site_key):
@@ -197,20 +193,20 @@ foreach ($namesdropdown_urls_arrays as $array):
             continue;
         }
 ?>
-                        <?php echo form_dropdown( 'form[data]['.$array.'][names]['.$array_id.']', get_array_lang($form_data->$array, $array."_"), $site_key, 'id="'.$array."_site_".$array_id.'"' ); ?> 
-                        <?php echo '<input type="url" name="form[data]['.$array.'][urls]['.$array_id.']" id="'.$array."_url_".$array_id.'" placeholder="'.lang("game_socialnetworks_placeholder_url").'" value="'.$form["data"][$array]["urls"][$array_id].'"> <br>'; ?> 
+                        {{ form_dropdown( 'form[data]['.$array.'][names]['.$array_id.']', get_array_lang($form_data->$array, $array."_"), $site_key, 'id="'.$array."_site_".$array_id.'"' ) }}
+                        <input type="url" name="form[data][{{ array }}][urls][{{ array_id }}]" id="<?php echo $array."_url_".$array_id; ?>" placeholder="{{ lang("game_socialnetworks_placeholder_url") }}" value="{{ form.data.$array.urls.$array_id }}"> <br> 
 <?php
     endforeach;
 
     $count = count($form["data"][$array]["names"]);
     for ($i = $count; $i < $count+4; $i++):
 ?>
-                        <?php echo form_dropdown( 'form[data]['.$array.'][names][]', get_array_lang($form_data->$array, $array."_"), null, 'id="'.$array."_site_".$i.'"' ); ?> 
-                        <?php echo '<input type="url" name="form[data]['.$array.'][urls][]" id="'.$array."_url_".$i.'" placeholder="'.lang("game_socialnetworks_placeholder_url").'" value=""><br>'; ?> 
+                        {{ form_dropdown( 'form[data]['.$array.'][names][]', get_array_lang($form_data->$array, $array."_"), null, 'id="'.$array."_site_".$i.'"' ) }} 
+                        <input type="url" name="form[data][{{ array }}][urls][]" id="<?php echo $array."_url_".$i; ?>" placeholder="{{ lang("game_socialnetworks_placeholder_url") }}" value=""><br>
 <?php endfor; ?>
                      </div>
                 </div>
-                <!-- /.control-group <?php echo $array; ?> -->
+                <!-- /.control-group {{ array }} -->
 <?php 
 endforeach; 
 
@@ -224,31 +220,31 @@ foreach( $array_keys as $key ):
         $size = 10;
 ?>
                 <div class="control-group">
-                    <?php echo '<label class="control-label" for="'.$key.'">'.lang("game_".$key).'</label>'; ?> 
-                    <?php echo form_multiselect('form[data]['.$key.'][]', get_array_lang($form_data->$key, $key."_"), $form["data"][$key], 'id="'.$key.'" size="'.$size.'" class="controls"' ); ?> 
-                    <span class="help-inline"><?php echo lang("help_game_".$key); ?></span>
+                    <label class="control-label" for="{{ $key }}">{{ lang("game_".$key) }}</label>
+                    {{ form_multiselect('form[data]['.$key.'][]', get_array_lang($form_data->$key, $key."_"), $form["data"][$key], 'id="'.$key.'" size="'.$size.'" class="controls"' ) }} 
+                    <span class="help-inline">{{ lang("help_game_".$key) }}</span>
                 </div>
-                <!-- /.control-group <?php echo $key; ?> -->
+                <!-- /.control-group {{ key }} -->
 
-<?php endforeach; ?>
+{% endfor %}
 
                 <br>
                 <br>
-<?php if (CONTROLLER == "addgame" ): ?>
+            {% if CONTROLLER == "addgame" %}
                 <input type="hidden" name="from_addgame_page">
-<?php endif;
+            {% endif %}
+<?php 
 
 $submit_value = 'Edit this game profile';
 if (CONTROLLER == "addgame" || METHOD == "addgame" )
     $submit_value = lang("addgame_submit");
 ?>
         
-                <input type="submit" class="btn btn-primary" name="game_form_submitted" value="<?php echo $submit_value; ?>">
-<?php
-if (METHOD == "editgame" && $form["profile_privacy"] == "private" ):
-?>
+                <input type="submit" class="btn btn-primary" name="game_form_submitted" value="{{ submit_value }}">
+
+            {% if METHOD == "editgame" and $form["profile_privacy"] == "private" %}
                 <input type="submit" name="send_game_in_review" value="Send this game profile in peer review">
-<?php endif; ?>
+            {% endif %}
             </form>
         </section>
         <!-- /#game_form -->

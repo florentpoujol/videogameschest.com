@@ -16,7 +16,7 @@ if (CONTROLLER == "adddeveloper") {
     $method = "adddeveloper";
 }
 ?>
-                <?php echo form_open("admin/".$method, array("class"=>"form-horizontal")); ?> 
+                {{ form_open("admin/".$method, array("class"=>"form-horizontal")) }} 
 <?php
 // page title
 $legend = 'Edit your developer profile';
@@ -27,17 +27,17 @@ elseif (METHOD == "editdeveloper") {
     $legend = 'Edit a developper profile';
 }
 ?>
-                    <legend><?php echo $legend; ?></legend>
+                    <legend>{{ legend }}</legend>
 
                     <!-- display form errors and success -->
-                    <?php echo get_form_errors(); ?> 
-                    <?php echo get_form_success(); ?> 
+                    {{ get_form_errors() }} 
+                    {{ get_form_success() }} 
                     <!-- / -->
 <?php
 // profile id
 if (METHOD == "editdeveloper"): ?>
-                    Developer profile id : <?php echo $form["id"]; ?>
-                    <input type="hidden" name="form[id]" value="<?php echo $form["id"]; ?>"> <br>           
+                    Developer profile id : {{ form.id }}
+                    <input type="hidden" name="form[id]" value="{{ form.id }}"> <br>           
 <?php 
 endif;
 
@@ -50,7 +50,7 @@ $input = array(
     "required"=>"required"
 );
 ?>
-                    <?php echo form_input_extended($input); ?> 
+                    {{ form_input_extended($input) }} 
 <?php
 if (CONTROLLER == "adddeveloper"):
     //email
@@ -63,7 +63,7 @@ if (CONTROLLER == "adddeveloper"):
         "required"=>"required",
     );
 ?>
-                    <?php echo form_input_extended($input); ?> 
+                    {{ form_input_extended($input) }} 
 <?php
 endif;
 
@@ -72,7 +72,7 @@ if (IS_ADMIN && METHOD == "editdeveloper"): // an empty dev prodile is always cr
 ?>
                     <div class="control-group">
                         <label class="control-label" for="user_id">User</label> 
-                        <?php echo form_dropdown("form[user_id]", get_users_array("dev"), $form["user_id"], 'id="user_id" class="controls"'); ?> 
+                        {{ form_dropdown("form[user_id]", get_users_array("dev"), $form["user_id"], 'id="user_id" class="controls"') }} 
                     </div>
 <?php
 endif;
@@ -81,7 +81,7 @@ endif;
 if (METHOD == "editdeveloper"):
     if ($form["privacy"] == "private"): ?>
                     <input type="checkbox" name="form[privacy]" id="is_public" value="public"> <label for="is_public">Make your profile public</label> <br>
-    <?php else: ?>
+    {% else %}
                 <br>
                     Your profile is public <br>
     <?php endif; // end if privacy public 
@@ -89,8 +89,8 @@ endif;
 ?>
 
                     <div class="control-group">
-                        <label class="control-label" for="pitch"><?php echo lang("developer_pitch"); ?></label>
-                        <textarea class="controls" name="form[data][pitch]" id="pitch" placeholder="<?php echo lang("developer_pitch"); ?>" rows="7" cols="30"><?php echo $form["data"]["pitch"]; ?></textarea>
+                        <label class="control-label" for="pitch">{{ lang("developer_pitch") }}</label>
+                        <textarea class="controls" name="form[data][pitch]" id="pitch" placeholder="{{ lang("developer_pitch") }}" rows="7" cols="30">{{ form.data.pitch }}</textarea>
                     </div>
 
 <?php
@@ -106,7 +106,7 @@ foreach ($inputs as $name => $type):
         "value"=>$form["data"][$name]   
     );
 ?>
-                    <?php echo form_input_extended($input_data); ?> 
+                    {{ form_input_extended($input_data) }} 
 <?php
 endforeach;
 
@@ -119,21 +119,21 @@ $input_data = array(
     "value"=> ($form["data"]["teamsize"] == '' ? 1 : $form["data"]["teamsize"])
 );
 ?>
-                    <?php echo form_input_extended($input_data); ?> 
+                    {{ form_input_extended($input_data) }} 
 <?php
 
 // country
 ?>
                     <div class="control-group">
-                        <label class="control-label" for="country"><?php echo lang("developer_country"); ?></label>
-                        <?php echo form_dropdown( "form[data][country]", get_array_lang($form_data->countries, "countries_"), $form["data"]["country"], 'id="country" class="controls"' ); ?> 
+                        <label class="control-label" for="country">{{ lang("developer_country") }}</label>
+                        {{ form_dropdown( "form[data][country]", get_array_lang($form_data->countries, "countries_"), $form["data"]["country"], 'id="country" class="controls"' ) }} 
                     </div>
 <?php
 // social networks
 ?>
                     
                     <div class="control-group">
-                        <label class="control-label" for="socialnetworks"><?php echo lang("developer_socialnetworks"); ?></label>
+                        <label class="control-label" for="socialnetworks">{{ lang("developer_socialnetworks") }}</label>
                         <div class="controls">
 <?php
 
@@ -141,16 +141,16 @@ foreach ($form["data"]["socialnetworks"]["names"] as $array_id => $site_id):
     if ($form["data"]["socialnetworks"]["urls"][$array_id] == '') // that's the 3 "new" fields, it happens when $form comes from the form itself
         continue;
 ?>
-                            <?php echo form_dropdown("form[data][socialnetworks][names][".$array_id."]", get_array_lang($form_data->socialnetworks, "socialnetworks_"), $site_id, 'id="socialnetwork_site_'.$array_id.'"' ); ?> 
-                            <?php echo '<input type="url" name="form[data][socialnetworks][urls]['.$array_id.']" id="socialnetworks_url_'.$array_id.'" value="'.$form["data"]["socialnetworks"]["urls"][$array_id].'"> '; ?> 
+                            {{ form_dropdown("form[data][socialnetworks][names][".$array_id."]", get_array_lang($form_data->socialnetworks, "socialnetworks_"), $site_id, 'id="socialnetwork_site_'.$array_id.'"' ) }} 
+                            <input type="url" name="form[data][socialnetworks][urls][{{ array_id }}]" id="socialnetworks_url_{{ array_id }}" value="{{ form.data.socialnetworks.urls.$array_id }}">
 <?php
 endforeach;
 
 $count = count( $form["data"]["socialnetworks"]["names"] );
 for ($i = $count; $i < $count+4; $i++):
 ?>
-                            <?php echo form_dropdown( "form[data][socialnetworks][names][]", get_array_lang($form_data->socialnetworks, "socialnetworks_"), null, 'id="socialnetworks_site_'.$i.'"' ); ?> 
-                            <input type="url" name="form[data][socialnetworks][urls][]" id="socialnetworks_url_<?php echo $i; ?>" placeholder="<?php echo lang("developer_socialnetworks_url_placeholder"); ?>"> <br> 
+                            {{ form_dropdown( "form[data][socialnetworks][names][]", get_array_lang($form_data->socialnetworks, "socialnetworks_"), null, 'id="socialnetworks_site_'.$i.'"' ) }} 
+                            <input type="url" name="form[data][socialnetworks][urls][]" id="socialnetworks_url_{{ i }}" placeholder="{{ lang("developer_socialnetworks_url_placeholder") }}"> <br> 
 <?php endfor; ?>
                         </div>
                     </div>
@@ -166,9 +166,9 @@ foreach ($multiselect_form_items as $key):
     }
 ?>
                     <div class="control-group">
-                        <label class="control-label" for="<?php echo $key; ?>"><?php echo lang("developer_".$key); ?></label>
-                        <?php echo form_multiselect( "form[data][".$key."][]", get_array_lang($form_data->$key, $key."_"), $form["data"][$key], 'id="'.$key.'" class="controls" size="'.$size.'"' ); ?> 
-                        <span class="help-inline"><?php echo lang("help_developer_".$key); ?></span>
+                        <label class="control-label" for="{{ key }}">{{ lang("developer_".$key) }}</label>
+                        {{ form_multiselect( "form[data][".$key."][]", get_array_lang($form_data->$key, $key."_"), $form["data"][$key], 'id="'.$key.'" class="controls" size="'.$size.'"' ) }} 
+                        <span class="help-inline">{{ lang("help_developer_".$key) }}</span>
                     </div>
 
 <?php
@@ -184,10 +184,10 @@ if (CONTROLLER == "adddeveloper" || METHOD == "adddeveloper")
 
 if (CONTROLLER == "adddeveloper"): ?>
                <input type="hidden" name="from_adddeveloper_page">
-<?php endif; ?>
+{% endif %}
                     <br>
                     <br>
-                    <input type="submit" class="btn btn-primary" name="developer_form_submitted" value="<?php echo $submit_value; ?>">
+                    <input type="submit" class="btn btn-primary" name="developer_form_submitted" value="{{ submit_value }}">
                 </form>
             </section> 
             <!-- /#developer_form -->

@@ -1,8 +1,8 @@
 		<div id="select_game_to_edit_form">
-			<?php echo form_open("admin/editgame", array("class"=>"form-horizontal")); ?> 
+			{{ form_open("admin/editgame", array("class"=>"form-horizontal")) }} 
 				<legend>Select the game to edit</legend>
 
-				<?php echo get_form_errors(); ?> 
+				{{ get_form_errors() }} 
 
 <?php
 if (IS_ADMIN) // allow to edit any games
@@ -18,7 +18,7 @@ if ($raw_games !== false) {
 ?>
 				<div class="control-group">
 					<label class="control-label" for="game_id_select">Select the game</label> 
-					<?php echo form_dropdown("game_id_select", $games, null, 'id="game_id_select" class="controls"'); ?> 
+					{{ form_dropdown("game_id_select", $games, null, 'id="game_id_select" class="controls"') }} 
 				</div>
 				<div class="control-group">
 					<label class="control-label" for="game_id_text">Or write its id</label>

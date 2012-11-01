@@ -1,9 +1,9 @@
 
 			<div id="admin_login">
-				<?php echo form_open("admin/login", array("class"=>"form-horizontal")); ?> 
-					<legend><?php echo lang("menu_login"); ?></legend>
+				{{ form_open("admin/login", array("class"=>"form-horizontal")) }} 
+					<legend>{{ lang("menu_login") }}</legend>
 
-					<?php echo get_form_errors(); ?> 
+					{{ get_form_errors() }} 
 
 					<div class="control-group">
 						<label class="control-label" for="name">User name, email, or id</label>

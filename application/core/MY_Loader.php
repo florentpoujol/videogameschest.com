@@ -163,7 +163,7 @@ class MY_Loader extends CI_Loader
 		$var_array = "$name($ws\.$ws\\$?$name)+";
 
 		// '[a-zA-Z_]{1}[a-zA-Z0-9_\.\$]*';
-		$var_object =  "$name($ws\>$ws\\$?$name)+";
+		$var_object =  "$name($ws\.\.$ws\\$?$name)+";
 		// '[a-zA-Z_]{1}[a-zA-Z0-9_\>\$]*';
 		$variable_name = '[a-zA-Z_]{1}[a-zA-Z0-9_\[\]\.$\'"\(\)\>-]*';
 
@@ -180,7 +180,7 @@ class MY_Loader extends CI_Loader
 
 			'comments' 	=> array(
 				'pattern' 		=> '\{#.*#\}',
-				'replacement' 	=> ''
+				'replacement' 	=> '',
 			),
 
 
@@ -291,7 +291,7 @@ class MY_Loader extends CI_Loader
 				if (isset($matches[1])) 
 				{
 					$exp = $matches[1];
-					$exp = str_replace('>', '->', $exp);
+					$exp = str_replace('..', '->', $exp);
 					$replacement = "<?php echo \\$$exp; ?>";
 				}
 			}
@@ -303,6 +303,7 @@ class MY_Loader extends CI_Loader
 				if (isset($matches[1])) 
 				{
 					$exp = $matches[1];
+					$exp = preg_replace("#\.\$($name)#", "[$1]", $exp);
 					$exp = preg_replace("#\.($name)#", "['$1']", $exp);
 					$replacement = "<?php echo \\$$exp; ?>";
 				}

@@ -5,32 +5,32 @@
 <?php
 $url = site_url("feed/newmessages/".USER_ID."/".userdata("profile_key"));
 ?>
-				Here is your <a href="<?php echo $url; ?>" title="Messages RSS feed">messages RSS feed</a>.
+				Here is your <a href="{{ url }}" title="Messages RSS feed">messages RSS feed</a>.
 			</p>
 <?php
-if(!isset($form))
+if ( ! isset($form))
 	$form = "";
 ?>
-			<?php echo get_form_errors($form);
-			echo get_form_success($form); ?>
+			{{ get_form_errors() }}
+			{{ get_form_success() }}
 
 			<fieldset>
 				<legend>Write a message</legend>
 
-				<?php echo form_open( 'admin/messages' ); ?>
+				{{ form_open( 'admin/messages' ) }}
 
 					<label for="write_message">Message text</label> <br>
 					<textarea name="form[message]" id="write_message" placeholder="10 characters min" cols="30" rows="7"></textarea>
 					<br>
 					<label for="recipient">Recipient : </label> 
-<?php if (IS_ADMIN):?>
-					<input type="hidden" name="form[administrator_id]" value="<?php echo USER_ID;?>">
-					<?php echo form_dropdown( 'form[developer_id]', get_users_array("dev"), null, 'id="recipient"' ); ?> 
-<?php else: ?>
+{% if IS_ADMIN %}
+					<input type="hidden" name="form[administrator_id]" value="{{ USER_ID }}">
+					{{ form_dropdown( 'form[developer_id]', get_users_array("dev"), null, 'id="recipient"' ) }} 
+{% else %}
 					<input type="hidden" name="form[sent_by_developer]" value="1">
-					<input type="hidden" name="form[developer_id]" value="<?php echo USER_ID;?>">
-					<?php echo form_dropdown( 'form[administrator_id]', get_users_array("admin"), null, 'id="recipient"' ); ?> 
-<?php endif; ?>
+					<input type="hidden" name="form[developer_id]" value="{{ USER_ID }}">
+					{{ form_dropdown( 'form[administrator_id]', get_users_array("admin"), null, 'id="recipient"' ) }} 
+{% endif %}
 					<br>
 					<input type="submit" name="write_message_form_submitted" value="Send this message">
 				</form>
@@ -52,7 +52,7 @@ if (LANGUAGE == "english")
 
 if ($messages["inbox"]->num_rows() > 0): 
 ?>
-				<?php echo form_open( 'admin/messages' ); ?> 
+				{{ form_open('admin/messages') }} 
 					<table>
 						<tr>
 							<th>Sender name</th>
@@ -63,19 +63,19 @@ if ($messages["inbox"]->num_rows() > 0):
 <?php
 	foreach ($messages["inbox"]->result() as $msg):
 ?>
-						<?php echo '<tr>
-							<td>'.$msg->name.'</td>
-							<td>'.date_create($msg->date)->format($format).'</td>
-							<td>'.$msg->message.'</td>
-							<td><input type="checkbox" name="delete[]" value="'.$msg->id.'"></td>
-						</tr>'; ?> 
-<?php endforeach; ?>
+						<tr>
+							<td>{{ msg..name }}</td>
+							<td>{{{ date_create($msg->date)->format($format) }}}</td>
+							<td>{{ msg..message }}</td>
+							<td><input type="checkbox" name="delete[]" value="{{ msg..id }}"></td>
+						</tr> 
+{% endfor %}
 					</table>
 					<input type="submit" name="delete_inbox_form_submitted" value="Delete the selected messages">
 				</form>
-<?php else: ?>
+{% else %}
 				Your inbox is empty.
-<?php endif; ?>
+{% endif %}
 			</fieldset>
 
 			<br>
@@ -83,10 +83,8 @@ if ($messages["inbox"]->num_rows() > 0):
 			<fieldset>
 				<legend>Outbox</legend>
 
-<?php
-if ($messages["outbox"]->num_rows() > 0): 
-?>
-				<?php echo form_open( 'admin/messages' ); ?>
+			<?php if ($messages["outbox"]->num_rows() > 0): ?>
+				{{ form_open('admin/messages') }}
 					<table>
 						<tr>
 							<th>Recipient name</th>
@@ -94,21 +92,19 @@ if ($messages["outbox"]->num_rows() > 0):
 							<th>Message text</th>
 							<th>Delete ?</th>
 						</tr>
-<?php
-	foreach ($messages["outbox"]->result() as $msg):
-?>
-						<?php echo '<tr>
-							<td>'.$msg->name.'</td>
-							<td>'.date_create($msg->date)->format($format).'</td>
-							<td>'.$msg->message.'</td>
-							<td><input type="checkbox" name="delete[]" value="'.$msg->id.'"></td>
-						</tr>'; ?> 
-<?php endforeach; ?>
+					<?php foreach ($messages["outbox"]->result() as $msg): ?>
+						<tr>
+							<td>{{ msg..name }}</td>
+							<td>{{{ date_create($msg->date)->format($format) }}}</td>
+							<td>{{ msg..message }}</td>
+							<td><input type="checkbox" name="delete[]" value="{{ msg..id }}"></td>
+						</tr> 
+					{% endfor %}
 					</table>
 					<input type="submit" name="delete_inbox_form_submitted" value="Delete the selected messages">
 				</form>
-<?php else: ?>
+			{% else %}
 				Your outbox is empty.
-<?php endif; ?>
+			{% endif %}
 			</fieldset>		
 		</section> <!-- /#message_form -->
