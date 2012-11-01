@@ -159,6 +159,7 @@ class MY_Loader extends CI_Loader
 		$ows = '(?:\s+)'; // obligatory ws
 
 		$name = '[a-zA-Z_]{1}[a-zA-Z0-9_]*';
+		$const_name = '[A-Z_]{1}[A-Z0-9_]*'
 		$var_array = "$name($ws\.$ws\\$?$name)+";
 
 		// '[a-zA-Z_]{1}[a-zA-Z0-9_\.\$]*';
@@ -194,10 +195,14 @@ class MY_Loader extends CI_Loader
 				'pattern'		=> "\{\{$ws($var_array)$ws\}\}",
 			),
 
+			'const'	=> array(
+				'pattern'		=> "\{\{$ws($const_name)$ws\}\}",
+				'replacement'	=> "<?php echo $1; ?>",	
+			),
+
 			'variables'	=> array(
 				'pattern'		=> "\{\{$ws($name)$ws\}\}",
 				'replacement'	=> "<?php echo \$$1; ?>",
-				
 			),
 
 			'setvariable' => array(
@@ -274,9 +279,9 @@ class MY_Loader extends CI_Loader
 		}
 		
 		
-		$file = fopen('test_template.php', 'a+');
-		fwrite( $file, $script);
-		fclose($file);
+		// $file = fopen('test_template.php', 'a+');
+		// fwrite( $file, $script);
+		// fclose($file);
 
 		return $script;
 	}
