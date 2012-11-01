@@ -159,7 +159,7 @@ class MY_Loader extends CI_Loader
 		$ows = '(?:\s+)'; // obligatory ws
 
 		$name = '[a-zA-Z_]{1}[a-zA-Z0-9_]*';
-		$const_name = '[A-Z_]{1}[A-Z0-9_]*'
+		$const_name = '[A-Z_]{1}[A-Z0-9_]*';
 		$var_array = "$name($ws\.$ws\\$?$name)+";
 
 		// '[a-zA-Z_]{1}[a-zA-Z0-9_\.\$]*';
@@ -169,10 +169,15 @@ class MY_Loader extends CI_Loader
 
 		$default = array(
 			'delimiter' 	=> '/',
-			'options' 		=> 'i',
+			'options' 		=> 'iU',
 		);
 
 		$tags = array(
+			'php_tags' 	=> array(
+				'pattern' 		=> '\{\{\{(.*)\}\}\}',
+				'replacement' 	=> '<?php $1 ?>'
+			),
+
 			'comments' 	=> array(
 				'pattern' 		=> '\{#.*#\}',
 				'replacement' 	=> ''
@@ -182,13 +187,14 @@ class MY_Loader extends CI_Loader
 			// FUCNTIONS
 			'functions'	=> array(
 				'pattern'		=> "\{\{$ws($name$ws\(.*\))$ws\}\}",
-				'replacement'	=> "<?php $1; ?>"
+				'replacement'	=> "<?php echo $1; ?>"
 			),
 
 
 			// VARIABLES
 			'variables_object'	=> array(
 				'pattern'		=> "\{\{$ws($var_object)$ws\}\}",
+
 			),
 
 			'variables_array'	=> array(
@@ -197,7 +203,8 @@ class MY_Loader extends CI_Loader
 
 			'const'	=> array(
 				'pattern'		=> "\{\{$ws($const_name)$ws\}\}",
-				'replacement'	=> "<?php echo $1; ?>",	
+				'replacement'	=> "<?php echo $1; ?>",
+				'options'		=> '' // make case-sensitive
 			),
 
 			'variables'	=> array(
@@ -229,6 +236,32 @@ class MY_Loader extends CI_Loader
 
 
 			// IF ELSE
+
+			'if_const' => array(
+				'pattern'		=> "\{%(?:$ws)(if|elseif)$ws($const_name)$ws%\}",
+				'replacement'	=> '<?php $1 ($2): ?>'
+			),
+
+			'if_name' => array(
+				'pattern'		=> "\{%(?:$ws)(if|elseif)$ws($name)$ws%\}",
+				'replacement'	=> '<?php $1 ($2): ?>'
+			),
+
+			'if' => array(
+				'pattern'		=> "\{%(?:$ws)(if|elseif)(.+)%\}",
+			),
+
+			'if_isset' => array(
+				'pattern'		=> "\{%(?:$ws)(if|elseif)$ws($name)$ows(is)$ows(defined)$ws%\}",
+				'replacement'	=> '<?php $1 (isset($2)): ?>'
+			),
+
+
+			'else' => array(
+				'pattern'		=> "\{%(?:$ws)else$ws%\}",
+				'replacement'	=> '<?php else: ?>'
+			),
+
 			'endif' => array(
 				'pattern'		=> "\{%(?:$ws)endif$ws%\}",
 				'replacement'	=> '<?php endif; ?>'
@@ -262,6 +295,7 @@ class MY_Loader extends CI_Loader
 					$replacement = "<?php echo \\$$exp; ?>";
 				}
 			}
+
 			elseif ($tag_name == "variables_array")
 			{
 				preg_match($pattern, $script, $matches);
@@ -271,6 +305,22 @@ class MY_Loader extends CI_Loader
 					$exp = $matches[1];
 					$exp = preg_replace("#\.($name)#", "['$1']", $exp);
 					$replacement = "<?php echo \\$$exp; ?>";
+				}
+			}
+
+			elseif ($tag_name == "if")
+			{
+				preg_match($pattern, $script, $matches);
+				
+				if (isset($matches[2])) 
+				{
+					$exp = $matches[2];
+					$exp = str_replace(' is ', ' == ', $exp);
+					$exp = str_replace(' is not', ' != ', $exp);
+					$exp = str_replace(' or ', ' || ', $exp);
+					$exp = str_replace(' and ', ' || ', $exp);
+
+					$replacement = "<?php $1 ($exp): ?>";
 				}
 			}
 			
