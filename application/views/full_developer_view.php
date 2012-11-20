@@ -31,30 +31,31 @@ $site_data = get_static_data('site');
 				<div id="profile_socialnetworks">
 					{{ lang('developer_socialnetworks') }} : 
 					
-					<?php
+<?php
 					$count = count($db_dev["data"]['socialnetworks']['names']);
 
-					for( $i = 0; $i < $count; $i++ ) : ?>
+					for( $i = 0; $i < $count; $i++ ) :
+?>
 					<a href="{{ db_dev.data.socialnetworks.urls.$i }}">{{ lang("socialnetworks_".$db_dev["data"]['socialnetworks']['names'][$i]) }}</a>
 					<?php endfor; ?> 
 				</div>
 
-				<?php 
+<?php 
 				$categories = array('technologies', 'operatingsystems', 'devices', 'stores');
 
 				foreach( $categories as $category ):
 					if( count( $db_dev["data"][$category] ) == 0 )
 						continue;
-				?> 
+?>
 				<div id="profile_{{ category }}">
 					{{ lang('developer_'.$category) }} : 
 					
-					<?php
+<?php
 					$text = '';
 					foreach( $db_dev["data"][$category] as $item ) {
 						$text .= lang($category."_$item")." ,";
 					}
-					?> 
+?>
 					{{ rtrim($text, ', ') }}
 				</div>
 				{% endfor %} 
