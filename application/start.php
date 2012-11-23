@@ -171,3 +171,9 @@ if ( ! Request::cli() and Config::get('session.driver') !== '')
 {
 	Session::load();
 }
+
+
+/* below this point the file has been edited for VideoGamesChest.com */
+include_once('helpers/helpers.php');
+
+

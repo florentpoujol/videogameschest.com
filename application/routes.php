@@ -32,6 +32,7 @@
 |
 */
 
+
 Route::get('/', function()
 {
 	return Redirect::to_route('home');
@@ -44,44 +45,70 @@ Route::get('home', array('as' => 'home', 'do' => function()
 }));
 
 
+Route::get('/adddeveloper', array('as' => 'adddeveloper', function()
+{
+	return "Add developer page";
+}));
+
+Route::get('/addgame', array('as' => 'addgame', function()
+{
+	return "Add game page";
+}));
+
+
+Route::get('/developer/(:any)', array('as' => 'developer', function()
+{
+	return "Developer page";
+}));
+
+Route::get('/game/(:any)', array('as' => 'game', function()
+{
+	return "Game page";
+}));
+
+
 // controller
 // Route:controller('controlerName');
 
 // custom route to a controller method :
 // Route::get('customroute', 'controlerName@methodName');
 
+// nammed route with controller
+// Route::get('the route', array('as' => 'thenameoftheroute', 'uses' => 'controlerName@methodName'));
 
 
-/*Route::get('/admin', function()
+// ADMIN routes :
+
+Route::get('admin/login', array('as' => 'admin_login', 'uses' => 'admin@login'));
+
+
+// protected routes
+Route::group(array('before' => 'auth'), function()
 {
-	return "Admin page";
+	Route::get('admin', array('as' => 'admin_home', 'uses' => 'admin@index'));
+
+	
+	Route::get('admin/logout', array('as' => 'admin_logout', 'uses' => 'admin@logout'));
+
+	Route::get('admin/addduser', array('as' => 'admin_adduser', 'uses' => 'admin@adduser'));
+	Route::get('admin/edituser', array('as' => 'admin_edituser', 'uses' => 'admin@edituser'));
+
+	Route::get('admin/adddeveloper', array('as' => 'admin_adddeveloper', 'uses' => 'admin@adddeveloper'));
+	Route::get('admin/editdeveloper', array('as' => 'admin_editdeveloper', 'uses' => 'admin@editdeveloper'));
+
+	Route::get('admin/addgame', array('as' => 'admin_addgame', 'uses' => 'admin@addgame'));
+	Route::get('admin/editgame', array('as' => 'admin_editgame', 'uses' => 'admin@editgame'));
+
+	Route::get('admin/gamequeue', array('as' => 'admin_gamequeue', 'uses' => 'admin@gamequeue'));
+	Route::get('admin/messages', array('as' => 'admin_messages', 'uses' => 'admin@messages'));
+	Route::get('admin/reports', array('as' => 'admin_reports', 'uses' => 'admin@reports'));
 });
 
-Route::filter('pattern: admin/*', 'auth');*/
-Route::controller('admin');
 
 
-
-
-Route::get('/adddeveloper', function()
+Route::group(array('before' => 'csrf'), function()
 {
-	return "Add developer page";
-});
-
-Route::get('/addgame', function()
-{
-	return "Add game page";
-});
-
-
-Route::get('/developer/(:any)', function()
-{
-	return "Developer page";
-});
-
-Route::get('/game/(:any)', function()
-{
-	return "Game page";
+	Route::post('admin/login', array('as' => 'post_login', 'uses' => 'admin@login'));
 });
 
 
@@ -141,6 +168,34 @@ Event::listen('500', function()
 Route::filter('before', function()
 {
 	// Do stuff before every request to your application...
+	$lang = Session::get('language', 'en');
+    define("LANGUAGE", $lang);
+
+    // set some CONST
+
+    if (Auth::check()) { // user is logged in
+    	define('IS_LOGGED_IN', true);
+    	define("USER_ID", Auth::user()->id);
+
+    	if (Auth::user()->type == 'admin') {
+    		define('IS_ADMIN', true);
+    		define('IS_DEVELOPER', false);
+    	}
+    	else {
+    		define('IS_ADMIN', false);
+    		define('IS_DEVELOPER', true);
+    	}
+    }
+    else {
+    	define('IS_LOGGED_IN', false);
+		define('USER_ID', 0);
+		define('IS_ADMIN', false);
+		define('IS_DEVELOPER', false);
+    }
+
+
+
+
 });
 
 Route::filter('after', function($response)
@@ -155,5 +210,5 @@ Route::filter('csrf', function()
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::to_route('login');
+	if (Auth::guest()) return Redirect::to_route('admin_login');
 });

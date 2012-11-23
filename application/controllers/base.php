@@ -14,4 +14,27 @@ class Base_Controller extends Controller {
 		return Response::error('404');
 	}
 
+
+	//----------------------------------------------------------------------------------
+
+	public $layout = 'layout.main';
+
+
+	//----------------------------------------------------------------------------------
+
+	/**
+	 * Set some constant
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+
+
+
+        // echo Request::uri();
+        // echo '<br>';
+        // echo Request::method();
+        //define("CONTROLLER", $this->router->fetch_class());
+        //define("METHOD", $this->router->fetch_method());
+	}
 }

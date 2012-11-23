@@ -1,12 +1,12 @@
 @layout('layout.main')
 
 @section('page_title')
-Home
+Admin Home
 @endsection
 
 @section('page_content')
-<h1>Home</h1>
+<h1>Admin Home</h1>
 
-<p>This is the Home page</p>
+<p>This is the Admin Home page</p>
 
 @endsection
