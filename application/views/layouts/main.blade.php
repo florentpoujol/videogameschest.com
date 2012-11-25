@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE }}"> 
     <head>
-        <title>@yield('page_title') | VideoGamesChest.com</title>
+        <title>{{ $page_title }} | VideoGamesChest.com</title>
 
         <!-- Meta --> 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -21,7 +21,7 @@
                     <!-- Menu -->
                 <?php $menu_items = array('home'); ?>
                 @foreach ($menu_items as $menu_item)
-                    <li><a href="{{ route($menu_item) }}">{{ __('vgc.menu_'.$menu_item) }}</a></li>
+                    <li><a href="{{ route('get_'.$menu_item) }}">{{ __('vgc.menu_'.$menu_item) }}</a></li>
                 @endforeach
 
                 @if (IS_LOGGED_IN)
@@ -32,28 +32,39 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ route('admin_home') }}">Admin home</a></li>
-                            <li><a href="{{ route('admin_edituser') }}">Edit user</a></li>
-                            <li><a href="{{ route('admin_addgame') }}">Add a game</a></li>
-                            <li><a href="{{ route('admin_editgame') }}">Edit a game</a></li>
-                            <li><a href="{{ route('admin_gamequeue') }}">Game queue</a></li>
-                            <li><a href="{{ route('admin_reports') }}">Reports</a></li>
-                            <li><a href="{{ route('admin_messages') }}">Messages</a></li>
-                        @if (IS_ADMIN) 
-                            <li><a href="{{ route('admin_adduser') }}">Create user</a></li>
-                            <li><a href="{{ route('admin_adddeveloper') }}">Add a developer</a></li>
-                            <li><a href="{{ route('admin_editdeveloper') }}">Edit a developer</a></li>
-                        @elseif (IS_DEVELOPER)
-                            <li><a href="{{ route('admin_editdeveloper', array(USER_ID)) }}">Edit your dev profile</a></li>
-                        @endif 
+                            <li><a href="{{ route('get_home') }}">Admin home</a></li>
+
                             <li class="divider"></li>
-                            <li><a href="{{ route('admin_logout') }}">{{ __('vgc.menu_logout') }}</a></li>
+                        @if (IS_ADMIN)
+                            <li><a href="{{ route('get_adduser') }}">Add a user</a></li>
+                        @endif
+                            <li><a href="{{ route('get_edituser') }}">Edit your user account</a></li>
+
+                            <li class="divider"></li>
+                        @if (IS_ADMIN) 
+                            <li><a href="{{ route('get_adddeveloper') }}">Add a developer</a></li>
+                            <li><a href="{{ route('get_editdeveloper') }}">Edit a developer</a></li>
+                        @elseif (IS_DEVELOPER)
+                            <li><a href="{{ route('get_editdeveloper', array(USER_ID)) }}">Edit your developer profile</a></li>
+                        @endif 
+
+                            <li class="divider"></li>
+                            <li><a href="{{ route('get_addgame') }}">Add a game</a></li>
+                            <li><a href="{{ route('get_editgame') }}">Edit a game</a></li>
+
+                            <li class="divider"></li>
+                            <li><a href="{{ route('get_gamequeue') }}">Game queue</a></li>
+                            <li><a href="{{ route('get_reports') }}">Reports</a></li>
+                            
+                        
+                            <li class="divider"></li>
+                            <li><a href="{{ route('get_logout') }}">{{ __('vgc.menu_logout') }}</a></li>
                         </ul>
                     </li>
                     
                     <!-- /Admin menu -->
                 @else
-                    <li><a href="{{ route('admin_login') }}"><i class="icon-user"></i>{{ __('vgc.menu_login') }}</a></li>
+                    <li><a href="{{ route('get_admin_login') }}"><i class="icon-user"></i>{{ __('vgc.menu_login') }}</a></li>
                 @endif
                     <!-- /menu --> 
                 </ul>
@@ -65,7 +76,7 @@
         <!-- /header .container .navbar .nav-inner -->
 
         <div class="container" id="page_content">
-            @yield('page_content')
+            {{ $page_content }}
         </div>
         <!-- /#page_content .container -->
 

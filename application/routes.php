@@ -35,33 +35,33 @@
 
 Route::get('/', function()
 {
-	return Redirect::to_route('home');
+	return Redirect::to_route('get_home');
 });
 
 
-Route::get('home', array('as' => 'home', 'do' => function()
+Route::get('home', array('as' => 'get_home', 'do' => function()
 {
 	return View::make('home');
 }));
 
 
-Route::get('/adddeveloper', array('as' => 'adddeveloper', function()
+Route::get('/adddeveloper', array('as' => 'get_adddeveloper', function()
 {
 	return "Add developer page";
 }));
 
-Route::get('/addgame', array('as' => 'addgame', function()
+Route::get('/addgame', array('as' => 'get_addgame', function()
 {
 	return "Add game page";
 }));
 
 
-Route::get('/developer/(:any)', array('as' => 'developer', function()
+Route::get('/developer/(:any)', array('as' => 'get_developer', function()
 {
 	return "Developer page";
 }));
 
-Route::get('/game/(:any)', array('as' => 'game', function()
+Route::get('/game/(:any)', array('as' => 'get_game', function()
 {
 	return "Game page";
 }));
@@ -79,36 +79,66 @@ Route::get('/game/(:any)', array('as' => 'game', function()
 
 // ADMIN routes :
 
-Route::get('admin/login', array('as' => 'admin_login', 'uses' => 'admin@login'));
+Route::get('admin/login', array('as' => 'get_admin_login', 'uses' => 'admin@login'));
 
 
-// protected routes
+// must be logged in
 Route::group(array('before' => 'auth'), function()
 {
-	Route::get('admin', array('as' => 'admin_home', 'uses' => 'admin@index'));
+	Route::get('admin', array('as' => 'get_admin_home', 'uses' => 'admin@index'));
 
-	
-	Route::get('admin/logout', array('as' => 'admin_logout', 'uses' => 'admin@logout'));
+	Route::get('admin/logout', array('as' => 'get_logout', 'uses' => 'admin@logout'));
 
-	Route::get('admin/addduser', array('as' => 'admin_adduser', 'uses' => 'admin@adduser'));
-	Route::get('admin/edituser', array('as' => 'admin_edituser', 'uses' => 'admin@edituser'));
+	Route::get('admin/edituser/(:num?)', array('as' => 'get_edituser', 'uses' => 'admin@edituser'));
 
-	Route::get('admin/adddeveloper', array('as' => 'admin_adddeveloper', 'uses' => 'admin@adddeveloper'));
-	Route::get('admin/editdeveloper', array('as' => 'admin_editdeveloper', 'uses' => 'admin@editdeveloper'));
+	Route::get('admin/adddeveloper', array('as' => 'get_adddeveloper', 'uses' => 'admin@adddeveloper'));
+	Route::get('admin/editdeveloper/(:num?)', array('as' => 'get_editdeveloper', 'uses' => 'admin@editdeveloper'));
+	// I could also use
+	// Route::get('admin/(add|edit)developer', 'admin@(:1)developer');
 
-	Route::get('admin/addgame', array('as' => 'admin_addgame', 'uses' => 'admin@addgame'));
-	Route::get('admin/editgame', array('as' => 'admin_editgame', 'uses' => 'admin@editgame'));
+	Route::get('admin/addgame', array('as' => 'get_addgame', 'uses' => 'admin@addgame'));
+	Route::get('admin/editgame/(:num?)', array('as' => 'get_editgame', 'uses' => 'admin@editgame'));
 
-	Route::get('admin/gamequeue', array('as' => 'admin_gamequeue', 'uses' => 'admin@gamequeue'));
-	Route::get('admin/messages', array('as' => 'admin_messages', 'uses' => 'admin@messages'));
-	Route::get('admin/reports', array('as' => 'admin_reports', 'uses' => 'admin@reports'));
+	Route::get('admin/gamequeue', array('as' => 'get_gamequeue', 'uses' => 'admin@gamequeue'));
+
+	Route::get('admin/reports', array('as' => 'get_reports', 'uses' => 'admin@reports'));
 });
 
 
+// must be logged in + admin
+Route::group(array('before' => 'admin|auth'), function()
+{
+	Route::get('admin/adduser', array('as' => 'get_adduser', 'uses' => 'admin@adduser'));
+});
 
+
+// must be logged in + admin + logit post
+Route::group(array('before' => 'admin|auth|csrf'), function()
+{
+	Route::post('admin/adduser', array('as' => 'post_adduser', 'uses' => 'admin@adduser'));
+});
+
+
+// must be logged in + legit post
+Route::group(array('before' => 'auth|csrf'), function()
+{
+	Route::post('admin/edituser/(:num?)', array('as' => 'post_edituser', 'uses' => 'admin@edituser'));
+
+	Route::post('admin/editdeveloper/(:num?)', array('as' => 'post_editdeveloper', 'uses' => 'admin@editdeveloper'));
+
+	Route::post('admin/editgame/(:num?)', array('as' => 'post_editgame', 'uses' => 'admin@editgame'));
+
+	Route::post('admin/gamequeue', array('as' => 'post_gamequeue', 'uses' => 'admin@gamequeue'));
+});
+
+
+// must be legit post
 Route::group(array('before' => 'csrf'), function()
 {
 	Route::post('admin/login', array('as' => 'post_login', 'uses' => 'admin@login'));
+	Route::post('admin/adddeveloper', array('as' => 'post_adddeveloper', 'uses' => 'admin@adddeveloper'));
+	Route::post('admin/addgame', array('as' => 'post_addgame', 'uses' => 'admin@addgame'));
+	Route::post('admin/reports', array('as' => 'post_reports', 'uses' => 'admin@reports'));
 });
 
 
@@ -193,7 +223,25 @@ Route::filter('before', function()
 		define('IS_DEVELOPER', false);
     }
 
+    $route = Request::$route;
 
+    if ($route->controller != null) 
+    {
+    	define('CONTROLLER', $route->controller);
+    	define('METHOD', $route->controller_action);
+    }
+    else
+    {
+    	$uri = $route->uri;
+    	$segments = preg_split('#/#', $route->uri);
+    	
+    	define('CONTROLLER', $segments[0]);
+    	
+    	if ( ! isset($segments[1]))
+    		$segments[1] = 'index';
+
+    	define('METHOD', $segments[1]);
+    }
 
 
 });
@@ -205,10 +253,33 @@ Route::filter('after', function($response)
 
 Route::filter('csrf', function()
 {
-	if (Request::forged()) return Response::error('500');
+	if (Request::forged()) {
+		return Response::error('500');
+	}
 });
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::to_route('admin_login');
+	if (Auth::guest()) 
+	{
+		Form::set_error("You must be logged in to access this page !");
+		return Redirect::to_route('get_admin_login');
+	} 
+});
+
+Route::filter('admin', function()
+{
+	if ( ! Auth::guest()) 
+	{
+		if (Auth::user()->type != 'admin') 
+		{
+			Form::set_error("You must be an administrator to access this page !");
+			return Redirect::to_route('get_admin_home');
+		}
+	}
+	else 
+	{
+		Form::set_error("You must be a logged in administrator to access this page !");
+		return Redirect::to_route('get_admin_login');
+	}
 });

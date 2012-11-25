@@ -1,4 +1,4 @@
-@layout('layout.main')
+@layout('layouts.main')
 
 @section('page_title')
 Home
@@ -9,4 +9,6 @@ Home
 
 <p>This is the Home page</p>
 
+{{ CONTROLLER }}
+{{ METHOD }}
 @endsection

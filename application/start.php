@@ -174,6 +174,6 @@ if ( ! Request::cli() and Config::get('session.driver') !== '')
 
 
 /* below this point the file has been edited for VideoGamesChest.com */
-include_once('helpers/helpers.php');
-
+include_once('helpers.php');
+include_once('macros.php');
 

@@ -17,24 +17,38 @@ class Base_Controller extends Controller {
 
 	//----------------------------------------------------------------------------------
 
-	public $layout = 'layout.main';
-
+	public $layout = 'layouts.main';
+	public $restful = true;
 
 	//----------------------------------------------------------------------------------
 
 	/**
 	 * Set some constant
 	 */
-	public function __construct()
-	{
-		parent::__construct();
+	public function __construct() 
+    {
+        parent::__construct();
 
+        /*$title = Str::title(METHOD).' - '.Str::title(CONTROLLER);
+        if (METHOD == 'index')
+        	$title = Str::title(CONTROLLER);*/
+        $title = '';
+        switch (METHOD)
+        {
+        	case 'index': $title = Str::title(CONTROLLER);
+        	break;
 
+        	case 'adduser': $title = 'Add a user account';
+        	break;
+        	case 'edituser': $title = 'Edit your user account';
+        	break;
 
-        // echo Request::uri();
-        // echo '<br>';
-        // echo Request::method();
-        //define("CONTROLLER", $this->router->fetch_class());
-        //define("METHOD", $this->router->fetch_method());
-	}
+        	default: $title = Str::title(METHOD);
+        }
+
+    	$this->layout
+    	->with('page_content', '')
+    	->with('page_title', $title)
+    	;
+    }
 }
