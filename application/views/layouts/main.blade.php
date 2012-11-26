@@ -1,3 +1,10 @@
+<?php
+if ( ! isset($page_title))
+    $page_title = CONTROLLER;
+
+if ( ! isset($page_content))
+    $page_content = '';
+?>
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE }}"> 
     <head>
@@ -9,8 +16,8 @@
         <!-- /Meta -->
 
         <!-- CSS -->        
-        {{ HTML::style("css/bootstrap.min.css") }}
-        {{ HTML::style("css/bootstrap-responsive.min.css") }}
+        {{ Asset::container('bootstrapper')->styles(); }}
+
         <link rel="stylesheet/less" type="text/css" media="screen" href="{{ asset("css/main.less") }}" >
         <!-- /CSS -->
     </head>
@@ -83,7 +90,7 @@
         <!-- JavaScript -->
         <script src="http://lesscss.googlecode.com/files/less-1.3.0.min.js" type="text/javascript"></script>
         <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
-        {{ HTML::script('js/bootstrap.min.js') }}
+        {{ Asset::container('bootstrapper')->scripts(); }}
         <!-- /JavaScript -->
     </body>
 </html>

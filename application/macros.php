@@ -26,7 +26,7 @@ HTML::macro('get_messages', function($view_errors = null)
 {
     $msg = HTML::get_errors($view_errors);
     $msg .= HTML::get_success();
-    //$msg .= HTML::get_infos();
+    $msg .= HTML::get_infos();
 
     return $msg;
 });
@@ -168,6 +168,58 @@ HTML::macro('set_success', function($success)
 });
 
 
+
+//----------------------------------------------------------------------------------
+
+/**
+ * Wraper around validation_errors() of the Form_validation library
+ *  that allow to add my own errors mesages
+ * @return string The formated error messages
+ */
+HTML::macro('get_infos', function() 
+{
+    $json_success = Session::get('vgc_infos');
+    $html_success = "";
+
+    if ($json_success != "") 
+    {
+        $html_success .= '<div class="alert alert-info">
+        ';
+
+        $array_success = json_decode($json_success, true);
+        foreach ($array_success as $success) 
+        {
+            $html_success .= $success.' <br>
+            ';
+        }
+        
+        $html_success .= "</div>
+        ";
+    }
+
+    Session::forget('vgc_infos');
+
+    return $html_success;
+});
+
+
+
+/**
+ * Register a success message to be displayed the next time HTML::get_success() is called
+ */
+HTML::macro('set_info', function($success) 
+{
+    $session_success = Session::get('vgc_infos');
+    
+    if ($session_success != "") 
+    {
+        $session_success = json_decode($session_success, true);
+        $session_success[] = '"'.$success.'"';
+        Session::put("vgc_infos", json_encode($session_success));
+    }
+    else
+        Session::put("vgc_infos", '["'.$success.'"]');
+});
 //----------------------------------------------------------------------------------
 //    FORM
 //----------------------------------------------------------------------------------

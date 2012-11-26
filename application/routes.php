@@ -32,16 +32,18 @@
 |
 */
 
+View::name('layouts.main', 'layout');
+$layout = View::of('layout');
 
-Route::get('/', function()
+Route::get('/', function() use ($layout)
 {
-	return Redirect::to_route('get_home');
+	return $layout->nest('page_content', 'home');
 });
 
 
-Route::get('home', array('as' => 'get_home', 'do' => function()
+Route::get('home', array('as' => 'get_home', 'do' => function() use ($layout)
 {
-	return View::make('home');
+	return $layout->nest('page_content', 'home');
 }));
 
 
@@ -262,9 +264,9 @@ Route::filter('auth', function()
 {
 	if (Auth::guest()) 
 	{
-		Form::set_error("You must be logged in to access this page !");
+		HTML::set_error("You must be logged in to access this page !");
 		return Redirect::to_route('get_admin_login');
-	} 
+	}
 });
 
 Route::filter('admin', function()
@@ -273,13 +275,13 @@ Route::filter('admin', function()
 	{
 		if (Auth::user()->type != 'admin') 
 		{
-			Form::set_error("You must be an administrator to access this page !");
+			HTML::set_error("You must be an administrator to access this page !");
 			return Redirect::to_route('get_admin_home');
 		}
 	}
 	else 
 	{
-		Form::set_error("You must be a logged in administrator to access this page !");
+		HTML::set_error("You must be a logged in administrator to access this page !");
 		return Redirect::to_route('get_admin_login');
 	}
 });

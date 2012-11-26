@@ -21,7 +21,7 @@ class Admin_Controller extends Base_Controller
      */
     public function get_login() 
     {
-        $this->layout->nest('page_content', 'admin.login');
+        $this->layout->nest('page_content', 'admin.login_former');
     }
 
 	public function post_login() 
@@ -100,7 +100,7 @@ class Admin_Controller extends Base_Controller
             }
         }
         
-		$this->layout->nest('page_content', 'admin/login');
+		$this->layout->nest('page_content', 'admin/login_former');
 	}
 
 
