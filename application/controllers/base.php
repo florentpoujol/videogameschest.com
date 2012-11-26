@@ -40,7 +40,7 @@ class Base_Controller extends Controller {
 
         	case 'adduser': $title = 'Add a user account';
         	break;
-        	case 'edituser': $title = 'Edit your user account';
+        	case 'edituser': $title = 'Edit a user account';
         	break;
 
         	default: $title = Str::title(METHOD);

@@ -21,7 +21,7 @@ class Admin_Controller extends Base_Controller
      */
     public function get_login() 
     {
-        $this->layout->nest('page_content', 'admin.login_former');
+        $this->layout->nest('page_content', 'admin.login');
     }
 
 	public function post_login() 
@@ -29,7 +29,7 @@ class Admin_Controller extends Base_Controller
         if (Input::has('lostpassword'))
         {
             $validation = Validator::make(Input::all(), array("username" => "required"));
-            Input::flash(); // in case of errors
+            //Input::flash(); // in case of errors
             
             if ($validation->passes()) 
             {
@@ -55,7 +55,7 @@ class Admin_Controller extends Base_Controller
                 }
             } // end form is valid
             else {
-                HTML::set_error($validation->errors);
+                Former::withErrors($validation);
             }
         }
 
@@ -67,7 +67,7 @@ class Admin_Controller extends Base_Controller
             );
 
             $validation = Validator::make(Input::all(), $rules);
-            Input::flash(); // in case of errors
+            //Input::flash(); // in case of errors
               
             if ($validation->passes()) 
             {
@@ -96,11 +96,11 @@ class Admin_Controller extends Base_Controller
                 }
             } // end form is valid
             else {
-            	HTML::set_error($validation->errors);
+                Former::withErrors($validation);
             }
         }
         
-		$this->layout->nest('page_content', 'admin/login_former');
+		$this->layout->nest('page_content', 'admin/login');
 	}
 
 
@@ -121,13 +121,14 @@ class Admin_Controller extends Base_Controller
      */
     public function get_adduser()
     {
-        $this->layout->nest('page_content', 'admin/user');
+        $this->layout->nest('page_content', 'admin/adduser');
     }
 
     public function post_adduser()
     {
-        $form = Input::get("form");
-        
+        $input = Input::all();
+        unset($input['csrf_token']);
+
         // checking form
         $rules = array(
             'username' => 'required|min:5|unique:users',
@@ -136,21 +137,22 @@ class Admin_Controller extends Base_Controller
             'password_confirmation' => 'required|min:5',
             'type' => 'required|in:dev,admin'
         );
-        
-        $validation = Validator::make($form, $rules);
+
+        $validation = Validator::make($input, $rules);
         
         if ($validation->passes()) 
         {
-            $user = User::create($form);
+            $user = User::create($input);
             return Redirect::to_route('get_edituser', array($user->id));
         }
         else {
-            HTML::set_error($validation->errors);
+            // HTML::set_error($validation->errors);
+            Former::withErrors($validation);
             // just reload the form and let the form_validation class display the errors
             $form["password"] = "";
             $form["password_confirmation"] = "";
 
-            $this->layout->nest('page_content', 'admin/user', array('form' => $form));
+            $this->layout->nest('page_content', 'admin/adduser', array('form' => $form));
         }
     }
 
@@ -169,13 +171,15 @@ class Admin_Controller extends Base_Controller
             $user = User::find(USER_ID);
         }
         
-        $this->layout->nest('page_content', 'admin/user', array('form' => $user->attributes));
+        $this->layout->nest('page_content', 'admin/edituser', array('user'=>$user));
     }
 
     public function post_edituser()
     {
-        $form = Input::get('form');
-        $user = User::find($form['id']);
+        //$form = Input::get('form');
+        $input = Input::all();
+        unset($input['csrf_token']);
+        $user = User::find($input['id']);
         
         // checking form
         $rules = array(
@@ -191,6 +195,7 @@ class Admin_Controller extends Base_Controller
         
         if ($validation->passes()) 
         {
+            //@todo   : make sure the new username or email is unique
             // $rules = array();
             
             // $validation = Validator::make($form, $rules);
@@ -204,16 +209,16 @@ class Admin_Controller extends Base_Controller
                 User::update($form['id'], $form);
             }
         }
-        else {
-            HTML::set_error($validation->errors);
-            Input::flash('except', array('password', 'password_confirmation', 'oldpassword'));
-        }
+        /*else {
+            Former::withErrors($validation);
+            //Input::flash('except', array('password', 'password_confirmation', 'oldpassword'));
+        }*/
         
-        return Redirect::to_route('get_edituser', array($user->id));
+        return Redirect::to_route('get_edituser', array($user->id))->with_errors($validation);
 
-        $form["password"] = "";
+        /*$form["password"] = "";
         $form["password_confirmation"] = "";
         $form["oldpassword"] = "";
-        $this->layout->nest('page_content', 'admin/user', array("form"=>$form));
+        $this->layout->nest('page_content', 'admin/edituser', array("form"=>$form));*/
     }
 }

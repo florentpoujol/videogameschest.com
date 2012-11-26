@@ -83,6 +83,10 @@ if ( ! isset($page_content))
         <!-- /header .container .navbar .nav-inner -->
 
         <div class="container" id="page_content">
+            <div id="message-box">
+                {{ HTML::get_messages($errors) }}
+            </div>
+            
             {{ $page_content }}
         </div>
         <!-- /#page_content .container -->
