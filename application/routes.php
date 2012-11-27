@@ -81,7 +81,7 @@ Route::get('/game/(:any)', array('as' => 'get_game', function()
 
 // ADMIN routes :
 
-Route::get('admin/login', array('as' => 'get_admin_login', 'uses' => 'admin@login'));
+Route::get('admin/login', array('as' => 'get_login', 'uses' => 'admin@login'));
 
 
 // must be logged in
@@ -138,6 +138,7 @@ Route::group(array('before' => 'auth|csrf'), function()
 Route::group(array('before' => 'csrf'), function()
 {
 	Route::post('admin/login', array('as' => 'post_login', 'uses' => 'admin@login'));
+	Route::post('admin/lostpassword', array('as' => 'post_lostpassword', 'uses' => 'admin@lostpassword'));
 	Route::post('admin/adddeveloper', array('as' => 'post_adddeveloper', 'uses' => 'admin@adddeveloper'));
 	Route::post('admin/addgame', array('as' => 'post_addgame', 'uses' => 'admin@addgame'));
 	Route::post('admin/reports', array('as' => 'post_reports', 'uses' => 'admin@reports'));
@@ -265,7 +266,7 @@ Route::filter('auth', function()
 	if (Auth::guest()) 
 	{
 		HTML::set_error("You must be logged in to access this page !");
-		return Redirect::to_route('get_admin_login');
+		return Redirect::to_route('get_login');
 	}
 });
 
@@ -282,6 +283,6 @@ Route::filter('admin', function()
 	else 
 	{
 		HTML::set_error("You must be a logged in administrator to access this page !");
-		return Redirect::to_route('get_admin_login');
+		return Redirect::to_route('get_login');
 	}
 });

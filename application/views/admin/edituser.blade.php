@@ -8,17 +8,14 @@ $rules = array(
     'type' => 'required|in:dev,admin'
 );
 
-
-if (IS_ADMIN && isset($user_id)) {
-    $user = User::find($user_id);
-}
-else {
-    $user = User::find(USER_ID);
-}
-
+$user = User::find($user_id);
 Former::populate($user);
 
-var_dump($user);
+$old = Input::old();
+
+if ( ! empty($old)) {
+	Former::populate($old);
+}
 ?>
 
 <div id="user_form">
@@ -28,15 +25,13 @@ var_dump($user);
 
 		<p>Your "developer" user account is a different entity than your developer profile, while both are created at the same time, with the same name.</p>
 
-		{{ Former::text('clients')->useDatalist(array('test', 'test2', 'test3')) }}
-
-		{{ Former::date('created_at', 'Account creation date') }}
+		{{ Former::datetime('created_at', 'Account creation date') }}
 		
-		{{ Former::date('updated_at', 'Account last update') }}
+		{{ Former::datetime('updated_at', 'Account last update') }}
 
 		{{ Former::number('id', 'Account/User Id')->help("Keep in mind that it's not the same as your developer profile id.") }}
 
-		{{ Former::text('key')->help("It's a \"secret\" key used to retreive \"secret\" data as your message's RSS feed.") }}
+		{{ Former::xlarge_text('secret_key')->help("It's a \"secret\" key used to retreive \"secret\" data as your message's RSS feed.") }}
 
 		@if (IS_ADMIN)
 		{{ Former::text('type', 'Account type')->help('"dev" or "admin"') }}
@@ -52,7 +47,7 @@ var_dump($user);
 
 		{{ Former::password('old_password')->help('In order to update your password, enter your old password here.') }}
 
-		<input type="submit" value="Submit">
+		<input type="submit" value="Edit this user" class="btn btn-primary">
 	</form>
 </div>
 <!-- /#user_form --> 

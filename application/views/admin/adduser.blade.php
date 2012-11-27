@@ -13,7 +13,7 @@ $rules = array(
 		<legend>Add a user account</legend>
 		{{ Form::token() }}
 
-		{{ Former::text('type', 'Account type')->help('"dev" or "admin"') }}
+		{{ Former::text('type', 'Account type')->help('"dev" or "admin"')->value('dev') }}
 
 		{{ Former::text('username', 'User name') }}
 
@@ -23,7 +23,7 @@ $rules = array(
 
 		{{ Former::password('password_confirmation', 'Password Confirmation') }}
 
-		<input type="submit" value="Submit">
+		<input type="submit" value="Add this user" class="btn btn-primary">
 	</form>
 </div>
 <!-- /#user_form --> 

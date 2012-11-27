@@ -71,7 +71,7 @@ if ( ! isset($page_content))
                     
                     <!-- /Admin menu -->
                 @else
-                    <li><a href="{{ route('get_admin_login') }}"><i class="icon-user"></i>{{ __('vgc.menu_login') }}</a></li>
+                    <li><a href="{{ route('get_login') }}"><i class="icon-user"></i>{{ __('vgc.menu_login') }}</a></li>
                 @endif
                     <!-- /menu --> 
                 </ul>
@@ -88,6 +88,10 @@ if ( ! isset($page_content))
             </div>
             
             {{ $page_content }}
+
+            <br>
+            <br>
+            <br>
         </div>
         <!-- /#page_content .container -->
 

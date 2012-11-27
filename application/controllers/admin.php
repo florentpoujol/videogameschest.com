@@ -24,85 +24,89 @@ class Admin_Controller extends Base_Controller
         $this->layout->nest('page_content', 'admin.login');
     }
 
+    /**
+     * Process the login form
+     */
 	public function post_login() 
 	{
-        if (Input::has('lostpassword'))
+        $rules = array(
+            "username" => "required",
+            "password" => "required|min:5"
+        );
+
+        $validation = Validator::make(Input::all(), $rules);
+        //Input::flash(); // in case of errors
+          
+        if ($validation->passes()) 
         {
-            $validation = Validator::make(Input::all(), array("username" => "required"));
-            //Input::flash(); // in case of errors
+            $username = Input::get("username", '');
+            $field = "username";
+
+            if (is_numeric($username)) {
+                $field = "id";
+            } elseif (strpos($username, "@")) { // the name is actually an email
+                $field = "email";
+            }
+
+            $user = User::where($field, '=', $username)->first();
             
-            if ($validation->passes()) 
+            if ($user != null)
             {
-                $username = Input::get("username", '');
-                $field = "username";
-
-                if (is_numeric($username)) {
-                    $field = "id";
-                } elseif (strpos($username, "@")) { // the name is actually an email
-                    $field = "email";
-                }
-                
-                $user = User::where($field, '=', $username)->first();
-                
-                if ($user != null)
-                {
-                    // send email here
-                    $email = $user->email;
-                    HTML::set_success('An email with your credentials and a new temporary password has been sent to '.$email.'.');
+                if (Auth::attempt(array('username' => $user->username, 'password' => Input::get('password')))) {
+                    return Redirect::to_route('get_admin_home');
                 }
                 else {
-                    HTML::set_error("No user with the $field [$username] has been found.");
+                    HTML::set_error("The password provided for user $field [$username] is incorrect.");
                 }
-            } // end form is valid
-            else {
-                Former::withErrors($validation);
             }
-        }
-
-        elseif (Input::has('login_form_submitted'))
-        {
-            $rules = array(
-                "username" => "required",
-                "password" => "required|min:5"
-            );
-
-            $validation = Validator::make(Input::all(), $rules);
-            //Input::flash(); // in case of errors
-              
-            if ($validation->passes()) 
-            {
-                $username = Input::get("username", '');
-                $field = "username";
-
-                if (is_numeric($username)) {
-                    $field = "id";
-                } elseif (strpos($username, "@")) { // the name is actually an email
-                    $field = "email";
-                }
-
-                $user = User::where($field, '=', $username)->first();
-                
-                if ($user != null)
-                {
-                    if (Auth::attempt(array($field => $username, 'password' => Input::get('password')))) {
-                        return Redirect::to_route('get_admin_home');
-                    }
-                    else {
-                        HTML::set_error("The password provided for user $field [$username] is incorrect.");
-                    }
-                }
-                else {
-                    HTML::set_error("No user with the $field [$username] has been found.");
-                }
-            } // end form is valid
             else {
-                Former::withErrors($validation);
+                HTML::set_error("No user with the $field [$username] has been found.");
             }
+        } // end form is valid
+        else {
+            Former::withErrors($validation);
         }
         
 		$this->layout->nest('page_content', 'admin/login');
 	}
 
+    /**
+     * Process the lost password form
+     */
+    public function post_lostpassword()
+    {
+        $validation = Validator::make(Input::all(), array("username" => "required"));
+        
+        if ($validation->passes()) 
+        {
+            $username = Input::get("username", '');
+            $field = "username";
+
+            if (is_numeric($username)) {
+                $field = "id";
+            } elseif (strpos($username, "@")) { // the name is actually an email
+                $field = "email";
+            }
+            
+            $user = User::where($field, '=', $username)->first();
+            
+            if ($user != null)
+            {
+                // send email here
+                $email = $user->email;
+                HTML::set_success('An email with your credentials and a new temporary password has been sent to '.$email.'.');
+            }
+            else {
+                HTML::set_error("No user with the $field [$username] has been found.");
+            }
+
+            return Redirect::to_route('get_login');
+        } // end form is valid
+        else {
+            // Former::withErrors($validation);
+            return Redirect::to_route('get_login')->with_errors($validation);
+        }
+    }
 
     /*
      * Disconnect the user
@@ -110,7 +114,7 @@ class Admin_Controller extends Base_Controller
     public function get_logout()
     {
         Auth::logout();
-    	return Redirect::to_route('get_admin_login');
+    	return Redirect::to_route('get_login');
     }
 
 
@@ -127,8 +131,7 @@ class Admin_Controller extends Base_Controller
     public function post_adduser()
     {
         $input = Input::all();
-        unset($input['csrf_token']);
-
+        
         // checking form
         $rules = array(
             'username' => 'required|min:5|unique:users',
@@ -146,13 +149,8 @@ class Admin_Controller extends Base_Controller
             return Redirect::to_route('get_edituser', array($user->id));
         }
         else {
-            // HTML::set_error($validation->errors);
             Former::withErrors($validation);
-            // just reload the form and let the form_validation class display the errors
-            $form["password"] = "";
-            $form["password_confirmation"] = "";
-
-            $this->layout->nest('page_content', 'admin/adduser', array('form' => $form));
+            $this->layout->nest('page_content', 'admin/adduser');
         }
     }
 
@@ -164,61 +162,64 @@ class Admin_Controller extends Base_Controller
      */
     public function get_edituser($user_id = null)
     {
-        if (IS_ADMIN && isset($user_id)) {
-            $user = User::find($user_id);
+        if ($user_id == null || (IS_DEVELOPER && $user_id != USER_ID))
+            return Redirect::to_route('get_edituser', array(USER_ID));
+
+        if (User::find($user_id) == null) {
+            HTML::set_error("Can't find user with id '$user_id' ! Using your user id '".USER_ID."'.");
+            return Redirect::to_route('get_edituser', array(USER_ID));
         }
-        else {
-            $user = User::find(USER_ID);
-        }
-        
-        $this->layout->nest('page_content', 'admin/edituser', array('user'=>$user));
+
+        $this->layout->nest('page_content', 'admin/edituser', array('user_id'=>$user_id));
     }
 
     public function post_edituser()
     {
-        //$form = Input::get('form');
         $input = Input::all();
-        unset($input['csrf_token']);
+        $input['password'] = trim($input['password']);
         $user = User::find($input['id']);
         
         // checking form
         $rules = array(
             'username' => 'required|min:5',
             'email' => 'required|min:5|email',
-            'password' => 'min:5|confirmed',
-            'password_confirmation' => 'min:5|required_with:password',
-            'oldpassword' => 'min:5|required_with:password',
             'type' => 'required|in:dev,admin'
         );
         
-        $validation = Validator::make($form, $rules);
+        $validation = Validator::make($input, $rules);
         
         if ($validation->passes()) 
         {
-            //@todo   : make sure the new username or email is unique
-            // $rules = array();
+            if ($input['password'] != '')
+            {
+                $old_password_ok = true;
+                if ( ! Hash::check($input['old_password'], $user->password)) {
+                    $old_password_ok = false;
+                    HTML::set_error('The old password does not match your currently stored password !');
+                }
+
+                $rules = array(
+                    'password' => 'required|min:5|confirmed',
+                    'password_confirmation' => 'required|min:5',
+                    'old_password' => 'required|min:5',
+                );
+
+                $pass_validation = Validator::make($input, $rules);
             
-            // $validation = Validator::make($form, $rules);
-
-
-            if (trim($form['oldpassword']) != '' && ! Hash::check($form['oldpassword'], User::find($form['id'])->password)) {
-                $old_password_ok = false;
-                HTML::set_error('The old password does not match your currently stored password !');
+                if ($pass_validation->fails() || $old_password_ok == false) {
+                    Input::flash('except', array('password', 'password_confirmation', 'old_password'));
+                    return Redirect::to_route('get_edituser', array($user->id))->with_errors($pass_validation);
+                }
             }
-            else {
-                User::update($form['id'], $form);
-            }
+
+            User::update($input['id'], $input);
         }
-        /*else {
-            Former::withErrors($validation);
-            //Input::flash('except', array('password', 'password_confirmation', 'oldpassword'));
-        }*/
-        
-        return Redirect::to_route('get_edituser', array($user->id))->with_errors($validation);
+        else {
+            Input::flash('except', array('password', 'password_confirmation', 'old_password'));
+            return Redirect::to_route('get_edituser', array($user->id))->with_errors($validation);
+        }
 
-        /*$form["password"] = "";
-        $form["password_confirmation"] = "";
-        $form["oldpassword"] = "";
-        $this->layout->nest('page_content', 'admin/edituser', array("form"=>$form));*/
+        return Redirect::to_route('get_edituser', array($user->id));
+        // $this->layout->nest('page_content', 'admin/edituser');
     }
 }

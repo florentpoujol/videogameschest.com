@@ -13,24 +13,26 @@ class User extends Eloquent {
      */
 	public static function create($user) 
 	{
+        unset($user['csrf_token']);
+        unset($user['password_confirmation']);
+
         // password
         if (isset($user["password"]) && trim($user["password"]) != "") {
             $user["password"] = Hash::make($user["password"]);
         }
-        unset($user['password_confirmation']);
-
+        
         // secret key
-        $user["key"] = md5(mt_rand().''.mt_rand());
+        $user["secret_key"] = md5(mt_rand().mt_rand());
 
-        while (User::where('key', '=', $user['key'])->first() != null) {
-            $user["key"] = md5(mt_rand().''.mt_rand());
+        while (User::where('secret_key', '=', $user['secret_key'])->first() != null) {
+            $user["secret_key"] = md5(mt_rand().mt_rand());
         }
 
-        $user['key'] = 'testkey';
 
         $user = parent::create($user);
 
-        if ($user->type == "dev") { // create at the same time the developer profile
+        if ($user->type == "dev") // create at the same time the developer profile
+        { 
             $user->profiles()->insert(array(
                 'name' => $user->username,
                 'type' => 'dev',
@@ -54,8 +56,9 @@ class User extends Eloquent {
     public static function update($id, $attributes)
     {
         //unset($attributes['id']);
+        unset($attributes['csrf_token']);
         unset($attributes['password_confirmation']);
-        unset($attributes['oldpassword']);
+        unset($attributes['old_password']);
 
         if ($attributes['password'] != '')
             $attributes['password'] = Hash::make($attributes['password']);
@@ -64,12 +67,11 @@ class User extends Eloquent {
 
 
         $user = User::find($id);
-        // update user's data
+        
         foreach ($attributes as $field => $attr) {
             $user->$field = $attr;
         }
 
-        $user->id = $id; // why the fuck do I have to do that
         $user->save();
 
         HTML::set_success('The user \"'.$user->username.'\" (id : '.$user->id.') has successfully been updated.');
