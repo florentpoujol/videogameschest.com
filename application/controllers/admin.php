@@ -222,4 +222,36 @@ class Admin_Controller extends Base_Controller
         return Redirect::to_route('get_edituser', array($user->id));
         // $this->layout->nest('page_content', 'admin/edituser');
     }
+
+
+    //----------------------------------------------------------------------------------
+
+    /**
+     * Page to edit a developer profile account
+     */
+    public function get_editdeveloper($profile_id = null)
+    {
+        if ($profile_id == null || (IS_DEVELOPER && DEV_PROFILE_ID != $profile_id))
+            return Redirect::to_route('get_editdeveloper', array(DEV_PROFILE_ID));
+
+        if (Profile::find($profile_id, 'dev') == null)
+        {
+            HTML::set_error("Can't find the developer profile with id '$profile_id' !");
+            
+            // bad profile id
+            // this should only happens when user is an admin
+
+            if (IS_DEVELOPER) {
+                $profile_id = DEV_PROFILE_ID;
+            }
+            else {
+                // if admin, redirect to the first dev profile found
+                $profile_id = Profile::where('type', '=', 'dev')->first()->id;
+            }
+
+            return Redirect::to_route('get_editdeveloper', array($profile_id));
+        }
+
+        $this->layout->nest('page_content', 'admin/editdeveloper', array('profile_id'=>$profile_id));
+    }
 }

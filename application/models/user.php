@@ -82,11 +82,23 @@ class User extends Eloquent {
     //----------------------------------------------------------------------------------
 
     /**
-     * Relationship method with the Profles table
-     * @return [type] [description]
+     * Relationship method with the Profiles table
+     * @return Profile The Profiles instance linked to this user
      */
     public function profiles()
     {
         return $this->has_many('Profile');
+    }
+
+
+    //----------------------------------------------------------------------------------
+
+    /**
+     * Relationship method with the Profiles table
+     * @return Profile The Profiles instance linked to this user
+     */
+    public function dev_profile()
+    {
+        return Profile::where('user_id', '=', $this->id)->where('type', '=', 'dev')->first();
     }
 }   

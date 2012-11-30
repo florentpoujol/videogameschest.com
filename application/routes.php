@@ -47,9 +47,9 @@ Route::get('home', array('as' => 'get_home', 'do' => function() use ($layout)
 }));
 
 
-Route::get('/adddeveloper', array('as' => 'get_adddeveloper', function()
+Route::get('/adddeveloper', array('as' => 'get_adddeveloper', function() use ($layout)
 {
-	return "Add developer page";
+	return $layout->nest('page_content', 'adddeveloper');
 }));
 
 Route::get('/addgame', array('as' => 'get_addgame', function()
@@ -206,24 +206,31 @@ Route::filter('before', function()
 
     // set some CONST
 
-    if (Auth::check()) { // user is logged in
+    if (Auth::check()) 
+    { // user is logged in
     	define('IS_LOGGED_IN', true);
     	define("USER_ID", Auth::user()->id);
 
-    	if (Auth::user()->type == 'admin') {
+    	if (Auth::user()->type == 'admin') 
+    	{
     		define('IS_ADMIN', true);
     		define('IS_DEVELOPER', false);
+    		define("DEV_PROFILE_ID", 0);
     	}
-    	else {
+    	else 
+    	{
     		define('IS_ADMIN', false);
     		define('IS_DEVELOPER', true);
+    		define("DEV_PROFILE_ID", Auth::user()->dev_profile->id);
     	}
     }
-    else {
+    else 
+    {
     	define('IS_LOGGED_IN', false);
 		define('USER_ID', 0);
 		define('IS_ADMIN', false);
 		define('IS_DEVELOPER', false);
+		define("DEV_PROFILE_ID", 0);
     }
 
     $route = Request::$route;

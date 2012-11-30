@@ -4,7 +4,11 @@ TODO LIST
 Apple app store
 
 
-
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^domain.com$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^www.domain.com$
+RewriteCond %{REQUEST_URI} !public/
+RewriteRule (.*) /public/$1 [L]
 
 =========================
 QUESTION

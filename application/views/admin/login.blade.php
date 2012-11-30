@@ -1,5 +1,5 @@
 <div id="admin_login">
-	{{ Former::open_vertical()->rules(array('username' => 'required')) }}
+	{{ Former::open_vertical()->rules(array('username' => 'required', 'password' => 'required')) }}
 		<legend>{{ __('vgc.menu_login') }}</legend>
 		
 		{{ Form::token() }}

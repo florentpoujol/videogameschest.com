@@ -23,8 +23,10 @@ if ( ! empty($old)) {
 		<legend>Edit a user account</legend>
 		{{ Form::token() }}
 
+		@if (IS_DEVELOPER)
 		<p>Your "developer" user account is a different entity than your developer profile, while both are created at the same time, with the same name.</p>
-
+		@endif
+		
 		{{ Former::datetime('created_at', 'Account creation date') }}
 		
 		{{ Former::datetime('updated_at', 'Account last update') }}
