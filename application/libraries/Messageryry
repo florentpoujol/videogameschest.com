@@ -1,0 +1,86 @@
+<?php
+
+// class Messagess 
+// {
+//     private static function escape_json_chars($input) {
+//         $input = str_replace("[", "\[", $input);
+//         $input = str_replace("]", "\]", $input);
+//         $input = str_replace("{", "\{", $input);
+//         $input = str_replace("}", "\}", $input);
+//         $input = str_replace('"', '\"', $input);
+//         return $input;
+//     }
+
+
+//     //----------------------------------------------------------------------------------
+
+//     /**
+//      * [flash description]
+//      * @param  [type] $type [description]
+//      * @param  [type] $msg  [description]
+//      * @return [type]       [description]
+//      */
+//     public static function set($type, $msg)
+//     {
+//         $json_messages = Session::get("message_$type");
+//         $array_messages = array();
+
+//         if ($json_messages != '') {
+//             $array_messages = json_decode($session_errors, true);
+//         }
+
+
+//         if (is_string($msg)) {
+//             $array_messages[] = '"'.escape_json_chars($msg).'"';
+//         }
+//         elseif (is_array($msg)) 
+//         {
+//             $msgs = $msg;
+//             foreach ($msgs as $msg) {
+//                 $array_messages[] = '"'.escape_json_chars($msg).'"';
+//             }
+//         }
+
+//         Session::put("message_$type", json_encode($array_messages));
+//     }
+
+
+//     //----------------------------------------------------------------------------------
+
+//     /**
+//      * [get_flash description]
+//      * @param  [type] $type [description]
+//      * @return [type]       [description]
+//      */
+//     public static function get($type)
+//     {
+//         $messages = Session::get("message_$type");
+//         $html_msg = "";
+
+//         if ($messages != "") 
+//         {
+//             $html_msg .= '<div class="alert alert-'.$type.'"><button type="button" class="close" data-dismiss="alert">×</button>';
+
+//             $messages = json_decode($messages, true);
+//             foreach ($messages as $success) {
+//                 $html_msg .= $success.' <br>';
+//             }
+            
+//             $html_msg .= '</div>';
+
+//             Session::forget("message_$type");
+//         }
+
+//         return $html_msg;
+//     }
+
+
+//     public static function get_all()
+//     {
+//         return 
+//         Message::get('error').
+//         Message::get('warning').
+//         Message::get('success').
+//         Message::get('info');
+//     }
+// }

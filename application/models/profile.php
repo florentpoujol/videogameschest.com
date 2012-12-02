@@ -38,7 +38,33 @@ class Profile extends Eloquent
 	}
 
 
-	
+	//----------------------------------------------------------------------------------
+
+	/**
+	 * Created an array with data from the database, 
+	 * with the specified $fields as key and value
+	 * @param  string $key   The field used as array key
+	 * @param  string $value The field used as array value
+	 * @param  string $type  The type of profile
+	 * @return array         The generated array
+	 */
+	public static function get_array($key, $value, $type = 'any')
+	{
+		if ($type == 'any') {
+			$profiles = Profile::get(array($key, $value));
+		}
+		else {
+			$profiles = Profile::where('type', '=', $type)->get(array($key, $value));
+		}
+
+		$array = array();
+
+		foreach ($profiles as $profile) {
+			$array[$profile->$key] = $profile->$value;
+		}
+
+		return $array;
+	}
 
 
 	//----------------------------------------------------------------------------------

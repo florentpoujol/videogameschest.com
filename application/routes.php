@@ -108,15 +108,16 @@ Route::group(array('before' => 'auth'), function()
 
 
 // must be logged in + admin
-Route::group(array('before' => 'admin|auth'), function()
+Route::group(array('before' => 'auth|admin'), function()
 {
 	Route::get('admin/adduser', array('as' => 'get_adduser', 'uses' => 'admin@adduser'));
 });
 
 
 // must be logged in + admin + logit post
-Route::group(array('before' => 'admin|auth|csrf'), function()
+Route::group(array('before' => 'auth|admin|csrf'), function()
 {
+	Route::post('admin/selecteditdeveloper', array('as' => 'post_selecteditdeveloper', 'uses' => 'admin@selecteditdeveloper'));
 	Route::post('admin/adduser', array('as' => 'post_adduser', 'uses' => 'admin@adduser'));
 });
 
@@ -124,11 +125,12 @@ Route::group(array('before' => 'admin|auth|csrf'), function()
 // must be logged in + legit post
 Route::group(array('before' => 'auth|csrf'), function()
 {
-	Route::post('admin/edituser/(:num?)', array('as' => 'post_edituser', 'uses' => 'admin@edituser'));
+	Route::post('admin/edituser', array('as' => 'post_edituser', 'uses' => 'admin@edituser'));
 
-	Route::post('admin/editdeveloper/(:num?)', array('as' => 'post_editdeveloper', 'uses' => 'admin@editdeveloper'));
+	Route::post('admin/editdeveloper', array('as' => 'post_editdeveloper', 'uses' => 'admin@editdeveloper'));
 
-	Route::post('admin/editgame/(:num?)', array('as' => 'post_editgame', 'uses' => 'admin@editgame'));
+	Route::post('admin/selecteditgame', array('as' => 'post_selecteditgame', 'uses' => 'admin@selecteditgame'));
+	Route::post('admin/editgame', array('as' => 'post_editgame', 'uses' => 'admin@editgame'));
 
 	Route::post('admin/gamequeue', array('as' => 'post_gamequeue', 'uses' => 'admin@gamequeue'));
 });
@@ -289,7 +291,7 @@ Route::filter('admin', function()
 	}
 	else 
 	{
-		HTML::set_error("You must be a logged in administrator to access this page !");
+		HTML::set_error("You must be logged in and an administrator to access this page !");
 		return Redirect::to_route('get_login');
 	}
 });

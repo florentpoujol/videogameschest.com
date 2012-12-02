@@ -227,31 +227,124 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
 
     /**
+     * Check the data from the select developer form then redirect to the edit developer page
+     */
+    public function post_selecteditdeveloper()
+    {
+        $name = Input::get('dev_name');
+        $id = null;
+        
+        if (is_numeric($name))
+        {
+            if (Profile::find($name, 'dev') == null) {
+                HTML::set_error('No developer with id ['.$name.'] was found !');
+            }
+            else {
+                $id = $name;
+            }
+        }
+        else 
+        {
+            $profile = Profile::where('type', '=', 'dev')->where('name', '=', $name)->first();
+            
+            if ($profile == null) {
+                HTML::set_error('No developer with name ['.$name.'] was found !');
+            }
+            else {
+                $id = $profile->id;
+            }
+        }
+
+        return Redirect::to_route('get_editdeveloper', array($id));
+    }
+
+    /**
      * Page to edit a developer profile account
+     * @param  id $profile_id Profile's id
      */
     public function get_editdeveloper($profile_id = null)
     {
-        if ($profile_id == null || (IS_DEVELOPER && DEV_PROFILE_ID != $profile_id))
+        if ($profile_id == null)
+        {
+            if (IS_DEVELOPER) {
+                return Redirect::to_route('get_editdeveloper', array(DEV_PROFILE_ID));
+            }
+            else
+            {
+                $this->layout->nest('page_content', 'admin/selecteditdeveloper');
+                return;
+            }
+        }
+
+        if (IS_DEVELOPER && $profile_id != DEV_PROFILE_ID)
+        {
+            HTML::set_error("You are not allowed to edit other developer's profiles !");
             return Redirect::to_route('get_editdeveloper', array(DEV_PROFILE_ID));
+        }
+
+        var_dump($profile_id);
+        //var_dump(Profile::find($profile_id, 'dev'));
 
         if (Profile::find($profile_id, 'dev') == null)
         {
-            HTML::set_error("Can't find the developer profile with id '$profile_id' !");
-            
-            // bad profile id
+            // $profile_id was set but no dev profile was found
             // this should only happens when user is an admin
+            // since dev with bad dev profile id are already redirected
 
-            if (IS_DEVELOPER) {
-                $profile_id = DEV_PROFILE_ID;
+            if (IS_DEVELOPER) 
+            {
+                HTML::set_error("Can't find the developer profile with id '$profile_id' !");
+                HTML::set_error('Remember that you are not allowed to edit other developer\'s profiles !');
+                return Redirect::to_route('get_editdeveloper', array(DEV_PROFILE_ID));
             }
-            else {
-                // if admin, redirect to the first dev profile found
-                $profile_id = Profile::where('type', '=', 'dev')->first()->id;
+            else
+            {
+                HTML::set_error("Can't find the developer profile with id '$profile_id' !");
+                return Redirect::to_route('get_editdeveloper');
             }
-
-            return Redirect::to_route('get_editdeveloper', array($profile_id));
         }
 
         $this->layout->nest('page_content', 'admin/editdeveloper', array('profile_id'=>$profile_id));
+    }
+
+    public function post_editdeveloper()
+    {
+
+    }
+
+
+    //----------------------------------------------------------------------------------
+
+    /**
+     * Check the data from the select game form then redirect to the edit game page
+     */
+    public function post_selecteditgame()
+    {
+        $name = Input::get('game_name');
+        
+        if (is_numeric($name))
+        {
+            $id = $name;
+
+            if (Profile::find($id, 'game') == null)
+            {
+                HTML::set_error('No game with id ['.$id.'] was found !');
+                return Redirect::to_route('get_admin_home');
+            }
+        }
+        else 
+        {
+            $profile = Profile::where('type', '=', 'game')->where('name', '=', $name)->first();
+            
+            if ($profile == null) 
+            {
+                HTML::set_error('No game with name ['.$name.'] was found !');
+                return Redirect::to_route('get_admin_home');
+            }
+
+            $id = $profile->id;
+        }
+
+        return Redirect::to_route('get_editgame', array($id));
     }
 }

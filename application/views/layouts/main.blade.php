@@ -39,7 +39,7 @@ if ( ! isset($page_content))
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ route('get_home') }}">Admin home</a></li>
+                            <li><a href="{{ route('get_admin_home') }}">Admin home</a></li>
 
                             <li class="divider"></li>
                         @if (IS_ADMIN)

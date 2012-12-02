@@ -6,15 +6,6 @@
 //----------------------------------------------------------------------------------
 
 
-HTML::macro('flash', function()
-{
-    $message_status = Session::get('message_status');
-    $message        = Session::get('message');
-
-    return ($message && $message_status) ? '<div class="flash flash-' . $message_status . '">' . $message . '</div>' : '';
-});
-
-
 //----------------------------------------------------------------------------------
 
 
