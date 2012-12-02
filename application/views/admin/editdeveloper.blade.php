@@ -6,10 +6,7 @@ $rules = array(
 
 
 $profile = Profile::find($profile_id);
-//Former::populate($profile);
 Former::populate($profile->data_array);
-
-//var_dump($profile);
 
 $old = Input::old();
 
