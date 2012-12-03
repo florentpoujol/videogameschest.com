@@ -7,7 +7,7 @@ else {
 }
 ?>
 <div id="selecteditdeveloper_form">
-	{{ Former::open_vertical('admin/selecteditgame')->rules(array('name' => 'required')) }} 
+	{{ Former::open_vertical('admin/selecteditgame')->rules(array('game_name' => 'required')) }} 
 		<legend>Select the game to edit</legend>
 		{{ Form::token() }}
 

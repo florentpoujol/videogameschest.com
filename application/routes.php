@@ -93,7 +93,7 @@ Route::group(array('before' => 'auth'), function()
 
 	Route::get('admin/edituser/(:num?)', array('as' => 'get_edituser', 'uses' => 'admin@edituser'));
 
-	Route::get('admin/adddeveloper', array('as' => 'get_adddeveloper', 'uses' => 'admin@adddeveloper'));
+	
 	Route::get('admin/editdeveloper/(:num?)', array('as' => 'get_editdeveloper', 'uses' => 'admin@editdeveloper'));
 	// I could also use
 	// Route::get('admin/(add|edit)developer', 'admin@(:1)developer');
@@ -111,14 +111,16 @@ Route::group(array('before' => 'auth'), function()
 Route::group(array('before' => 'auth|admin'), function()
 {
 	Route::get('admin/adduser', array('as' => 'get_adduser', 'uses' => 'admin@adduser'));
+	
 });
 
 
 // must be logged in + admin + logit post
 Route::group(array('before' => 'auth|admin|csrf'), function()
 {
-	Route::post('admin/selecteditdeveloper', array('as' => 'post_selecteditdeveloper', 'uses' => 'admin@selecteditdeveloper'));
 	Route::post('admin/adduser', array('as' => 'post_adduser', 'uses' => 'admin@adduser'));
+	
+	Route::post('admin/selecteditdeveloper', array('as' => 'post_selecteditdeveloper', 'uses' => 'admin@selecteditdeveloper'));
 });
 
 
@@ -223,7 +225,7 @@ Route::filter('before', function()
     	{
     		define('IS_ADMIN', false);
     		define('IS_DEVELOPER', true);
-    		define("DEV_PROFILE_ID", Auth::user()->dev_profile->id);
+    		define("DEV_PROFILE_ID", Auth::user()->developer->id);
     	}
     }
     else 

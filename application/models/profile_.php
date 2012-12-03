@@ -1,6 +1,6 @@
 <?php
 
-class Profile extends Eloquent
+class Profile_ extends Eloquent
 {
 
 	public static $timestamps = true;

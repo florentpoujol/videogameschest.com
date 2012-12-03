@@ -1,15 +1,12 @@
 <?php
 $rules = array(
 	'name' => 'required|min:5',
-    'email' => 'required|min:5|email',
+
 );
 
-
-$profile = Profile::find($profile_id);
-Former::populate($profile->data_array);
+Former::populate(Dev::find($profile_id));
 
 $old = Input::old();
-
 if ( ! empty($old)) {
 	Former::populate($old);
 }
@@ -17,11 +14,12 @@ if ( ! empty($old)) {
 ?>
 
 <div id="editdeveloper_form">
-	{{ Former::open_vertical('admin/adddeveloper')->rules($rules) }} 
+	{{ Former::open_vertical('admin/editdeveloper')->rules($rules) }} 
 		<legend>Edit your developer profile</legend>
 		{{ Form::token() }}
+		{{ Form::hidden('id', $profile_id) }}
 
-		{{ Former::text('name', __('vgc.developer_name'))->value($profile->name) }}
+		{{ Former::text('name', __('vgc.developer_name')) }}
 
 		{{ Former::textarea('pitch', __('vgc.developer_pitch')) }}
 
@@ -33,10 +31,21 @@ if ( ! empty($old)) {
 
 		{{ Former::select('country')->options(get_array_lang(Config::get('vgc.countries'), 'countries_')) }}
 
-
+		<?php
+		$multiselect_form_items = array("technologies", "operatingsystems", "devices","stores");
+		foreach ($multiselect_form_items as $item):
+			$items = Config::get('vgc.'.$item);
+			$size = count($items);
+		    if ($size > 10 ) {
+		        $size = 10;
+		    }
+		?>
+		{{ Former::select($item)->options(get_array_lang($items, $item.'_'))->multiple()->size($size) }}
+		@endforeach
+		
 		
 
-		<input type="submit" value="{{ __('vgc.adddeveloper_submit') }}" class="btn btn-primary">
+		<input type="submit" value="Edit this developer profile" class="btn btn-primary">
 	</form>
 </div>
 <!-- /#user_form --> 

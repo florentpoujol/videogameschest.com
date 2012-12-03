@@ -8,7 +8,7 @@ class User extends Eloquent {
 
     /**
      * Create a new user
-     * @param  array $form data comming from the form
+     * @param  array $form data comming from the form, or the Developer::create() method
      * @return User       The user instance
      */
 	public static function create($user) 
@@ -31,16 +31,16 @@ class User extends Eloquent {
 
         $user = parent::create($user);
 
-        if ($user->type == "dev") // create at the same time the developer profile
+        /*if ($user->type == "dev") // create at the same time the developer profile
         { 
-            $user->profiles()->insert(array(
+            $user->developer->insert(array(
                 'name' => $user->username,
                 'type' => 'dev',
             ));
-        }
+        }*/
         
         // @TODO send mail to user with password
-        HTML::set_success('The user \"'.$user->username.'\" (id : '.$user->id.') has successfully been created.');
+        HTML::set_success('The user with name \"'.$user->username.'\" has successfully been created.');
         return $user;
     }
 
@@ -85,20 +85,8 @@ class User extends Eloquent {
      * Relationship method with the Profiles table
      * @return Profile The Profiles instance linked to this user
      */
-    public function profiles()
+    public function developer()
     {
-        return $this->has_many('Profile');
-    }
-
-
-    //----------------------------------------------------------------------------------
-
-    /**
-     * Relationship method with the Profiles table
-     * @return Profile The Profiles instance linked to this user
-     */
-    public function dev_profile()
-    {
-        return Profile::where('user_id', '=', $this->id)->where('type', '=', 'dev')->first();
+        return $this->has_one('Developer');
     }
 }   

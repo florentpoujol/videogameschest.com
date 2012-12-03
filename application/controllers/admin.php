@@ -15,6 +15,7 @@ class Admin_Controller extends Base_Controller
 
 
     //----------------------------------------------------------------------------------
+    // LOGIN
 
     /*
      * Login form
@@ -119,6 +120,7 @@ class Admin_Controller extends Base_Controller
 
 
     // ----------------------------------------------------------------------------------
+    // ADD USER
 
     /**
      * Page to add a user account
@@ -156,6 +158,7 @@ class Admin_Controller extends Base_Controller
 
 
     //----------------------------------------------------------------------------------
+    // EDIT USER
 
     /**
      * Page to edit a user account
@@ -225,6 +228,41 @@ class Admin_Controller extends Base_Controller
 
 
     //----------------------------------------------------------------------------------
+    // ADD DEVELOPER
+
+    public function get_adddeveloper()
+    {
+        return "add developer from admin";
+    }
+
+    public function post_adddeveloper()
+    {
+        $input = Input::all();
+
+        // checking form
+        $rules = array(
+            'name' => 'required|min:5|unique:developers',
+        );
+
+        if ( ! isset($input['email']))
+            $rules['email'] = 'required|min:5|unique:users|email';
+
+        $validation = Validator::make($input, $rules);
+        
+        if ($validation->passes()) 
+        {
+            $dev = Dev::create($input);
+            return Redirect::to_route('get_home');
+        }
+        else {
+
+            Former::withErrors($validation);
+            return Redirect::back();
+        }
+    }
+
+    //----------------------------------------------------------------------------------
+    // EDIT DEVELOPER
 
     /**
      * Check the data from the select developer form then redirect to the edit developer page
@@ -236,7 +274,7 @@ class Admin_Controller extends Base_Controller
         
         if (is_numeric($name))
         {
-            if (Profile::find($name, 'dev') == null) {
+            if (Dev::find($name) == null) {
                 HTML::set_error('No developer with id ['.$name.'] was found !');
             }
             else {
@@ -245,7 +283,7 @@ class Admin_Controller extends Base_Controller
         }
         else 
         {
-            $profile = Profile::where('type', '=', 'dev')->where('name', '=', $name)->first();
+            $profile = Dev::where('name', '=', $name)->first();
             
             if ($profile == null) {
                 HTML::set_error('No developer with name ['.$name.'] was found !');
@@ -282,26 +320,13 @@ class Admin_Controller extends Base_Controller
             return Redirect::to_route('get_editdeveloper', array(DEV_PROFILE_ID));
         }
 
-        var_dump($profile_id);
-        //var_dump(Profile::find($profile_id, 'dev'));
-
-        if (Profile::find($profile_id, 'dev') == null)
+        if (Dev::find($profile_id) == null)
         {
             // $profile_id was set but no dev profile was found
             // this should only happens when user is an admin
             // since dev with bad dev profile id are already redirected
-
-            if (IS_DEVELOPER) 
-            {
-                HTML::set_error("Can't find the developer profile with id '$profile_id' !");
-                HTML::set_error('Remember that you are not allowed to edit other developer\'s profiles !');
-                return Redirect::to_route('get_editdeveloper', array(DEV_PROFILE_ID));
-            }
-            else
-            {
-                HTML::set_error("Can't find the developer profile with id '$profile_id' !");
-                return Redirect::to_route('get_editdeveloper');
-            }
+            HTML::set_error("Can't find the developer profile with id '$profile_id' !");
+            return Redirect::to_route('get_editdeveloper');
         }
 
         $this->layout->nest('page_content', 'admin/editdeveloper', array('profile_id'=>$profile_id));
@@ -309,12 +334,33 @@ class Admin_Controller extends Base_Controller
 
     public function post_editdeveloper()
     {
+        $input = Input::all();
+        
+        // checking form
+        $rules = array(
+            'name' => 'required|min:5',
+        );
+        
+        $validation = Validator::make($input, $rules);
+        
+        if ($validation->passes()) {
+            Dev::update($input['id'], $input);
+        }
+        else {
+            Input::flash();
+            return Redirect::to_route('get_editdeveloper', array($input['id']))->with_errors($validation);
+        }
 
+        return Redirect::to_route('get_editdeveloper', array($input['id']));
     }
 
 
     //----------------------------------------------------------------------------------
+    // ADD GAME
 
+
+    //----------------------------------------------------------------------------------
+    // EDIT GAME
     /**
      * Check the data from the select game form then redirect to the edit game page
      */

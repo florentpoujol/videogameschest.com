@@ -194,6 +194,10 @@ return array(
 		'Validator'  	=> 'Laravel\\Validator',
 		'View'       	=> 'Laravel\\View',
 
+		// model
+		'Dev'			=> 'Developer',
+
+
 		// bundle Former
 		'Former' => 'Former\Former',
 

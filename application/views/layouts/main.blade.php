@@ -26,7 +26,7 @@ if ( ! isset($page_content))
         <header class="container navbar nav-inner">
                 <ul class="nav">
                     <!-- Menu -->
-                <?php $menu_items = array('home'); ?>
+                <?php $menu_items = array('home', 'adddeveloper'); ?>
                 @foreach ($menu_items as $menu_item)
                     <li><a href="{{ route('get_'.$menu_item) }}">{{ __('vgc.menu_'.$menu_item) }}</a></li>
                 @endforeach

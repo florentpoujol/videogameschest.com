@@ -47,6 +47,8 @@ return array(
     'developer_teamsize' => 'Teamsize',
 
     'developer_socialnetworks' => 'Social networks',
+    'developer_socialnetworks_name' => 'Name',
+    'developer_socialnetworks_url' => 'url',
     'developer_socialnetworks_url_placeholder' => 'Full profile URL',
 
     'developer_technologies' => 'Technologies',
