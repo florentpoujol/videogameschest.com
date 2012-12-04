@@ -177,3 +177,4 @@ if ( ! Request::cli() and Config::get('session.driver') !== '')
 include_once('helpers.php');
 include_once('macros.php');
 
+

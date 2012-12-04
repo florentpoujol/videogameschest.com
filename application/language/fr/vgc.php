@@ -1,19 +1,17 @@
 <?php
 
 return array(
-'language_key_not_found' => '[language key \':key\' not found]',
-
-
+'language_key_not_found' => '[La clé de traduction \':key\' n\'a pas été trouvée]',
 // MESSAGES (errors, success)
 'msg_editdev_nametaken' => 'Can\'t rename the developer profile with name \":devname\" (id : :devid) because the name \":newname" is already taken.',
 
 'errors' => array(
-    'test1' => 'error1',
-    'test2' => 'error2'
+    'test1' => 'erreur 1',
+    'test2' => 'erreur 2'
     ),
 
-'en_only'=>'en only',
-'both'=>'both',
+
+'both'=>'les deux',
 
 // MENU
 

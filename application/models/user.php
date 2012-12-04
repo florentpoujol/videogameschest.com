@@ -16,16 +16,19 @@ class User extends Eloquent {
         unset($user['csrf_token']);
         unset($user['password_confirmation']);
 
+        // display success msg ?
         $display_msg = true;
-        if (isset($user['do_not_display_success_msg']))
+
+        if (isset($user['do_not_display_success_msg'])) {
             $display_msg = false;
+        }
+
         unset($user['do_not_display_success_msg']);
 
         // password
         if (isset($user["password"]) && trim($user["password"]) != "") {
             $user["password"] = Hash::make($user["password"]);
-        }
-        else {
+        } else {
             // @TODO : generate an random password
             $user['password'] = Hash::make('testtest');
         }
@@ -37,12 +40,14 @@ class User extends Eloquent {
             $user["secret_key"] = md5(mt_rand().mt_rand());
         }
 
+        // type
         if ( ! isset($user['type']))
             $user['type'] = 'dev';
 
         $user = parent::create($user);
         
-        // @TODO send mail to user with password
+
+        // @TODO send mail to user with password, if field do_not_send_email is set
 
         if ($display_msg) {
             HTML::set_success('The user with name \''.$user->username.'\' has successfully been created.');
@@ -51,8 +56,6 @@ class User extends Eloquent {
         return $user;
     }
 
-
-    //----------------------------------------------------------------------------------
 
     /**
      * Update a user
@@ -63,8 +66,6 @@ class User extends Eloquent {
     public static function update($id, $attributes)
     {
         unset($attributes['csrf_token']);
-
-
 
         $dev = Dev::find($id);
         
@@ -78,8 +79,6 @@ class User extends Eloquent {
         return $user;
     }
 
-	
-    //----------------------------------------------------------------------------------
 
     /**
      * Relationship method with the Profiles table

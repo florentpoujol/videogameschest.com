@@ -35,6 +35,11 @@
 View::name('layouts.main', 'layout');
 $layout = View::of('layout');
 
+Route::get('/testformer', array('as' => 'get_addgame', function() use ($layout)
+{
+	return $layout->nest('page_content', 'test_former');
+}));
+
 Route::get('/', function() use ($layout)
 {
 	return $layout->nest('page_content', 'home');
@@ -205,7 +210,7 @@ Event::listen('500', function()
 Route::filter('before', function()
 {
 	// Do stuff before every request to your application...
-	$lang = Session::get('language', 'en');
+	$lang = Session::get('language', Config::get('language', 'en'));
     define("LANGUAGE", $lang);
 
     // set some CONST

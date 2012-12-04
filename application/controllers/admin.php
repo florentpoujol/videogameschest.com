@@ -243,7 +243,7 @@ class Admin_Controller extends Base_Controller
         $rules = array(
             'name' => 'required|min:5|unique:users,username',
             'logo' => 'url|active_url',
-            'wubsite' => 'url|active_url',
+            'website' => 'url|active_url',
             'blogfeed' => 'url|active_url',
             'teamsize' => 'min:1'
         );
@@ -342,14 +342,15 @@ class Admin_Controller extends Base_Controller
         // checking form
         $rules = array(
             'name' => 'required|min:5',
+            'logo' => 'url|active_url',
+            'website' => 'url|active_url',
+            'blogfeed' => 'url|active_url',
+            'teamsize' => 'min:1'
         );
         
         $validation = Validator::make($input, $rules);
         
-        if ($validation->passes()) {
-            Dev::update($input['id'], $input);
-        }
-        else {
+        if ( ! $validation->passes() || ! Dev::update($input['id'], $input)) {
             Input::flash();
             return Redirect::to_route('get_editdeveloper', array($input['id']))->with_errors($validation);
         }

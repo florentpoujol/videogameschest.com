@@ -42,7 +42,7 @@ if ( ! empty($old)) {
 		        $size = 10;
 		    }
 		?>
-			{{ Former::select($item.'[]', __('vgc.developer_'.$item))->options(get_array_lang($items, $item.'_'))->multiple()->size($size) }}
+			{{ Former::multiselect($item.'[]', __('vgc.developer_'.$item))->options(get_array_lang($items, $item.'_'))->size($size) }}
 		@endforeach
 		
 		<fieldset>

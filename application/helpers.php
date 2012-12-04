@@ -1,5 +1,41 @@
 <?php
 
+/**
+ * Retrieve a language string.
+ *
+ * @param  string  $key
+ * @param  array   $replacements
+ * @param  string  $language
+ * @return string
+ */
+function lang($key, $replacements = array(), $language = null)
+{
+    $default_language = Config::get('application.language', 'en');
+    // if the language is not set, look in the session first
+    // then look in the config, or in last resort default to 'en'
+    if (is_null($language)) $language = Session::get('language', $default_language);
+    
+
+    $key = 'vgc.'.$key;
+
+    // @TODO : improve by using condition to look for string only if the text is actually missing (and not just in case of)
+
+    return 
+    Lang::line($key, $replacements, $language)->get(null,
+        // if the key is not found in the current language, look for it the default language
+        Lang::line($key, $replacements, $default_language)->get(null,
+            // then if it is still not found, look for the 'language_key_not_found' key in the current language,
+            Lang::line('vgc.language_key_not_found', array('key' => $key), $language)->get(null,
+                // or in the default language
+                Lang::line('vgc.language_key_not_found', array('key' => $key), $default_language)->get(null,
+                    // or in last resort, default to :
+                    '[language key '.$key.' not found]'
+                )
+            )
+
+        )
+    );
+}
 
 /**
  * strip out empty name/url in names/urls arrays (socialnetworks, stores, screenshots, videos)
