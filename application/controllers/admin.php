@@ -241,10 +241,14 @@ class Admin_Controller extends Base_Controller
 
         // checking form
         $rules = array(
-            'name' => 'required|min:5|unique:developers',
+            'name' => 'required|min:5|unique:users,username',
+            'logo' => 'url|active_url',
+            'wubsite' => 'url|active_url',
+            'blogfeed' => 'url|active_url',
+            'teamsize' => 'min:1'
         );
 
-        if ( ! isset($input['email']))
+        if (isset($input['email']))
             $rules['email'] = 'required|min:5|unique:users|email';
 
         $validation = Validator::make($input, $rules);
@@ -255,9 +259,8 @@ class Admin_Controller extends Base_Controller
             return Redirect::to_route('get_home');
         }
         else {
-
-            Former::withErrors($validation);
-            return Redirect::back();
+            Input::flash();
+            return Redirect::back()->with_errors($validation);
         }
     }
 

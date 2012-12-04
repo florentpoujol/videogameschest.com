@@ -1,7 +1,11 @@
 <?php
 $rules = array(
-	'username' => 'required|min:5|unique:developers',
+	'name' => 'required|min:5|unique:users,username',
 	'email' => 'required|min:5|unique:users|email',
+	'logo' => 'url|active_url',
+	'wubsite' => 'url|active_url',
+	'blogfeed' => 'url|active_url',
+	'teamsize' => 'min:1'
 );
 
 $old = Input::old();
@@ -25,7 +29,7 @@ if ( ! empty($old)) {
 		{{ Former::url('website', __('vgc.developer_website')) }}
 		{{ Former::url('blogfeed', __('vgc.developer_blogfeed')) }}
 
-		{{ Former::number('teamsize', __('vgc.developer_teamsize')) }}
+		{{ Former::number('teamsize', __('vgc.developer_teamsize'))->value(1) }}
 
 		{{ Former::select('country', __('vgc.developer_country'))->options(get_array_lang(Config::get('vgc.countries'), 'countries_')) }}
 
@@ -45,8 +49,8 @@ if ( ! empty($old)) {
 			<legend>{{ __('vgc.developer_socialnetworks') }}</legend>
 
 			@for ($i = 1; $i < 5; $i++)		
-				{{ Former::select('socialnetworks[name][]', __('vgc.developer_socialnetworks_name'))->options(get_array_lang(Config::get('vgc.socialnetworks'), 'socialnetworks_')) }} 
-				{{ Former::url('socialnetworks[url][]', __('vgc.developer_socialnetworks_url')) }}
+				{{ Former::select('socialnetworks[names][]', __('vgc.developer_socialnetworks_name'))->options(get_array_lang(Config::get('vgc.socialnetworks'), 'socialnetworks_')) }} 
+				{{ Former::url('socialnetworks[urls][]', __('vgc.developer_socialnetworks_url')) }}
 			@endfor
 		</fieldset>
 

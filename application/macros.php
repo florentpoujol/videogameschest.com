@@ -97,7 +97,7 @@ HTML::macro('set_error', function($error)
     { // error must an object of type Laravel/Message, probably from the Validator class
         $errors = $error;
         foreach ($errors->all() as $error) {
-            $session_errors[] = '"'.$error.'"';
+            $session_errors[] = $error;
         }
     }
 
@@ -146,12 +146,12 @@ HTML::macro('get_success', function()
  */
 HTML::macro('set_success', function($success) 
 {
-    $session_success = Session::get('vgc_succes');
+    $session_success = Session::get('vgc_success');
     
     if ($session_success != "") 
     {
         $session_success = json_decode($session_success, true);
-        $session_success[] = '"'.$success.'"';
+        $session_success[] = $success;
         Session::put("vgc_success", json_encode($session_success));
     }
     else

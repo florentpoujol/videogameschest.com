@@ -16,8 +16,8 @@ class Developer extends Eloquent
 	{
         unset($dev['csrf_token']);
 
-        
-        $email = $dev['email'];
+        if (isset($dev['email']))
+            $email = $dev['email'];
         unset($dev['email']);
 
         $create_user = true;
@@ -27,32 +27,32 @@ class Developer extends Eloquent
         $form_items_as_json = array("technologies", "operatingsystems", "devices","stores", 'socialnetworks');
 
         foreach ($form_items_as_json as $item) {
-        	$dev[$item] = json_encode($dev[$item]);
+            if (isset($dev[$item])) 
+            {
+                if ($item == 'socialnetworks') { // must sanitise the array, remove items with blank url
+                    $dev[$item] = clean_names_urls_array($dev[$item]);
+                }
+
+                $dev[$item] = json_encode($dev[$item]);
+            }
         }
         
         $dev = parent::create($dev);
 
         if ($create_user)
         {
-	        // @TODO : generate an random password
-	        /*$dev->user->insert(array(
+	        $user = User::create(array(
 	            'username' => $dev->name,
 	            'email' => $email,
-	            'password' => 'testtest',
-	        ));*/
-	        
-	        /*$user = User::create(array(
-	            'username' => $dev->name,
-	            'email' => $email,
-	            'password' => 'testtest',
+                'do_not_display_success_msg' => ''
 	        ));
 
 	        $dev->user_id = $user->id;
-	        $dev->save();*/
+	        $dev->save();
     	}
     	
         
-        HTML::set_success('The developer profile with name "'.$dev->name.'\" has successfully been created.');
+        HTML::set_success('The developer profile with name \''.$dev->name.'\' has successfully been created.');
         return $dev;
     }
 

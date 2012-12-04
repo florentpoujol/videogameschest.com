@@ -6,4 +6,4 @@
 	@include('admin/selecteditdeveloper')
 @endif
 
-@include('admin/selecteditgame')
+
