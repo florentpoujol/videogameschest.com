@@ -4,7 +4,24 @@ $rules = array(
 
 );
 
-Former::populate(Dev::find($profile_id));
+$dev = Dev::find($profile_id);
+//Former::populate($dev);
+
+/*$json_fields = array(
+	
+	'operatingsystems' => json_decode($dev->operatinsystems, true),
+	'devices' => json_decode($dev->devices, true),
+	'stores' => json_decode($dev->stores, true),
+	'socialnetworks' => json_decode($dev->socialnetworks, true),
+	'technologies' => $dev->technologies,
+);
+foreach ($json_fields as $key => $value) {
+	Former::populateField($key, $value);
+}*/
+
+//Former::populateField('name', 'test');
+
+//Former::populate($json_fields);
 
 $old = Input::old();
 if ( ! empty($old)) {
@@ -40,8 +57,11 @@ if ( ! empty($old)) {
 		        $size = 10;
 		    }
 		?>
-		{{ Former::select($item)->options(get_array_lang($items, $item.'_'))->multiple()->size($size) }}
+		
+		{{ Former::multiselect($item, null, get_array_lang($items, $item.'_'), array('flash','flixel')) }}
 		@endforeach
+
+		
 		
 		
 

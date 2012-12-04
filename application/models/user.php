@@ -62,24 +62,17 @@ class User extends Eloquent {
      */
     public static function update($id, $attributes)
     {
-        //unset($attributes['id']);
         unset($attributes['csrf_token']);
-        unset($attributes['password_confirmation']);
-        unset($attributes['old_password']);
-
-        if ($attributes['password'] != '')
-            $attributes['password'] = Hash::make($attributes['password']);
-        else
-            unset($attributes['password']);
 
 
-        $user = User::find($id);
+
+        $dev = Dev::find($id);
         
         foreach ($attributes as $field => $attr) {
             $user->$field = $attr;
         }
 
-        $user->save();
+        $dev->save();
 
         HTML::set_success('The user \"'.$user->username.'\" (id : '.$user->id.') has successfully been updated.');
         return $user;

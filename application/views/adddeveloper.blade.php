@@ -17,7 +17,7 @@ if ( ! empty($old)) {
 
 <div id="adddeveloper_form">
 	{{ Former::open_vertical('admin/adddeveloper')->rules($rules) }} 
-		<legend>Create a developer profile</legend>
+		<legend>{{ __('vgc.adddeveloper_title') }}</legend>
 		{{ Form::token() }}
 		
 		{{ Former::text('name', __('vgc.developer_name')) }}
@@ -54,7 +54,7 @@ if ( ! empty($old)) {
 			@endfor
 		</fieldset>
 
-		<input type="submit" value="Edit this developer profile" class="btn btn-primary">
+		<input type="submit" value="{{ __('vgc.adddeveloper_submit') }}" class="btn btn-primary">
 	</form>
 </div>
 <!-- /#user_form --> 

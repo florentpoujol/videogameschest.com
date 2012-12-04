@@ -49,12 +49,12 @@ Route::get('home', array('as' => 'get_home', 'do' => function() use ($layout)
 
 Route::get('/adddeveloper', array('as' => 'get_adddeveloper', function() use ($layout)
 {
-	return $layout->nest('page_content', 'adddeveloper');
+	return $layout->nest('page_content', 'adddeveloper')->with('page_title', __('vgc.adddeveloper_title'));
 }));
 
 Route::get('/addgame', array('as' => 'get_addgame', function()
 {
-	return "Add game page";
+	return $layout->nest('page_content', 'adddgame')->with('page_title', __('vgc.addgame_title'));
 }));
 
 

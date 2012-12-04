@@ -43,6 +43,16 @@ class Base_Controller extends Controller {
         	case 'edituser': $title = 'Edit a user account';
         	break;
 
+            case 'adddeveloper': $title = __('vgc.adddeveloper_title');
+            break;
+            case 'editdeveloper': $title = __('vgc.editdeveloper_title');
+            break;
+
+            case 'addgame': $title = __('vgc.addgame_title');
+            break;
+            case 'editgame': $title = __('vgc.editgame_title');
+            break;
+
         	default: $title = Str::title(METHOD);
         }
 

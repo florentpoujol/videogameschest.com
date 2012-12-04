@@ -36,6 +36,8 @@ class Developer extends Eloquent
                 $dev[$item] = json_encode($dev[$item]);
             }
         }
+
+        $dev['privacy'] = 'private';
         
         $dev = parent::create($dev);
 
@@ -55,9 +57,6 @@ class Developer extends Eloquent
         HTML::set_success('The developer profile with name \''.$dev->name.'\' has successfully been created.');
         return $dev;
     }
-
-
-	//----------------------------------------------------------------------------------
 
     /**
      * Update a developer profile
@@ -81,9 +80,6 @@ class Developer extends Eloquent
         HTML::set_success('The developer \"'.$dev->name.'\" (id : '.$dev->id.') has successfully been updated.');
         return $dev;
     }
-
-
-	//----------------------------------------------------------------------------------
 
 	/**
 	 * Created an array with data from the database, 
@@ -110,6 +106,12 @@ class Developer extends Eloquent
 
 		return $array;
 	}
+
+
+    public function get_technologies_array() 
+    {
+        return json_decode($this->get_attribute('technologies'), true);
+    }
 
 
 	//----------------------------------------------------------------------------------
