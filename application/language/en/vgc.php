@@ -1,31 +1,39 @@
 <?php
+/*
+You may not have dots inside the keys
 
+
+ */
 return array(
-'language_key_not_found' => '[language key \':key\' not found]',
+'language_key_not_found' => '[language key \':key\' not found in language \':language\']',
 
 
 // MESSAGES (errors, success)
-'msg_editdev_nametaken' => 'Can\'t rename the developer profile with name \":devname\" (id : :devid) because the name \":newname" is already taken.',
 
-'errors' => array(
-    'test1' => 'error1',
-    'test2' => 'error2'
-    ),
+    'messages' => array(
+        'adddev_success' => 'The developer profile with name \":name\" has successfully been created.',
+        'addgame_success' => 'The game profile with name \":name\" has successfully been created.',
 
-'en_only'=>'en only',
-'both'=>'both',
+        'editdev_nametaken' => 'Can\'t rename the developer profile with name \":name\" (id : :id) because the name \":newname" is already taken.',
+        'editgame_nametaken' => 'Can\'t rename the game profile with name \":name\" (id : :id) because the name \":newname" is already taken.',
+        
+        'editdev_success' => 'The developer profile with name \":name\" (id : :id) has successfully been updated.',
+        'editgame_success' => 'The game profile with name \":name\" (id : :id) has successfully been updated.',
+    ),  
 
 // MENU
 
-'menu_home' => 'Home',
-'menu_featured' => 'Featured',
-'menu_search' => 'Search',
-'menu_about' => 'About',
-'menu_adddeveloper' => 'Add a developer',
-'menu_addgame' => 'Add a game',
-'menu_login' => 'Log In',
-'menu_logout' => 'Log Out',
-'menu_languages' => 'Languages',
+    'menu' => array(
+        'home' => 'Home',
+        'featured' => 'Featured',
+        'search' => 'Search',
+        'about' => 'About',
+        'adddeveloper' => 'Add a developer',
+        'addgame' => 'Add a game',
+        'login' => 'Log In',
+        'logout' => 'Log Out',
+        'languages' => 'Languages',
+    ),
 
 
 // LOGIN
@@ -103,317 +111,352 @@ return array(
 
 
 // GAME 
+    'game' => array(
+        // GENERIC GAME STRINGS
+        'fields' => array(
+            'name' => 'Game title',
 
-    // GENERIC GAME STRINGS
+            'developer' => 'Developer\'s name',
+            'pitch' => 'Game story, features...',
 
-    'game_name' => 'Game title',
-    'game_developer' => 'Developer',
-    'game_pitch' => 'Game story, features...',
+            /*'developementstates' => array(
+                'legend' => 'Developement state',
+                'concept' => 'Concept/Design phase',
+                'prototype' => 'Prototype phase',
+                'earlyproduction' => 'Early production',
+                'internalplayablebuilt' => 'Internal playable built',
+                'publicplayablebuilt' => 'Public playable built',
+                'released' => 'Released',
+                'canceled' => 'Canceled',
+            ),*/
 
-    'game_developementstates_legend' => 'Developement state',
-    'game_developementstates_concept' => 'Concept/Design phase',
-    'game_developementstates_prototype' => 'Prototype phase',
-    'game_developementstates_earlyproduction' => 'Early production',
-    'game_developementstates_internalplayablebuilt' => 'Internal playable built',
-    'game_developementstates_publicplayablebuilt' => 'Public playable built',
-    'game_developementstates_released' => 'Released',
-    'game_developementstates_canceled' => 'Canceled',
+            'logo' => 'Logo URL',
+            'website' => 'Website URL',
+            'blogfeed' => 'Blog RSS/Atom feed',
+            'publishername' => 'Publisher name',
+            'publisherurl' => 'Publisher\'s website url',
+            'soundtrackurl' => 'Soundtrack URL',
 
-    'game_logo' => 'Logo URL',
-    'game_website' => 'Website URL',
-    'game_blogfeed' => 'Blog RSS/Atom feed',
-    'game_publishername' => 'Publisher name',
-    'game_publisherurl' => 'Publisher\'s website url',
-    'game_soundtrack' => 'Soundtrack URL',
+            'price' => 'Price',
+            'price_help' => 'This is a text field, write whatever is appropriate.',
 
-    'game_price' => 'Price',
-    'help_game_price' => 'This is a text field, write whatever is appropriate.',
+            'releasedate' => 'Release date',
+            'country' => 'Country',
 
-    'game_releasedate' => 'Release date',
-    'game_country' => 'Country',
+            
 
-    'game_socialnetworks' => 'Social networks',
-    'game_socialnetworks_placeholder_url' => 'Full profile URL',
+            'languages' => 'Languages',
+            'languages_help' => 'The languages the game is playable in',
 
-    'game_languages' => 'Languages',
-    'help_game_languages' => 'The languages the game is playable in',
+            
+            
 
-    'game_stores' => 'Stores',
-    'help_game_stores' => 'The stores the game is purchable from',
+            'technologies' => 'Technologies',
+            'technologies_help' => 'The technologies the game is made with',
 
-    'game_technologies' => 'Technologies',
-    'help_game_technologies' => 'The technologies the game is made with',
+            'operatingsystems' => 'Operating systems',
+            'operatingsystems_help' => 'The operating systems the game runs on (not applicable for most console games)',
 
-    'game_operatingsystems' => 'Operating systems',
-    'help_game_operatingsystems' => 'The operating systems the game runs on (not applicable for most console games)',
+            'devices' => 'Devices',
+            'devices_help' => 'The devices the game is playable on',
 
-    'game_devices' => 'Devices',
-    'help_game_devices' => 'The devices the game is playable on',
+            'nbplayers' => 'Number of players',
+            'nbplayers_help' => 'How many players can play the game at the same time :',
 
-    'game_nbplayers' => 'Number of players',
-    'help_game_nbplayers' => 'How many players can play the game at the same time :',
+            'themes' => 'Themes',
+            'themes_help' => ' ',
 
-    'game_themes' => 'Themes',
-    'help_game_themes' => ' ',
+            'genres' => 'Genres',
+            'genres_help' => ' ',
 
-    'game_genres' => 'Genres',
-    'help_game_genres' => ' ',
+            'tags' => 'Tags',
+            'tags_help' => ' ',
 
-    'game_tags' => 'Tags',
-    'help_game_tags' => ' ',
+            'viewpoints' => 'Point of view',
+            'viewpoints_help' => ' ',
 
-    'game_viewpoints' => 'Point of view',
-    'help_game_viewpoints' => ' ',
 
-    'game_screenshots' => 'Screenshots',
-    'game_screenshots_name' => 'Title',
-    'game_screenshots_url' => 'URL',
-    'game_videos' => 'Video and trailers',
-    'game_videos_name' => 'Title',
-    'game_videos_url' => 'URL',
+            'socialnetworks_title' => 'Social networks',
+            'socialnetworks_help' => '',
+            'socialnetworks_name' => 'Name',
+            'socialnetworks_url' => 'URL',
 
+            'stores_title' => 'Stores',
+            'stores_help' => 'The stores the game is purchasable from.',
+            'stores_name' => 'Name',
+            'stores_url' => 'URL',
+
+            'screenshots_title' => 'Screenshots',
+            'screenshots_name' => 'Title',
+            'screenshots_url' => 'URL',
+            
+            'videos_title' => 'Video and trailers',
+            'videos_name' => 'Title',
+            'videos_url' => 'URL',
+        ),
+
+        'add' => array(
+            'title' => 'Add a game profile',
+            'submit' => 'Submit this game profile',
+            'success' => 'Thanks you, the game has successfully been added. The developers must first check the data then make the profile public before he shows up in the search.',
+        ),
+
+        'profile' => array(
+            'title' => 'Game',
+            'website' => 'Go to the game\'s website',
+            'blogfeed' => 'Lastest articles from the blog',
+        ),
+
+    ), // end of game
 
     // ADD GAME SPECIFIC TERMS
-
-    'addgame_title' => 'Create a game profile',
-    'addgame_submit' => 'Create this game profile',
-
-    'addgame_success' => 'Thanks you, the game has successfully been added. The developers must first check the data then make the profile public before he shows up in the search.',
-
+    
+    
 
     // GAME PROFILE SPECIFIC TERMS
 
-    'game_profile_title' => 'Game',
-    'game_website_title' => 'Go to the game\'s website',
-
-    'game_blogfeed' => 'Lastest articles from the blog',
+    
 
 
 
 // LANGUAGES
 
-'languages_french' => 'French',
-'languages_english' => 'English',
-'languages_german' => 'German',
-'languages_spanish' => 'Spanish',
-'languages_italian' => 'Italian',
-'languages_russian' => 'Russian',
-'languages_japonese' => 'Japonese',
-'languages_chinese' => 'Chinese',
-
+    'languages' => array(
+        'french' => 'French',
+        'english' => 'English',
+        'german' => 'German',
+        'spanish' => 'Spanish',
+        'italian' => 'Italian',
+        'russian' => 'Russian',
+        'japonese' => 'Japonese',
+        'chinese' => 'Chinese',
+    ),
 
 
 // COUNTRIES
 
-'countries_australia' => 'Australia',
-'countries_austria' => 'Austria',
-'countries_belgium' => 'Belgium',
-'countries_canada' => 'Canada',
-'countries_france' => 'France',
-'countries_germany' => 'Germany',
-'countries_greece' => 'Greece',
-'countries_holland' => 'Holland',
-'countries_ireland' => 'Ireland',
-'countries_portugal' => 'Portugal',
-'countries_russia' => 'Russia',
-'countries_spain' => 'Spain',
-'countries_switzerland' => 'Switzerland',
-'countries_uk' => 'United Kingdom',
-'countries_usa' => 'United States of America',
-
+    'countries' => array(
+        'australia' => 'Australia',
+        'austria' => 'Austria',
+        'belgium' => 'Belgium',
+        'canada' => 'Canada',
+        'france' => 'France',
+        'germany' => 'Germany',
+        'greece' => 'Greece',
+        'holland' => 'Holland',
+        'ireland' => 'Ireland',
+        'portugal' => 'Portugal',
+        'russia' => 'Russia',
+        'spain' => 'Spain',
+        'switzerland' => 'Switzerland',
+        'uk' => 'United Kingdom',
+        'usa' => 'United States of America',
+    ),
 
 // OPERATING SYSTEMS
 
-'operatingsystems_android' => 'Android',
-'operatingsystems_blackberry' => 'BlackBerry',
-'operatingsystems_ios' => 'iOS',
-'operatingsystems_linux' => 'Linux',
-'operatingsystems_mac' => 'Mac OS',
-'operatingsystems_windowsdesktop' => 'Windows desktop',
-'operatingsystems_windows8metro' => 'Windows 8 Metro',
-'operatingsystems_windowsphone' => 'Windows Phone',
-
-
+    'operatingsystems' => array(
+        'android' => 'Android',
+        'blackberry' => 'BlackBerry',
+        'ios' => 'iOS',
+        'linux' => 'Linux',
+        'mac' => 'Mac OS',
+        'windowsdesktop' => 'Windows desktop',
+        'windows8metro' => 'Windows 8 Metro',
+        'windowsphone' => 'Windows Phone',
+    ),
 
 // DEVICES
 
-'devices_3ds' => '3DS',
-'devices_3dsxl' => '3DS XL',
-'devices_androidtablet' => 'Android Tablet',
-'devices_androidsmartphone' => 'Android Smartphone',
-'devices_blackberrysmartphone' => 'BlackBerry Smartphone',
-'devices_browser' => 'Browser',
-'devices_ds' => 'DS',
-'devices_ipod' => 'iPod',
-'devices_iphone' => 'iPhone',
-'devices_ipad' => 'iPad',
-'devices_mac' => 'Mac',
-'devices_ouya' => 'Ouya',
-'devices_pc' => 'PC',
-'devices_ps3' => 'PS3',
-'devices_psp' => 'PSP',
-'devices_psvita' => 'PS Vita',
-'devices_wii' => 'Wii',
-'devices_wiiu' => 'Wii U',
-'devices_windowsphonetablet' => 'Windows Phone Tablet',
-'devices_windowsphonesmartphone' => 'Windows Phone Smartphone',
-'devices_xbox360' => 'xBox 360',
-'devices_xperiaplay' => 'Xperia Play',
-'devices_xperiasmartphone' => 'Xperia Smartphone',
-
+    'devices' => array(
+        '3ds' => '3DS',
+        '3dsxl' => '3DS XL',
+        'androidtablet' => 'Android Tablet',
+        'androidsmartphone' => 'Android Smartphone',
+        'blackberrysmartphone' => 'BlackBerry Smartphone',
+        'browser' => 'Browser',
+        'ds' => 'DS',
+        'ipod' => 'iPod',
+        'iphone' => 'iPhone',
+        'ipad' => 'iPad',
+        'mac' => 'Mac',
+        'ouya' => 'Ouya',
+        'pc' => 'PC',
+        'ps3' => 'PS3',
+        'psp' => 'PSP',
+        'psvita' => 'PS Vita',
+        'wii' => 'Wii',
+        'wiiu' => 'Wii U',
+        'windowsphonetablet' => 'Windows Phone Tablet',
+        'windowsphonesmartphone' => 'Windows Phone Smartphone',
+        'xbox360' => 'xBox 360',
+        'xperiaplay' => 'Xperia Play',
+        'xperiasmartphone' => 'Xperia Smartphone',
+    ),
 
 // TECHOLOGIES
 
-'technologies_blender' => 'Blender Game Engine',
-'technologies_flash' => 'Flash',
-'technologies_flixel' => 'Flixel',
-'technologies_java' => 'Java',
-'technologies_python' => 'Python',
-'technologies_stencyl' => 'Stencyl',
-'technologies_adventuregamestudio' => 'Adventure Games Studio',
-'technologies_air' => 'Adobe AIR',
-'technologies_craftstudio' => 'CraftStudio',
-'technologies_cryengine' => 'Cry Engine',
-'technologies_custom' => 'Custom-built/In-house',
-'technologies_gamemaker' => 'GameMaker',
-'technologies_html5' => 'HTML5 / JS',
-'technologies_impactjs' => 'Impact JS',
-'technologies_ogre3d' => 'Ogre 3D',
-'technologies_rpgmaker' => 'RPG Maker',
-'technologies_shiva3d' => 'Shiva 3D',
-'technologies_source' => 'Source Engine',
-'technologies_torque' => 'Torque Engine',
-'technologies_udk' => 'Unreal Developement Kit',
-'technologies_unity3d' => 'Unity 3D',
-'technologies_unrealengine' => 'Unreal Engine',
-'technologies_xna' => 'XNA',
-
+    'technologies' => array(
+        'blender' => 'Blender Game Engine',
+        'flash' => 'Flash',
+        'flixel' => 'Flixel',
+        'java' => 'Java',
+        'python' => 'Python',
+        'stencyl' => 'Stencyl',
+        'adventuregamestudio' => 'Adventure Games Studio',
+        'air' => 'Adobe AIR',
+        'craftstudio' => 'CraftStudio',
+        'cryengine' => 'Cry Engine',
+        'custom' => 'Custom-built/In-house',
+        'gamemaker' => 'GameMaker',
+        'html5' => 'HTML5 / JS',
+        'impactjs' => 'Impact JS',
+        'ogre3d' => 'Ogre 3D',
+        'rpgmaker' => 'RPG Maker',
+        'shiva3d' => 'Shiva 3D',
+        'source' => 'Source Engine',
+        'torque' => 'Torque Engine',
+        'udk' => 'Unreal Developement Kit',
+        'unity3d' => 'Unity 3D',
+        'unrealengine' => 'Unreal Engine',
+        'xna' => 'XNA',
+    ),
 
 // STORES
 
-'stores_desura' => 'Desura',
-'stores_gameolith' => 'Gameolith',
-'stores_gamersgate' => 'Gamersgate',
-'stores_impulse' => 'Impulse',
-'stores_indiecity' => 'Indiecity',
-'stores_indievania' => 'Indievania',
-'stores_kongregate' => 'Kongregate',
-'stores_newsground' => 'Newsground',
-'stores_steam' => 'Steam',
-'stores_amazonmarket' => 'Amazon Marketplace',
-'stores_androidmarket' => 'Android Marketplace',
-'stores_applestore' => 'Apple Store',
-'stores_armorgames' => 'Armor Games',
-'stores_googleplay' => 'Google Play',
-'stores_greenmangaming' => 'GreenManGaming',
-'stores_website' => 'Company/Game Website',
-'stores_windowsstore' => 'Windows 8 Store',
-'stores_xbla' => 'xBox Live Arcade',
-'stores_xblig' => 'xBox Live Indie Games',
-
+    'stores' => array(
+        'desura' => 'Desura',
+        'gameolith' => 'Gameolith',
+        'gamersgate' => 'Gamersgate',
+        'impulse' => 'Impulse',
+        'indiecity' => 'Indiecity',
+        'indievania' => 'Indievania',
+        'kongregate' => 'Kongregate',
+        'newsground' => 'Newsground',
+        'steam' => 'Steam',
+        'amazonmarket' => 'Amazon Marketplace',
+        'androidmarket' => 'Android Marketplace',
+        'applestore' => 'Apple Store',
+        'armorgames' => 'Armor Games',
+        'googleplay' => 'Google Play',
+        'greenmangaming' => 'GreenManGaming',
+        'website' => 'Company/Game Website',
+        'windowsstore' => 'Windows 8 Store',
+        'xbla' => 'xBox Live Arcade',
+        'xblig' => 'xBox Live Indie Games',
+    ),
 
 // SOCIAL NETWORKS
 
-'socialnetworks_desura' => 'Desura',
-'socialnetworks_facebook' => 'Facebook',
-'socialnetworks_pinterest' => 'Pinterest',
-'socialnetworks_reddit' => 'Reddit',
-'socialnetworks_steam' => 'Steam',
-'socialnetworks_twitter' => 'Twitter',
-'socialnetworks_googleplus' => 'Google+',
-'socialnetworks_indiedb' => 'Indie DB',
-'socialnetworks_linkedin' => 'Linked In',
-'socialnetworks_moddb' => 'Mod DB',
-
+    'socialnetworks' => array(
+        'desura' => 'Desura',
+        'facebook' => 'Facebook',
+        'pinterest' => 'Pinterest',
+        'reddit' => 'Reddit',
+        'steam' => 'Steam',
+        'twitter' => 'Twitter',
+        'googleplus' => 'Google+',
+        'indiedb' => 'Indie DB',
+        'linkedin' => 'Linked In',
+        'moddb' => 'Mod DB',
+    ),
 
 // Nb PLAYERS
 
-'nbplayers_singleplayer' => 'Single player',
-'nbplayers_coop' => 'Co-op',
-'nbplayers_multiplayer' => 'Multiplayer',
-'nbplayers_mmo' => 'MMO (Massively Multiplayer Online)',
-
+    'nbplayers' => array(
+        'singleplayer' => 'Single player',
+        'coop' => 'Co-op',
+        'multiplayer' => 'Multiplayer',
+        'mmo' => 'MMO (Massively Multiplayer Online)',
+    ),
 
 // DEVELOPEMENT STATES
 
-'developementstates_concept' => 'Concept/Design phase',
-'developementstates_prototype' => 'Prototype phase',
-'developementstates_earlyproduction' => 'Early production',
-'developementstates_firstgameplay' => 'First gameplay',
-'developementstates_publicplayablebuilt' => 'Public playable built',
-'developementstates_released' => 'Released',
-'developementstates_canceled' => 'Canceled',
-
+    'developementstates' => array(
+        'concept' => 'Concept/Design phase',
+        'prototype' => 'Prototype phase',
+        'earlyproduction' => 'Early production',
+        'firstgameplay' => 'First gameplay',
+        'publicplayablebuilt' => 'Public playable built',
+        'released' => 'Released',
+        'canceled' => 'Canceled',
+    ),
 
 // THEMES
 
-'themes_fantasy' => 'Fantasy',
-'themes_medieval' => 'Medieval',
-'themes_comic' => 'Comic',
-'themes_futuristic' => 'Futuristic',
-'themes_horror' => 'Horror',
-'themes_mafia' => 'Mafia',
-'themes_modern' => 'Modern',
-'themes_scifi' => 'Sci-fi',
-'themes_steampunk' => 'Steampunk',
-'themes_western' => 'Western',
-
+    'themes' => array(
+        'fantasy' => 'Fantasy',
+        'medieval' => 'Medieval',
+        'comic' => 'Comic',
+        'futuristic' => 'Futuristic',
+        'horror' => 'Horror',
+        'mafia' => 'Mafia',
+        'modern' => 'Modern',
+        'scifi' => 'Sci-fi',
+        'steampunk' => 'Steampunk',
+        'western' => 'Western',
+    ),
 
 // GENRES
 
-'genres_action' => 'Action',
-'genres_adventure' => 'Adventure',
-'genres_arcade' => 'Arcade',
-'genres_fighting' => 'Fighting',
-'genres_platformer' => 'Platformer',
-'genres_puzzle' => 'Puzzle',
-'genres_racing' => 'Racing',
-'genres_shooter' => 'Shooter',
-'genres_simulation' => 'Simulation',
-'genres_sport' => 'Sport',
-'genres_strategy' => 'Strategy',
-'genres_citybuilding' => 'City Building',
-'genres_pointandclick' => 'Point-and-Click',
-'genres_resources' => 'Resources Management',
-'genres_roguelike' => 'Rogue-like',
-'genres_roleplaying' => 'Role playing',
-'genres_rts' => 'Real Time Strategy',
-'genres_shootemup' => 'Shoot\'Em\'Up',
-'genres_towerdefense' => 'Tower Defense',
-
+    'genres' => array(
+        'action' => 'Action',
+        'adventure' => 'Adventure',
+        'arcade' => 'Arcade',
+        'fighting' => 'Fighting',
+        'platformer' => 'Platformer',
+        'puzzle' => 'Puzzle',
+        'racing' => 'Racing',
+        'shooter' => 'Shooter',
+        'simulation' => 'Simulation',
+        'sport' => 'Sport',
+        'strategy' => 'Strategy',
+        'citybuilding' => 'City Building',
+        'pointandclick' => 'Point-and-Click',
+        'resources' => 'Resources Management',
+        'roguelike' => 'Rogue-like',
+        'roleplaying' => 'Role playing',
+        'rts' => 'Real Time Strategy',
+        'shootemup' => 'Shoot\'Em\'Up',
+        'towerdefense' => 'Tower Defense',
+    ),
 
 // POINT OF VIEW
 
-'viewpoints_firstperson' => 'First Person',
-'viewpoints_isometric' => 'Isometric',
-'viewpoints_thirdperson' => 'Third Person',
-'viewpoints_topdown' => 'Top-Down',
-
+    'viewpoints' => array(
+        'firstperson' => 'First Person',
+        'isometric' => 'Isometric',
+        'thirdperson' => 'Third Person',
+        'topdown' => 'Top-Down',
+    ),
 
 // TAGS
 
-'tags_2.5d' => '2.5D',
-'tags_2d' => '2D',
-'tags_3d' => '3D',
-'tags_casual' => 'Casual',
-'tags_cellshading' => 'Cell Shading',
-'tags_fun' => 'Fun',
-'tags_hardcore' => 'Hardcore',
-'tags_leveleditor' => 'Level Editor',
-'tags_physics' => 'Physics',
-'tags_sidescrolling' => 'Side-Scrolling',
-'tags_turnbased' => 'Turn-Based',
+    'tags' => array(
+        '25d' => '2.5D',
+        '2d' => '2D',
+        '3d' => '3D',
+        'casual' => 'Casual',
+        'cellshading' => 'Cell Shading',
+        'fun' => 'Fun',
+        'hardcore' => 'Hardcore',
+        'leveleditor' => 'Level Editor',
+        'physics' => 'Physics',
+        'sidescrolling' => 'Side-Scrolling',
+        'turnbased' => 'Turn-Based',
+    ),
 
 // REPORTS
 
-'report_title' => 'Report this profile',
-'report_description' => 'Description',
-'report_description_placeholder' => '10 characters minimum',
-'report_recipient' => 'Report recipient',
-'report_developer' => 'Developer and Admins',
-'report_admin' => 'Admins only',
-'report_submit' => 'Submit this report',
-'report_gobacktoprofile' => 'Go back to the profile',
-'report_form_success' => 'Thanks, you. The report has been saved.',
-
+    'report' => array(
+        'title' => 'Report this profile',
+        'description' => 'Description',
+        'description_placeholder' => '10 characters minimum',
+        'recipient' => 'Report recipient',
+        'developer' => 'Developer and Admins',
+        'admin' => 'Admins only',
+        'submit' => 'Submit this report',
+        'gobacktoprofile' => 'Go back to the profile',
+        'form_success' => 'Thanks, you. The report has been saved.',
+    ),
 );

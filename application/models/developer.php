@@ -52,7 +52,7 @@ class Developer extends Eloquent
 	        $dev->save();
     	}
         
-        HTML::set_success('The developer profile with name \"'.$dev->name.'\" has successfully been created.');
+        HTML::set_success(lang('messages.adddev_success',array('name'=>$game->name)));
         return $dev;
     }
 
@@ -73,9 +73,9 @@ class Developer extends Eloquent
         if ($dev->name != $form['name']) { // the user wan to change the dev name, must check is the name is not taken
             if (Dev::where('name', '=', $form['name']) != null) {
                 HTML::set_error(
-                    __('vgc.msg_editdev_nametaken', array(
-                        'devname'=>$dev->name,
-                        'devid'=>$dev->id,
+                    lang('messages.editdev_nametaken', array(
+                        'name'=>$game->name,
+                        'id'=>$game->id,
                         'newname'=>$form['name'])
                     )
                 );
@@ -98,35 +98,20 @@ class Developer extends Eloquent
 
         $dev->save();
 
-        HTML::set_success('The developer profile with name \"'.$dev->name.'\" (id : '.$dev->id.') has successfully been updated.');
+        HTML::set_success(lang('messages.editdev_success', 
+            array('name'=>$game->name, 'id'=>$game->id))
+        );
         return true;
     }
 
 
-	/**
-	 * Created an array with data from the database, 
-	 * with the specified $fields as key and value
-	 * @param  string $key   The field used as array key
-	 * @param  string $value The field used as array value
-	 * @param  string $type  The type of profile
-	 * @return array         The generated array
-	 */
-	/*public static function get_array($key, $value, $type = 'any')
-	{
-		if ($type == 'any') {
-			$profiles = Profile::get(array($key, $value));
-		} else {
-			$profiles = Profile::where('type', '=', $type)->get(array($key, $value));
-		}
+	//----------------------------------------------------------------------------------
+    // GETTERS
 
-		$array = array();
-
-		foreach ($profiles as $profile) {
-			$array[$profile->$key] = $profile->$value;
-		}
-
-		return $array;
-	}*/
+    public function json_to_array($attr)
+    {
+        return json_decode($this->get_attribute($attr), true);
+    }
 
 
 	/**
@@ -137,4 +122,37 @@ class Developer extends Eloquent
     {
         return $this->belongs_to('User');
     }
+
+
+    //----------------------------------------------------------------------------------
+    
+    public function __toString()
+    {
+        return $this->name;
+    }
 }
+
+/**
+     * Created an array with data from the database, 
+     * with the specified $fields as key and value
+     * @param  string $key   The field used as array key
+     * @param  string $value The field used as array value
+     * @param  string $type  The type of profile
+     * @return array         The generated array
+     */
+    /*public static function get_array($key, $value, $type = 'any')
+    {
+        if ($type == 'any') {
+            $profiles = Profile::get(array($key, $value));
+        } else {
+            $profiles = Profile::where('type', '=', $type)->get(array($key, $value));
+        }
+
+        $array = array();
+
+        foreach ($profiles as $profile) {
+            $array[$profile->$key] = $profile->$value;
+        }
+
+        return $array;
+    }*/

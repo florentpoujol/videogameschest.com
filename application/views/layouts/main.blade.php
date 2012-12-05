@@ -1,9 +1,11 @@
 <?php
-if ( ! isset($page_title))
+if ( ! isset($page_title)) {
     $page_title = CONTROLLER;
 
-if ( ! isset($page_content))
-    $page_content = '';
+    if ($page_title == '') $page_title = 'Home';
+}
+
+if ( ! isset($page_content)) $page_content = '';
 ?>
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE }}"> 
@@ -26,9 +28,9 @@ if ( ! isset($page_content))
         <header class="container navbar nav-inner">
                 <ul class="nav">
                     <!-- Menu -->
-                <?php $menu_items = array('home', 'adddeveloper'); ?>
+                <?php $menu_items = array('home', 'adddeveloper', 'addgame'); ?>
                 @foreach ($menu_items as $menu_item)
-                    <li><a href="{{ route('get_'.$menu_item) }}">{{ __('vgc.menu_'.$menu_item) }}</a></li>
+                    <li><a href="{{ route('get_'.$menu_item) }}">{{ lang('menu.'.$menu_item) }}</a></li>
                 @endforeach
 
                 @if (IS_LOGGED_IN)
@@ -65,13 +67,13 @@ if ( ! isset($page_content))
                             
                         
                             <li class="divider"></li>
-                            <li><a href="{{ route('get_logout') }}">{{ __('vgc.menu_logout') }}</a></li>
+                            <li><a href="{{ route('get_logout') }}">{{ lang('menu.logout') }}</a></li>
                         </ul>
                     </li>
                     
                     <!-- /Admin menu -->
                 @else
-                    <li><a href="{{ route('get_login') }}"><i class="icon-user"></i>{{ __('vgc.menu_login') }}</a></li>
+                    <li><a href="{{ route('get_login') }}"><i class="icon-user"></i>{{ lang('menu.login') }}</a></li>
                 @endif
                     <!-- /menu --> 
                 </ul>

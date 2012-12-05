@@ -14,27 +14,10 @@ $old = Input::old();
 if ( ! empty($old)) {
 	Former::populate($old);
 }
-
 ?>
-{{ Config::get('application.language', 'default') }} <br>
-{{ Session::get('language', 'defdef') }} <br>
-{{ LANGUAGE }} <br>
-<br>
-{{ lang('errors.test1') }} <br>
-{{ lang('errors.test2') }} <br>
-{{ lang('en_only') }} <br>
-{{ lang('both') }} <br>
-{{ lang('fr_seulement') }} <br>
-<br>
-{{ lang('errors.test1') }} <br>
-{{ lang('errors.test2') }} <br>
-{{ lang('en_only') }} <br>
-{{ lang('both') }} <br>
-{{ lang('fr_seulement') }} <br>
-
 <div id="editdeveloper_form">
 	{{ Former::open_vertical('admin/editdeveloper')->rules($rules) }} 
-		<legend>{{ __('vgceditdeveloper_title') }}</legend>
+		<legend>{{ lang('editdeveloper_title') }}</legend>
 		
 		{{ Form::token() }}
 		{{ Form::hidden('id', $profile_id) }}
@@ -49,15 +32,15 @@ if ( ! empty($old)) {
 
 		{{ Former::number('teamsize', 'vgc.developer_teamsize') }}
 
-		{{ Former::select('country')->options(get_array_lang(Config::get('vgc.countries'), 'countries_')) }}
+		{{ Former::select('country')->options(get_array_lang(Config::get('vgc.countries'), 'countries.')) }}
 
 		<?php
 		$multiselect_form_items = array("technologies", "operatingsystems", "devices","stores");
 		
 		foreach ($multiselect_form_items as $item):
 			$items = Config::get('vgc.'.$item);
-			$options = get_array_lang($items, $item.'_');
-			$values = json_decode($dev->$item, true);
+			$options = get_array_lang($items, $item.'.');
+			$values = $dev->json_to_array($item);
 			$size = count($items);
 		    if ($size > 10) {
 		        $size = 10;
@@ -68,20 +51,20 @@ if ( ! empty($old)) {
 		@endforeach
 
 		<fieldset>
-			<legend>{{ __('vgc.developer_socialnetworks') }}</legend>
+			<legend>{{ lang('developer_socialnetworks') }}</legend>
 			
 			<?php
-			$socialnetworks = json_decode($dev->socialnetworks, true);
+			$socialnetworks = $dev->json_to_array('socialnetworks');
+			$options = get_array_lang(Config::get('vgc.socialnetworks'), 'socialnetworks.');
 			$length = count($socialnetworks['names']);
 			for ($i = 0; $i < $length; $i++):
-				$options = get_array_lang(Config::get('vgc.socialnetworks'), 'socialnetworks_');
+				
 			?>
 				{{ Former::select('socialnetworks[names][]', 'vgc.developer_socialnetworks_name')->options($options)->value($socialnetworks['names'][$i]) }} 
 				{{ Former::url('socialnetworks[urls][]', 'vgc.developer_socialnetworks_url')->value($socialnetworks['urls'][$i]) }}
 			@endfor
 
 			@for ($i = 1; $i < 5; $i++)
-				{{ $options =  get_array_lang(Config::get('vgc.socialnetworks'), 'socialnetworks_') }}
 				{{ Former::select('socialnetworks[names][]', 'vgc.developer_socialnetworks_name')->options($options) }} 
 				{{ Former::url('socialnetworks[urls][]', 'vgc.developer_socialnetworks_url') }}
 			@endfor

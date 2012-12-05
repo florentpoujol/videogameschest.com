@@ -1,7 +1,7 @@
 <?php
 return array(
 	
-	"languages" => array(
+	"site_languages" => array(
 		"english",
 		"french"
 	),
@@ -20,7 +20,7 @@ return array(
 
 	// form
 
-	"game_languages" => array(
+	"languages" => array(
 		"chinese",
 		"english",
 		"japonese",
@@ -203,7 +203,7 @@ return array(
  	),
 
 	"tags" => array(
-		"2.5d",
+		"25d",
 		"2d",
 		"3d",
  		"casual",

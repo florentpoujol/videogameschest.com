@@ -35,10 +35,6 @@
 View::name('layouts.main', 'layout');
 $layout = View::of('layout');
 
-Route::get('/testformer', array('as' => 'get_addgame', function() use ($layout)
-{
-	return $layout->nest('page_content', 'test_former');
-}));
 
 Route::get('/', function() use ($layout)
 {
@@ -54,12 +50,12 @@ Route::get('home', array('as' => 'get_home', 'do' => function() use ($layout)
 
 Route::get('/adddeveloper', array('as' => 'get_adddeveloper', function() use ($layout)
 {
-	return $layout->nest('page_content', 'adddeveloper')->with('page_title', __('vgc.adddeveloper_title'));
+	return $layout->nest('page_content', 'adddeveloper')->with('page_title', lang('adddeveloper_title'));
 }));
 
-Route::get('/addgame', array('as' => 'get_addgame', function()
+Route::get('/addgame', array('as' => 'get_addgame', function() use ($layout)
 {
-	return $layout->nest('page_content', 'adddgame')->with('page_title', __('vgc.addgame_title'));
+	return $layout->nest('page_content', 'addgame')->with('page_title', lang('game.add.title'));
 }));
 
 

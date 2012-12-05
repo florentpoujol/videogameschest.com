@@ -3,7 +3,7 @@ $rules = array(
 	'name' => 'required|min:5|unique:users,username',
 	'email' => 'required|min:5|unique:users|email',
 	'logo' => 'url|active_url',
-	'wubsite' => 'url|active_url',
+	'website' => 'url|active_url',
 	'blogfeed' => 'url|active_url',
 	'teamsize' => 'min:1'
 );

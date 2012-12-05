@@ -46,7 +46,7 @@ class Create_Developer_Table {
 	 */
 	public function down()
 	{
-		Schema::drop('users');
+		Schema::drop('Developers');
 	}
 
 }
