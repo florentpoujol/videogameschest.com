@@ -6,7 +6,7 @@ class Game extends Eloquent
     
     public static $json_items = array(
         'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'themes',
-        'viewpoint', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos');
+        'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos');
     
     public static $array_items = array(
     'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'themes', 'viewpoints', 'nbplayers', 'tags');
@@ -76,9 +76,11 @@ class Game extends Eloquent
             if (in_array($field, static::$array_items)) {
                 $attr = json_encode($attr);
             } elseif (in_array($field, static::$names_urls_items)) { // must sanitise the array, remove items with blank url
-                $attr = clean_names_urls_array($attr);
+                $attr = json_encode(clean_names_urls_array($attr));
             }
             
+            
+
             $game->$field = $attr;
         }
 

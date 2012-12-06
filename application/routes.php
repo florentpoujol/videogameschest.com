@@ -36,6 +36,21 @@ View::name('layouts.main', 'layout');
 $layout = View::of('layout');
 
 
+
+Route::get('test', function() use ($layout)
+{
+	return $layout->nest('page_content', 'test');
+});
+Route::post('test', function() use ($layout)
+{
+	var_dump(Input::all());
+	Input::flash();
+	return $layout->nest('page_content', 'test')->with('input', Input::all());
+});
+
+
+
+
 Route::get('/', function() use ($layout)
 {
 	return $layout->nest('page_content', 'home');

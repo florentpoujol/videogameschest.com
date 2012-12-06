@@ -39,15 +39,15 @@ function lang($key, $replacements = array(), $language = null)
  */
 function clean_names_urls_array($array)
 {
+    if ( ! isset($array['names']) || ! isset($array['urls'])) return $array;
+
     $max_count = count($array['names']);
 
-    for ($i = 0; $i < $max_count; $i++) 
-    {
+    for ($i = 0; $i < $max_count; $i++) {
         if (
             isset($array['names'][$i]) &&
             (trim($array['names'][$i]) == '' || trim($array['urls'][$i]) == '')
-        ) 
-        {
+        ) {
             unset($array['names'][$i]);
             unset($array['urls'][$i]);
             $i--; // go back one index since unsetting change the size of the array and the keys of the remaining values
@@ -55,11 +55,8 @@ function clean_names_urls_array($array)
     }
 
     // rebuilt indexes so that json_encode consider them as array an not as object
-    if(isset($array['names']))
-    {
-        array_values($array['names']);
-        array_values($array['urls']);
-    }
+    $array['names'] = array_values($array['names']);
+    $array['urls'] = array_values($array['urls']);
 
     return $array;
 }
