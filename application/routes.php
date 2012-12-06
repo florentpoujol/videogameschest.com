@@ -99,7 +99,7 @@ Route::group(array('before' => 'auth'), function()
 	// I could also use
 	// Route::get('admin/(add|edit)developer', 'admin@(:1)developer');
 
-	Route::get('admin/addgame', array('as' => 'get_addgame', 'uses' => 'admin@addgame'));
+	Route::get('admin/addgame', array('as' => 'get_admin_addgame', 'uses' => 'admin@addgame'));
 	Route::get('admin/editgame/(:num?)', array('as' => 'get_editgame', 'uses' => 'admin@editgame'));
 
 	Route::get('admin/gamequeue', array('as' => 'get_gamequeue', 'uses' => 'admin@gamequeue'));
@@ -112,7 +112,7 @@ Route::group(array('before' => 'auth'), function()
 Route::group(array('before' => 'auth|admin'), function()
 {
 	Route::get('admin/adduser', array('as' => 'get_adduser', 'uses' => 'admin@adduser'));
-	
+	Route::get('admin/adddeveloper', array('as' => 'get_admin_adddeveloper', 'uses' => 'admin@adddeveloper'));
 });
 
 
@@ -120,7 +120,6 @@ Route::group(array('before' => 'auth|admin'), function()
 Route::group(array('before' => 'auth|admin|csrf'), function()
 {
 	Route::post('admin/adduser', array('as' => 'post_adduser', 'uses' => 'admin@adduser'));
-	
 	Route::post('admin/selecteditdeveloper', array('as' => 'post_selecteditdeveloper', 'uses' => 'admin@selecteditdeveloper'));
 });
 
@@ -211,26 +210,20 @@ Route::filter('before', function()
 
     // set some CONST
 
-    if (Auth::check()) 
-    { // user is logged in
+    if (Auth::check()) { // user is logged in
     	define('IS_LOGGED_IN', true);
     	define("USER_ID", Auth::user()->id);
 
-    	if (Auth::user()->type == 'admin') 
-    	{
+    	if (Auth::user()->type == 'admin') {
     		define('IS_ADMIN', true);
     		define('IS_DEVELOPER', false);
     		define("DEV_PROFILE_ID", 0);
-    	}
-    	else 
-    	{
+    	} else {
     		define('IS_ADMIN', false);
     		define('IS_DEVELOPER', true);
     		define("DEV_PROFILE_ID", Auth::user()->developer->id);
     	}
-    }
-    else 
-    {
+    } else {
     	define('IS_LOGGED_IN', false);
 		define('USER_ID', 0);
 		define('IS_ADMIN', false);
@@ -239,14 +232,12 @@ Route::filter('before', function()
     }
 
     $route = Request::$route;
-
-    if ($route->controller != null) 
-    {
+    
+    if ($route->controller != null) {
     	define('CONTROLLER', $route->controller);
     	define('METHOD', $route->controller_action);
-    }
-    else
-    {
+    	define('ACTION', $route->controller_action);
+    } else {
     	$uri = $route->uri;
     	$segments = preg_split('#/#', $route->uri);
     	
@@ -256,6 +247,7 @@ Route::filter('before', function()
     		$segments[1] = 'index';
 
     	define('METHOD', $segments[1]);
+    	define('ACTION', $segments[1]);
     }
 
 
@@ -275,26 +267,21 @@ Route::filter('csrf', function()
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) 
-	{
-		HTML::set_error("You must be logged in to access this page !");
+	if (Auth::guest()) {
+		HTML::set_error(lang('messages.logged_in_only'));
 		return Redirect::to_route('get_login');
 	}
 });
 
 Route::filter('admin', function()
 {
-	if ( ! Auth::guest()) 
-	{
-		if (Auth::user()->type != 'admin') 
-		{
-			HTML::set_error("You must be an administrator to access this page !");
+	if ( ! Auth::guest()) {
+		if (Auth::user()->type != 'admin') {
+			HTML::set_error(lang('messages.admin_only'));
 			return Redirect::to_route('get_admin_home');
 		}
-	}
-	else 
-	{
-		HTML::set_error("You must be logged in and an administrator to access this page !");
+	} else {
+		HTML::set_error(lang('messages.admin_and_logged_in'));
 		return Redirect::to_route('get_login');
 	}
 });

@@ -29,11 +29,8 @@ class Base_Controller extends Controller {
     {
         parent::__construct();
 
-        /*$title = Str::title(METHOD).' - '.Str::title(CONTROLLER);
-        if (METHOD == 'index')
-        	$title = Str::title(CONTROLLER);*/
         $title = '';
-        switch (METHOD)
+        switch (ACTION)
         {
         	case 'index': $title = Str::title(CONTROLLER);
         	break;
@@ -48,12 +45,12 @@ class Base_Controller extends Controller {
             case 'editdeveloper': $title = __('vgc.editdeveloper_title');
             break;
 
-            case 'addgame': $title = __('vgc.addgame_title');
+            case 'addgame': $title = lang('game.add.title');
             break;
-            case 'editgame': $title = __('vgc.editgame_title');
+            case 'editgame': $title = lang('game.edit.title');
             break;
 
-        	default: $title = Str::title(METHOD);
+        	default: $title = Str::title(ACTION);
         }
 
     	$this->layout

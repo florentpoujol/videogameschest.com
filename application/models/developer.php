@@ -124,11 +124,21 @@ class Developer extends Eloquent
     }
 
 
+    public function games()
+    {
+        return $this->has_many('Game');
+    }
+
+
     //----------------------------------------------------------------------------------
     
     public function __toString()
     {
-        return $this->name;
+        $name = $this->name;
+
+        if ( ! is_string($name)) $name = "Developer->__toString()";
+
+        return $name;
     }
 }
 

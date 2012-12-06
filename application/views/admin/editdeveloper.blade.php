@@ -58,7 +58,6 @@ if ( ! empty($old)) {
 			$options = get_array_lang(Config::get('vgc.socialnetworks'), 'socialnetworks.');
 			$length = count($socialnetworks['names']);
 			for ($i = 0; $i < $length; $i++):
-				
 			?>
 				{{ Former::select('socialnetworks[names][]', 'vgc.developer_socialnetworks_name')->options($options)->value($socialnetworks['names'][$i]) }} 
 				{{ Former::url('socialnetworks[urls][]', 'vgc.developer_socialnetworks_url')->value($socialnetworks['urls'][$i]) }}

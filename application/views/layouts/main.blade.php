@@ -1,6 +1,6 @@
 <?php
 if ( ! isset($page_title)) {
-    $page_title = CONTROLLER;
+    $page_title = ucfirst(CONTROLLER);
 
     if ($page_title == '') $page_title = 'Home';
 }
@@ -51,14 +51,14 @@ if ( ! isset($page_content)) $page_content = '';
 
                             <li class="divider"></li>
                         @if (IS_ADMIN) 
-                            <li><a href="{{ route('get_adddeveloper') }}">Add a developer</a></li>
+                            <li><a href="{{ route('get_admin_adddeveloper') }}">Add a developer</a></li>
                             <li><a href="{{ route('get_editdeveloper') }}">Edit a developer</a></li>
                         @elseif (IS_DEVELOPER)
                             <li><a href="{{ route('get_editdeveloper', array(USER_ID)) }}">Edit your developer profile</a></li>
                         @endif 
 
                             <li class="divider"></li>
-                            <li><a href="{{ route('get_addgame') }}">Add a game</a></li>
+                            <li><a href="{{ route('get_admin_addgame') }}">Add a game</a></li>
                             <li><a href="{{ route('get_editgame') }}">Edit a game</a></li>
 
                             <li class="divider"></li>

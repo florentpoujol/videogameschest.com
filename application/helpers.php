@@ -55,7 +55,7 @@ function clean_names_urls_array($array)
     }
 
     // rebuilt indexes so that json_encode consider them as array an not as object
-    if(isset($array['names'])) 
+    if(isset($array['names']))
     {
         array_values($array['names']);
         array_values($array['urls']);

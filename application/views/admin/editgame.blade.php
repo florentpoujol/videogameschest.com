@@ -8,30 +8,31 @@ $rules = array(
 	'soundtrackurl' => 'url|active_url',
 	'publishername' => 'min:2',
 	'publisherurl' => 'url|active_url|required_with:publishername',
-	'price' => 'min:0'
+	'price' => 'min:0',
 );
+
+$game = Game::find($profile_id);
+$game->socialnetworks = Game::t
+Former::populate($game);
 
 $old = Input::old();
 if ( ! empty($old)) {
 	Former::populate($old);
 }
-
-if (IS_ADMIN) {
-	$devs = Dev::get();
-} else {
-	$devs = Dev::where('privacy', '=', 'public')->get(array('id', 'name'));
-}
+var_dump(Input::old());
 ?>
 
-<div id="addgame_form">
-	{{ Former::open_vertical('admin/addgame')->rules($rules) }} 
-		<legend>{{ lang('game.add.title') }}</legend>
+<div id="editgame_form">
+	{{ Former::open_vertical('admin/editgame')->rules($rules) }} 
+		<legend>{{ lang('game.edit.title') }}</legend>
+		
 		{{ Form::token() }}
+		{{ Form::hidden('id', $profile_id) }}
 		
 		{{ Former::text('name', lang('game.fields.name')) }}
 
-		@if (Auth::guest() || IS_ADMIN)
-			{{ Former::select('developer_id', lang('game.fields.developer'))->fromQuery($devs) }}
+		@if (IS_ADMIN)
+			{{ Former::select('developer_id', lang('game.fields.developer'))->fromQuery(Dev::all()) }}
 		@else
 			You are the developer of this game. <br>
 			{{ Former::hidden('developer_id', DEV_PROFILE_ID) }}
@@ -56,12 +57,17 @@ if (IS_ADMIN) {
 		foreach (Game::$array_items as $item):
 			$items = Config::get('vgc.'.$item);
 			$options = get_array_lang($items, $item.'.');
+
+			$values = $game->json_to_array($item);
+			if (empty($values))
+				$values = Input::old($item);
+
 			$size = count($items);
 		    if ($size > 10 ) {
 		        $size = 10;
 		    }
 		?>
-			{{ Former::multiselect($item.'[]', lang('game.fields.'.$item))->options($options)->size($size)->help(lang('game.fields.'.$item.'_help')) }}
+			{{ Former::multiselect($item.'[]', lang('game.fields.'.$item))->options($options)->forceValue($values)->size($size)->help(lang('game.fields.'.$item.'_help')) }}
 		@endforeach
 		
 		<?php
@@ -71,9 +77,21 @@ if (IS_ADMIN) {
 			<fieldset>
 				<legend>{{ lang('game.fields.'.$item.'_title') }}</legend>
 
-				@for ($i = 1; $i < 5; $i++)		
-					{{ Former::select($item.'[names][]', lang('game.fields.'.$item.'_name'))->options(get_array_lang(Config::get('vgc.'.$item), $item.'.')) }} 
-					{{ Former::url($item.'[urls][]', lang('game.fields.'.$item.'_url')) }}
+				<?php
+				$options = get_array_lang(Config::get('vgc.'.$item), $item.'.');
+				//$values = $game->json_to_array($item);
+				//if ($values = )
+				
+				$length = count($values['names']);
+				for ($i = 0; $i < $length; $i++):
+				?>
+					{{ Former::select($item.'[names]['.$i.']', lang('game.fields.'.$item.'_name'))->options(get_array_lang(Config::get('vgc.'.$item), $item.'.')) }} 
+					{{ Former::url($item.'[urls]['.$i.']', lang('game.fields.'.$item.'_url'))->value($values['urls'][$i]) }}
+				@endfor
+
+				@for ($i = $length; $i < $length+4; $i++)		
+					{{ Former::select($item.'[names]['.$i.']', lang('game.fields.'.$item.'_name'))->options(get_array_lang(Config::get('vgc.'.$item), $item.'.')) }} 
+					{{ Former::url($item.'[urls]['.$i.']', lang('game.fields.'.$item.'_url')) }}
 				@endfor
 			</fieldset>
 		@endforeach
@@ -85,6 +103,15 @@ if (IS_ADMIN) {
 			<fieldset>
 				<legend>{{ lang('game.fields.'.$item.'_title') }}</legend>
 
+				<?php
+				$values = $game->json_to_array($item);
+				$length = count($values['names']);
+				for ($i = 0; $i < $length; $i++):
+				?>
+					{{ Former::text($item.'[names][]', lang('game.fields.'.$item.'_name'))->value($values['names'][$i]) }} 
+					{{ Former::url($item.'[urls][]', lang('game.fields.'.$item.'_url'))->value($values['urls'][$i]) }}
+				@endfor
+
 				@for ($i = 1; $i < 5; $i++)		
 					{{ Former::text($item.'[names][]', lang('game.fields.'.$item.'_name')) }} 
 					{{ Former::url($item.'[urls][]', lang('game.fields.'.$item.'_url')) }}
@@ -92,7 +119,7 @@ if (IS_ADMIN) {
 			</fieldset>
 		@endforeach
 
-		<input type="submit" value="{{ lang('game.add.submit') }}" class="btn btn-primary">
+		<input type="submit" value="{{ lang('game.edit.submit') }}" class="btn btn-primary">
 	</form>
 </div>
 <!-- /#user_form --> 

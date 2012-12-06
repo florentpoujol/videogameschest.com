@@ -217,7 +217,7 @@ class Admin_Controller extends Base_Controller
 
     public function get_adddeveloper()
     {
-        return "add developer from admin";
+        $this->layout->nest('page_content', 'adddeveloper');
     }
 
     public function post_adddeveloper()
@@ -335,9 +335,9 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // ADD GAME
 
-    public function get_adddgame()
+    public function get_addgame()
     {
-        return "add game from admin";
+        $this->layout->nest('page_content', 'addgame');
     }
 
     public function post_addgame()
@@ -347,12 +347,14 @@ class Admin_Controller extends Base_Controller
         // checking form
         $rules = array(
             'name' => 'required|min:5|unique:games',
-            'developer_id' => 'required|exists:developers',
+            'developer_id' => 'required|exists:developers,id',
             'logo' => 'url|active_url',
             'website' => 'url|active_url',
             'blogfeed' => 'url|active_url',
             'soundtrackurl' => 'url|active_url',
-            'publisherurl' => 'url|active_url',
+            'publishername' => 'min:2',
+            'publisherurl' => 'url|active_url|required_with:publishername',
+            'price' => 'min:0',
         );
 
         $validation = Validator::make($input, $rules);
@@ -375,23 +377,22 @@ class Admin_Controller extends Base_Controller
     public function post_selecteditgame()
     {
         $name = Input::get('game_name');
+        $id = null;
         
         if (is_numeric($name)) {
-            $id = $name;
-
-            if (Profile::find($id, 'game') == null) {
-                HTML::set_error('No game with id ['.$id.'] was found !');
-                return Redirect::to_route('get_admin_home');
+            if (Game::find($name) == null) {
+                HTML::set_error('No game with id ['.$name.'] was found !');
+            } else {
+                $id = $name;
             }
         } else {
-            $profile = Profile::where('type', '=', 'game')->where('name', '=', $name)->first();
+            $profile = Game::where('name', '=', $name)->first();
             
             if ($profile == null) {
                 HTML::set_error('No game with name ['.$name.'] was found !');
-                return Redirect::to_route('get_admin_home');
+            } else {
+                $id = $profile->id;
             }
-
-            $id = $profile->id;
         }
 
         return Redirect::to_route('get_editgame', array($id));
@@ -404,24 +405,20 @@ class Admin_Controller extends Base_Controller
     public function get_editgame($profile_id = null)
     {
         if ($profile_id == null) {
-            if (IS_DEVELOPER) {
-                return Redirect::to_route('get_editgame', array(DEV_PROFILE_ID));
-            } else {
-                $this->layout->nest('page_content', 'admin/selecteditgame');
-                return;
-            }
+            $this->layout->nest('page_content', 'admin/selecteditgame');
+            return;
         }
 
         if (IS_DEVELOPER && $profile_id != DEV_PROFILE_ID) {
-            HTML::set_error("You are not allowed to edit other game's profiles !");
+            HTML::set_error(lang('messages.can_not_edit_others_games'));
             return Redirect::to_route('get_editgame', array(DEV_PROFILE_ID));
         }
 
-        if (Dev::find($profile_id) == null) {
-            // $profile_id was set but no dev profile was found
+        if (Game::find($profile_id) == null) {
+            // $profile_id was set but no game profile was found
             // this should only happens when user is an admin
-            // since dev with bad dev profile id are already redirected
-            HTML::set_error("Can't find the game profile with id '$profile_id' !");
+            // since dev with bad game profile id are already redirected
+            HTML::set_error(lang('messages.game_profile_not_found', array('profile_id'=>$profile_id)));
             return Redirect::to_route('get_editgame');
         }
 
@@ -434,12 +431,14 @@ class Admin_Controller extends Base_Controller
         // checking form
         $rules = array(
             'name' => 'required|min:5|unique:games',
-            'developer_id' => 'required|exists:developers',
+            'developer_id' => 'required|exists:developers,id',
             'logo' => 'url|active_url',
             'website' => 'url|active_url',
             'blogfeed' => 'url|active_url',
             'soundtrackurl' => 'url|active_url',
-            'publisherurl' => 'url|active_url',
+            'publishername' => 'min:2',
+            'publisherurl' => 'url|active_url|required_with:publishername',
+            'price' => 'min:0',
         );
         
         $validation = Validator::make($input, $rules);

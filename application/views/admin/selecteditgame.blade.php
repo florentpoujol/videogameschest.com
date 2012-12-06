@@ -1,9 +1,9 @@
 <?php
 if (IS_DEVELOPER) {
-	$games = Auth::user()->profiles()->where('type', '=', 'game')->get(array('id', 'name'));
+	$games = Auth::user()->dev->games->get(array('id', 'name'));
 }
 else {
-	$games = Profile::where('type', '=', 'game')->get(array('id', 'name'));
+	$games = Game::get(array('id', 'name'));
 }
 ?>
 <div id="selecteditdeveloper_form">

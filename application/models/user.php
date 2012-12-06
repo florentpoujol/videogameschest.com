@@ -88,4 +88,9 @@ class User extends Eloquent {
     {
         return $this->has_one('Developer');
     }
+
+    public function dev() 
+    {
+        return $this->developer;
+    }
 }   

@@ -11,14 +11,21 @@ return array(
 // MESSAGES (errors, success)
 
     'messages' => array(
-        'adddev_success' => 'The developer profile with name \":name\" has successfully been created.',
-        'addgame_success' => 'The game profile with name \":name\" has successfully been created.',
+        'adddev_success' => 'The developer profile with name \":name\" has successfully been submitted.',
+        'addgame_success' => 'The game profile with name \":name\" has successfully been submitted.',
 
         'editdev_nametaken' => 'Can\'t rename the developer profile with name \":name\" (id : :id) because the name \":newname" is already taken.',
         'editgame_nametaken' => 'Can\'t rename the game profile with name \":name\" (id : :id) because the name \":newname" is already taken.',
         
         'editdev_success' => 'The developer profile with name \":name\" (id : :id) has successfully been updated.',
         'editgame_success' => 'The game profile with name \":name\" (id : :id) has successfully been updated.',
+
+        'logged_in_only' => "You must be logged in to access this page !",
+        'admin_only' => "You must be an administrator to access this page !",
+        'admin_and_logged_in' => "You must be logged in and an administrator to access this page !",
+
+        'can_not_edit_others_games' => "You are not allowed to edit other developer's games !",
+        'game_profile_not_found' => "Can't find the game profile with id ':profile_id' !",
     ),  
 
 // MENU
@@ -130,11 +137,13 @@ return array(
                 'canceled' => 'Canceled',
             ),*/
 
+            'devstate_title' => 'Developement state',
+
             'logo' => 'Logo URL',
             'website' => 'Website URL',
             'blogfeed' => 'Blog RSS/Atom feed',
             'publishername' => 'Publisher name',
-            'publisherurl' => 'Publisher\'s website url',
+            'publisherurl' => 'Publisher\'s website URL',
             'soundtrackurl' => 'Soundtrack URL',
 
             'price' => 'Price',
@@ -143,13 +152,8 @@ return array(
             'releasedate' => 'Release date',
             'country' => 'Country',
 
-            
-
             'languages' => 'Languages',
             'languages_help' => 'The languages the game is playable in',
-
-            
-            
 
             'technologies' => 'Technologies',
             'technologies_help' => 'The technologies the game is made with',
@@ -198,7 +202,11 @@ return array(
         'add' => array(
             'title' => 'Add a game profile',
             'submit' => 'Submit this game profile',
-            'success' => 'Thanks you, the game has successfully been added. The developers must first check the data then make the profile public before he shows up in the search.',
+        ),
+
+        'edit' => array(
+            'title' => 'Edit a game profile',
+            'submit' => 'Edit this game profile',            
         ),
 
         'profile' => array(
@@ -372,15 +380,16 @@ return array(
 
 // DEVELOPEMENT STATES
 
-    'developementstates' => array(
-        'concept' => 'Concept/Design phase',
-        'prototype' => 'Prototype phase',
-        'earlyproduction' => 'Early production',
-        'firstgameplay' => 'First gameplay',
-        'publicplayablebuilt' => 'Public playable built',
-        'released' => 'Released',
+    'developmentstates' => array(
+        'concept' => '1 - Concept/Design phase',
+        'prototype' => '2 - Prototype phase',
+        'earlyproduction' => '3 - Early production',
+        'firstgameplay' => '4 - First gameplay',
+        'publicplayablebuilt' => '5 - Public playable built',
+        'released' => '6 - Released',
         'canceled' => 'Canceled',
     ),
+
 
 // THEMES
 

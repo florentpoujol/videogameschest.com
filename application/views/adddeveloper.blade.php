@@ -17,21 +17,21 @@ if ( ! empty($old)) {
 
 <div id="adddeveloper_form">
 	{{ Former::open_vertical('admin/adddeveloper')->rules($rules) }} 
-		<legend>{{ __('vgc.adddeveloper_title') }}</legend>
+		<legend>{{ lang('adddeveloper_title') }}</legend>
 		{{ Form::token() }}
 		
-		{{ Former::text('name', __('vgc.developer_name')) }}
-		{{ Former::email('email', __('vgc.developer_email')) }}
+		{{ Former::text('name', lang('developer_name')) }}
+		{{ Former::email('email', lang('developer_email')) }}
 
-		{{ Former::textarea('pitch', __('vgc.developer_pitch')) }}
+		{{ Former::textarea('pitch', lang('developer_pitch')) }}
 
-		{{ Former::url('logo', __('vgc.developer_logo')) }}
-		{{ Former::url('website', __('vgc.developer_website')) }}
-		{{ Former::url('blogfeed', __('vgc.developer_blogfeed')) }}
+		{{ Former::url('logo', lang('developer_logo')) }}
+		{{ Former::url('website', lang('developer_website')) }}
+		{{ Former::url('blogfeed', lang('developer_blogfeed')) }}
 
-		{{ Former::number('teamsize', __('vgc.developer_teamsize'))->value(1) }}
+		{{ Former::number('teamsize', lang('developer_teamsize'))->value(1) }}
 
-		{{ Former::select('country', __('vgc.developer_country'))->options(get_array_lang(Config::get('vgc.countries'), 'countries_')) }}
+		{{ Former::select('country', lang('developer_country'))->options(get_array_lang(Config::get('vgc.countries'), 'countries.')) }}
 
 		<?php
 		$multiselect_form_items = array("technologies", "operatingsystems", "devices","stores");
@@ -42,19 +42,19 @@ if ( ! empty($old)) {
 		        $size = 10;
 		    }
 		?>
-			{{ Former::multiselect($item.'[]', __('vgc.developer_'.$item))->options(get_array_lang($items, $item.'_'))->size($size) }}
+			{{ Former::multiselect($item.'[]', lang('developer_'.$item))->options(get_array_lang($items, $item.'.'))->size($size) }}
 		@endforeach
 		
 		<fieldset>
-			<legend>{{ __('vgc.developer_socialnetworks') }}</legend>
+			<legend>{{ lang('developer_socialnetworks') }}</legend>
 
 			@for ($i = 1; $i < 5; $i++)		
-				{{ Former::select('socialnetworks[names][]', __('vgc.developer_socialnetworks_name'))->options(get_array_lang(Config::get('vgc.socialnetworks'), 'socialnetworks_')) }} 
-				{{ Former::url('socialnetworks[urls][]', __('vgc.developer_socialnetworks_url')) }}
+				{{ Former::select('socialnetworks[names][]', lang('developer_socialnetworks_name'))->options(get_array_lang(Config::get('vgc.socialnetworks'), 'socialnetworks.')) }} 
+				{{ Former::url('socialnetworks[urls][]', lang('developer_socialnetworks_url')) }}
 			@endfor
 		</fieldset>
 
-		<input type="submit" value="{{ __('vgc.adddeveloper_submit') }}" class="btn btn-primary">
+		<input type="submit" value="{{ lang('adddeveloper_submit') }}" class="btn btn-primary">
 	</form>
 </div>
 <!-- /#user_form --> 
