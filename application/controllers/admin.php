@@ -227,9 +227,9 @@ class Admin_Controller extends Base_Controller
         // checking form
         $rules = array(
             'name' => 'required|min:5|unique:users,username',
-            'logo' => 'url|active_url',
-            'website' => 'url|active_url',
-            'blogfeed' => 'url|active_url',
+            'cover' => 'url',
+            'website' => 'url',
+            'blogfeed' => 'url',
             'teamsize' => 'min:1'
         );
 
@@ -316,9 +316,9 @@ class Admin_Controller extends Base_Controller
         // checking form
         $rules = array(
             'name' => 'required|min:5',
-            'logo' => 'url|active_url',
-            'website' => 'url|active_url',
-            'blogfeed' => 'url|active_url',
+            'cover' => 'url',
+            'website' => 'url',
+            'blogfeed' => 'url',
             'teamsize' => 'min:1'
         );
         
@@ -384,17 +384,13 @@ class Admin_Controller extends Base_Controller
         if (is_numeric($name)) {
             if (Game::find($name) == null) {
                 HTML::set_error('No game with id ['.$name.'] was found !');
-            } else {
-                $id = $name;
-            }
+            } else $id = $name;
         } else {
             $profile = Game::where('name', '=', $name)->first();
             
             if ($profile == null) {
                 HTML::set_error('No game with name ['.$name.'] was found !');
-            } else {
-                $id = $profile->id;
-            }
+            } else $id = $profile->id;
         }
 
         return Redirect::to_route('get_editgame', array($id));
@@ -427,19 +423,20 @@ class Admin_Controller extends Base_Controller
         $this->layout->nest('page_content', 'admin/editgame', array('profile_id'=>$profile_id));
     }
 
-    public function post_editgame() {
+    public function post_editgame() 
+    {
         $input = Input::all();
         
         // checking form
         $rules = array(
             'name' => 'required|min:5',
             'developer_id' => 'required|exists:developers,id',
-            'logo' => 'url|active_url',
-            'website' => 'url|active_url',
-            'blogfeed' => 'url|active_url',
-            'soundtrackurl' => 'url|active_url',
+            'logo' => 'url',
+            'website' => 'url',
+            'blogfeed' => 'url',
+            'soundtrackurl' => 'url',
             'publishername' => 'min:2',
-            'publisherurl' => 'url|active_url|required_with:publishername',
+            'publisherurl' => 'url|required_with:publishername',
             'price' => 'min:0',
         );
         

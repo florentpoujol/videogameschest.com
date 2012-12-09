@@ -1,16 +1,22 @@
 <?php
 $old = Input::old();
 if (isset($old)) {
-	var_dump($old);
+ var_dump($old);
+ Former::populate($old);
 }
-Former::populate($old);
+
+
+$rules = array(
+	'test' => 'min:5'
+);
+
+$options = array('1' => 'un', '2'=>'deux')
 ?>
-{{ Former::open_vertical('test') }} 
+{{ Former::open_vertical('test')->rules($rules) }} 
 	
 
-	{{ Former::text('field[0]') }}
-	{{ Former::text('field[1]') }}
-	{{ Former::text('field[2]') }}
+	{{ Former::multiselect('field[]')->options($options) }}
+	{{ Former::text('test') }}
 
 
 	{{ Former::submit('submit') }}

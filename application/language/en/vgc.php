@@ -14,7 +14,7 @@ return array(
         'adddev_success' => 'The developer profile with name \":name\" has successfully been submitted.',
         'addgame_success' => 'The game profile with name \":name\" has successfully been submitted.',
 
-        'editdev_nametaken' => 'Can\'t rename the developer profile with name \":name\" (id : :id) because the name \":newname" is already taken.',
+        'editdev_nametaken' => 'Can\'t rename the developer profile with name \":name\" (id : :id) because the name \":newname\" is already taken.',
         'editgame_nametaken' => 'Can\'t rename the game profile with name \":name\" (id : :id) because the name \":newname" is already taken.',
         
         'editdev_success' => 'The developer profile with name \":name\" (id : :id) has successfully been updated.',
@@ -37,18 +37,23 @@ return array(
         'about' => 'About',
         'adddeveloper' => 'Add a developer',
         'addgame' => 'Add a game',
-        'login' => 'Log In',
         'logout' => 'Log Out',
         'languages' => 'Languages',
+
+        'login' => array(
+            'name_label' => 'Your user name, email or id',
+            'password_label' => 'Your password',
+            'title' => 'Log In',
+            'submit' => 'Log In',
+            'lost_password' => 'I lost my password',
+            'lostpassword_help' => 'If you lost your password, just fill the field below with your username, email or user id and click the button to get a new temporary password by email.',
+        ),
     ),
 
 
 // LOGIN
 
-'login_name_label' => 'Your user name, email or id',
-'login_password_label' => 'Your password',
-'login_submit' => 'Log In',
-'login_lost_password' => 'I lost my password',
+
 
 
 // HELP
@@ -58,89 +63,74 @@ return array(
 
 
 // DEVELOPER 
-    
-    // GENERIC DEVELOPER STRINGS
+    'developer' => array(
+        'fields' => array(
+            'name' => 'Name',
+            'name_help' => 'Company name, if applicable.',
 
-    'developer_name' => 'Name',
-    'help_developer_name' => 'Company name, if applicable.',
+            'email' => 'Email',
+            'pitch' => 'Explain about the developer\'s phylosophy, goals...',
+            'logo' => 'Logo URL',
+            'website' => 'Website URL',
 
-    'developer_email' => 'Email',
-    'developer_pitch' => 'Explain about the developer\'s phylosophy, goals...',
-    'developer_logo' => 'Logo URL',
-    'developer_website' => 'Website URL',
+            'blogfeed' => 'Blog RSS/Atom feed',
+            'profile_blogfeed' => 'Lastest articles from the blog',
 
-    'developer_blogfeed' => 'Blog RSS/Atom feed',
-    'developer_profile_blogfeed' => 'Lastest articles from the blog',
+            'country' => 'Country',
+            'teamsize' => 'Teamsize',
 
-    'developer_country' => 'Country',
-    'developer_teamsize' => 'Teamsize',
+            'socialnetworks' => 'Social networks',
+            'socialnetworks_name' => 'Name',
+            'socialnetworks_url' => 'url',
+            'socialnetworks_url_placeholder' => 'Full profile URL',
 
-    'developer_socialnetworks' => 'Social networks',
-    'developer_socialnetworks_name' => 'Name',
-    'developer_socialnetworks_url' => 'url',
-    'developer_socialnetworks_url_placeholder' => 'Full profile URL',
+            'technologies' => 'Technologies',
+            'technologies_help' => 'The technologies the developer works with',
 
-    'developer_technologies' => 'Technologies',
-    'help_developer_technologies' => 'The technologies the developer works with',
+            'operatingsystems' => 'Operating systems',
+            'operatingsystems_help' => 'The operating systems the developer\'s games run on (not applicable for most consoles)',
 
-    'developer_operatingsystems' => 'Operating systems',
-    'help_developer_operatingsystems' => 'The operating systems the developer\'s games run on (not applicable for most consoles)',
+            'devices' => 'Devices',
+            'devices_help' => 'The devices the developer\'s games are playable on',
 
-    'developer_devices' => 'Devices',
-    'help_developer_devices' => 'The devices the developer\'s games are playable on',
+            'stores' => 'Stores',
+            'stores_help' => 'The stores the developer sells their games on',
+        ), // end fields
+        
+        'add' => array(
+            'title' => 'Add a developer profile',
 
-    'developer_stores' => 'Stores',
-    'help_developer_stores' => 'The stores the developer sells their games on',
+            'required_field' => 'The developer\'s name and email are required fields.',
+            'submit' => 'Add this developer profile',
 
+            'success' => 'Thanks you, the developer has successfully been added, an email will be send to let them now. \n 
+          They must first check the data then make their account public before you can add one of their game.',
+        ),
 
-    // ADD DEVELOPER SPECIFIC TERMS
+        'edit' => array(
+            'title' => 'Edit a developer profile',
+            'submit' => 'Edit a developer profile',
+        ),
 
-    'adddeveloper_title' => 'Add a developer profile',
-
-    'adddeveloper_required_field' => 'The developer\'s name and email are required fields.',
-    'adddeveloper_submit' => 'Add this developer profile',
-
-    'adddeveloper_success' => 'Thanks you, the developer has successfully been added, an email will be send to let them now. \n 
-    They must first check the data then make their account public before you can add one of their game.',
-
-
-    // EDITDEVELOPER
-    'editdeveloper_title' => 'Edit a developer profile',
-    'editdeveloper_submit' => 'Edit a developer profile',
-
-
-    // DEVELOPER PROFILE SPECIFIC TERMS
-
-    'developer_profile_title' => 'Developer',
-    'developer_website_title' => 'Go to the developer\'s website',
-
-
+        'profile' => array(
+            'title' => 'Developer',
+            'website' => 'Go to the developer\'s website',
+        ),
+    ),
 
 
 // GAME 
     'game' => array(
-        // GENERIC GAME STRINGS
         'fields' => array(
             'name' => 'Game title',
 
             'developer' => 'Developer\'s name',
             'pitch' => 'Game story, features...',
 
-            /*'developementstates' => array(
-                'legend' => 'Developement state',
-                'concept' => 'Concept/Design phase',
-                'prototype' => 'Prototype phase',
-                'earlyproduction' => 'Early production',
-                'internalplayablebuilt' => 'Internal playable built',
-                'publicplayablebuilt' => 'Public playable built',
-                'released' => 'Released',
-                'canceled' => 'Canceled',
-            ),*/
-
             'devstate_title' => 'Developement state',
 
-            'logo' => 'Logo URL',
-            'website' => 'Website URL',
+            'cover' => 'Box cover URL',
+            'website' => 'Website\'s page URL',
             'blogfeed' => 'Blog RSS/Atom feed',
             'publishername' => 'Publisher name',
             'publisherurl' => 'Publisher\'s website URL',
@@ -177,8 +167,7 @@ return array(
             'tags_help' => ' ',
 
             'viewpoints' => 'Point of view',
-            'viewpoints_help' => ' ',
-
+            'viewpoints_help' => 'Not applicable for 2D games',
 
             'socialnetworks_title' => 'Social networks',
             'socialnetworks_help' => '',
@@ -248,7 +237,7 @@ return array(
         'austria' => 'Austria',
         'belgium' => 'Belgium',
         'canada' => 'Canada',
-        'france' => 'France',
+        'france' => 'France', 
         'germany' => 'Germany',
         'greece' => 'Greece',
         'holland' => 'Holland',
@@ -446,7 +435,7 @@ return array(
         '2d' => '2D',
         '3d' => '3D',
         'casual' => 'Casual',
-        'cellshading' => 'Cell Shading',
+        'celshading' => 'Cel Shading',
         'fun' => 'Fun',
         'hardcore' => 'Hardcore',
         'leveleditor' => 'Level Editor',

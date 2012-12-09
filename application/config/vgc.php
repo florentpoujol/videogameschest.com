@@ -24,7 +24,8 @@ return array(
 		"chinese",
 		"english",
 		"japonese",
-		"russian"
+		"russian",
+		'french',
 	),
 
 	"countries" => array(
@@ -207,7 +208,7 @@ return array(
 		"2d",
 		"3d",
  		"casual",
- 		"cellshading",
+ 		"celshading",
  		"fun",
  		"hardcore",
  		"leveleditor",

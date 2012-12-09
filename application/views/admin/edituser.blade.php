@@ -19,7 +19,7 @@ if ( ! empty($old)) {
 ?>
 
 <div id="user_form">
-	{{ Former::open_vertical()->rules($rules) }} 
+	{{ Former::open_vertical('admin/edituser')->rules($rules) }} 
 		<legend>Edit a user account</legend>
 		{{ Form::token() }}
 

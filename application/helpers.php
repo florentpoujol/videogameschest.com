@@ -31,6 +31,7 @@ function lang($key, $replacements = array(), $language = null)
     return $string;
 }
 
+
 /**
  * strip out empty name/url in names/urls arrays (socialnetworks, stores, screenshots, videos)
  * then rebuilt it's index
@@ -62,8 +63,6 @@ function clean_names_urls_array($array)
 }
 
 
-// ----------------------------------------------------------------------------------
-
 /**
  * Parse bbCode
  * @param string $input the input text
@@ -75,13 +74,11 @@ function parse_bbcode( $input )
     $input = preg_replace( "#\[i\](.+)\[/i\]#", "<em>$1</em>" ,$input);
     $input = preg_replace( "#https?://[^ ]+#i", '<a href="$0">$0</a>' ,$input);
     //$input = preg_replace( "#\[url\](.+)\[/url\]#", '<a href="$1">$1</a>' ,$input);
-    $input = preg_replace( "#\[url=(.+)\](.+)\[/url\]#", '<a href="$1">$2</a>' ,$input);
+    $input = preg_replace( "#\[url=(.+)\](.+)\[/url\]#", '<a href="$1" title="$2">$2</a>' ,$input);
     $input = preg_replace( "#/n#", '<br>' ,$input);
     return $input;
 }
 
-
-//----------------------------------------------------------------------------------
 
 /**
  * Return an array whose keys are provided in the first argument and the corresponding values are the corresponding localized string
@@ -102,8 +99,6 @@ function get_array_lang($array_keys, $lang_key)
 }
 
 
-// ----------------------------------------------------------------------------------
-
 /**
  * Turn an array to an associative array where keys = value
  * @param the array
@@ -118,8 +113,6 @@ function get_assoc_array($array)
     return $assoc_array;
 }
 
-
-// ----------------------------------------------------------------------------------
 
 /**
  * Does the opposite of url_title() from the url helper
@@ -138,3 +131,11 @@ function name_to_url( $name )
 }
 
 
+/**
+ * Wrapped around Auth::user()
+ * @return User The currently logged in user
+ */
+function user()
+{
+    return Auth::user();
+}

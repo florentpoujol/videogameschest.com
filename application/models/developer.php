@@ -3,8 +3,10 @@
 class Developer extends Eloquent
 {
 	public static $timestamps = true;
+
     private static $json_items = array("technologies", "operatingsystems", "devices", "stores", 'socialnetworks');
 
+    public static $array_items = array("technologies", "operatingsystems", "devices", "stores");
 
 	//----------------------------------------------------------------------------------
 
@@ -52,7 +54,7 @@ class Developer extends Eloquent
 	        $dev->save();
     	}
         
-        HTML::set_success(lang('messages.adddev_success',array('name'=>$game->name)));
+        HTML::set_success(lang('messages.adddev_success',array('name'=>$dev->name)));
         return $dev;
     }
 
@@ -71,11 +73,11 @@ class Developer extends Eloquent
         $dev = Dev::find($id);
 
         if ($dev->name != $form['name']) { // the user wan to change the dev name, must check is the name is not taken
-            if (Dev::where('name', '=', $form['name']) != null) {
+            if (Dev::where('name', '=', $form['name'])->first() != null) {
                 HTML::set_error(
                     lang('messages.editdev_nametaken', array(
-                        'name'=>$game->name,
-                        'id'=>$game->id,
+                        'name'=>$dev->name,
+                        'id'=>$dev->id,
                         'newname'=>$form['name'])
                     )
                 );
@@ -99,7 +101,7 @@ class Developer extends Eloquent
         $dev->save();
 
         HTML::set_success(lang('messages.editdev_success', 
-            array('name'=>$game->name, 'id'=>$game->id))
+            array('name'=>$dev->name, 'id'=>$dev->id))
         );
         return true;
     }

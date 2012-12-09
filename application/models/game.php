@@ -59,7 +59,7 @@ class Game extends Eloquent
         $game = Game::find($id);
 
         if ($game->name != $form['name']) { // the user wan to change the name, must check is the name is not taken
-            if (Game::where('name', '=', $form['name']) != null) {
+            if (Game::where('name', '=', $form['name'])->first() != null) {
                 HTML::set_error(
                     lang('messages.editgame_nametaken', array(
                         'name'=>$game->name,

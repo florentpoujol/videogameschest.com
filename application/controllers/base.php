@@ -35,14 +35,17 @@ class Base_Controller extends Controller {
         	case 'index': $title = Str::title(CONTROLLER);
         	break;
 
+            case 'login': $title = lang('menu.login.submit');
+            break;
+
         	case 'adduser': $title = 'Add a user account';
         	break;
         	case 'edituser': $title = 'Edit a user account';
         	break;
 
-            case 'adddeveloper': $title = __('vgc.adddeveloper_title');
+            case 'adddeveloper': $title = lang('developer.add.title');
             break;
-            case 'editdeveloper': $title = __('vgc.editdeveloper_title');
+            case 'editdeveloper': $title = lang('developer.edit.title');
             break;
 
             case 'addgame': $title = lang('game.add.title');
