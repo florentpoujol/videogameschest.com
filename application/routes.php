@@ -149,7 +149,8 @@ Route::group(array('before' => 'auth'), function()
     Route::get('admin/addgame', array('as' => 'get_admin_addgame', 'uses' => 'admin@addgame'));
     Route::get('admin/editgame/(:num?)', array('as' => 'get_editgame', 'uses' => 'admin@editgame'));
 
-    Route::get('admin/gamequeue', array('as' => 'get_gamequeue', 'uses' => 'admin@gamequeue'));
+    Route::get('admin/reviews/(:any?)', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));
+    Route::get('admin/review_approve/(:any)/(:any)/(:num)', array('as' => 'get_review_approve', 'uses' => 'admin@reviewapprove'));
 
     Route::get('admin/reports', array('as' => 'get_reports', 'uses' => 'admin@reports'));
 });
@@ -181,7 +182,7 @@ Route::group(array('before' => 'auth|csrf'), function()
     Route::post('admin/selecteditgame', array('as' => 'post_selecteditgame', 'uses' => 'admin@selecteditgame'));
     Route::post('admin/editgame', array('as' => 'post_editgame', 'uses' => 'admin@editgame'));
 
-    Route::post('admin/gamequeue', array('as' => 'post_gamequeue', 'uses' => 'admin@gamequeue'));
+    Route::post('admin/reviews', array('as' => 'post_review', 'uses' => 'admin@reviews'));
 });
 
 

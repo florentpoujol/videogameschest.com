@@ -13,6 +13,7 @@ class Game extends Eloquent
 
     public static $names_urls_items = array('socialnetworks', 'stores', 'screenshots', 'videos');
 
+
 	//----------------------------------------------------------------------------------
 
     /**
@@ -43,7 +44,6 @@ class Game extends Eloquent
         HTML::set_success(lang('messages.addgame_success',array('name'=>$game->name)));
         return $game;
     }
-
 
     /**
      * Update a developer profile
@@ -94,6 +94,57 @@ class Game extends Eloquent
 
 
 	//----------------------------------------------------------------------------------
+    // REVIEWS
+
+    /**
+     * Do stuffs when the profile passed the submission review
+     */
+    public function submission_review_success()
+    {
+        $this->privacy = 'private';
+        $this->approved_by = '';
+        $this->review_start_date = '0000-00-00 00:00:00';
+        $this->save();
+
+        // @TODO send mail to dev with text emails.game_submission_review_success
+    }
+
+    /**
+     * Do stuffs when the profile failed at the submission review
+     */
+    public static function submission_review_fail($game)
+    {
+        Game::delete($game->id);
+    }
+
+    /**
+     * Do stuffs when the profile passed the publishing review
+     */
+    public function publishing_review_success()
+    {
+        $this->privacy = 'public';
+        $this->approved_by = '';
+        $this->review_start_date = '0000-00-00 00:00:00';
+        $this->save();
+
+        // @TODO send mail to dev with text emails.developer_publishing_review_success
+    }
+
+    /**
+     * Do stuffs when the profile failed at the publishing review
+     */
+    public static function publishing_review_fail($game)
+    {
+        $this->privacy = 'private';
+        $this->approved_by = '';
+        $this->review_start_date = '0000-00-00 00:00:00';
+        $this->save();
+
+        // @TODO send mail to dev with text emails.game_publishing_review_success
+    }
+
+
+    //----------------------------------------------------------------------------------
     // GETTERS
 
     public function json_to_array($attr)
@@ -102,14 +153,14 @@ class Game extends Eloquent
     }
 
 
-	/**
-     * Relationship method with the Users table
-     * @return User The User instance, owner of this profile
-     */
+    //----------------------------------------------------------------------------------
+    // RELATIONSHIPS
+
 	public function developer()
     {
         return $this->belongs_to('Developer');
     }
+
     public function dev()
     {
         return $this->developer();
@@ -118,6 +169,7 @@ class Game extends Eloquent
 
     //----------------------------------------------------------------------------------
 
+    // for Former bundle
     public function __toString()
     {
         return $this->name;

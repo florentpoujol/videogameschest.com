@@ -449,4 +449,105 @@ class Admin_Controller extends Base_Controller
 
         return Redirect::to_route('get_editgame', array($input['id']));
     }
+
+
+    //----------------------------------------------------------------------------------
+    // REVIEWS
+
+    public function get_reviews($review = null)
+    {
+        if ( ! IS_TRUSTED) {
+            HTML::set_error(lang('messages.user_not_trusted'));
+            return Redirect::to_route('get_admin_home');
+        }
+
+        $review_types = Config::get('vgc.review.types');
+
+        if ( ! in_array($review, $review_types)) {
+            return Redirect::to_route('get_reviews', array(head($review_types)));
+        }
+
+        return View::make('admin.reviews')->with('review', $review);
+    }
+
+
+
+    public function post_reviews()
+    {
+        if ( ! IS_TRUSTED) {
+            HTML::set_error(lang('messages.user_not_trusted'));
+            return Redirect::to_route('get_admin_home');
+        }
+
+        $input = Input::all();
+
+        $profile = ${$input['profile']}::find($input['id']);
+
+        if (IS_ADMIN) {
+            if ($profile->privacy == 'in_submission_review') {
+                $profile->submission_review_success();
+            } elseif ($profile->privacy == 'in_publishing_review') {
+                $profile->publishing_review_success();
+            }
+        } else {
+            $approved_by = json_decode($profile->approved_by, true);
+            $approved_by[] = USER_ID;
+            $profile->approved_by = json_encode($approved_by);
+            $profile->save();
+
+            HTML::set_success(lang('messages.review_profile_approved', array(
+                'name' => $profile->name,
+                'id' => $profile->id,
+                'review' => $input['review']
+            )));
+        }
+    }
+
+
+
+
+    /**
+     * Register that a user approve a profile
+     * @param  string $review  The review type
+     * @param  string $profile The profile type
+     * @param  integer $id      The profile id
+     */
+    public function get_reviewapprove($review, $profile, $id)
+    {
+        if ( ! IS_TRUSTED) {
+            HTML::set_error(lang('messages.user_not_trusted'));
+            return Redirect::to_route('get_admin_home');
+        }
+
+        $review_types = array('submission', 'publishing');
+
+        if ( ! in_array($review, $review_types)) {
+            HTML::set_info('Review type ['.$review.'] unknow. Can\'t approve the profile');
+            return Redirect::to_route('get_reviews', array('publishing'));
+        }
+
+        if ($profile == 'game' && ! is_null($id)) {
+            $game = Game::find($id);
+            
+            $approved_by = json_decode($game->approved_by, true);
+            $approved_by[] = USER_ID;
+            $game->approved_by = json_encode($approved_by);
+            $game->save();
+
+            HTML::set_success($profile.' '.$id.' approved for review '.$review);
+            return Redirect::back();
+        }
+        elseif ($profile == 'dev' && ! is_null($id)) {
+            HTML::set_success($profile.' '.$id.' approved for review '.$review);
+
+            $approved_by = json_decode($game->approved_by, true);
+            $approved_by[] = USER_ID;
+            $game->approved_by = json_encode($approved_by);
+            $game->save();
+
+            return Redirect::back();
+        }
+
+        return Redirect::back();
+    }
 }

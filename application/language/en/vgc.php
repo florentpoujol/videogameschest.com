@@ -20,13 +20,40 @@ return array(
         'editdev_success' => 'The developer profile with name \":name\" (id : :id) has successfully been updated.',
         'editgame_success' => 'The game profile with name \":name\" (id : :id) has successfully been updated.',
 
-        'logged_in_only' => "You must be logged in to access this page !",
-        'admin_only' => "You must be an administrator to access this page !",
-        'admin_and_logged_in' => "You must be logged in and an administrator to access this page !",
+        'logged_in_only' => "You must be logged in to access this page.",
+        'admin_only' => "You must be an administrator to access this page.",
+        'admin_and_logged_in' => "You must be logged in and an administrator to access this page.",
 
-        'can_not_edit_others_games' => "You are not allowed to edit other developer's games !",
-        'game_profile_not_found' => "Can't find the game profile with id ':profile_id' !",
+        'can_not_edit_others_games' => "You are not allowed to edit other developer's games.",
+        'game_profile_not_found' => "Can't find the game profile with id ':profile_id'.",
+
+        'user_not_trusted' => 'You can\'t acces this page because you are not a trusted user.',
+
+
+
+        'review_profile_approved' => 'The :profile \":name\" (id : :id) has been approved for :review',
     ),  
+
+
+
+
+    'emails' => array(
+        'developer_submission_review_success' =>
+'Hi :name <br>
+<br>
+You receive this email because someone created a developer profile on <a href="http://videogameschest.com" title="">VideoGamesChest.com</a> <br>
+<br>
+Log in to your account with your name, email or id (:id) and your temporary password : :password. Don\'t forget to edit your user account to change he password.<br>
+<br>
+A developer profile is linked to your user account. The profile is now private and you may review it and <a href="http://videogameschest.com/admin/editdeveloper/:id">edit it</a>. <br>
+Once you are satisfied with the informations, you may send your profile in the Publishing review. <br>
+<br>
+<br>
+Thanks,<br>
+The VideoGamesChest.com team
+',
+        'developer_publishing_review_success' => '',
+    ),
 
 // MENU
 
@@ -51,14 +78,18 @@ return array(
     ),
 
 
-// LOGIN
+// ADMIN
+
+    'admin' => array(
+        'review' => array(
+            'title' => 'Peer Reviews',
+            'submission_title' => 'Submission Review',
+            'publishing_title' => 'Publishing Review',
 
 
+        ),
+    ),
 
-
-// HELP
-
-'help_required_field' => 'Required field',
 
 
 

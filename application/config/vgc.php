@@ -18,6 +18,14 @@ return array(
 		"item_count" => 20
 	),
 
+
+	'review' => array(
+		'types' => array('submission', 'publishing'),
+		'duration' => 7,
+		'approval_threshold' => 20
+	),
+
+
 	// form
 
 	"languages" => array(

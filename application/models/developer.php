@@ -8,6 +8,7 @@ class Developer extends Eloquent
 
     public static $array_items = array("technologies", "operatingsystems", "devices", "stores");
 
+
 	//----------------------------------------------------------------------------------
 
     /**
@@ -58,7 +59,6 @@ class Developer extends Eloquent
         return $dev;
     }
 
-
     /**
      * Update a developer profile
      * @param  int $id         The developer id
@@ -107,6 +107,58 @@ class Developer extends Eloquent
     }
 
 
+    //----------------------------------------------------------------------------------
+    // REVIEWS
+
+    /**
+     * Do stuffs when the profile passed the submission review
+     */
+    public function submission_review_success()
+    {
+        $this->privacy = 'private';
+        $this->approved_by = '';
+        $this->review_start_date = '0000-00-00 00:00:00';
+        $this->save();
+
+        // @TODO send mail with text emails.developer_submission_review_success
+    }
+
+    /**
+     * Do stuffs when the profile failed at the submission review
+     */
+    public static function submission_review_fail($dev)
+    {
+        User::delete($dev->user->id);
+        Dev::delete($dev->id);
+    }
+
+    /**
+     * Do stuffs when the profile passed the publishing review
+     */
+    public function publishing_review_success()
+    {
+        $this->privacy = 'public';
+        $this->approved_by = '';
+        $this->review_start_date = '0000-00-00 00:00:00';
+        $this->save();
+
+        // @TODO send mail with text emails.developer_publishing_review_success
+    }
+
+    /**
+     * Do stuffs when the profile failed at the publishing review
+     */
+    public static function publishing_review_fail($dev)
+    {
+        $this->privacy = 'private';
+        $this->approved_by = '';
+        $this->review_start_date = '0000-00-00 00:00:00';
+        $this->save();
+
+        // @TODO send mail to dev with text emails.developer_publishing_review_success
+    }
+
+
 	//----------------------------------------------------------------------------------
     // GETTERS
 
@@ -116,15 +168,13 @@ class Developer extends Eloquent
     }
 
 
-	/**
-     * Relationship method with the Users table
-     * @return User The User instance, owner of this profile
-     */
+    //----------------------------------------------------------------------------------
+    // RELATIONSHIPS
+
 	public function user()
     {
         return $this->belongs_to('User');
     }
-
 
     public function games()
     {
@@ -134,37 +184,9 @@ class Developer extends Eloquent
 
     //----------------------------------------------------------------------------------
     
+    // for Former bundle
     public function __toString()
     {
-        $name = $this->name;
-
-        if ( ! is_string($name)) $name = "Developer->__toString()";
-
-        return $name;
+        return $this->name;
     }
 }
-
-/**
-     * Created an array with data from the database, 
-     * with the specified $fields as key and value
-     * @param  string $key   The field used as array key
-     * @param  string $value The field used as array value
-     * @param  string $type  The type of profile
-     * @return array         The generated array
-     */
-    /*public static function get_array($key, $value, $type = 'any')
-    {
-        if ($type == 'any') {
-            $profiles = Profile::get(array($key, $value));
-        } else {
-            $profiles = Profile::where('type', '=', $type)->get(array($key, $value));
-        }
-
-        $array = array();
-
-        foreach ($profiles as $profile) {
-            $array[$profile->$key] = $profile->$value;
-        }
-
-        return $array;
-    }*/
