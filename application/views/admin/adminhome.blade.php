@@ -6,6 +6,5 @@
 	@include('admin/selecteditdeveloper')
 @endif
 
-@if (IS_ADMIN)
-	@include('admin/selecteditgame')
-@endif
+@include('admin/selecteditgame')
+

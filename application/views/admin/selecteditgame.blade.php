@@ -1,9 +1,9 @@
 <?php
-if (IS_DEVELOPER) $games = Auth::user()->dev->games->get(array('id', 'name'));
+if (IS_DEVELOPER) $games = user()->games->get(array('id', 'name'));
 else $games = Game::get(array('id', 'name'));
 
 ?>
-<div id="selecteditdeveloper_form">
+<div id="selecteditgame_form">
 	{{ Former::open_vertical('admin/selecteditgame')->rules(array('game_name' => 'required')) }} 
 		<legend>Select the game to edit</legend>
 		{{ Form::token() }}

@@ -16,15 +16,25 @@ class DBConfig extends Eloquent
      */
     public static function get($key, $replacement = null)
     {
-        if (isset(static::$cache[$key])) return static::$cache[$key];
+        if (empty(static::$cache)) {
+            $configs = DBConfig::all();
 
-        $config = DBConfig::where('key', '=', $key)->first();
+            foreach ($configs as $key => $value) {
+                static::$cache[$key] = $value;
+            }
+        }
+
+        if (isset(static::$cache[$key])) return static::$cache[$key];
+        else return $replacement;
+        
+        // shouldn't happend...
+        /*$config = DBConfig::where('key', '=', $key)->first();
 
         if (is_null($config)) return $replacement;
         else {
             static::$cache[$key] = $config->value;
             return $config->value;
-        }
+        }*/
     }
 
 

@@ -1,8 +1,7 @@
 <?php
 
-class User extends Eloquent {
-	
-    public static $timestamps = true;
+class User extends ExtendedEloquent 
+{
 
 	//----------------------------------------------------------------------------------
 
@@ -30,7 +29,9 @@ class User extends Eloquent {
             $user["password"] = Hash::make($user["password"]);
         } else {
             // @TODO : generate an random password
-            $user['password'] = Hash::make('testtest');
+            // NO > do that only when the profile will have passed the submission review
+            
+            // $user['password'] = Hash::make('testtest');
         }
         
         // secret key
@@ -67,18 +68,49 @@ class User extends Eloquent {
     {
         unset($attributes['csrf_token']);
 
-        $dev = Dev::find($id);
+        /*$user = parent::find($id);
         
         foreach ($attributes as $field => $attr) {
             $user->$field = $attr;
         }
 
-        $dev->save();
+        $user->save();*/
+        $user = parent::update($id, $attributes);
 
         HTML::set_success('The user \"'.$user->username.'\" (id : '.$user->id.') has successfully been updated.');
         return $user;
     }
 
+
+    //----------------------------------------------------------------------------------
+
+    /**
+     * Check if the user is now a trusted user, then send a mail if yes
+     * @param  boolean $send_mail Do send an email to the user to let him know he is now trusted ?
+     * @return boolean            Wether or not the user is trusted
+     */
+    public function is_trusted($send_mail = false)
+    {
+        if ($this->type == 'admin') return true;
+
+        $is_trusted = false;
+
+        if ($this->dev->privacy == 'public' && ! is_null($this->dev->games)) {   
+            foreach ($this->dev->games as $game) {
+                if ($game->privacy == 'public') {
+                    $is_trusted = true;
+                    break;
+                }
+            }
+        }
+
+        return $is_trusted;
+    }
+
+
+
+    //----------------------------------------------------------------------------------
+    // RELATIONSHIPS
 
     /**
      * Relationship method with the Profiles table
@@ -91,6 +123,11 @@ class User extends Eloquent {
 
     public function dev() 
     {
-        return $this->developer;
+        return $this->developer();
+    }
+
+    public function games() 
+    {
+        return $this->developer()->games;
     }
 }   

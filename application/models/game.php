@@ -1,9 +1,7 @@
 <?php
 
-class Game extends Eloquent
+class Game extends ExtendedEloquent
 {
-	public static $timestamps = true;
-    
     public static $json_items = array(
         'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'themes',
         'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos');
@@ -37,7 +35,7 @@ class Game extends Eloquent
             }
         }
 
-        $game['privacy'] = 'private';
+        if ( ! isset($game['privacy'])) $game['privacy'] = 'private';
         
         $game = parent::create($game);
         
@@ -56,10 +54,10 @@ class Game extends Eloquent
     {
         unset($form['csrf_token']);
 
-        $game = Game::find($id);
+        $game = parent::find($id);
 
-        if ($game->name != $form['name']) { // the user wan to change the name, must check is the name is not taken
-            if (Game::where('name', '=', $form['name'])->first() != null) {
+        if ($game->name != $form['name']) { // the user want to change the name, must check is the name is not taken
+            if (parent::where('name', '=', $form['name'])->first() != null) {
                 HTML::set_error(
                     lang('messages.editgame_nametaken', array(
                         'name'=>$game->name,
@@ -72,19 +70,28 @@ class Game extends Eloquent
             }
         }
         
-        foreach ($form as $field => $attr) {
+        /*foreach ($form as $field => $attr) {
             if (in_array($field, static::$array_items)) {
                 $attr = json_encode($attr);
             } elseif (in_array($field, static::$names_urls_items)) { // must sanitise the array, remove items with blank url
                 $attr = json_encode(clean_names_urls_array($attr));
             }
-            
-            
 
             $game->$field = $attr;
         }
 
-        $game->save();
+        $game->save();*/
+        foreach ($form as $field => $attr) {
+            if (in_array($field, static::$json_items)) {
+                if (in_array($field, static::$names_urls_items)) { // must sanitise the array, remove items with blank url
+                    $attr = clean_names_urls_array($attr);
+                }
+
+                $form[$field] = json_encode($attr);
+            }
+        }
+
+        $game = parent::update($id, $form);
 
         HTML::set_success(lang('messages.editgame_success', 
             array('name'=>$game->name, 'id'=>$game->id))
@@ -97,66 +104,37 @@ class Game extends Eloquent
     // REVIEWS
 
     /**
-     * Do stuffs when the profile passed the submission review
+     * Do stuffs when the profile passed a review
+     * @param  string $review       Review type
      */
-    public function submission_review_success()
+    public function passed_review($review)
     {
-        $this->privacy = 'private';
-        $this->approved_by = '';
-        $this->review_start_date = '0000-00-00 00:00:00';
-        $this->save();
-
-        // @TODO send mail to dev with text emails.game_submission_review_success
+        parent::passed_review($review, 'game');
     }
 
     /**
-     * Do stuffs when the profile failed at the submission review
+     * Do stuffs when the profile failed a review
+     * @param  string $review       Review type
      */
-    public static function submission_review_fail($game)
+    public function failed_review($review)
     {
-        Game::delete($game->id);
-    }
-
-    /**
-     * Do stuffs when the profile passed the publishing review
-     */
-    public function publishing_review_success()
-    {
-        $this->privacy = 'public';
-        $this->approved_by = '';
-        $this->review_start_date = '0000-00-00 00:00:00';
-        $this->save();
-
-        // @TODO send mail to dev with text emails.developer_publishing_review_success
-    }
-
-    /**
-     * Do stuffs when the profile failed at the publishing review
-     */
-    public static function publishing_review_fail($game)
-    {
-        $this->privacy = 'private';
-        $this->approved_by = '';
-        $this->review_start_date = '0000-00-00 00:00:00';
-        $this->save();
-
-        // @TODO send mail to dev with text emails.game_publishing_review_success
+        parent::failed_review($review, 'game');
     }
 
 
     //----------------------------------------------------------------------------------
     // GETTERS
 
-    public function json_to_array($attr)
-    {
-        return json_decode($this->get_attribute($attr), true);
-    }
-
-
+    
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
 
-	public function developer()
+	public function user()
+    {
+        return $this->developer()->user;
+    }
+
+    public function developer()
     {
         return $this->belongs_to('Developer');
     }
@@ -164,14 +142,5 @@ class Game extends Eloquent
     public function dev()
     {
         return $this->developer();
-    }
-
-
-    //----------------------------------------------------------------------------------
-
-    // for Former bundle
-    public function __toString()
-    {
-        return $this->name;
     }
 }

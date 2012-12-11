@@ -275,19 +275,7 @@ Route::filter('before', function()
             define('IS_ADMIN', false);
             define('IS_DEVELOPER', true);
             define('DEV_PROFILE_ID', $user->developer->id);
-
-            $is_trusted = false;
-
-            if ($user->dev->privacy == 'public' && ! is_null($user->dev->games)) {   
-                foreach ($user->dev->games as $game) {
-                    if ($game->privacy == 'public') {
-                        $is_trusted = true;
-                        break;
-                    }
-                }
-            }
-
-            define('IS_TRUSTED', $is_trusted);
+            define('IS_TRUSTED', $user->is_trusted());
         }
     } else {
         define('IS_LOGGED_IN', false);

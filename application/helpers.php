@@ -139,3 +139,47 @@ function user()
 {
     return Auth::user();
 }
+
+
+/**
+ * Wrapper around json_decode($data, true)
+ * Decode a json string
+ * @param  string  $string The json string to decode
+ * @param  boolean $to_array Return the result as array or object ?
+ * @return mixed          The array or object returned by json_decode()
+ */
+function json_to_array($string, $to_array = true)
+{
+    return json_decode($string, $to_array);
+}
+
+
+/**
+ * Wrapper around json_encode()
+ * Encode an array or object to json
+ * @param  mixed $data The array or object to encode
+ * @return  string The json string
+ */
+function to_json($data)
+{
+    return json_encode($data);
+}
+
+
+/**
+ * Return a random string of the requested length
+ * @param int $length The length of the random string to be returned
+ * @return string The generated string
+ */
+function get_random_string($length)
+{
+    $alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&#'{([-|_@)]°}=+-*/,?;.:!§%$£¤µ";
+    $string = "";
+
+    for ($i = 0; $i < $length; $i++) {
+        $string .= $alphabet[mt_rand(0, strlen($alphabet)-1)];
+    }
+    
+    return $string;
+}
+

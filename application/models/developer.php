@@ -1,10 +1,8 @@
 <?php
 
-class Developer extends Eloquent
+class Developer extends ExtendedEloquent
 {
-	public static $timestamps = true;
-
-    private static $json_items = array("technologies", "operatingsystems", "devices", "stores", 'socialnetworks');
+    public static $json_items = array("technologies", "operatingsystems", "devices", "stores", 'socialnetworks');
 
     public static $array_items = array("technologies", "operatingsystems", "devices", "stores");
 
@@ -40,7 +38,7 @@ class Developer extends Eloquent
             }
         }
 
-        $dev['privacy'] = 'private';
+        if ( ! isset($dev['privacy'])) $dev['privacy'] = 'private';
         
         $dev = parent::create($dev);
 
@@ -70,10 +68,10 @@ class Developer extends Eloquent
     {
         unset($form['csrf_token']);
 
-        $dev = Dev::find($id);
+        $dev = parent::find($id);
 
         if ($dev->name != $form['name']) { // the user wan to change the dev name, must check is the name is not taken
-            if (Dev::where('name', '=', $form['name'])->first() != null) {
+            if (parent::where('name', '=', $form['name'])->first() != null) {
                 HTML::set_error(
                     lang('messages.editdev_nametaken', array(
                         'name'=>$dev->name,
@@ -86,7 +84,7 @@ class Developer extends Eloquent
             }
         }
         
-        foreach ($form as $field => $attr) {
+        /*foreach ($form as $field => $attr) {
             if (in_array($field, static::$json_items)) {
                 if ($field == 'socialnetworks') { // must sanitise the array, remove items with blank url
                     $attr = clean_names_urls_array($attr);
@@ -98,7 +96,19 @@ class Developer extends Eloquent
             $dev->$field = $attr;
         }
 
-        $dev->save();
+        $dev->save();*/
+
+        foreach ($form as $field => $attr) {
+            if (in_array($field, static::$json_items)) {
+                if ($field == 'socialnetworks') { // must sanitise the array, remove items with blank url
+                    $attr = clean_names_urls_array($attr);
+                }
+
+                $form[$field] = json_encode($attr);
+            }
+        }
+
+        $dev = parent::update($id, $form);
 
         HTML::set_success(lang('messages.editdev_success', 
             array('name'=>$dev->name, 'id'=>$dev->id))
@@ -111,61 +121,27 @@ class Developer extends Eloquent
     // REVIEWS
 
     /**
-     * Do stuffs when the profile passed the submission review
+     * Do stuffs when the profile passed a review
+     * @param  string $review       Review type
      */
-    public function submission_review_success()
+    public function passed_review($review)
     {
-        $this->privacy = 'private';
-        $this->approved_by = '';
-        $this->review_start_date = '0000-00-00 00:00:00';
-        $this->save();
-
-        // @TODO send mail with text emails.developer_submission_review_success
+        parent::passed_review($review, 'developer');
     }
 
     /**
-     * Do stuffs when the profile failed at the submission review
+     * Do stuffs when the profile failed a review
+     * @param  string $review       Review type
      */
-    public static function submission_review_fail($dev)
+    public function failed_review($review)
     {
-        User::delete($dev->user->id);
-        Dev::delete($dev->id);
+        parent::failed_review($review, 'developer');
     }
 
-    /**
-     * Do stuffs when the profile passed the publishing review
-     */
-    public function publishing_review_success()
-    {
-        $this->privacy = 'public';
-        $this->approved_by = '';
-        $this->review_start_date = '0000-00-00 00:00:00';
-        $this->save();
-
-        // @TODO send mail with text emails.developer_publishing_review_success
-    }
-
-    /**
-     * Do stuffs when the profile failed at the publishing review
-     */
-    public static function publishing_review_fail($dev)
-    {
-        $this->privacy = 'private';
-        $this->approved_by = '';
-        $this->review_start_date = '0000-00-00 00:00:00';
-        $this->save();
-
-        // @TODO send mail to dev with text emails.developer_publishing_review_success
-    }
 
 
 	//----------------------------------------------------------------------------------
     // GETTERS
-
-    public function json_to_array($attr)
-    {
-        return json_decode($this->get_attribute($attr), true);
-    }
 
 
     //----------------------------------------------------------------------------------
@@ -176,17 +152,13 @@ class Developer extends Eloquent
         return $this->belongs_to('User');
     }
 
+    public function dev()
+    {
+        return $this;
+    }
+
     public function games()
     {
         return $this->has_many('Game');
-    }
-
-
-    //----------------------------------------------------------------------------------
-    
-    // for Former bundle
-    public function __toString()
-    {
-        return $this->name;
     }
 }

@@ -10,7 +10,7 @@ $rules = array(
 	'test' => 'min:5'
 );
 
-$options = array('1' => 'un', '2'=>'deux')
+$options = array('1' => 'un', '2'=>'deux');
 ?>
 {{ Former::open_vertical('test')->rules($rules) }} 
 	

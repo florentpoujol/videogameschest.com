@@ -38,7 +38,7 @@ return array(
 
 
     'emails' => array(
-        'developer_submission_review_success' =>
+        'developer_passed_submission_review' =>
 'Hi :name <br>
 <br>
 You receive this email because someone created a developer profile on <a href="http://videogameschest.com" title="">VideoGamesChest.com</a> <br>
@@ -52,7 +52,13 @@ Once you are satisfied with the informations, you may send your profile in the P
 Thanks,<br>
 The VideoGamesChest.com team
 ',
-        'developer_publishing_review_success' => '',
+        
+        'developer_passed_publishing_review' => 'developer_passed_publishing_review',
+        'developer_failed_publishing_review' => 'developer_failed_publishing_review',
+
+        'game_passed_submission_review' => 'game_passed_submission_review',
+        'game_passed_publishing_review' => 'game_passed_publishing_review',
+        'game_failed_publishing_review' => 'game_failed_publishing_review',
     ),
 
 // MENU

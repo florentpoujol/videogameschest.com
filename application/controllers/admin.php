@@ -454,6 +454,10 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // REVIEWS
 
+    /**
+     * Display the review page
+     * @param  string $review The review type (tell which tab is loaded by default)
+     */
     public function get_reviews($review = null)
     {
         if ( ! IS_TRUSTED) {
@@ -470,8 +474,10 @@ class Admin_Controller extends Base_Controller
         return View::make('admin.reviews')->with('review', $review);
     }
 
-
-
+    /**
+     * Handle profile validation
+     * @return [type] [description]
+     */
     public function post_reviews()
     {
         if ( ! IS_TRUSTED) {
@@ -483,14 +489,9 @@ class Admin_Controller extends Base_Controller
 
         $profile = ${$input['profile']}::find($input['id']);
 
-        if (IS_ADMIN) {
-            if ($profile->privacy == 'in_submission_review') {
-                $profile->submission_review_success();
-            } elseif ($profile->privacy == 'in_publishing_review') {
-                $profile->publishing_review_success();
-            }
-        } else {
-            $approved_by = json_decode($profile->approved_by, true);
+        if (IS_ADMIN) $profile->passed_review($profile->privacy);
+        else {
+            $approved_by = $profile->approved_by;
             $approved_by[] = USER_ID;
             $profile->approved_by = json_encode($approved_by);
             $profile->save();

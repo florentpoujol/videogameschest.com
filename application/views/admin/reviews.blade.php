@@ -22,7 +22,7 @@
 	<h2>Games</h2>
 
 	<?php 
-	$profiles = Game::where('privacy', '=', 'in_'.$review.'_review')->get();
+	$profiles = Game::where('privacy', '=', $review)->get();
 	$profile_type = 'game';
 	?>
 
@@ -31,7 +31,7 @@
 	<h2>Developers</h2>
 
 	<?php 
-	$profiles = Dev::where('privacy', '=', 'in_'.$review.'_review')->get('id', 'name');
+	$profiles = Dev::where('privacy', '=', $review)->get();
 	$profile_type = 'dev'; 
 	?>
 
