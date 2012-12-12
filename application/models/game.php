@@ -2,7 +2,7 @@
 
 class Game extends ExtendedEloquent
 {
-    public static $json_items = array(
+    public static $json_items = array('approved_by',
         'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'themes',
         'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos');
     
@@ -13,6 +13,7 @@ class Game extends ExtendedEloquent
 
 
 	//----------------------------------------------------------------------------------
+    // CRUD METHODS
 
     /**
      * Create a new game profile
@@ -105,20 +106,22 @@ class Game extends ExtendedEloquent
 
     /**
      * Do stuffs when the profile passed a review
-     * @param  string $review       Review type
+     * @param  string $review  Review type
+     * @param  string $profile The profile type (this arg is useless here but overriding passed_review() with less params than in the parent did cause issue (Class 'Log' not found))
      */
-    public function passed_review($review)
+    public function passed_review($review, $profile = 'game')
     {
-        parent::passed_review($review, 'game');
+        parent::passed_review($review, $profile);
     }
 
     /**
      * Do stuffs when the profile failed a review
      * @param  string $review       Review type
+     * @param  string $profile The profile type
      */
-    public function failed_review($review)
+    public function failed_review($review, $profile = 'game')
     {
-        parent::failed_review($review, 'game');
+        parent::failed_review($review, $profile);
     }
 
 
@@ -127,14 +130,43 @@ class Game extends ExtendedEloquent
 
     
     //----------------------------------------------------------------------------------
-    // RELATIONSHIPS
+    // MAGIC METHODS
 
-	public function user()
+    /**
+     * Handle the dynamic setting of attributes.
+     *
+     * @param  string  $key
+     * @param  mixed   $value
+     * @return void
+     */
+    public function __set($key, $value)
     {
-        return $this->developer()->user;
+        if (in_array($key, static::$json_items)) {
+            if (in_array($key, static::$names_urls_items)) {
+                $value = clean_names_urls_items($value);
+            }
+
+            $this->set_attribute($key, json_encode($value));
+        } else parent::__set($key, $value);
     }
 
-    public function developer()
+    /**
+     * Handle the dynamic retrieval of attributes and associations.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        if (in_array($key, static::$json_items)) return json_decode($this->get_attribute($key), true);
+        else return parent::__get($key);
+    }
+
+
+    //----------------------------------------------------------------------------------
+    // RELATIONSHIPS
+
+	public function developer()
     {
         return $this->belongs_to('Developer');
     }
@@ -142,5 +174,10 @@ class Game extends ExtendedEloquent
     public function dev()
     {
         return $this->developer();
+    }
+
+    public function game()
+    {
+        return $this;
     }
 }

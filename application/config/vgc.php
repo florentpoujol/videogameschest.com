@@ -20,10 +20,16 @@ return array(
 
 
 	'review' => array(
-		'types' => array('submission', 'publishing'),
+		'types' => array(),
 		'duration' => 7,
 		'approval_threshold' => 20
 	),
+
+	'privacy' => array('private', 'public'),
+
+	'pivacy_and_reviews' => array('private', 'public', 'submission', 'publishing'),
+
+	'form_attributes_to_clean' => array('csrf_token', 'password_confirmation', 'controller'),
 
 
 	// form

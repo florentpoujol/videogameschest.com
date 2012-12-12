@@ -2,57 +2,43 @@
 
 class Developer extends ExtendedEloquent
 {
-    public static $json_items = array("technologies", "operatingsystems", "devices", "stores", 'socialnetworks');
+    public static $json_items = array("technologies", "operatingsystems", "devices", "stores", 'socialnetworks', 'approved_by');
 
     public static $array_items = array("technologies", "operatingsystems", "devices", "stores");
 
+    public static $names_urls_items = array('socialnetworks');
+
 
 	//----------------------------------------------------------------------------------
+    // CRUD METHODS
 
     /**
      * Create a new developer profile
      * @param  array $dev Data comming from the form
      * @return Developer       The Developer instance
      */
-	public static function create($dev) 
+	public static function create($form) 
 	{
-        unset($dev['csrf_token']);
+        $form = clean_form_input($form);
 
-        if (isset($dev['email'])) {
-            $email = $dev['email'];
+        // create user if email is set
+        if (isset($form['email']) && trim($form['email']) != '') {
+            $user = User::create(array(
+                'username' => $form['name'],
+                'email' => $form['email'],
+                'do_not_display_success_msg' => '' // keep that
+            ));
+
+            $form['user_id'] = $user->id;
         }
-        unset($dev['email']);
+        unset($form['email']);
 
-        $create_user = true;
-        if (isset($dev['user_id'])) {
-        	$create_user = false;
-        }
-
-        foreach (static::$json_items as $item) {
-            if (isset($dev[$item])) {
-                if ($item == 'socialnetworks') { // must sanitise the array, remove items with blank url
-                    $dev[$item] = clean_names_urls_array($dev[$item]);
-                }
-
-                $dev[$item] = json_encode($dev[$item]);
-            }
-        }
-
-        if ( ! isset($dev['privacy'])) $dev['privacy'] = 'private';
+        if ( ! isset($form['privacy'])) $form['privacy'] = 'private';
+        elseif ($form['privacy'] == 'submission') $form['review_start_date'] = date_create();
         
-        $dev = parent::create($dev);
-
-        if ($create_user) {
-	        $user = User::create(array(
-	            'username' => $dev->name,
-	            'email' => $email,
-                'do_not_display_success_msg' => ''
-	        ));
-
-	        $dev->user_id = $user->id;
-	        $dev->save();
-    	}
-        
+        var_dump($form);
+        $dev = parent::create($form);
+        var_dump($dev);
         HTML::set_success(lang('messages.adddev_success',array('name'=>$dev->name)));
         return $dev;
     }
@@ -122,26 +108,62 @@ class Developer extends ExtendedEloquent
 
     /**
      * Do stuffs when the profile passed a review
-     * @param  string $review       Review type
+     * @param  string $review  Review type
+     * @param  string $profile The profile type
      */
-    public function passed_review($review)
+    public function passed_review($review, $profile = 'developer')
     {
-        parent::passed_review($review, 'developer');
+        parent::passed_review($review, $profile);
     }
 
     /**
      * Do stuffs when the profile failed a review
-     * @param  string $review       Review type
+     * @param  string $review   Review type
+     * @param  string $profile The profile type
      */
-    public function failed_review($review)
+    public function failed_review($review, $profile = 'developer')
     {
-        parent::failed_review($review, 'developer');
+        parent::failed_review($review, $profile);
     }
 
 
 
 	//----------------------------------------------------------------------------------
     // GETTERS
+
+
+    //----------------------------------------------------------------------------------
+    // MAGIC METHODS
+
+    /**
+     * Handle the dynamic setting of attributes.
+     *
+     * @param  string  $key
+     * @param  mixed   $value
+     * @return void
+     */
+    public function __set($key, $value)
+    {
+        if (in_array($key, static::$json_items)) {
+            if (in_array($key, static::$names_urls_items)) {
+                $value = clean_names_urls_array($value);
+            }
+
+            $this->set_attribute($key, json_encode($value));
+        } else parent::__set($key, $value);
+    }
+
+    /**
+     * Handle the dynamic retrieval of attributes and associations.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        if (in_array($key, static::$json_items)) return json_decode($this->get_attribute($key), true);
+        else return parent::__get($key);
+    }
 
 
     //----------------------------------------------------------------------------------
@@ -152,9 +174,14 @@ class Developer extends ExtendedEloquent
         return $this->belongs_to('User');
     }
 
-    public function dev()
+    public function developer()
     {
         return $this;
+    }
+
+    public function dev()
+    {
+        return $this->developer();
     }
 
     public function games()

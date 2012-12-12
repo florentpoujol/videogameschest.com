@@ -1,25 +1,48 @@
 <?php
 $rules = array(
-    'name' => 'required|min:5|unique:users,username',
-    'email' => 'required|min:5|unique:users|email',
+    'name' => 'required|min:5',
+    'email' => 'required|min:5|email',
     'logo' => 'url',
     'website' => 'url',
     'blogfeed' => 'url',
     'teamsize' => 'min:1'
 );
 
+
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
-?>
 
+if (CONTROLLER == 'admin' && IS_ADMIN) {
+    $rules['email'] = 'min:5|email';
+    $users = User::get(array('id', 'username'));
+    $privacy = Config::get('vgc.privacy');
+}
+?>
 <div id="adddeveloper_form">
     {{ Former::open_vertical('admin/adddeveloper')->rules($rules) }} 
         <legend>{{ lang('developer.add.title') }}</legend>
-        {{ Form::token() }}
         
-        {{ Former::text('name', lang('developer.fields.name')) }}
-        {{ Former::email('email', lang('developer.fields.email')) }}
+        {{ Form::token() }}
+        {{ Form::hidden('controller', CONTROLLER) }}
 
+        {{ Former::text('name', lang('developer.fields.name')) }}
+
+        @if (CONTROLLER == 'admin' && IS_ADMIN)
+            {{ Former::email('email', lang('developer.fields.email'))->help('This will create a new user, OR choose the user below') }}
+            
+            {{ Former::select('user_id', 'User')->options($users)  }}
+
+            {{ Former::select('privacy')->options($privacy) }}
+        @else
+            {{ Former::email('email', lang('developer.fields.email')) }}
+
+            @if (CONTROLLER == 'admin')
+                {{ Former::hidden('privacy', 'private') }}
+            @elseif (CONTROLLER == 'adddeveloper')
+                {{ Former::hidden('privacy', 'submission') }}
+            @endif
+        @endif
+        
         {{ Former::textarea('pitch', lang('developer.fields.pitch')) }}
 
         {{ Former::url('logo', lang('developer.fields.logo')) }}
@@ -50,7 +73,7 @@ if ( ! empty($old)) Former::populate($old);
             <?php
             $options = get_array_lang(Config::get('vgc.socialnetworks'), 'socialnetworks.');
             $values = array();
-            if (isset($old['socialnetworks'])) $values = clean_names_urls_array($old['socialnetworks');
+            if (isset($old['socialnetworks'])) $values = clean_names_urls_array($old['socialnetworks']);
             ?>
             @for ($i = 0; $i < 4; $i++)
                 <?php

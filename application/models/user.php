@@ -4,6 +4,7 @@ class User extends ExtendedEloquent
 {
 
 	//----------------------------------------------------------------------------------
+    // CRUD METHODS
 
     /**
      * Create a new user
@@ -12,8 +13,7 @@ class User extends ExtendedEloquent
      */
 	public static function create($user) 
 	{
-        unset($user['csrf_token']);
-        unset($user['password_confirmation']);
+        $user = clean_form_input($user);
 
         // display success msg ?
         $display_msg = true;
@@ -28,28 +28,28 @@ class User extends ExtendedEloquent
         if (isset($user["password"]) && trim($user["password"]) != "") {
             $user["password"] = Hash::make($user["password"]);
         } else {
-            // @TODO : generate an random password
-            // NO > do that only when the profile will have passed the submission review
-            
-            // $user['password'] = Hash::make('testtest');
+            // dummy password
+            $user['password'] = Hash::make('r!&5éT[79m},D?4â+5w%');
+            // the password will be updated by hand via th edituser page or
+            // when a random password will be generated when the dev profile will 
+            // have passed the submission review (in ExtendedEloquent.passed_review())
         }
         
         // secret key
         $user["secret_key"] = md5(mt_rand().mt_rand());
 
-        while (User::where('secret_key', '=', $user['secret_key'])->first() != null) {
+        while (parent::where('secret_key', '=', $user['secret_key'])->first() != null) {
             $user["secret_key"] = md5(mt_rand().mt_rand());
         }
 
         // type
-        if ( ! isset($user['type']))
-            $user['type'] = 'dev';
+        if ( ! isset($user['type'])) $user['type'] = 'dev';
 
+        if ($user['type'] == 'admin') $user['is_trusted'] = 1;
+
+        var_dump($user);
         $user = parent::create($user);
-        
-
-        // @TODO send mail to user with password, if field do_not_send_email is set
-
+        var_dump($user);
         if ($display_msg) {
             HTML::set_success('The user with name \''.$user->username.'\' has successfully been created.');
         }
@@ -87,12 +87,9 @@ class User extends ExtendedEloquent
     /**
      * Check if the user is now a trusted user, then send a mail if yes
      * @param  boolean $send_mail Do send an email to the user to let him know he is now trusted ?
-     * @return boolean            Wether or not the user is trusted
      */
-    public function is_trusted($send_mail = false)
+    public function update_trusted($send_mail = false)
     {
-        if ($this->type == 'admin') return true;
-
         $is_trusted = false;
 
         if ($this->dev->privacy == 'public' && ! is_null($this->dev->games)) {   
@@ -104,18 +101,23 @@ class User extends ExtendedEloquent
             }
         }
 
-        return $is_trusted;
-    }
+        $this->is_trusted = $is_trusted;
+        $this->save();
 
+        if ($is_trusted && $send_mail) {
+            // @TODO send mail "You are now a trusted user, you have acces to the peer review !"
+        }
+    }
 
 
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
 
-    /**
-     * Relationship method with the Profiles table
-     * @return Profile The Profiles instance linked to this user
-     */
+    public function user()
+    {
+        return $this;
+    }
+
     public function developer()
     {
         return $this->has_one('Developer');
@@ -123,11 +125,6 @@ class User extends ExtendedEloquent
 
     public function dev() 
     {
-        return $this->developer();
-    }
-
-    public function games() 
-    {
-        return $this->developer()->games;
+        return $this->has_one('Developer');
     }
 }   

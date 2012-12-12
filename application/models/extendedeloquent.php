@@ -4,42 +4,11 @@ class ExtendedEloquent extends Eloquent
 {
     public static $timestamps = true;
 
-    public static $json_items = array();
-    public static $array_items = array();
-    public static $names_urls_items = array();
 
     //----------------------------------------------------------------------------------
     // MAGIC METHODS
 
-    /**
-     * Handle the dynamic setting of attributes.
-     *
-     * @param  string  $key
-     * @param  mixed   $value
-     * @return void
-     */
-    public function __set($key, $value)
-    {
-        if (in_array($key, static::$json_items)) {
-            if (in_array($key, static::$names_urls_items)) {
-                $value = clean_names_urls_items($value);
-            }
-
-            $this->set_attribute($key, json_encode($value));
-        } else parent::__set($key, $value);
-    }
-
-    /**
-     * Handle the dynamic retrieval of attributes and associations.
-     *
-     * @param  string  $key
-     * @return mixed
-     */
-    public function __get($key)
-    {
-        if (in_array($key, static::$json_items)) return json_decode($this->get_attribute($key), true);
-        else return parent::__get($key);
-    }
+    // had to move them in Developer and Game classes since they use static var like $json_items that have differents values in Dev and Game
     
 
     //----------------------------------------------------------------------------------
@@ -59,9 +28,7 @@ class ExtendedEloquent extends Eloquent
         } elseif ($review == 'publishing') {
             $this->privacy = 'public';
             
-            // check if the user is now thrusted and send a mail
-            // if ($profile == 'developer') $this->user->is_trusted(true);
-            // elseif( $profile == 'game') $this->dev->user->is_trusted(true);
+            // is the user now a trusted user ? send a mail :;
             $this->user->is_trusted(true);
         }
 
@@ -70,6 +37,8 @@ class ExtendedEloquent extends Eloquent
         $this->save();
 
         // email's text :
+        // it explain that the profile has passed the reviewand what can they do with it
+        // if the review was 'submission'
         $html = lang('emails.'.$profile.'_passed_'.$review.'_review', array(
             'name' => $this->name,
             'id' => $this->id,

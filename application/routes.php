@@ -275,7 +275,7 @@ Route::filter('before', function()
             define('IS_ADMIN', false);
             define('IS_DEVELOPER', true);
             define('DEV_PROFILE_ID', $user->developer->id);
-            define('IS_TRUSTED', $user->is_trusted());
+            define('IS_TRUSTED', $user->is_trusted);
         }
     } else {
         define('IS_LOGGED_IN', false);

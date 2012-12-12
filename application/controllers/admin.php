@@ -227,20 +227,24 @@ class Admin_Controller extends Base_Controller
         // checking form
         $rules = array(
             'name' => 'required|min:5|unique:users,username',
+            'email' => 'required|min:5|unique:users|email',
             'cover' => 'url',
             'website' => 'url',
             'blogfeed' => 'url',
             'teamsize' => 'min:1'
         );
 
-        if (isset($input['email']))
-            $rules['email'] = 'required|min:5|unique:users|email';
+        if (IS_ADMIN) $rules['email'] = 'min:5|unique:users|email';
 
         $validation = Validator::make($input, $rules);
         
         if ($validation->passes()) {
             $dev = Dev::create($input);
-            return Redirect::to_route('get_home');
+
+            if ($input['controller'] == 'admin')
+                return Redirect::to_route('get_editdeveloper', array($dev->id));
+            // else
+                //return Redirect::to_route('get_home');
         } else {
             Input::flash();
             return Redirect::back()->with_errors($validation);
@@ -378,19 +382,10 @@ class Admin_Controller extends Base_Controller
      */
     public function post_selecteditgame()
     {
-        $name = Input::get('game_name');
-        $id = null;
-        
-        if (is_numeric($name)) {
-            if (Game::find($name) == null) {
-                HTML::set_error('No game with id ['.$name.'] was found !');
-            } else $id = $name;
-        } else {
-            $profile = Game::where('name', '=', $name)->first();
-            
-            if ($profile == null) {
-                HTML::set_error('No game with name ['.$name.'] was found !');
-            } else $id = $profile->id;
+        $id = Input::get('game_id', null);
+
+        if (Game::find($id) == null) {
+            HTML::set_error('No game with id ['.$id.'] was found !');
         }
 
         return Redirect::to_route('get_editgame', array($id));
@@ -475,8 +470,7 @@ class Admin_Controller extends Base_Controller
     }
 
     /**
-     * Handle profile validation
-     * @return [type] [description]
+     * Handle profile approval
      */
     public function post_reviews()
     {
@@ -493,7 +487,7 @@ class Admin_Controller extends Base_Controller
         else {
             $approved_by = $profile->approved_by;
             $approved_by[] = USER_ID;
-            $profile->approved_by = json_encode($approved_by);
+            $profile->approved_by = $approved_by;
             $profile->save();
 
             HTML::set_success(lang('messages.review_profile_approved', array(
@@ -503,52 +497,4 @@ class Admin_Controller extends Base_Controller
             )));
         }
     }
-
-
-
-
-    /**
-     * Register that a user approve a profile
-     * @param  string $review  The review type
-     * @param  string $profile The profile type
-     * @param  integer $id      The profile id
-     */
-    public function get_reviewapprove($review, $profile, $id)
-    {
-        if ( ! IS_TRUSTED) {
-            HTML::set_error(lang('messages.user_not_trusted'));
-            return Redirect::to_route('get_admin_home');
-        }
-
-        $review_types = array('submission', 'publishing');
-
-        if ( ! in_array($review, $review_types)) {
-            HTML::set_info('Review type ['.$review.'] unknow. Can\'t approve the profile');
-            return Redirect::to_route('get_reviews', array('publishing'));
-        }
-
-        if ($profile == 'game' && ! is_null($id)) {
-            $game = Game::find($id);
-            
-            $approved_by = json_decode($game->approved_by, true);
-            $approved_by[] = USER_ID;
-            $game->approved_by = json_encode($approved_by);
-            $game->save();
-
-            HTML::set_success($profile.' '.$id.' approved for review '.$review);
-            return Redirect::back();
-        }
-        elseif ($profile == 'dev' && ! is_null($id)) {
-            HTML::set_success($profile.' '.$id.' approved for review '.$review);
-
-            $approved_by = json_decode($game->approved_by, true);
-            $approved_by[] = USER_ID;
-            $game->approved_by = json_encode($approved_by);
-            $game->save();
-
-            return Redirect::back();
-        }
-
-        return Redirect::back();
-    }
-}
+} // end of Admin controller class

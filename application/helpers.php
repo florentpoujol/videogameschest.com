@@ -183,3 +183,22 @@ function get_random_string($length)
     return $string;
 }
 
+
+/**
+ * Remove from the $input
+ * usually called from a model
+ * @param  array $input The input array (often the)
+ * @param  array $sup_attrs Supplementary attributes to remove from the înput array
+ * @return array        The cleaned input
+ */
+function clean_form_input($input, $supl_attributes = array())
+{
+    $attributes_to_clean = Config::get('vgc.form_attributes_to_clean');
+    $attributes_to_clean = array_merge($attributes_to_clean, $supl_attributes);
+    
+    foreach ($attributes_to_clean as $attr) unset($input[$attr]);
+
+    return $input;
+}
+
+
