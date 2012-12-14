@@ -23,13 +23,16 @@ class ExtendedEloquent extends Eloquent
     {
         $password = get_random_string(10);
 
+        if ($profile == 'developer') $user = $this->user;
+        else $user = $this->dev->user;
+
         if ($review == 'submission') {
             $this->privacy = 'private';
         } elseif ($review == 'publishing') {
             $this->privacy = 'public';
             
-            // is the user now a trusted user ? send a mail :;
-            $this->user->is_trusted(true);
+            // is the user now a trusted user ? send a mail : do nothing ;
+            $user->update_trusted(true);
         }
 
         $this->approved_by = '';
@@ -37,7 +40,7 @@ class ExtendedEloquent extends Eloquent
         $this->save();
 
         // email's text :
-        // it explain that the profile has passed the reviewand what can they do with it
+        // it explain that the profile has passed the review and what can they do with it
         // if the review was 'submission'
         $html = lang('emails.'.$profile.'_passed_'.$review.'_review', array(
             'name' => $this->name,
@@ -45,7 +48,7 @@ class ExtendedEloquent extends Eloquent
             'password' => $password,
         ));
 
-        $email = $this->user->email;
+        $email = $user->email;
         // @TODO : send mails 
     }
 

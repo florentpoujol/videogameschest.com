@@ -8,14 +8,13 @@ $rules = array(
     'teamsize' => 'min:1'
 );
 
-
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
 
 if (CONTROLLER == 'admin' && IS_ADMIN) {
     $rules['email'] = 'min:5|email';
     $users = User::get(array('id', 'username'));
-    $privacy = Config::get('vgc.privacy');
+    $privacy = array_set_values_as_keys(Config::get('vgc.privacy'));
 }
 ?>
 <div id="adddeveloper_form">
@@ -30,7 +29,7 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
         @if (CONTROLLER == 'admin' && IS_ADMIN)
             {{ Former::email('email', lang('developer.fields.email'))->help('This will create a new user, OR choose the user below') }}
             
-            {{ Former::select('user_id', 'User')->options($users)  }}
+            {{ Former::select('user_id', 'User')->fromQuery($users)  }}
 
             {{ Former::select('privacy')->options($privacy) }}
         @else

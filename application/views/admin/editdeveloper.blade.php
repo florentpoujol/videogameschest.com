@@ -38,7 +38,7 @@ if ( ! empty($old)) Former::populate($old);
             $options = get_array_lang($items, $item.'.');
             
             if (isset($old[$item])) $values = $old[$item];
-            else $values = $dev->json_to_array($item);
+            else $values = $dev->$item;
 
             $size = count($items);
             if ($size > 10) {
@@ -56,7 +56,7 @@ if ( ! empty($old)) Former::populate($old);
             $options = get_array_lang(Config::get('vgc.socialnetworks'), 'socialnetworks.');
 
             if (isset($old[$item])) $socialnetworks = clean_names_urls_array($old[$item]);
-            else $socialnetworks = $dev->json_to_array('socialnetworks');
+            else $socialnetworks = $dev->socialnetworks;
 
             $length = count($socialnetworks['names']);
             for ($i = 0; $i < $length; $i++):

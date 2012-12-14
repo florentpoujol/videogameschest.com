@@ -36,24 +36,23 @@ class Developer extends ExtendedEloquent
         if ( ! isset($form['privacy'])) $form['privacy'] = 'private';
         elseif ($form['privacy'] == 'submission') $form['review_start_date'] = date_create();
         
-        var_dump($form);
         $dev = parent::create($form);
-        var_dump($dev);
+        
         HTML::set_success(lang('messages.adddev_success',array('name'=>$dev->name)));
         return $dev;
     }
 
     /**
      * Update a developer profile
-     * @param  int $id         The developer id
-     * @param  array $attributes The dev's data
-     * @param  Developer $dev The dev instance
-     * @return User The updateddev instance
+     * @param  int $id     The dev's id
+     * @param  array $form The dev's data
+     * @return Developer   The updated dev instance
      */
     public static function update($id, $form)
     {
-        unset($form['csrf_token']);
+        $form = clean_form_input($form);
 
+        // checking name change
         $dev = parent::find($id);
 
         if ($dev->name != $form['name']) { // the user wan to change the dev name, must check is the name is not taken
@@ -69,36 +68,13 @@ class Developer extends ExtendedEloquent
                 return false;
             }
         }
-        
-        /*foreach ($form as $field => $attr) {
-            if (in_array($field, static::$json_items)) {
-                if ($field == 'socialnetworks') { // must sanitise the array, remove items with blank url
-                    $attr = clean_names_urls_array($attr);
-                }
 
-                $attr = json_encode($attr);
-            }
-            
-            $dev->$field = $attr;
-        }
+        parent::update($id, $form); // returns an int ?
 
-        $dev->save();*/
+        HTML::set_success(lang('messages.editdev_success'
+            ,array('name'=>$dev->name, 'id'=>$dev->id)
+        ));
 
-        foreach ($form as $field => $attr) {
-            if (in_array($field, static::$json_items)) {
-                if ($field == 'socialnetworks') { // must sanitise the array, remove items with blank url
-                    $attr = clean_names_urls_array($attr);
-                }
-
-                $form[$field] = json_encode($attr);
-            }
-        }
-
-        $dev = parent::update($id, $form);
-
-        HTML::set_success(lang('messages.editdev_success', 
-            array('name'=>$dev->name, 'id'=>$dev->id))
-        );
         return true;
     }
 
@@ -172,16 +148,6 @@ class Developer extends ExtendedEloquent
 	public function user()
     {
         return $this->belongs_to('User');
-    }
-
-    public function developer()
-    {
-        return $this;
-    }
-
-    public function dev()
-    {
-        return $this->developer();
     }
 
     public function games()

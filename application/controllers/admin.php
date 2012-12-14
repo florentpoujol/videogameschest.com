@@ -231,10 +231,13 @@ class Admin_Controller extends Base_Controller
             'cover' => 'url',
             'website' => 'url',
             'blogfeed' => 'url',
-            'teamsize' => 'min:1'
+            'teamsize' => 'min:1',
         );
 
-        if (IS_ADMIN) $rules['email'] = 'min:5|unique:users|email';
+        if ($input['controller'] == 'admin' && IS_ADMIN) {
+            $rules['name'] = 'required|min:5|unique:developers';
+            $rules['email'] = 'min:5|unique:users|email';
+        }
 
         $validation = Validator::make($input, $rules);
         
@@ -243,8 +246,8 @@ class Admin_Controller extends Base_Controller
 
             if ($input['controller'] == 'admin')
                 return Redirect::to_route('get_editdeveloper', array($dev->id));
-            // else
-                //return Redirect::to_route('get_home');
+            else
+                return Redirect::to_route('get_home');
         } else {
             Input::flash();
             return Redirect::back()->with_errors($validation);

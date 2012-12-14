@@ -47,16 +47,15 @@ class User extends ExtendedEloquent
 
         if ($user['type'] == 'admin') $user['is_trusted'] = 1;
 
-        var_dump($user);
+
         $user = parent::create($user);
-        var_dump($user);
+
         if ($display_msg) {
             HTML::set_success('The user with name \''.$user->username.'\' has successfully been created.');
         }
 
         return $user;
     }
-
 
     /**
      * Update a user
@@ -66,16 +65,10 @@ class User extends ExtendedEloquent
      */
     public static function update($id, $attributes)
     {
-        unset($attributes['csrf_token']);
+        $attributes = clean_form_input($attributes);
 
-        /*$user = parent::find($id);
-        
-        foreach ($attributes as $field => $attr) {
-            $user->$field = $attr;
-        }
-
-        $user->save();*/
-        $user = parent::update($id, $attributes);
+        parent::update($id, $attributes);
+        $user = User::find($id);
 
         HTML::set_success('The user \"'.$user->username.'\" (id : '.$user->id.') has successfully been updated.');
         return $user;
@@ -112,11 +105,6 @@ class User extends ExtendedEloquent
 
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
-
-    public function user()
-    {
-        return $this;
-    }
 
     public function developer()
     {

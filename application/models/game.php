@@ -22,7 +22,7 @@ class Game extends ExtendedEloquent
      */
 	public static function create($game) 
 	{
-        unset($game['csrf_token']);
+        $form = clean_form_input($form);
 
         foreach (static::$array_items as $item) {
             if (isset($game[$item])) {
@@ -53,8 +53,9 @@ class Game extends ExtendedEloquent
      */
     public static function update($id, $form)
     {
-        unset($form['csrf_token']);
+        $form = clean_form_input($form);
 
+        // checking name change
         $game = parent::find($id);
 
         if ($game->name != $form['name']) { // the user want to change the name, must check is the name is not taken
@@ -70,29 +71,8 @@ class Game extends ExtendedEloquent
                 return false;
             }
         }
-        
-        /*foreach ($form as $field => $attr) {
-            if (in_array($field, static::$array_items)) {
-                $attr = json_encode($attr);
-            } elseif (in_array($field, static::$names_urls_items)) { // must sanitise the array, remove items with blank url
-                $attr = json_encode(clean_names_urls_array($attr));
-            }
 
-            $game->$field = $attr;
-        }
-
-        $game->save();*/
-        foreach ($form as $field => $attr) {
-            if (in_array($field, static::$json_items)) {
-                if (in_array($field, static::$names_urls_items)) { // must sanitise the array, remove items with blank url
-                    $attr = clean_names_urls_array($attr);
-                }
-
-                $form[$field] = json_encode($attr);
-            }
-        }
-
-        $game = parent::update($id, $form);
+        parent::update($id, $form);
 
         HTML::set_success(lang('messages.editgame_success', 
             array('name'=>$game->name, 'id'=>$game->id))
@@ -173,11 +153,6 @@ class Game extends ExtendedEloquent
 
     public function dev()
     {
-        return $this->developer();
-    }
-
-    public function game()
-    {
-        return $this;
+        return $this->belongs_to('Developer');
     }
 }

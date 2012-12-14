@@ -202,3 +202,24 @@ function clean_form_input($input, $supl_attributes = array())
 }
 
 
+/**
+ * Wrapper around the SwiftMailer bundle
+ * @param  string $message The email's corps
+ * @return [type]          [description]
+ */
+function send_mail($message) 
+{
+    HTML::set_infos($message);
+}
+
+
+
+function array_set_values_as_keys($array) 
+{
+    foreach ($array as $key => $value) {
+        $array[$value] = $value;
+    }
+
+    return $array;
+}
+

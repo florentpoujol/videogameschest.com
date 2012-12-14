@@ -1,7 +1,6 @@
 <?php
 if (IS_DEVELOPER) $games = user()->dev->games;
-else $games = Game::get(array('id', 'name'));
-
+else $games = Game::all('id', 'name');
 ?>
 <div id="selecteditgame_form">
 	{{ Former::open_vertical('admin/selecteditgame')->rules(array('game_name' => 'required')) }} 
@@ -9,7 +8,7 @@ else $games = Game::get(array('id', 'name'));
 		{{ Form::token() }}
 
 		{{-- Former::text('game_name', 'Name or id')->useDatalist($games, 'name') --}}
-        {{ Former::select('game_id', 'Name')->options($games, 'name') }}
+        {{ Former::select('game_id', 'Name')->fromQuery($games) }}
 
 		<input type="submit" value="Edit this game" class="btn btn-primary">
 	</form>

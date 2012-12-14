@@ -29,7 +29,7 @@ return array(
 
 	'pivacy_and_reviews' => array('private', 'public', 'submission', 'publishing'),
 
-	'form_attributes_to_clean' => array('csrf_token', 'password_confirmation', 'controller'),
+	'form_attributes_to_clean' => array('csrf_token', 'password_confirmation', 'old_password', 'controller'),
 
 
 	// form
