@@ -1,6 +1,6 @@
 <?php
 
-class Developer extends ExtendedEloquent
+class Developer extends Profile
 {
     public static $json_items = array("technologies", "operatingsystems", "devices", "stores", 'socialnetworks', 'approved_by');
 

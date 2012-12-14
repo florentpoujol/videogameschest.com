@@ -44,6 +44,15 @@ if ( ! isset($page_content)) $page_content = '';
         <script src="http://lesscss.googlecode.com/files/less-1.3.0.min.js" type="text/javascript"></script>
         <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
         {{ Asset::container('bootstrapper')->scripts(); }}
+        @yield('jsfile')
+
+        <script>
+          $(function () {
+            @yield('jQuery')
+          })
+
+          @yield('jscode')
+        </script>
         <!-- /JavaScript -->
     </body>
 </html>

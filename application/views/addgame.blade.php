@@ -62,64 +62,105 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
 
         {{ Former::number('price', lang('game.fields.price')) }}
 
-        
-        <?php
-        foreach (Game::$array_items as $item):
-            $items = Config::get('vgc.'.$item);
-            $options = get_array_lang($items, $item.'.');
-            
-            $values = array();
-            if (isset($old[$item])) $values = $old[$item];
-            
-            $size = count($items);
-            if ($size > 10) $size = 10;
-        ?>
-            {{ Former::multiselect($item.'[]', lang('game.fields.'.$item))->options($options)->value($values)->size($size)->help(lang('game.fields.'.$item.'_help')) }}
-        @endforeach
-        
-        <?php
-        $nu_select = array('socialnetworks', 'stores'); // name url select
-        foreach ($nu_select as $item):
-            $options = get_array_lang(Config::get('vgc.'.$item), $item.'.');
-            $values = array();
-            if (isset($old[$item])) $values = clean_names_urls_array($old[$item]);
-        ?>
-            <fieldset>
-                <legend>{{ lang('game.fields.'.$item.'_title') }}</legend>
+        <hr>
 
-                @for ($i = 0; $i < 4; $i++)
+        <!-- array items -->
+        <div class="tabbable tabs-left">
+            <ul class="nav nav-tabs nav-stacked" id="array_items_tabs">
+                @foreach (Game::$array_items as $item)
+                <li><a href="#{{ $item }}" data-toggle="tab">{{ lang('game.fields.'.$item) }}</a></li>
+                @endforeach
+            </ul>
+
+            <div class="tab-content">
+                @foreach (Game::$array_items as $item)
                     <?php
-                    $name = isset($values['names'][$i]) ? $values['names'][$i] : '';
-                    $url = isset($values['urls'][$i]) ? $values['urls'][$i] : '';
+                    $items = Config::get('vgc.'.$item);
+                    $options = get_array_lang($items, $item.'.');
+                    
+                    $values = array();
+                    if (isset($old[$item])) $values = $old[$item];
+                    
+                    $size = count($items);
+                    if ($size > 15) $size = 15;
                     ?>
-                    {{ Former::select($item.'[names][]', lang('game.fields.'.$item.'_name'))->options($options)->value($name) }} 
-                    {{ Former::url($item.'[urls][]', lang('game.fields.'.$item.'_url'))->value($url) }}
-                @endfor
-            </fieldset>
-        @endforeach
+                    <div class="tab-pane" id="{{ $item }}">
+                        {{ Former::multiselect($item.'[]', lang('game.fields.'.$item))->options($options)->value($values)->size($size)->help(lang('game.fields.'.$item.'_help')) }}
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        <!-- /array items -->
 
-        <?php
-        $nu_text = array('screenshots', 'videos');
-        foreach ($nu_text as $item):
-            $values = array();
-            if (isset($old[$item])) $values = clean_names_urls_array($old[$item]);
-        ?>
-            <fieldset>
-                <legend>{{ lang('game.fields.'.$item.'_title') }}</legend>
+        <hr>
 
-                @for ($i = 0; $i < 4; $i++)
-                    <?php
-                    $name = isset($values['names'][$i]) ? $values['names'][$i] : '';
-                    $url = isset($values['urls'][$i]) ? $values['urls'][$i] : '';
-                    ?>
-                    {{ Former::text($item.'[names][]', lang('game.fields.'.$item.'_name'))->value($name) }} 
-                    {{ Former::url($item.'[urls][]', lang('game.fields.'.$item.'_url'))->value($url) }}
-                @endfor
-            </fieldset>
-        @endforeach
+        <!-- names urls items -->
+        <ul class="nav nav-tabs" id="nu_items_tabs">
+            @foreach (Game::$names_urls_items as $item)
+            <li><a href="#{{ $item }}" data-toggle="tab">{{ lang('game.fields.'.$item.'_title') }}</a></li>
+            @endforeach
+        </ul>
+
+        <div class="tab-content">
+            <?php
+            $nu_select = array('socialnetworks', 'stores'); // name url select
+            foreach ($nu_select as $item):
+                $options = get_array_lang(Config::get('vgc.'.$item), $item.'.');
+                $values = array();
+                if (isset($old[$item])) $values = clean_names_urls_array($old[$item]);
+            ?>
+                <div class="tab-pane" id="{{ $item }}">
+                    <!-- <legend>{{ lang('game.fields.'.$item.'_title') }}</legend> -->
+
+                    @for ($i = 0; $i < 4; $i++)
+                        <?php
+                        $name = isset($values['names'][$i]) ? $values['names'][$i] : '';
+                        $url = isset($values['urls'][$i]) ? $values['urls'][$i] : '';
+                        ?>
+                        {{ Former::select($item.'[names][]', lang('game.fields.'.$item.'_name'))->options($options)->value($name) }} 
+                        {{ Former::url($item.'[urls][]', lang('game.fields.'.$item.'_url'))->value($url) }}
+                    @endfor
+                </div>
+            @endforeach
+
+            <?php
+            $nu_text = array('screenshots', 'videos');
+            foreach ($nu_text as $item):
+                $values = array();
+                if (isset($old[$item])) $values = clean_names_urls_array($old[$item]);
+            ?>
+                <div class="tab-pane" id="{{ $item }}">
+                    <!-- <legend>{{ lang('game.fields.'.$item.'_title') }}</legend> -->
+
+                    @for ($i = 0; $i < 4; $i++)
+                        <?php
+                        $name = isset($values['names'][$i]) ? $values['names'][$i] : '';
+                        $url = isset($values['urls'][$i]) ? $values['urls'][$i] : '';
+                        ?>
+                        {{ Former::text($item.'[names][]', lang('game.fields.'.$item.'_name'))->value($name) }} 
+                        {{ Former::url($item.'[urls][]', lang('game.fields.'.$item.'_url'))->value($url) }}
+                    @endfor
+                </div>
+            @endforeach
+        </div>
 
         <input type="submit" value="{{ lang('game.add.submit') }}" class="btn btn-primary">
     </form>
 </div>
-<!-- /#user_form --> 
+<!-- /#addgame_form --> 
 
+@section('jQuery')
+// from addgame
+$('#array_items_tabs a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+})
+$('#array_items_tabs a:first').tab('show');
+
+$('#nu_items_tabs a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+})
+$('#nu_items_tabs a:first').tab('show');
+// from addgame
+@endsection

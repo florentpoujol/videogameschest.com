@@ -1,6 +1,6 @@
 <?php
 
-class Game extends ExtendedEloquent
+class Game extends Profile
 {
     public static $json_items = array('approved_by',
         'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'themes',
