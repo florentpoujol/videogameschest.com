@@ -6,6 +6,20 @@ if (isset($old)) {
 }
 
 
+$data = array('name' => 'Game', 'pitch' => 'bla', 'developper_id' =>15);
+$game = Game::create($data);
+/*$game = new Game;
+$game->name = 'Game';
+$game->pitch = 'Bla';*/
+var_dump($game);
+// $game->save();
+$data = array('pitch' => 'bloblo');
+ $game = Game::update($game->id, $data);
+var_dump($game);
+
+
+
+
 $rules = array(
 	'test' => 'min:5'
 );

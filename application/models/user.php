@@ -63,11 +63,11 @@ class User extends ExtendedEloquent
      * @param  array $attributes The user's data
      * @return User The user instance
      */
-    public static function update($id, $attributes)
+    public static function update($id, $form)
     {
-        $attributes = clean_form_input($attributes);
+        $form = clean_form_input($form);
 
-        parent::update($id, $attributes);
+        parent::update($id, $form);
         $user = User::find($id);
 
         HTML::set_success('The user \"'.$user->username.'\" (id : '.$user->id.') has successfully been updated.');

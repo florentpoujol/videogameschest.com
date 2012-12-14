@@ -354,14 +354,14 @@ class Admin_Controller extends Base_Controller
 
         // checking form
         $rules = array(
-            'name' => 'required|min:5|unique:games',
+            'name' => 'required|min:5',
             'developer_id' => 'required|exists:developers,id',
-            'logo' => 'url|active_url',
-            'website' => 'url|active_url',
-            'blogfeed' => 'url|active_url',
-            'soundtrackurl' => 'url|active_url',
+            'logo' => 'url',
+            'website' => 'url',
+            'blogfeed' => 'url',
+            'soundtrackurl' => 'url',
             'publishername' => 'min:2',
-            'publisherurl' => 'url|active_url|required_with:publishername',
+            'publisherurl' => 'url|required_with:publishername',
             'price' => 'min:0',
         );
 

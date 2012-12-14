@@ -1,6 +1,6 @@
 <?php
 $rules = array(
-    'name' => 'required|min:5|unique:games',
+    'name' => 'required|min:5',
     'developer_id' => 'required|exists:developers,id',
     'cover' => 'url',
     'website' => 'url',
@@ -14,14 +14,20 @@ $rules = array(
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
 
-if (IS_ADMIN) $devs = Dev::get();
+if (IS_ADMIN) $devs = Dev::get(array('id', 'name'));
 else $devs = Dev::where('privacy', '=', 'public')->get(array('id', 'name'));
+
+if (CONTROLLER == 'admin' && IS_ADMIN) {
+    $privacy = array_set_values_as_keys(Config::get('vgc.privacy'));
+}
 ?>
 
 <div id="addgame_form">
     {{ Former::open_vertical('admin/addgame')->rules($rules) }} 
         <legend>{{ lang('game.add.title') }}</legend>
+        
         {{ Form::token() }}
+        {{ Form::hidden('controller', CONTROLLER) }}
         
         {{ Former::text('name', lang('game.fields.name')) }}
 
@@ -30,6 +36,16 @@ else $devs = Dev::where('privacy', '=', 'public')->get(array('id', 'name'));
         @else
             You are the developer of this game. <br>
             {{ Former::hidden('developer_id', DEV_PROFILE_ID) }}
+        @endif
+
+        @if (CONTROLLER == 'admin')
+            @if (IS_ADMIN)
+                {{ Former::select('privacy')->options($privacy) }}
+            @else
+                {{ Former::hidden('privacy', 'private') }}
+            @endif
+        @elseif (CONTROLLER == 'addgame')
+            {{ Former::hidden('privacy', 'submission') }}
         @endif
 
         {{ Former::select('devstate', lang('game.fields.devstate_title'))->options(get_array_lang(Config::get('vgc.developmentstates'), 'developmentstates.'))->value('released') }}
@@ -71,7 +87,7 @@ else $devs = Dev::where('privacy', '=', 'public')->get(array('id', 'name'));
             <fieldset>
                 <legend>{{ lang('game.fields.'.$item.'_title') }}</legend>
 
-                @for ($i = 1; $i < 5; $i++)
+                @for ($i = 0; $i < 4; $i++)
                     <?php
                     $name = isset($values['names'][$i]) ? $values['names'][$i] : '';
                     $url = isset($values['urls'][$i]) ? $values['urls'][$i] : '';

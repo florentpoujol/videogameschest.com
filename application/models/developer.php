@@ -53,19 +53,21 @@ class Developer extends ExtendedEloquent
         $form = clean_form_input($form);
 
         // checking name change
-        $dev = parent::find($id);
+        if (isset($form['name'])) {
+            $dev = parent::find($id);
 
-        if ($dev->name != $form['name']) { // the user wan to change the dev name, must check is the name is not taken
-            if (parent::where('name', '=', $form['name'])->first() != null) {
-                HTML::set_error(
-                    lang('messages.editdev_nametaken', array(
-                        'name'=>$dev->name,
-                        'id'=>$dev->id,
-                        'newname'=>$form['name'])
-                    )
-                );
+            if ($dev->name != $form['name']) { // the user wan to change the dev name, must check is the name is not taken
+                if (parent::where('name', '=', $form['name'])->first() != null) {
+                    HTML::set_error(
+                        lang('messages.editdev_nametaken', array(
+                            'name'=>$dev->name,
+                            'id'=>$dev->id,
+                            'newname'=>$form['name'])
+                        )
+                    );
 
-                return false;
+                    return false;
+                }
             }
         }
 

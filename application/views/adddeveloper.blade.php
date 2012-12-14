@@ -46,7 +46,7 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
 
         {{ Former::url('logo', lang('developer.fields.logo')) }}
         {{ Former::url('website', lang('developer.fields.website')) }}
-        {{-- Former::url('blogfeed', lang('developer.fields.blogfeed')) --}}
+        {{ Former::url('blogfeed', lang('developer.fields.blogfeed')) }}
 
         {{ Former::number('teamsize', lang('developer.fields.teamsize'))->value(1) }}
 

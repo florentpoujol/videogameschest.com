@@ -20,36 +20,23 @@ class Game extends ExtendedEloquent
      * @param  array $game Data comming from the form
      * @return Game       The Game instance
      */
-	public static function create($game) 
+	public static function create($form) 
 	{
         $form = clean_form_input($form);
 
-        foreach (static::$array_items as $item) {
-            if (isset($game[$item])) {
-                $game[$item] = json_encode($game[$item]);
-            }
-        }
-
-        foreach (static::$names_urls_items as $item) {
-            if (isset($game[$item])) {
-                $game[$item] = json_encode(clean_names_urls_array($game[$item]));
-            }
-        }
-
         if ( ! isset($game['privacy'])) $game['privacy'] = 'private';
         
-        $game = parent::create($game);
+        $game = parent::create($form);
         
         HTML::set_success(lang('messages.addgame_success',array('name'=>$game->name)));
         return $game;
     }
 
     /**
-     * Update a developer profile
-     * @param  int $id         The developer id
-     * @param  array $attributes The dev's data
-     * @param  Developer $game The dev instance
-     * @return User The updateddev instance
+     * Update a game profile
+     * @param  int $id         The game id
+     * @param  array $attributes The game's data
+     * @return Game The updated game instance
      */
     public static function update($id, $form)
     {
@@ -57,27 +44,29 @@ class Game extends ExtendedEloquent
 
         // checking name change
         $game = parent::find($id);
+        if (isset($form['name'])) {
+            
+            if ($game->name != $form['name']) { // the user want to change the name, must check is the name is not taken
+                if (parent::where('name', '=', $form['name'])->first() != null) {
+                    HTML::set_error(
+                        lang('messages.editgame_nametaken', array(
+                            'name'=>$game->name,
+                            'id'=>$game->id,
+                            'newname'=>$form['name'])
+                        )
+                    );
 
-        if ($game->name != $form['name']) { // the user want to change the name, must check is the name is not taken
-            if (parent::where('name', '=', $form['name'])->first() != null) {
-                HTML::set_error(
-                    lang('messages.editgame_nametaken', array(
-                        'name'=>$game->name,
-                        'id'=>$game->id,
-                        'newname'=>$form['name'])
-                    )
-                );
-
-                return false;
+                    return false;
+                }
             }
         }
 
-        parent::update($id, $form);
+        $game = parent::update($id, $form);
 
         HTML::set_success(lang('messages.editgame_success', 
             array('name'=>$game->name, 'id'=>$game->id))
         );
-        return true;
+        return $game;
     }
 
 
@@ -146,10 +135,10 @@ class Game extends ExtendedEloquent
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
 
-	public function developer()
+	/*public function developer()
     {
         return $this->belongs_to('Developer');
-    }
+    }*/
 
     public function dev()
     {

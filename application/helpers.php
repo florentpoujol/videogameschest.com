@@ -207,19 +207,24 @@ function clean_form_input($input, $supl_attributes = array())
  * @param  string $message The email's corps
  * @return [type]          [description]
  */
-function send_mail($message) 
+function send_mail($email, $message) 
 {
-    HTML::set_infos($message);
+    HTML::set_infos($email.' '.$message);
 }
 
 
-
+/**
+ * Create an assoc array from an array where keys = values
+ * @param  array $array The input array
+ * @return array        The output array
+ */
 function array_set_values_as_keys($array) 
 {
+    $new_array = array();
     foreach ($array as $key => $value) {
-        $array[$value] = $value;
+        $new_array[$value] = $value;
     }
 
-    return $array;
+    return $new_array;
 }
 
