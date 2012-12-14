@@ -354,13 +354,13 @@ class Admin_Controller extends Base_Controller
 
         // checking form
         $rules = array(
-            'name' => 'required|min:5',
+            'name' => 'required|min:5|unique:games',
             'developer_id' => 'required|exists:developers,id',
             'logo' => 'url',
             'website' => 'url',
             'blogfeed' => 'url',
             'soundtrackurl' => 'url',
-            'publishername' => 'min:2',
+            'publishername' => 'min:2|required_with:publisherurl',
             'publisherurl' => 'url|required_with:publishername',
             'price' => 'min:0',
         );
@@ -405,16 +405,16 @@ class Admin_Controller extends Base_Controller
             return;
         }
 
-        if (IS_DEVELOPER && $profile_id != DEV_PROFILE_ID) {
-            HTML::set_error(lang('messages.can_not_edit_others_games'));
-            return Redirect::to_route('get_editgame', array(DEV_PROFILE_ID));
+        $game = Game::find($profile_id);
+
+        if ($game == null) {
+            // $profile_id was set but no game profile was found
+            HTML::set_error(lang('messages.game_profile_not_found', array('profile_id'=>$profile_id)));
+            return Redirect::to_route('get_editgame');
         }
 
-        if (Game::find($profile_id) == null) {
-            // $profile_id was set but no game profile was found
-            // this should only happens when user is an admin
-            // since dev with bad game profile id are already redirected
-            HTML::set_error(lang('messages.game_profile_not_found', array('profile_id'=>$profile_id)));
+        if (IS_DEVELOPER && $game->developer_id != DEV_PROFILE_ID) {
+            HTML::set_error(lang('messages.can_not_edit_others_games'));
             return Redirect::to_route('get_editgame');
         }
 

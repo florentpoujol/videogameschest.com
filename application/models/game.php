@@ -63,8 +63,8 @@ class Game extends ExtendedEloquent
 
         $game = parent::update($id, $form);
 
-        HTML::set_success(lang('messages.editgame_success', 
-            array('name'=>$game->name, 'id'=>$game->id))
+        HTML::set_success(lang('messages.editgame_success') 
+            //array('name'=>$game->name, 'id'=>$game->id))
         );
         return $game;
     }
@@ -112,7 +112,7 @@ class Game extends ExtendedEloquent
     {
         if (in_array($key, static::$json_items)) {
             if (in_array($key, static::$names_urls_items)) {
-                $value = clean_names_urls_items($value);
+                $value = clean_names_urls_array($value);
             }
 
             $this->set_attribute($key, json_encode($value));

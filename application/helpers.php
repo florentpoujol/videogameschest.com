@@ -140,6 +140,24 @@ function user()
     return Auth::user();
 }
 
+/**
+ * Wrapped around Auth::user()->dev
+ * @return Developer The developer profile that belongs to the current user
+ */
+function dev()
+{
+    return Auth::user()->dev;
+}
+
+/**
+ * Wrapped around Auth::user()->dev->games
+ * @return array Array of games
+ */
+function games()
+{
+    return Auth::user()->dev->games;
+}
+
 
 /**
  * Wrapper around json_decode($data, true)

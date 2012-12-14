@@ -56,7 +56,7 @@ if ( ! empty($old)) Former::populate($old);
             $options = get_array_lang($items, $item.'.');
 
             if (isset($old[$item])) $values = $old[$item];
-            else $values = $game->json_to_array($item);
+            else $values = $game->$item;
             // why do I need this ?
             // using populate will not work because it doesn't work with multiselect
 
@@ -78,7 +78,7 @@ if ( ! empty($old)) Former::populate($old);
                 $options = get_array_lang(Config::get('vgc.'.$item), $item.'.');
                 
                 if (isset($old[$item])) $values = clean_names_urls_array($old[$item]);
-                else $values = $game->json_to_array($item);
+                else $values = $game->$item;
 
                 $length = count($values['names']);
                 for ($i = 0; $i < $length; $i++):
@@ -103,7 +103,7 @@ if ( ! empty($old)) Former::populate($old);
 
                 <?php
                 if (isset($old[$item])) $values = clean_names_urls_array($old[$item]);
-                else $values = $game->json_to_array($item);
+                else $values = $game->$item;
 
                 $length = count($values['names']);
                 for ($i = 0; $i < $length; $i++):

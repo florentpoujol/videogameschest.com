@@ -6,7 +6,7 @@ $rules = array(
     'website' => 'url',
     'blogfeed' => 'url',
     'soundtrackurl' => 'url',
-    'publishername' => 'min:2',
+    'publishername' => 'min:2|required_with:publisherurl',
     'publisherurl' => 'url|required_with:publishername',
     'price' => 'min:0'
 );
