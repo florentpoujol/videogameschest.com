@@ -1,6 +1,6 @@
 <h1>Admin Home</h1>
 
-<p>Welcome {{ user()->dev->name }}</p>
+<p>Welcome {{ user()->username }}</p>
 
 @if (IS_ADMIN)
 	@include('admin/selecteditdeveloper')

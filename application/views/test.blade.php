@@ -6,7 +6,9 @@ if (isset($old)) {
 }
 
 
-echo Game::find(2)->test();
+
+
+
 
 $rules = array(
 	'test' => 'min:5'

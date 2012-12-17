@@ -82,20 +82,53 @@ Route::get('/addgame', array('as' => 'get_addgame', function() use ($layout)
 
 // SEARCH PROFILE
 
-Route::get('/search', array('as' => 'get_search', function()
+Route::get('/search', array('as' => 'get_search', function() use ($layout)
 {
-    return "Search page";
+    return $layout->nest('page_content', 'search')->with('page_title', 'search');
 }));
 
 
 // DISPLAY PROFILE
 
-Route::get('/developer/(:any)', array('as' => 'get_developer', function($name = null)
+Route::get('/developer/(:any)', array('as' => 'get_developer', function($name = null) use ($layout)
 {
     if (is_null($name)) return Redirect::to_route('get_search');
+    
+    if (is_numeric($name)) $profile = Dev::find($name);
+    else $profile = Dev::where_name(url_to_name($name))->first();
 
-    return $layout->nest('page_content', 'devprofile')->with('page_title', lang('developer.profile.title'));
+    if (is_null($profile)) {
+        if (is_numeric($name)) {
+            HTML::set_error(lang('errors.developer_profile_id_not_found', array('id'=>$name)));
+        } else HTML::set_error(lang('errors.developer_profile_name_not_found', array('name'=>$name)));
+
+        return Redirect::to_route('get_search');
+    }
+
+    // display profile if
+    // profile is public
+    // user is admin
+    // user is dev and profile is its own, or in review
+    // user is guest and profile is public
+    // =>
+    // DON'T display profile if
+    // user is guest and profile is not public
+    // user is dev and profile is not in review an not owned
+    
+    if ($profile->privacy == 'public' || IS_ADMIN ||
+        IS_DEVELOPER && 
+            ($profile->user_id == USER_ID ||
+            in_array($profile->privacy, Config::get('vgc.review.types')))
+    ) {
+        return $layout->nest('page_content', 'developerdisplay', array('profile' => $profile))
+        ->with('page_title', lang('developer.profile.title'));
+    } else {
+        HTML::set_error(lang('errors.access_not_allowed', array('page' => 'Developer profile '.$name)));
+        return Redirect::to_route('get_search');
+    }
 }));
+
+
 
 Route::get('/game/(:any)', array('as' => 'get_game', function($name = null)
 {
@@ -194,6 +227,30 @@ Route::group(array('before' => 'csrf'), function()
     Route::post('admin/adddeveloper', array('as' => 'post_adddeveloper', 'uses' => 'admin@adddeveloper'));
     Route::post('admin/addgame', array('as' => 'post_addgame', 'uses' => 'admin@addgame'));
     Route::post('admin/reports', array('as' => 'post_reports', 'uses' => 'admin@reports'));
+
+
+    // SEARCH
+
+    Route::post('/search', array('as' => 'post_search', function()
+    {
+        $input = Input::all();
+        $type = $input['type'];
+        $name = $input['name'];
+
+        if (is_numeric($name)) {
+            $profile = $type::find($name);
+        } else {
+            $profile = $type::where_name($name)->first();
+        }
+
+        if (is_null($profile)) {
+            HTML::set_error('Profile not found');
+            return Redirect::to_route('get_search');
+        }
+
+        return Redirect::to_route('get_'.$input['type'], array($profile->id));
+        
+    }));
 });
 
 
@@ -264,21 +321,25 @@ Route::filter('before', function()
     if (Auth::check()) { // user is logged in
         $user = Auth::user();
         define('IS_LOGGED_IN', true);
+        define('IS_GUEST', false);
         define("USER_ID", $user->id);
 
         if (Auth::user()->type == 'admin') {
             define('IS_ADMIN', true);
             define('IS_TRUSTED', true);
             define('IS_DEVELOPER', false);
-            define('DEV_PROFILE_ID', 0);
+            //define('DEV_PROFILE_ID', 0);
+            define('DEVELOPER_ID', 0);
         } else {
             define('IS_ADMIN', false);
             define('IS_DEVELOPER', true);
-            define('DEV_PROFILE_ID', $user->developer->id);
+            //define('DEV_PROFILE_ID', $user->developer->id);
+            define('DEVELOPER_ID', $user->developer->id);
             define('IS_TRUSTED', $user->is_trusted);
         }
     } else {
         define('IS_LOGGED_IN', false);
+        define('IS_GUEST', true);
         define('USER_ID', 0);
         define('IS_ADMIN', false);
         define('IS_DEVELOPER', false);
@@ -302,6 +363,33 @@ Route::filter('before', function()
             $segments[1] = 'index';
 
         define('ACTION', $segments[1]);
+    }
+
+
+    // checking success of reviews
+    // check number of approvals
+    $last_check_date = new DateTime(DBConfig::get('review_check_date'));
+    $interval = new DateInterval('PT'. Config::get('vgc.review.check_interval') .'M');
+    $now = new DateTime();
+
+    if ($last_check_date->add($interval) > $now) {
+        DBConfig::put('review_check_date', $now);
+
+        $reviews = Config::get('vgc.review.types');
+
+        foreach ($reviews as $review) {
+            $profiles = Game::where_privacy($review)->get();
+            $profiles = array_merge($profiles, Dev::where_privacy($review)->get());
+
+            foreach ($profiles as $profile) {
+                if (
+                    count($profile->approved_by) >= Config::get('vgc.approval_threshold')
+                        
+                ) {
+                    $profile->passed_review($review);
+                }
+            }
+        }
     }
 
 

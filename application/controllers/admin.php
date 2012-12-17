@@ -88,7 +88,11 @@ class Admin_Controller extends Base_Controller
             if ($user != null) {
                 // send email here
                 $email = $user->email;
-                HTML::set_success('An email with your credentials and a new temporary password has been sent to '.$email.'.');
+                $password = get_random_string(5);
+                $user->password = Hash::make($password);
+                $user->save();
+
+                HTML::set_success('An email with your credentials and a new temporary password has been sent to '.$email.'. '.$password);
             } else {
                 HTML::set_error("No user with the $field [$username] has been found.");
             }
@@ -473,7 +477,7 @@ class Admin_Controller extends Base_Controller
     }
 
     /**
-     * Handle profile approval
+     * Handle profile approval during review
      */
     public function post_reviews()
     {

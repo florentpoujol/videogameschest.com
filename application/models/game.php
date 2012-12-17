@@ -78,9 +78,9 @@ class Game extends Profile
      * @param  string $review  Review type
      * @param  string $profile The profile type (this arg is useless here but overriding passed_review() with less params than in the parent did cause issue (Class 'Log' not found))
      */
-    public function passed_review($review, $profile = 'game')
+    public function passed_review($review, $profile = 'game', $user = null)
     {
-        parent::passed_review($review, $profile);
+        parent::passed_review($review, $profile, $this->dev->user);
     }
 
     /**
@@ -88,9 +88,9 @@ class Game extends Profile
      * @param  string $review       Review type
      * @param  string $profile The profile type
      */
-    public function failed_review($review, $profile = 'game')
+    public function failed_review($review, $profile = 'game', $user = null)
     {
-        parent::failed_review($review, $profile);
+        parent::failed_review($review, $profile, $this->dev->user);
     }
 
 
@@ -140,8 +140,14 @@ class Game extends Profile
         return $this->belongs_to('Developer');
     }*/
 
-    public function dev()
+    public function developer()
     {
         return $this->belongs_to('Developer');
     }
+
+    public function dev()
+    {
+        return $this->developer();
+    }
+    
 }

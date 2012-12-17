@@ -10,12 +10,9 @@ class Profile extends ExtendedEloquent
      * @param  string $review  Review type
      * @param  string $profile Profile type
      */
-    public function passed_review($review, $profile)
+    public function passed_review($review, $profile, $user)
     {
         $password = get_random_string(10);
-
-        if ($profile == 'developer') $user = $this->user;
-        else $user = $this->dev->user;
 
         if ($review == 'submission') {
             $this->privacy = 'private';
@@ -48,10 +45,10 @@ class Profile extends ExtendedEloquent
      * @param  string $review  Review type
      * @param  string $profile Profile type
      */
-    public function failed_review($review, $profile)
+    public function failed_review($review, $profile, $user)
     {
         if ($review == 'submission') {
-            if ($profile == 'developer') User::delete($this->user->id);
+            if ($profile == 'developer') User::delete($user->id);
             $this->delete();
         } elseif ($review == 'publishing') {
             $this->privacy = 'private';
@@ -65,7 +62,7 @@ class Profile extends ExtendedEloquent
                 'id' => $this->id,
             ));
 
-            $email = $this->user->email;
+            $email = $user->email;
 
             // @TODO : send mails with 
         }

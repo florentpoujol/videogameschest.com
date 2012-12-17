@@ -3,7 +3,7 @@
 You may not have dots inside the keys
 
 
- */
+*/
 return array(
 'language_key_not_found' => '[language key \':key\' not found in language \':language\']',
 
@@ -32,10 +32,23 @@ return array(
 
 
         'review_profile_approved' => 'The :profile \":name\" (id : :id) has been approved for :review',
+
+        
     ),  
 
+    'errors' => array(
+        'access_not_allowed' => "You are not allowed to access the page : ':page'",
+
+        'developer_profile_name_not_found' => "Can't find the developper profile with name ':name'.",
+        'developer_profile_id_not_found' => "Can't find the developper profile with id ':id'.",
+
+        'game_profile_name_not_found' => "Can't find the game profile with name ':name'.",
+        'game_profile_id_not_found' => "Can't find the game profile with id ':id'.",
+    ),
 
 
+
+// EMAILS
 
     'emails' => array(
         'developer_passed_submission_review' =>
@@ -43,10 +56,10 @@ return array(
 <br>
 You receive this email because someone created a developer profile on <a href="http://videogameschest.com" title="">VideoGamesChest.com</a> <br>
 <br>
-Log in to your account with your name, email or id (:id) and your temporary password : :password. Don\'t forget to edit your user account to change he password.<br>
+Log in to your account with your name, email or id (:id) and your temporary password : :password. Don\'t forget to edit your user account to change the password.<br>
 <br>
 A developer profile is linked to your user account. The profile is now private and you may review it and <a href="http://videogameschest.com/admin/editdeveloper/:id">edit it</a>. <br>
-Once you are satisfied with the informations, you may send your profile in the Publishing review. <br>
+Once you are satisfied with the informations it contains, you may send your profile in the Publishing review. <br>
 <br>
 <br>
 Thanks,<br>

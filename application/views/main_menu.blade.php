@@ -1,7 +1,7 @@
 <header class="container navbar nav-inner">
     <ul class="nav">
     <!-- Menu -->
-    <?php $menu_items = array('home', 'adddeveloper', 'addgame'); ?>
+    <?php $menu_items = array('home', 'search', 'adddeveloper', 'addgame'); ?>
     @foreach ($menu_items as $menu_item)
         <li><a href="{{ route('get_'.$menu_item) }}">{{ lang('menu.'.$menu_item) }}</a></li>
     @endforeach

@@ -115,21 +115,36 @@ function get_assoc_array($array)
 
 
 /**
- * Does the opposite of url_title() from the url helper
  * Replace dashes and %20 by spaces
- * @param the url segment
+ * @param string $url the url segment
  * @return the name
  */
-function url_to_name( $url )
+function url_to_name($url)
 {
-    $url = str_replace( array( '-', '%20' ), ' ', $url );
-    return $url;
-}
-function name_to_url( $name )
-{
-    return url_title( $name );
+    $name = str_replace(array('-', '%20'), ' ', $url);
+    return $name;
 }
 
+/**
+ * Replace spaces by hyphen
+ * @param string $name the name
+ * @return the url
+ */
+function name_to_url( $name )
+{
+    $url = str_replace(array(' '), '-', $name);
+    return $url;
+}
+
+
+/**
+ * Wrapped around Auth::guest()
+ * @return boolean True if the user is a guest (not logged in)
+ */
+function is_guest()
+{
+    return Auth::guest();
+}
 
 /**
  * Wrapped around Auth::user()
@@ -146,7 +161,7 @@ function user()
  */
 function dev()
 {
-    return Auth::user()->dev;
+    return Auth::user()->developer;
 }
 
 /**
@@ -155,7 +170,7 @@ function dev()
  */
 function games()
 {
-    return Auth::user()->dev->games;
+    return Auth::user()->developer->games;
 }
 
 
@@ -191,7 +206,7 @@ function to_json($data)
  */
 function get_random_string($length)
 {
-    $alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&#'{([-|_@)]°}=+-*/,?;.:!§%$£¤µ";
+    $alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&#'{([-|_@)]°}=+-*/,?;.:!§%£¤µ";
     $string = "";
 
     for ($i = 0; $i < $length; $i++) {

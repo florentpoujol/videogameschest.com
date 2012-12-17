@@ -89,9 +89,9 @@ class Developer extends Profile
      * @param  string $review  Review type
      * @param  string $profile The profile type
      */
-    public function passed_review($review, $profile = 'developer')
+    public function passed_review($review, $profile = 'developer', $user = null)
     {
-        parent::passed_review($review, $profile);
+        parent::passed_review($review, $profile, $this->user);
     }
 
     /**
@@ -99,9 +99,9 @@ class Developer extends Profile
      * @param  string $review   Review type
      * @param  string $profile The profile type
      */
-    public function failed_review($review, $profile = 'developer')
+    public function failed_review($review, $profile = 'developer', $user = null)
     {
-        parent::failed_review($review, $profile);
+        parent::failed_review($review, $profile, $this->user);
     }
 
 

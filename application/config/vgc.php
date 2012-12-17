@@ -20,9 +20,10 @@ return array(
 
 
 	'review' => array(
-		'types' => array(),
+		'types' => array('submission', 'publishing'),
 		'duration' => 7,
-		'approval_threshold' => 20
+		'approval_threshold' => 20,
+		'check_interval' => 60, // time in minutes between two review success check
 	),
 
 	'privacy' => array('private', 'public'),

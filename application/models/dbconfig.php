@@ -1,8 +1,7 @@
 <?php
 
-class DBConfig extends Eloquent
+class DBConfig extends ExtendedEloquent
 {
-	
     public static $table = 'config';
     public static $cache = array();
 
@@ -19,8 +18,8 @@ class DBConfig extends Eloquent
         if (empty(static::$cache)) {
             $configs = DBConfig::all();
 
-            foreach ($configs as $key => $value) {
-                static::$cache[$key] = $value;
+            foreach ($configs as $config) {
+                static::$cache[$config->key] = $config->value;
             }
         }
 
@@ -53,7 +52,7 @@ class DBConfig extends Eloquent
         $config = DBConfig::where('key', '=', $key)->first();
 
         if (is_null($config)) { // new key, create the entry
-            $config = new DBConfig(array(
+            DBConfig::create(array(
                 'key' => $key,
                 'value' => $value
             ));
