@@ -29,7 +29,7 @@ class User extends ExtendedEloquent
             $user["password"] = Hash::make($user["password"]);
         } else {
             // dummy password
-            $user['password'] = Hash::make('r!&5éT[79m},D?4â+5w%');
+            $user['password'] = Hash::make(Config::get('dummie_password'));
             // the password will be updated by hand via th edituser page or
             // when a random password will be generated when the dev profile will 
             // have passed the submission review (in ExtendedEloquent.passed_review())
@@ -66,6 +66,9 @@ class User extends ExtendedEloquent
     public static function update($id, $form)
     {
         $form = clean_form_input($form);
+
+        if ($form['password'] != '') $form['password'] = Hash::make($form['password']);
+        else unset($form['password']);
 
         parent::update($id, $form);
         $user = User::find($id);

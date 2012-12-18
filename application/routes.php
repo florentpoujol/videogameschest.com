@@ -316,24 +316,25 @@ Route::filter('before', function()
     $lang = Session::get('language', Config::get('language', 'en'));
     define("LANGUAGE", $lang);
 
-    // set some CONST
+    // check if user has the logged in cokkie
+    $logged_in = Cookie::get('user_logged_in', '0');
+    if ($logged_in != '0') Auth::login((int) $logged_in);
 
+    // set some CONST
     if (Auth::check()) { // user is logged in
         $user = Auth::user();
         define('IS_LOGGED_IN', true);
         define('IS_GUEST', false);
         define("USER_ID", $user->id);
 
-        if (Auth::user()->type == 'admin') {
+        if (user()->type == 'admin') {
             define('IS_ADMIN', true);
             define('IS_TRUSTED', true);
             define('IS_DEVELOPER', false);
-            //define('DEV_PROFILE_ID', 0);
             define('DEVELOPER_ID', 0);
         } else {
             define('IS_ADMIN', false);
             define('IS_DEVELOPER', true);
-            //define('DEV_PROFILE_ID', $user->developer->id);
             define('DEVELOPER_ID', $user->developer->id);
             define('IS_TRUSTED', $user->is_trusted);
         }

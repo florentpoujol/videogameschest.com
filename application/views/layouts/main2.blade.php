@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE }}"> 
     <head>
-        <title>@yield('page_title') | VideoGamesChest.com</title>
+        <title>MAIN2 | VideoGamesChest.com</title>
 
         <!-- Meta --> 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -27,9 +27,7 @@
 
             <br>
             <br>
-            <br>
-        </div>
-        <!-- /#page_content .container -->
+        </div> <!-- /#page_content .container -->
 
         <!-- JavaScript -->
         <script src="http://lesscss.googlecode.com/files/less-1.3.0.min.js" type="text/javascript"></script>

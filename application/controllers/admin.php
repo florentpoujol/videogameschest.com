@@ -52,6 +52,12 @@ class Admin_Controller extends Base_Controller
             
             if ($user != null) {
                 if (Auth::attempt(array('username' => $user->username, 'password' => Input::get('password')))) {
+                    $keep_logged_in = Input::get('keep_logged_in', '0');
+
+                    if ($keep_logged_in == '1') {
+                        Cookie::put('user_logged_in', $user->id, 43200); //43200 min = 1 month
+                    }
+
                     return Redirect::to_route('get_admin_home');
                 } else {
                     HTML::set_error("The password provided for user $field [$username] is incorrect.");
@@ -297,16 +303,16 @@ class Admin_Controller extends Base_Controller
     {
         if ($profile_id == null) {
             if (IS_DEVELOPER) {
-                return Redirect::to_route('get_editdeveloper', array(DEV_PROFILE_ID));
+                return Redirect::to_route('get_editdeveloper', array(DEVELOPER_ID));
             } else {
                 $this->layout->nest('page_content', 'admin/selecteditdeveloper');
                 return;
             }
         }
 
-        if (IS_DEVELOPER && $profile_id != DEV_PROFILE_ID) {
+        if (IS_DEVELOPER && $profile_id != DEVELOPER_ID) {
             HTML::set_error("You are not allowed to edit other developer's profiles !");
-            return Redirect::to_route('get_editdeveloper', array(DEV_PROFILE_ID));
+            return Redirect::to_route('get_editdeveloper', array(DEVELOPER_ID));
         }
 
         if (Dev::find($profile_id) == null) {
@@ -417,7 +423,7 @@ class Admin_Controller extends Base_Controller
             return Redirect::to_route('get_editgame');
         }
 
-        if (IS_DEVELOPER && $game->developer_id != DEV_PROFILE_ID) {
+        if (IS_DEVELOPER && $game->developer_id != DEVELOPER_ID) {
             HTML::set_error(lang('messages.can_not_edit_others_games'));
             return Redirect::to_route('get_editgame');
         }

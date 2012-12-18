@@ -135,11 +135,6 @@ class Game extends Profile
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
 
-	/*public function developer()
-    {
-        return $this->belongs_to('Developer');
-    }*/
-
     public function developer()
     {
         return $this->belongs_to('Developer');

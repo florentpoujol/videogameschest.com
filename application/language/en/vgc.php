@@ -87,8 +87,9 @@ The VideoGamesChest.com team
         'languages' => 'Languages',
 
         'login' => array(
-            'name_label' => 'Your user name, email or id',
+            'name_label' => 'Your user name or email',
             'password_label' => 'Your password',
+            'keep_logged_in_label' => 'Keep me logged in',
             'title' => 'Log In',
             'submit' => 'Log In',
             'lost_password' => 'I lost my password',

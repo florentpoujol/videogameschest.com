@@ -67,4 +67,13 @@ class Profile extends ExtendedEloquent
             // @TODO : send mails with 
         }
     }
+
+
+    //----------------------------------------------------------------------------------
+    // RELATIONSHIPS
+
+    public function reports()
+    {
+        return $this->has_many('Report');
+    }
 }

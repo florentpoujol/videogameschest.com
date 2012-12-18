@@ -1,11 +1,12 @@
 <?php
 if ( ! isset($page_title)) {
-    $page_title = ucfirst(CONTROLLER);
-
-    if ($page_title == '') $page_title = 'Home';
+    $page_title = Section::yield('page_title');
+    
+    if ($page_title == '') $page_title = ucfirst(CONTROLLER);
 }
 
 if ( ! isset($page_content)) $page_content = '';
+$page_content .= Section::yield('page_content');
 ?>
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE }}"> 
@@ -19,8 +20,8 @@ if ( ! isset($page_content)) $page_content = '';
 
         <!-- CSS -->        
         {{ Asset::container('bootstrapper')->styles(); }}
-
-        <link rel="stylesheet/less" type="text/css" media="screen" href="{{ asset("css/main.less") }}" >
+        <!--<link rel="stylesheet/less" type="text/css" media="screen" href="{{ asset("css/main.less") }}" >-->
+        @yield('cssfiles')
         <!-- /CSS -->
     </head>
     
@@ -37,14 +38,13 @@ if ( ! isset($page_content)) $page_content = '';
             <br>
             <br>
             <br>
-        </div>
-        <!-- /#page_content .container -->
+        </div> <!-- /#page_content .container -->
 
         <!-- JavaScript -->
-        <script src="http://lesscss.googlecode.com/files/less-1.3.0.min.js" type="text/javascript"></script>
+        <!--<script src="http://lesscss.googlecode.com/files/less-1.3.0.min.js" type="text/javascript"></script>-->
         <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
         {{ Asset::container('bootstrapper')->scripts(); }}
-        @yield('jsfile')
+        @yield('jsfiles')
 
         <script>
           $(function () {
@@ -52,7 +52,6 @@ if ( ! isset($page_content)) $page_content = '';
           })
 
           @yield('jscode')
-        </script>
-        <!-- /JavaScript -->
+        </script> <!-- /JavaScript -->
     </body>
 </html>
