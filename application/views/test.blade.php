@@ -20,8 +20,12 @@ $options = array('1' => 'un', '2'=>'deux');
 	
 
 	{{ Former::multiselect('field[]')->options($options) }}
-	{{ Former::text('test') }}
-
+	{{ Former::text('test', 'truc')->required_text() }}
+    
+    {{ Former::danger_button('truc1') }}
+    {{ Former::danger_reset('truc2') }}
+    {{ Former::danger_submit('truc3') }}
+    {{ Former::primary_text('truc4') }}
 
 	{{ Former::submit('submit') }}
 </form>

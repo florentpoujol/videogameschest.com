@@ -2,20 +2,24 @@
 
 class Profile extends ExtendedEloquent
 {
+    protected $_user = null;
+
     //----------------------------------------------------------------------------------
     // REVIEWS
 
     /**
      * Do stuffs when a profile passed a review
-     * @param  string $review  Review type
-     * @param  string $profile Profile type
+     * @param  string $user The User
      */
-    public function passed_review($review, $profile, $user)
+    public function passed_review($user)
     {
-        $password = get_random_string(10);
-
+        $password = '';
+        $review = $this->privacy;
+        $profile = get_class(); // return the name of the child class
+        
         if ($review == 'submission') {
             $this->privacy = 'private';
+            $password = get_random_string(10);
         } elseif ($review == 'publishing') {
             $this->privacy = 'public';
             
@@ -24,7 +28,6 @@ class Profile extends ExtendedEloquent
         }
 
         $this->approved_by = '';
-        $this->review_start_date = '0000-00-00 00:00:00';
         $this->save();
 
         // email's text :
@@ -53,7 +56,6 @@ class Profile extends ExtendedEloquent
         } elseif ($review == 'publishing') {
             $this->privacy = 'private';
             $this->approved_by = '';
-            $this->review_start_date = '0000-00-00 00:00:00';
             $this->save();
 
             // email's text :
@@ -75,5 +77,24 @@ class Profile extends ExtendedEloquent
     public function reports()
     {
         return $this->has_many('Report');
+    }
+
+    public function admin_reports() 
+    {
+        $reports = $this->reports;
+        $a_reports = array();
+
+        foreach ($reports as $report) {
+            if ($report->type == 'admin') $a_reports[] = $report;
+        }
+
+        if (count($a_reports) == 0) $a_reports = null;
+        
+        return $a_reports;
+    }
+
+    public function dev_reports() 
+    {
+        return reports()->where_type('dev')->get();
     }
 }

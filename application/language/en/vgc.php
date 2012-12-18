@@ -98,7 +98,7 @@ The VideoGamesChest.com team
     ),
 
 
-// ADMIN
+// REVIEW
 
     'admin' => array(
         'review' => array(
@@ -109,7 +109,6 @@ The VideoGamesChest.com team
 
         ),
     ),
-
 
 
 
@@ -257,14 +256,25 @@ The VideoGamesChest.com team
 
     ), // end of game
 
-    // ADD GAME SPECIFIC TERMS
-    
-    
 
-    // GAME PROFILE SPECIFIC TERMS
 
-    
+// REPORTS
 
+    'reports' => array(
+        'title' => 'Reports',
+        'form_title' => 'Report this profile',
+        'message' => 'Your message',
+        'submit_dev' => 'Send to the developer',
+        'submit_admin' => 'Send to the administrators',
+
+        'dev_title' => 'Developer reports',
+        'admin_title' => 'Admin reports',
+
+        'msg' => array(
+            'create_success' => 'Thank you, the report has been issued successfully.'
+
+        ),
+    ),
 
 
 // LANGUAGES

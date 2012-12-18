@@ -9,7 +9,7 @@ class Developer extends Profile
     public static $names_urls_items = array('socialnetworks');
 
 
-	//----------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------
     // CRUD METHODS
 
     /**
@@ -89,9 +89,9 @@ class Developer extends Profile
      * @param  string $review  Review type
      * @param  string $profile The profile type
      */
-    public function passed_review($review, $profile = 'developer', $user = null)
+    public function passed_review($user = null)
     {
-        parent::passed_review($review, $profile, $this->user);
+        parent::passed_review($this->user);
     }
 
     /**

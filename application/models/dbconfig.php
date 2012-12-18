@@ -19,7 +19,7 @@ class DBConfig extends ExtendedEloquent
             $configs = DBConfig::all();
 
             foreach ($configs as $config) {
-                static::$cache[$config->key] = $config->value;
+                static::$cache[$config->_key] = $config->value;
             }
         }
 
@@ -49,11 +49,11 @@ class DBConfig extends ExtendedEloquent
 
         static::$cache[$key] = $value;
 
-        $config = DBConfig::where('key', '=', $key)->first();
+        $config = DBConfig::where('_key', '=', $key)->first();
 
         if (is_null($config)) { // new key, create the entry
             DBConfig::create(array(
-                'key' => $key,
+                '_key' => $key,
                 'value' => $value
             ));
         } else { // update the entry
@@ -72,7 +72,7 @@ class DBConfig extends ExtendedEloquent
     {
         if (isset(static::$cache[$key])) return true;
 
-        $config = DBConfig::where('key', '=', $key)->first();
+        $config = DBConfig::where('_key', '=', $key)->first();
 
         if (is_null($config)) return false;
         else return true;

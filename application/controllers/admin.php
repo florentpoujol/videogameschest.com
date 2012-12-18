@@ -479,7 +479,8 @@ class Admin_Controller extends Base_Controller
             return Redirect::to_route('get_reviews', array(head($review_types)));
         }
 
-        return View::make('admin.reviews')->with('review', $review);
+        // return View::make('admin.reviews')->with();
+        $this->layout->nest('page_content', 'admin.reviews', array('review' => $review));
     }
 
     /**
@@ -494,7 +495,7 @@ class Admin_Controller extends Base_Controller
 
         $input = Input::all();
 
-        $profile = ${$input['profile']}::find($input['id']);
+        $profile = $input['profile']::find($input['id']);
 
         if (IS_ADMIN) $profile->passed_review($profile->privacy);
         else {
@@ -509,5 +510,52 @@ class Admin_Controller extends Base_Controller
                 'review' => $input['review']
             )));
         }
+
+        return Redirect::to_route('get_reviews',array($input['review']));
+    }
+
+
+    //----------------------------------------------------------------------------------
+    // REPORTS
+
+    /**
+     * Display the report page
+     */
+    public function get_reports($report = null)
+    {
+        $reports = array('dev', 'admin');
+
+        if ( ! in_array($report, $reports)) {
+            return Redirect::to_route('get_reports', array('dev'));
+        }
+
+        if (IS_DEVELOPER && $report != 'dev') {
+            return Redirect::to_route('get_reports', array('dev'));
+        }
+
+        $this->layout->nest('page_content', 'admin.reports', array('report_type' => $report));
+    }
+
+    /**
+     * Handle creating and deleting reports
+     */
+    public function post_reports()
+    {
+        $input = Input::all();
+
+        if ($input['action'] == 'create') {
+            $rules = array('message' => 'required|min:10');
+
+            $validation = Validator::make($input, $rules);
+
+            if ($validation->passes()) {
+                Reports::create($input);
+            } else {
+                Input::flash();
+                return Redirect::back()->with_errors($validation);
+            }
+        }
+
+        return Redirect::back();
     }
 } // end of Admin controller class

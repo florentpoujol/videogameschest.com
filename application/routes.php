@@ -371,11 +371,11 @@ Route::filter('before', function()
     // check number of approvals
     $last_check_date = new DateTime(DBConfig::get('review_check_date'));
     $interval = new DateInterval('PT'. Config::get('vgc.review.check_interval') .'M');
+    $last_check_date->add($interval);
     $now = new DateTime();
-
-    if ($last_check_date->add($interval) > $now) {
+    
+    if ($last_check_date < $now) {
         DBConfig::put('review_check_date', $now);
-
         $reviews = Config::get('vgc.review.types');
 
         foreach ($reviews as $review) {
@@ -383,11 +383,10 @@ Route::filter('before', function()
             $profiles = array_merge($profiles, Dev::where_privacy($review)->get());
 
             foreach ($profiles as $profile) {
-                if (
-                    count($profile->approved_by) >= Config::get('vgc.approval_threshold')
-                        
+                if (count($profile->approved_by) >= Config::get('vgc.review.approval_threshold', 1000) && 
+                    $profile->admin_reports == null
                 ) {
-                    $profile->passed_review($review);
+                    $profile->passed_review();
                 }
             }
         }

@@ -1,39 +1,39 @@
-@layout('layouts.main2')
-
 @section('page_title')
-	{{ Lang('admin.review.title') }}
+	{{ lang('admin.review.title') }}
 @endsection
 
-@section('page_content')
-	<?php
-	echo 
-	Navigation::tabs(array(
-		array(
-			'url' => route('get_reviews', array('submission')),
-			'label' => lang('admin.review.submission_title'),
-		),
-		array(
-			'url' => route('get_reviews', array('publishing')),
-			'label' => lang('admin.review.publishing_title'),
-		),
-	));
-	?>
-	
-	<h2>Games</h2>
 
-	<?php 
-	$profiles = Game::where('privacy', '=', $review)->get();
-	$profile_type = 'game';
-	?>
+<h2>{{ lang('admin.review.title') }}</h2>
 
-	@include('partials.reviewtable')
+<?php
+echo 
+Navigation::tabs(array(
+	array(
+		'url' => route('get_reviews', array('submission')),
+		'label' => lang('admin.review.submission_title'),
+	),
+	array(
+		'url' => route('get_reviews', array('publishing')),
+		'label' => lang('admin.review.publishing_title'),
+	),
+));
+?>
 
-	<h2>Developers</h2>
+<h3>Games</h3>
 
-	<?php 
-	$profiles = Dev::where('privacy', '=', $review)->get();
-	$profile_type = 'dev'; 
-	?>
+<?php 
+$profiles = Game::where_privacy($review)->get();
+$profile_type = 'game';
+?>
 
-	@include('partials.reviewtable')
-@endsection
+@include('partials.reviewtable')
+
+<h3>Developers</h3>
+
+<?php 
+$profiles = Dev::where_privacy($review)->get();
+$profile_type = 'developer'; 
+?>
+
+@include('partials.reviewtable')
+
