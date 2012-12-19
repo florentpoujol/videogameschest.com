@@ -17,9 +17,6 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // LOGIN
 
-    /*
-     * Login form
-     */
     public function get_login() 
     {
         $this->layout->nest('page_content', 'admin.login');
@@ -110,9 +107,6 @@ class Admin_Controller extends Base_Controller
         }
     }
 
-    /*
-     * Disconnect the user
-     */
     public function get_logout()
     {
         Cookie::forget('user_logged_in');
@@ -124,9 +118,6 @@ class Admin_Controller extends Base_Controller
     // ----------------------------------------------------------------------------------
     // ADD USER
 
-    /**
-     * Page to add a user account
-     */
     public function get_adduser()
     {
         $this->layout->nest('page_content', 'admin/adduser');
@@ -160,9 +151,6 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // EDIT USER
 
-    /**
-     * Page to edit a user account
-     */
     public function get_edituser($user_id = null)
     {
         if ($user_id == null || (IS_DEVELOPER && $user_id != USER_ID))
@@ -269,9 +257,6 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // EDIT DEVELOPER
 
-    /**
-     * Check the data from the select developer form then redirect to the edit developer page
-     */
     public function post_selecteditdeveloper()
     {
         $name = Input::get('dev_name');
@@ -296,10 +281,6 @@ class Admin_Controller extends Base_Controller
         return Redirect::to_route('get_editdeveloper', array($id));
     }
 
-    /**
-     * Page to edit a developer profile account
-     * @param  id $profile_id Profile's id
-     */
     public function get_editdeveloper($profile_id = null)
     {
         if ($profile_id == null) {
@@ -391,9 +372,6 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // EDIT GAME
    
-    /**
-     * Check the data from the select game form then redirect to the edit game page
-     */
     public function post_selecteditgame()
     {
         $id = Input::get('game_id', null);
@@ -405,10 +383,6 @@ class Admin_Controller extends Base_Controller
         return Redirect::to_route('get_editgame', array($id));
     }
 
-    /**
-     * Page to edit a game profile 
-     * @param  id $profile_id Profile's id
-     */
     public function get_editgame($profile_id = null)
     {
         if ($profile_id == null) {
@@ -463,10 +437,6 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // REVIEWS
 
-    /**
-     * Display the review page
-     * @param  string $review The review type (tell which tab is loaded by default)
-     */
     public function get_reviews($review = null)
     {
         if ( ! IS_TRUSTED) {
@@ -484,9 +454,6 @@ class Admin_Controller extends Base_Controller
         $this->layout->nest('page_content', 'admin.reviews', array('review' => $review));
     }
 
-    /**
-     * Handle profile approval during review
-     */
     public function post_reviews()
     {
         if ( ! IS_TRUSTED) {
@@ -519,9 +486,6 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // REPORTS
 
-    /**
-     * Display the report page
-     */
     public function get_reports($report = null)
     {
         $reports = array('dev', 'admin');
@@ -537,9 +501,6 @@ class Admin_Controller extends Base_Controller
         $this->layout->nest('page_content', 'admin.reports', array('report_type' => $report));
     }
 
-    /**
-     * Handle creating and deleting reports
-     */
     public function post_reports()
     {
         $input = Input::all();
@@ -555,6 +516,14 @@ class Admin_Controller extends Base_Controller
                 Input::flash();
                 return Redirect::back()->with_errors($validation);
             }
+        }
+
+        elseif ($input['action'] == 'delete') {
+            foreach ($input['reports'] as $report_id) {
+                Report::find($report_id)->delete();
+            }
+        
+            HTML::set_success(lang('reports.msg.delete_success'));
         }
 
         return Redirect::back();

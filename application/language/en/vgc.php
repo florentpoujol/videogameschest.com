@@ -270,9 +270,15 @@ The VideoGamesChest.com team
         'dev_title' => 'Developer reports',
         'admin_title' => 'Admin reports',
 
-        'msg' => array(
-            'create_success' => 'Thank you, the report has been issued successfully.'
+        'table' => array(
+            'profile' => 'Profile',
+            'message' => 'Message',
+            'delete' => 'Delete',
+        ),
 
+        'msg' => array(
+            'create_success' => 'Thank you, the report has been issued successfully.',
+            'delete_success' => 'The reports have succsessfully been deleted',
         ),
     ),
 

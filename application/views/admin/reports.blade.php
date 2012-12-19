@@ -39,12 +39,16 @@ if (IS_ADMIN) {
 }
 ?>
 
+{{ Former::open('admin/reports') }}
+{{ Form::token() }}
+{{ Former::hidden('action', 'delete') }}
+
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
-            <th>Profile</th>
-            <th>Message</th>
-            <th>Delete</th>
+            <th>{{ lang('reports.table.profile') }}</th>
+            <th>{{ lang('reports.table.message') }}</th>
+            <th><input type="submit" value="{{ lang('reports.table.delete') }}" class="btn btn-warning"></th>
         </tr>
     </thead>
 
@@ -59,9 +63,11 @@ if (IS_ADMIN) {
             <td>{{ $report->message }}</td>
             
             <td>
-                Delete
+                <input type="checkbox" name="reports[]" value="{{ $report->id }}">
             </td>
         </tr>
     @endforeach
 @endforeach
 </table>
+
+</form>

@@ -19,4 +19,17 @@ class Report extends ExtendedEloquent
         HTML::set_success(lang('report.msg.create_success'));
         return $report;
     }
+
+    public static function __delete($form)
+    {
+        $form = clean_form_input($form);
+        unset($form['action']);
+
+        foreach ($form['reports'] as $report_id) {
+            Report::find($report_id)->delete();
+        }
+
+        HTML::set_success(lang('report.msg.delete_success'));
+        return $report;
+    }
 }
