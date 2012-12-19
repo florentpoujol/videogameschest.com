@@ -36,9 +36,9 @@
 
                 <li class="divider"></li>
             @if (IS_TRUSTED)
-                <li><a href="{{ route('get_reviews') }}">{{ lang('admin.review.title') }}</a></li>
+                <li><a href="{{ route('get_reviews') }}">{{ lang('reviews.title') }}</a></li>
             @endif
-                <li><a href="{{ route('get_reports') }}">Reports</a></li>
+                <li><a href="{{ route('get_reports') }}">{{ lang('reports.title') }}</a></li>
                 
                 <li class="divider"></li>
                 <li><a href="{{ route('get_logout') }}">{{ lang('menu.logout') }}</a></li>

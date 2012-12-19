@@ -35,6 +35,7 @@ class Game extends Profile
         $form = clean_form_input($form);
 
         if ( ! isset($game['privacy'])) $game['privacy'] = 'private';
+        $form['approved_by'] = array();
         
         $game = parent::create($form);
         

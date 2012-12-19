@@ -47,6 +47,8 @@ class Developer extends Profile
         if ( ! isset($form['privacy'])) $form['privacy'] = 'private';
         elseif ($form['privacy'] == 'submission') $form['review_start_date'] = date_create();
         
+        $form['approved_by'] = array();
+
         $dev = parent::create($form);
         
         HTML::set_success(lang('messages.adddev_success',array('name'=>$dev->name)));

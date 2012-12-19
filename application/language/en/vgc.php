@@ -28,12 +28,7 @@ return array(
         'game_profile_not_found' => "Can't find the game profile with id ':profile_id'.",
 
         'user_not_trusted' => 'You can\'t acces this page because you are not a trusted user.',
-
-
-
-        'review_profile_approved' => 'The :profile \":name\" (id : :id) has been approved for :review',
-
-        
+       
     ),  
 
     'errors' => array(
@@ -100,15 +95,26 @@ The VideoGamesChest.com team
 
 // REVIEW
 
-    'admin' => array(
-        'review' => array(
-            'title' => 'Peer Reviews',
-            'submission_title' => 'Submission Review',
-            'publishing_title' => 'Publishing Review',
+    'reviews' => array(
+        'title' => 'Peer Reviews',
+        'submission_title' => 'Submission Review',
+        'publishing_title' => 'Publishing Review',
+        'game_title' => 'Games',
+        'developer_title' => 'Developers',
 
+        'no_review' => 'No profile in :review review.',
 
+        'table' => array(
+            'approve' => 'Approve',
+            'profile' => 'Profile',
+            'delete' => '',
+        ),
+
+        'msg' => array(
+            'profiles_approved' => 'Thanks you for approving :num profile(s).'
         ),
     ),
+
 
 
 

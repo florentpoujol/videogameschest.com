@@ -27,7 +27,7 @@ class Profile extends ExtendedEloquent
     {
         $password = '';
         $review = $this->privacy;
-        $profile = $this->$class_name;
+        $profile = $this->class_name;
         
         if ($review == 'submission') {
             $this->privacy = 'private';
@@ -39,7 +39,7 @@ class Profile extends ExtendedEloquent
             $user->update_trusted(true);
         }
 
-        $this->approved_by = '';
+        $this->approved_by = array();
         $this->save();
 
         // email's text :

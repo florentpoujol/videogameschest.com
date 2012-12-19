@@ -384,7 +384,7 @@ Route::filter('before', function()
 
             foreach ($profiles as $profile) {
                 if (count($profile->approved_by) >= Config::get('vgc.review.approval_threshold', 1000) && 
-                    $profile->admin_reports == null
+                    count($profile->reports('admin')) == 0
                 ) {
                     $profile->passed_review();
                 }

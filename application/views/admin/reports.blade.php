@@ -53,20 +53,26 @@ if (IS_ADMIN) {
     </thead>
 
 @foreach ($profiles as $profile)
+    
     <?php
     $reports = $profile->reports($report_type);
     ?> 
     @foreach ($reports as $report)
         <tr>
-            <td><a href="{{ route('get_'.$profile->class_name, array($profile->id)) }}">{{ $profile->name }}</a> ({{ $profile->class_name }})</td>
+            <td>
+                <a href="{{ route('get_'.$profile->class_name, array($profile->id)) }}">{{ $profile->name }}</a> ({{ $profile->class_name }})
+            </td>
 
-            <td>{{ $report->message }}</td>
+            <td>
+                {{ $report->message }}
+            </td>
             
             <td>
                 <input type="checkbox" name="reports[]" value="{{ $report->id }}">
             </td>
         </tr>
     @endforeach
+
 @endforeach
 </table>
 

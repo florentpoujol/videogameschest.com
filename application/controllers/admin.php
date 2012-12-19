@@ -462,24 +462,29 @@ class Admin_Controller extends Base_Controller
         }
 
         $input = Input::all();
+        $profile_ids = $input['approved_profiles'];
 
-        $profile = $input['profile']::find($input['id']);
+        if (IS_ADMIN) {
+            foreach ($input['approved_profiles'] as $id) {
+                $input['profile_type']::find($id)->passed_review();
+            }
+        } else {
+            $num = 0;
+            foreach ($input['approved_profiles'] as $id) {
+                $profile = $input['profile_type']::find($id);
 
-        if (IS_ADMIN) $profile->passed_review($profile->privacy);
-        else {
-            $approved_by = $profile->approved_by;
-            $approved_by[] = USER_ID;
-            $profile->approved_by = $approved_by;
-            $profile->save();
+                $approved_by = $profile->approved_by;
+                $approved_by[] = USER_ID;
+                $profile->approved_by = $approved_by;
+                $profile->save();
+                $num++;
+            }
 
-            HTML::set_success(lang('messages.review_profile_approved', array(
-                'name' => $profile->name,
-                'id' => $profile->id,
-                'review' => $input['review']
-            )));
+            HTML::set_success(lang('reviews.msg.profiles_approved', array('num' => $num)));
+
         }
 
-        return Redirect::to_route('get_reviews',array($input['review']));
+        return Redirect::back();
     }
 
 
