@@ -115,6 +115,7 @@ class Admin_Controller extends Base_Controller
      */
     public function get_logout()
     {
+        Cookie::forget('user_logged_in');
         Auth::logout();
     	return Redirect::to_route('get_login');
     }
@@ -549,7 +550,7 @@ class Admin_Controller extends Base_Controller
             $validation = Validator::make($input, $rules);
 
             if ($validation->passes()) {
-                Reports::create($input);
+                Report::create($input);
             } else {
                 Input::flash();
                 return Redirect::back()->with_errors($validation);

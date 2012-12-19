@@ -10,6 +10,17 @@ class Developer extends Profile
 
 
     //----------------------------------------------------------------------------------
+    // CONSTRUCTOR
+
+    public function __construct($attributes = array(), $exists = false)
+    {
+        parent::__construct($attributes, $exists);
+
+        $this->_user = $this->user();
+    }
+
+
+    //----------------------------------------------------------------------------------
     // CRUD METHODS
 
     /**

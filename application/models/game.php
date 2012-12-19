@@ -12,6 +12,16 @@ class Game extends Profile
     public static $names_urls_items = array('socialnetworks', 'stores', 'screenshots', 'videos');
 
 
+    //----------------------------------------------------------------------------------
+    // CONSTRUCTOR
+
+    public function __construct($attributes = array(), $exists = false)
+    {
+        parent::__construct($attributes, $exists);
+
+        // $this->_user = User::find(Developer::find($this->developer_id)->user_id);
+    }
+
 	//----------------------------------------------------------------------------------
     // CRUD METHODS
 
@@ -144,5 +154,4 @@ class Game extends Profile
     {
         return $this->developer();
     }
-    
 }

@@ -22,50 +22,46 @@ if (IS_ADMIN) {
 {{ Navigation::tabs($tabs) }}
 
 <?php
-$reports = Reports::where_type($report_type)->get();
+$reports = Report::where_type($report_type)->get();
+
 $profiles = array();
 if (IS_ADMIN) {
-    //$reports = Reports::where_type($report_type)->get();
-
     $users = User::where_type('dev')->get();
     foreach ($users as $user) {
-        $profiles[] = $user->dev;
-        $profiles = array_merge($profiles, $user->dev->games);
+        if ($user->dev != null) {
+            $profiles[] = $user->dev;
+            $profiles = array_merge($profiles, $user->dev->games);
+        }
     }
 } else {
-    // looper sur les profils et afficher les rapports par profil
-    $profiles[] = $user->dev;
-    $profiles = array_merge($profiles, $user->dev->games);
+    $profiles[] = user()->dev;
+    $profiles = array_merge($profiles, user()->dev->games);
 }
 ?>
 
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Profile</th>
+            <th>Message</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
 
-@if ( ! is_null($reports))
-    <table class="table table-striped table-bordered">
-        <thead>
-            <tr>
-                
-                <th>Message</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
+@foreach ($profiles as $profile)
+    <?php
+    $reports = $profile->reports($report_type);
+    ?> 
+    @foreach ($reports as $report)
+        <tr>
+            <td><a href="{{ route('get_'.$profile->class_name, array($profile->id)) }}">{{ $profile->name }}</a> ({{ $profile->class_name }})</td>
 
-    @foreach ($profiles as $profile)
-        <thead>Profile name {{ $profile->name}}</thead>
-
-        @foreach ($profile->${report_type}_reports as $report)
-            <tr>
-                <!--<td><a href="{{ route('get_'.$profile_type, array($profile->id)) }}">{{ $profile->name }}</a></td>-->
-
-                <td>{{ $report->message }}</td>
-                
-                <td>
-                    ert
-                </td>
-            </tr>
-        @endforeach
+            <td>{{ $report->message }}</td>
+            
+            <td>
+                Delete
+            </td>
+        </tr>
     @endforeach
-    </table>
-@else
-    No {{ $report_type }} report.
-@endif
+@endforeach
+</table>

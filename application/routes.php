@@ -185,7 +185,7 @@ Route::group(array('before' => 'auth'), function()
     Route::get('admin/reviews/(:any?)', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));
     Route::get('admin/review_approve/(:any)/(:any)/(:num)', array('as' => 'get_review_approve', 'uses' => 'admin@reviewapprove'));
 
-    Route::get('admin/reports', array('as' => 'get_reports', 'uses' => 'admin@reports'));
+    Route::get('admin/reports/(:any?)', array('as' => 'get_reports', 'uses' => 'admin@reports'));
 });
 
 

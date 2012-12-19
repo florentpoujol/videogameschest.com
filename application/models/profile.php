@@ -2,7 +2,19 @@
 
 class Profile extends ExtendedEloquent
 {
-    protected $_user = null;
+    public $_user = null;
+    public $class_name = 'profile';
+
+
+    //----------------------------------------------------------------------------------
+    // CONSTRUCTOR
+
+    public function __construct($attributes = array(), $exists = false)
+    {
+        parent::__construct($attributes, $exists);
+
+        $this->class_name = strtolower(get_class($this));
+    }
 
     //----------------------------------------------------------------------------------
     // REVIEWS
@@ -15,7 +27,7 @@ class Profile extends ExtendedEloquent
     {
         $password = '';
         $review = $this->privacy;
-        $profile = get_class(); // return the name of the child class
+        $profile = $this->$class_name;
         
         if ($review == 'submission') {
             $this->privacy = 'private';
@@ -74,27 +86,18 @@ class Profile extends ExtendedEloquent
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
 
-    public function reports()
+    /**
+     * Get ll reports linked to this profile
+     * @param  string $type The report type
+     * @return array       An array of reports
+     */
+    public function reports($type = null)
     {
-        return $this->has_many('Report');
-    }
-
-    public function admin_reports() 
-    {
-        $reports = $this->reports;
-        $a_reports = array();
-
-        foreach ($reports as $report) {
-            if ($report->type == 'admin') $a_reports[] = $report;
-        }
-
-        if (count($a_reports) == 0) $a_reports = null;
+        $foreign_key = $this->class_name.'_id';
         
-        return $a_reports;
+        if (is_null($type)) return $this->has_many('Report', $foreign_key);
+        else return $this->has_many('Report', $foreign_key)->where_type($type)->get();
     }
 
-    public function dev_reports() 
-    {
-        return reports()->where_type('dev')->get();
-    }
+    
 }

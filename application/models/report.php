@@ -1,6 +1,6 @@
 <?php
 
-class Reports extends ExtendedEloquent
+class Report extends ExtendedEloquent
 {
     //----------------------------------------------------------------------------------
     // CRUD METHODS
