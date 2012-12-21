@@ -1,10 +1,10 @@
 @section('page_title')
-    {{ $profile->name }} | {{ lang('developer.profile.title') }}
+    {{ $profile->name }} | {{ lang('game.profile.title') }}
 @endsection
 <?php
 
 ?>
-<div id="developer_profile" class="profile dev-profile">
+<div id="game_profile" class="profile game-profile">
     <div class="row">
         <div class="span4">
             <h3>{{ $profile->name }} <small>{{ $profile->class_name }}</small></h3> 
@@ -38,14 +38,14 @@
     <div class="row json-item-row">
         
         <?php 
-        $items = array('socialnetworks', 'stores', 'devices', 'operatingsystems', 'technologies');
+        $items = array('socialnetworks', 'stores','operatingsystems', 'devices', 'technologies', 'genres');
         foreach ($items as $item):
         ?>
             <div class="span2 json-item-div">
                 <h4>{{ lang($item.'.title') }}</h4>
 
                 <ul class="unstyled">
-                    @if ($item == 'socialnetworks')
+                    @if ($item == 'socialnetworks' || $item == 'stores')
                         <?php $array = $profile->$item; ?>
 
                         @for ($i = 0; $i < count($array['names']); $i++)
@@ -56,6 +56,29 @@
                             <li>{{ icon($name) }}{{ lang($item.'.'.$name) }}</li>
                         @endforeach
                     @endif
+                </ul>
+            </div>
+        @endforeach 
+    
+    </div>
+
+    <hr>
+
+    <div class="row json-item-row">
+        
+        <?php 
+        $items = array('themes', 'viewpoints', 'nbplayers', 'tags', 'languages');
+        foreach ($items as $item):
+        ?>
+            <div class="span2 json-item-div">
+                <h4>{{ lang($item.'.title') }}</h4>
+
+                <ul class="unstyled">
+                    
+                        @foreach ($profile->$item as $name)
+                            <li>{{ icon($name) }}{{ lang($item.'.'.$name) }}</li>
+                        @endforeach
+                    
                 </ul>
             </div>
         @endforeach 

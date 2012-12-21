@@ -105,23 +105,16 @@ Route::get('/developer/(:any)', array('as' => 'get_developer', function($name = 
         return Redirect::to_route('get_search');
     }
 
-    // display profile if
+    // display profile if :
     // profile is public
     // user is admin
-    // user is dev and profile is its own, or in review
-    // user is guest and profile is public
-    // =>
-    // DON'T display profile if
-    // user is guest and profile is not public
-    // user is dev and profile is not in review an not owned
-    
+    // user is dev and profile is user's or in review   
     if ($profile->privacy == 'public' || IS_ADMIN ||
         IS_DEVELOPER && 
             ($profile->user_id == USER_ID ||
             in_array($profile->privacy, Config::get('vgc.review.types')))
     ) {
-        return $layout->nest('page_content', 'developerdisplay', array('profile' => $profile))
-        ->with('page_title', lang('developer.profile.title'));
+        return $layout->nest('page_content', 'developerdisplay', array('profile' => $profile));
     } else {
         HTML::set_error(lang('errors.access_not_allowed', array('page' => 'Developer profile '.$name)));
         return Redirect::to_route('get_search');

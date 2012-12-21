@@ -7,6 +7,12 @@ You may not have dots inside the keys
 return array(
 'language_key_not_found' => '[language key \':key\' not found in language \':language\']',
 
+// COMMON
+
+    'common' => array(
+        'teamsize' => 'Teamsize',
+        'country' => 'Country',
+    ),
 
 // MESSAGES (errors, success)
 
@@ -42,33 +48,6 @@ return array(
     ),
 
 
-
-// EMAILS
-
-    'emails' => array(
-        'developer_passed_submission_review' =>
-'Hi :name <br>
-<br>
-You receive this email because someone created a developer profile on <a href="http://videogameschest.com" title="">VideoGamesChest.com</a> <br>
-<br>
-Log in to your account with your name, email or id (:id) and your temporary password : :password. Don\'t forget to edit your user account to change the password.<br>
-<br>
-A developer profile is linked to your user account. The profile is now private and you may review it and <a href="http://videogameschest.com/admin/editdeveloper/:id">edit it</a>. <br>
-Once you are satisfied with the informations it contains, you may send your profile in the Publishing review. <br>
-<br>
-<br>
-Thanks,<br>
-The VideoGamesChest.com team
-',
-        
-        'developer_passed_publishing_review' => 'developer_passed_publishing_review',
-        'developer_failed_publishing_review' => 'developer_failed_publishing_review',
-
-        'game_passed_submission_review' => 'game_passed_submission_review',
-        'game_passed_publishing_review' => 'game_passed_publishing_review',
-        'game_failed_publishing_review' => 'game_failed_publishing_review',
-    ),
-
 // MENU
 
     'menu' => array(
@@ -91,31 +70,6 @@ The VideoGamesChest.com team
             'lostpassword_help' => 'If you lost your password, just fill the field below with your username, email or user id and click the button to get a new temporary password by email.',
         ),
     ),
-
-
-// REVIEW
-
-    'reviews' => array(
-        'title' => 'Peer Reviews',
-        'submission_title' => 'Submission Review',
-        'publishing_title' => 'Publishing Review',
-        'game_title' => 'Games',
-        'developer_title' => 'Developers',
-
-        'no_review' => 'No profile in :review review.',
-
-        'table' => array(
-            'approve' => 'Approve',
-            'profile' => 'Profile',
-            'delete' => '',
-        ),
-
-        'msg' => array(
-            'profiles_approved' => 'Thanks you for approving :num profile(s).'
-        ),
-    ),
-
-
 
 
 // DEVELOPER 
@@ -269,6 +223,10 @@ The VideoGamesChest.com team
     'reports' => array(
         'title' => 'Reports',
         'form_title' => 'Report this profile',
+
+        'help' => 'You may report a profile to the developer in case of typos or broken links. <br>
+        But you may only report a profile to the administrators in case of offensive/inappropriate content.',
+
         'message' => 'Your message',
         'submit_dev' => 'Send to the developer',
         'submit_admin' => 'Send to the administrators',
@@ -285,6 +243,29 @@ The VideoGamesChest.com team
         'msg' => array(
             'create_success' => 'Thank you, the report has been issued successfully.',
             'delete_success' => 'The reports have succsessfully been deleted',
+        ),
+    ),
+
+
+// REVIEW
+
+    'reviews' => array(
+        'title' => 'Peer Reviews',
+        'submission_title' => 'Submission Review',
+        'publishing_title' => 'Publishing Review',
+        'game_title' => 'Games',
+        'developer_title' => 'Developers',
+
+        'no_review' => 'No profile in :review review.',
+
+        'table' => array(
+            'approve' => 'Approve',
+            'profile' => 'Profile',
+            'delete' => '',
+        ),
+
+        'msg' => array(
+            'profiles_approved' => 'Thanks you for approving :num profile(s).'
         ),
     ),
 
@@ -306,6 +287,8 @@ The VideoGamesChest.com team
 // COUNTRIES
 
     'countries' => array(
+        'title' => 'Countries',
+
         'australia' => 'Australia',
         'austria' => 'Austria',
         'belgium' => 'Belgium',
@@ -326,6 +309,8 @@ The VideoGamesChest.com team
 // OPERATING SYSTEMS
 
     'operatingsystems' => array(
+        'title' => 'OS',
+
         'android' => 'Android',
         'blackberry' => 'BlackBerry',
         'ios' => 'iOS',
@@ -339,6 +324,8 @@ The VideoGamesChest.com team
 // DEVICES
 
     'devices' => array(
+        'title' => 'Devices',
+
         '3ds' => '3DS',
         '3dsxl' => '3DS XL',
         'androidtablet' => 'Android Tablet',
@@ -367,6 +354,8 @@ The VideoGamesChest.com team
 // TECHOLOGIES
 
     'technologies' => array(
+        'title' => 'Techonologies',
+
         'blender' => 'Blender Game Engine',
         'flash' => 'Flash',
         'flixel' => 'Flixel',
@@ -395,6 +384,8 @@ The VideoGamesChest.com team
 // STORES
 
     'stores' => array(
+        'title' => 'Stores',
+
         'desura' => 'Desura',
         'gameolith' => 'Gameolith',
         'gamersgate' => 'Gamersgate',
@@ -419,6 +410,8 @@ The VideoGamesChest.com team
 // SOCIAL NETWORKS
 
     'socialnetworks' => array(
+        'title' => 'Social Networks',
+
         'desura' => 'Desura',
         'facebook' => 'Facebook',
         'pinterest' => 'Pinterest',
@@ -456,6 +449,8 @@ The VideoGamesChest.com team
 // THEMES
 
     'themes' => array(
+        'title' => 'Themes',
+
         'fantasy' => 'Fantasy',
         'medieval' => 'Medieval',
         'comic' => 'Comic',
@@ -517,17 +512,32 @@ The VideoGamesChest.com team
         'turnbased' => 'Turn-Based',
     ),
 
-// REPORTS
 
-    'report' => array(
-        'title' => 'Report this profile',
-        'description' => 'Description',
-        'description_placeholder' => '10 characters minimum',
-        'recipient' => 'Report recipient',
-        'developer' => 'Developer and Admins',
-        'admin' => 'Admins only',
-        'submit' => 'Submit this report',
-        'gobacktoprofile' => 'Go back to the profile',
-        'form_success' => 'Thanks, you. The report has been saved.',
+
+    // EMAILS
+
+    'emails' => array(
+        'developer_passed_submission_review' =>
+'Hi :name <br>
+<br>
+You receive this email because someone created a developer profile on <a href="http://videogameschest.com" title="">VideoGamesChest.com</a> <br>
+<br>
+Log in to your account with your name, email or id (:id) and your temporary password : :password. Don\'t forget to edit your user account to change the password.<br>
+<br>
+A developer profile is linked to your user account. The profile is now private and you may review it and <a href="http://videogameschest.com/admin/editdeveloper/:id">edit it</a>. <br>
+Once you are satisfied with the informations it contains, you may send your profile in the Publishing review. <br>
+<br>
+<br>
+Thanks,<br>
+The VideoGamesChest.com team
+',
+        
+        'developer_passed_publishing_review' => 'developer_passed_publishing_review',
+        'developer_failed_publishing_review' => 'developer_failed_publishing_review',
+
+        'game_passed_submission_review' => 'game_passed_submission_review',
+        'game_passed_publishing_review' => 'game_passed_publishing_review',
+        'game_failed_publishing_review' => 'game_failed_publishing_review',
     ),
+
 );

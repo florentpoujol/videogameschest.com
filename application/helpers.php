@@ -68,7 +68,7 @@ function clean_names_urls_array($array)
  * @param string $input the input text
  * @return string the input string with the bbCode replaced by html tags
  */
-function parse_bbcode( $input )
+function parse_bbcode($input)
 {
     $input = preg_replace( "#\[b\](.+)\[/b\]#", "<strong>$1</strong>" ,$input);
     $input = preg_replace( "#\[i\](.+)\[/i\]#", "<em>$1</em>" ,$input);
@@ -259,5 +259,25 @@ function array_set_values_as_keys($array)
     }
 
     return $new_array;
+}
+
+
+function icon($icon, $icon_white = '')
+{
+    $icon = strtolower($icon);
+
+    $vgc_icons = Config::get('vgc.icons');
+
+    $glyhpicons = Config::get('vgc.glyphicons');
+
+    if (array_key_exists($icon, $vgc_icons)) {
+        $html = '<img src="'.URL::to($vgc_icons[$icon]).'" alt="$icon icon" width="14px" height="14px"> ';
+    } elseif (in_array($icon, $glyhpicons)) {
+        if ($icon_white === true) $icon_white = ' icon-white';
+        $html = '<i class="icon-'.$icon.$icon_white.'"></i> ';
+    }
+    else $html = '';
+
+    return $html;
 }
 

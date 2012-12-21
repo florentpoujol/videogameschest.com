@@ -7,8 +7,7 @@ if ( ! isset($page_title)) {
 
 if ( ! isset($page_content)) $page_content = '';
 $page_content .= Section::yield('page_content');
-?>
-<!DOCTYPE html>
+?><!DOCTYPE html>
 <html lang="{{ LANGUAGE }}"> 
     <head>
         <title>{{ $page_title }} | VideoGamesChest.com</title>
@@ -19,8 +18,9 @@ $page_content .= Section::yield('page_content');
         <!-- /Meta -->
 
         <!-- CSS -->        
-        {{ Asset::container('bootstrapper')->styles(); }}
-        <!--<link rel="stylesheet/less" type="text/css" media="screen" href="{{ asset("css/main.less") }}" >-->
+        {{ HTML::style('css/bootstrap.min.css') }}
+        {{ HTML::style('css/bootstrap-responsive.min.css') }}
+        {{ HTML::style('css/main.less', array('rel'=>'stylesheet/less')) }}
         @yield('cssfiles')
         <!-- /CSS -->
     </head>
@@ -34,16 +34,19 @@ $page_content .= Section::yield('page_content');
             </div>
             
             {{ $page_content }}
-
-            <br>
-            <br>
-            <br>
+            
         </div> <!-- /#page_content .container -->
 
+        <footer>
+            <div class="container">
+                <P class="muted">Copyright &copy; 2012-2013 VideoGamesChest.com</p>
+            </div>
+        </footer>
+
         <!-- JavaScript -->
-        <!--<script src="http://lesscss.googlecode.com/files/less-1.3.0.min.js" type="text/javascript"></script>-->
         <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
-        {{ Asset::container('bootstrapper')->scripts(); }}
+        <script src="http://lesscss.googlecode.com/files/less-1.3.0.min.js" type="text/javascript"></script>
+        {{ HTML::script('js/bootstrap.min.js') }}
         @yield('jsfiles')
 
         <script>
