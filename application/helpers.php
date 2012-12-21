@@ -70,12 +70,12 @@ function clean_names_urls_array($array)
  */
 function parse_bbcode($input)
 {
-    $input = preg_replace( "#\[b\](.+)\[/b\]#", "<strong>$1</strong>" ,$input);
-    $input = preg_replace( "#\[i\](.+)\[/i\]#", "<em>$1</em>" ,$input);
-    $input = preg_replace( "#https?://[^ ]+#i", '<a href="$0">$0</a>' ,$input);
-    //$input = preg_replace( "#\[url\](.+)\[/url\]#", '<a href="$1">$1</a>' ,$input);
-    $input = preg_replace( "#\[url=(.+)\](.+)\[/url\]#", '<a href="$1" title="$2">$2</a>' ,$input);
-    $input = preg_replace( "#/n#", '<br>' ,$input);
+    $input = preg_replace( "#\[b\](.+)\[/b\]#", "<strong>$1</strong>", $input);
+    $input = preg_replace( "#\[i\](.+)\[/i\]#", "<em>$1</em>", $input);
+    $input = preg_replace( "#https?://[^ ]+#i", '<a href="$0">$0</a>', $input);
+    //$input = preg_replace( "#\[url\](.+)\[/url\]#", '<a href="$1">$1</a>', $input);
+    $input = preg_replace( "#\[url=(.+)\](.+)\[/url\]#", '<a href="$1" title="$2">$2</a>', $input);
+    $input = preg_replace( "#\[br\]#", '<br>', $input);
     return $input;
 }
 

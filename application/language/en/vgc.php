@@ -212,6 +212,8 @@ return array(
             'title' => 'Game',
             'website' => 'Go to the game\'s website',
             'blogfeed' => 'Lastest articles from the blog',
+            'soundtrack' => 'Get the soudtrack',
+            'price' => 'Price',
         ),
 
     ), // end of game
@@ -273,6 +275,8 @@ return array(
 // LANGUAGES
 
     'languages' => array(
+        'title' => 'Languages',
+
         'french' => 'French',
         'english' => 'English',
         'german' => 'German',
@@ -427,6 +431,8 @@ return array(
 // Nb PLAYERS
 
     'nbplayers' => array(
+        'title' => 'Players',
+
         'singleplayer' => 'Single player',
         'coop' => 'Co-op',
         'multiplayer' => 'Multiplayer',
@@ -436,6 +442,8 @@ return array(
 // DEVELOPEMENT STATES
 
     'developmentstates' => array(
+        'title' => 'Developement state',
+
         'concept' => '1 - Concept/Design phase',
         'prototype' => '2 - Prototype phase',
         'earlyproduction' => '3 - Early production',
@@ -466,6 +474,8 @@ return array(
 // GENRES
 
     'genres' => array(
+        'title' => 'Genres',
+
         'action' => 'Action',
         'adventure' => 'Adventure',
         'arcade' => 'Arcade',
@@ -490,6 +500,8 @@ return array(
 // POINT OF VIEW
 
     'viewpoints' => array(
+        'title' => 'Point of view',
+
         'firstperson' => 'First Person',
         'isometric' => 'Isometric',
         'thirdperson' => 'Third Person',
@@ -499,6 +511,8 @@ return array(
 // TAGS
 
     'tags' => array(
+        'title' => 'Tags',
+
         '25d' => '2.5D',
         '2d' => '2D',
         '3d' => '3D',

@@ -123,11 +123,35 @@ Route::get('/developer/(:any)', array('as' => 'get_developer', function($name = 
 
 
 
-Route::get('/game/(:any)', array('as' => 'get_game', function($name = null)
+Route::get('/game/(:any)', array('as' => 'get_game', function($name = null) use ($layout)
 {
     if (is_null($name)) return Redirect::to_route('get_search');
+    
+    if (is_numeric($name)) $profile = Game::find($name);
+    else $profile = Game::where_name(url_to_name($name))->first();
 
-    return $layout->nest('page_content', 'devprofile')->with('page_title', lang('developer.profile.title'));
+    if (is_null($profile)) {
+        if (is_numeric($name)) {
+            HTML::set_error(lang('errors.game_profile_id_not_found', array('id'=>$name)));
+        } else HTML::set_error(lang('errors.game_profile_name_not_found', array('name'=>$name)));
+
+        return Redirect::to_route('get_search');
+    }
+
+    // display profile if :
+    // profile is public
+    // user is admin
+    // user is dev and profile is user's or in review
+    if ($profile->privacy == 'public' || IS_ADMIN ||
+        IS_DEVELOPER && 
+            ($profile->user_id == USER_ID ||
+            in_array($profile->privacy, Config::get('vgc.review.types')))
+    ) {
+        return $layout->nest('page_content', 'gamedisplay', array('profile' => $profile));
+    } else {
+        HTML::set_error(lang('errors.access_not_allowed', array('page' => 'Game profile '.$name)));
+        return Redirect::to_route('get_search');
+    }
 }));
 
 
