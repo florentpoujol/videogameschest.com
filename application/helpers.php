@@ -45,10 +45,7 @@ function clean_names_urls_array($array)
     $max_count = count($array['names']);
 
     for ($i = 0; $i < $max_count; $i++) {
-        if (
-            isset($array['names'][$i]) &&
-            (trim($array['names'][$i]) == '' || trim($array['urls'][$i]) == '')
-        ) {
+        if (isset($array['names'][$i]) && trim($array['names'][$i]) == '') {
             unset($array['names'][$i]);
             unset($array['urls'][$i]);
             $i--; // go back one index since unsetting change the size of the array and the keys of the remaining values

@@ -1,15 +1,19 @@
-<div class="navbar navbar-fixed-top">
+<header id="main-menu" class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container">
 
-            <a class="brand" href="#">VideoGamesChest</a>
+            <div class="brand">
+                Video Games Chest <br>
+                <small>{{ lang('common.site_slogan') }}</small>
+            </div>
 
-            <ul class="nav">
-            <!-- Menu -->
+            <ul class="nav pull-right">
+                <!-- Ganeral menu -->
                 <?php $menu_items = array('home', 'search', 'adddeveloper', 'addgame'); ?>
                 @foreach ($menu_items as $menu_item)
                     <li><a href="{{ route('get_'.$menu_item) }}">{{ lang('menu.'.$menu_item) }}</a></li>
                 @endforeach
+                <!-- /ganeral menu --> 
 
                 @if (IS_LOGGED_IN)
                     <!-- Admin menu -->
@@ -48,9 +52,7 @@
                             <li class="divider"></li>
                             <li><a href="{{ route('get_logout') }}">{{ lang('menu.logout') }}</a></li>
                         </ul>
-                    </li>
-                    
-                    <!-- /Admin menu -->
+                    </li> <!-- /Admin menu -->
                 @else
                     <li><a href="{{ route('get_login') }}"><i class="icon-user"></i>{{ lang('menu.login.title') }}</a></li>
                 @endif
@@ -68,11 +70,7 @@
                     @endforeach
                     </ul>
                 </li><!-- /language menu -->
-
-                <!-- /menu --> 
             </ul>
-
         </div>
     </div>
-</div>
-<!-- /header  .navbar .nav-inner -->
+</header> <!-- /header #main-menu .navbar .navbar-fixed-top  -->

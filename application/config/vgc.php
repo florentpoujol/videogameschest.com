@@ -180,7 +180,7 @@ return array(
 	"themes" => array(
 		"fantasy",
 		"medieval",
- 		"comic",
+ 		"cartoon",
  		"futuristic",
  		"horror",
  		"mafia",
@@ -213,6 +213,7 @@ return array(
  	),
 
  	"viewpoints" => array(
+ 		"2d",
  		"firstperson",
  		"isometric",
  		"thirdperson",
@@ -221,7 +222,7 @@ return array(
 
 	"tags" => array(
 		"25d",
-		"2d",
+		
 		"3d",
  		"casual",
  		"celshading",

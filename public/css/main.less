@@ -1,24 +1,72 @@
 
-.border(@color: gray) {
+.border(@color: rgb(220,220,220)) {
     border: 1px solid @color;
 }
 
 body {
-    padding-top : 50px;
+    padding-top : 70px; // because of the main-menu
     height : 100%;
     
-    // hepers :
+    // HELPERS 
     .align-center {
         text-align: center;
+        margin:auto;
     }
     .align-middle {
         vertical-align: middle;
+    }
+    .justify {
+        text-align:justify;
     }
 
 
     .container {
         //border: 1px solid grey;
     }
+
+
+    // COMMON
+
+    div.row.right-border > div { // all divs that are child of a div with a "row" class
+        border-right: 1px solid rgb(230,230,230);
+    }
+    div.row.right-border > div:last-child {
+        border: none;
+    }
+
+
+    .control-group-inline {
+        clear: both;
+    }
+    .control-group-inline .control-group {
+        float: left;
+        margin-right: 10px;
+    }
+    
+
+
+    // MENU
+    #main-menu {
+        .brand small {
+            margin-left: 20px;
+        }
+
+        ul.nav {
+            margin-top: 10px;
+        }
+    }
+
+
+    // HOME
+
+    #home {
+
+        .row > div {
+            
+        }
+    }
+
+
 
     // PROFILES
     .profile {
@@ -31,10 +79,10 @@ body {
         }
 
         .logo {
-                max-width: 200px;
-                max-height: 200px;
-                margin: 10px;
-            }
+            max-width: 200px;
+            max-height: 200px;
+            margin: 10px;
+        }
 
         .pitch {
 
@@ -70,12 +118,11 @@ body {
     }
 
 
-    .dev-profile {
-
-        
+    #dev-profile {        
     }
 
-    .game-profile {
+
+    #game-profile {
         .website {
             padding-top : 0px;
         }
@@ -94,12 +141,18 @@ body {
 
 
     footer {
-        background: rgb(230,230,230);
+        background: rgb(249,249,249);
         text-align: center;
         padding: 20px;
+        margin-top: 20px;
+
+        border-top: 1px solid rgb(220,220,220);
 
         .container {
             border:0;
         }
     }
+
+
+    
 }

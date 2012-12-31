@@ -21,21 +21,20 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
     $privacy = array_set_values_as_keys(Config::get('vgc.privacy'));
 }
 ?>
+<div id="addgame">
+    <h2>{{ lang('game.add.title') }}</h2>
 
-<div id="addgame_form">
     {{ Former::open_vertical('admin/addgame')->rules($rules) }} 
-        <legend>{{ lang('game.add.title') }}</legend>
-        
         {{ Form::token() }}
         {{ Form::hidden('controller', CONTROLLER) }}
         
-        {{ Former::text('name', lang('game.fields.name')) }}
+        {{ Former::text('name', lang('common.name')) }}
 
         @if (Auth::guest() || IS_ADMIN)
-            {{ Former::select('developer_id', lang('game.fields.developer'))->fromQuery($devs) }}
+            {{ Former::select('developer_id', lang('common.developer'))->fromQuery($devs) }}
         @else
             You are the developer of this game. <br>
-            {{ Former::hidden('developer_id', DEV_PROFILE_ID) }}
+            {{ Former::hidden('developer_id', DEVELOPER_ID) }}
         @endif
 
         @if (CONTROLLER == 'admin')
@@ -48,19 +47,21 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
             {{ Former::hidden('privacy', 'submission') }}
         @endif
 
-        {{ Former::select('devstate', lang('game.fields.devstate_title'))->options(get_array_lang(Config::get('vgc.developmentstates'), 'developmentstates.'))->value('released') }}
+        {{ Former::select('devstate', lang('game.devstate'))->options(get_array_lang(Config::get('vgc.developmentstates'), 'developmentstates.'))->value('released') }}
 
-        {{ Former::textarea('pitch', lang('game.fields.pitch')) }}
+        {{ Former::textarea('pitch', lang('game.pitch')) }}
 
-        {{ Former::url('cover', lang('game.fields.cover')) }}
-        {{ Former::url('website', lang('game.fields.website')) }}
-        {{ Former::url('blogfeed', lang('game.fields.blogfeed')) }}
-        {{ Former::url('soundtrackurl', lang('game.fields.soundtrackurl')) }}
+        {{ Former::url('cover', lang('game.cover')) }}
+        {{ Former::url('website', lang('common.website')) }}
+        {{ Former::url('blogfeed', lang('common.blogfeed')) }}
+        {{ Former::url('soundtrackurl', lang('game.soundtrackurl')) }}
 
-        {{ Former::text('publishername', lang('game.fields.publishername')) }}
-        {{ Former::url('publisherurl', lang('game.fields.publisherurl')) }}
+        <div class="control-group-inline">
+            {{ Former::text('publishername', lang('game.publishername')) }}
+            {{ Former::url('publisherurl', lang('game.publisherurl')) }}
+        </div>
+        <div class="clearfix"></div>
 
-        {{ Former::number('price', lang('game.fields.price')) }}
 
         <hr>
 
@@ -68,7 +69,7 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
         <div class="tabbable tabs-left">
             <ul class="nav nav-tabs nav-stacked" id="array_items_tabs">
                 @foreach (Game::$array_items as $item)
-                <li><a href="#{{ $item }}" data-toggle="tab">{{ lang('game.fields.'.$item) }}</a></li>
+                <li><a href="#{{ $item }}" data-toggle="tab">{{ lang($item.'.title') }}</a></li>
                 @endforeach
             </ul>
 
@@ -85,11 +86,12 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
                     if ($size > 15) $size = 15;
                     ?>
                     <div class="tab-pane" id="{{ $item }}">
-                        {{ Former::multiselect($item.'[]', lang('game.fields.'.$item))->options($options)->value($values)->size($size)->help(lang('game.fields.'.$item.'_help')) }}
+                        <p>{{ lang('game.'.$item.'_help') }}</p>
+                        {{ Former::multiselect($item.'[]', '')->options($options)->value($values)->size($size) }}
                     </div>
                 @endforeach
             </div>
-        </div>
+        </div> <!-- /.tabbable -->
         <!-- /array items -->
 
         <hr>
@@ -97,7 +99,7 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
         <!-- names urls items -->
         <ul class="nav nav-tabs" id="nu_items_tabs">
             @foreach (Game::$names_urls_items as $item)
-            <li><a href="#{{ $item }}" data-toggle="tab">{{ lang('game.fields.'.$item.'_title') }}</a></li>
+            <li><a href="#{{ $item }}" data-toggle="tab">{{ lang('common.'.$item) }}</a></li>
             @endforeach
         </ul>
 
@@ -106,19 +108,21 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
             $nu_select = array('socialnetworks', 'stores'); // name url select
             foreach ($nu_select as $item):
                 $options = get_array_lang(Config::get('vgc.'.$item), $item.'.');
+                $options = array_merge(array('' => lang('common.select-first-option')), $options);
+
                 $values = array();
                 if (isset($old[$item])) $values = clean_names_urls_array($old[$item]);
             ?>
                 <div class="tab-pane" id="{{ $item }}">
-                    <!-- <legend>{{ lang('game.fields.'.$item.'_title') }}</legend> -->
-
                     @for ($i = 0; $i < 4; $i++)
                         <?php
                         $name = isset($values['names'][$i]) ? $values['names'][$i] : '';
                         $url = isset($values['urls'][$i]) ? $values['urls'][$i] : '';
                         ?>
-                        {{ Former::select($item.'[names][]', lang('game.fields.'.$item.'_name'))->options($options)->value($name) }} 
-                        {{ Former::url($item.'[urls][]', lang('game.fields.'.$item.'_url'))->value($url) }}
+                        <div class="control-group-inline">
+                            {{ Former::select($item.'[names][]', '')->options($options)->value($name) }} 
+                            {{ Former::url($item.'[urls][]', '')->value($url)->placeholder(lang('common.url'))  }}
+                        </div>
                     @endfor
                 </div>
             @endforeach
@@ -130,24 +134,26 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
                 if (isset($old[$item])) $values = clean_names_urls_array($old[$item]);
             ?>
                 <div class="tab-pane" id="{{ $item }}">
-                    <!-- <legend>{{ lang('game.fields.'.$item.'_title') }}</legend> -->
-
                     @for ($i = 0; $i < 4; $i++)
                         <?php
                         $name = isset($values['names'][$i]) ? $values['names'][$i] : '';
                         $url = isset($values['urls'][$i]) ? $values['urls'][$i] : '';
                         ?>
-                        {{ Former::text($item.'[names][]', lang('game.fields.'.$item.'_name'))->value($name) }} 
-                        {{ Former::url($item.'[urls][]', lang('game.fields.'.$item.'_url'))->value($url) }}
+                        <div class="control-group-inline">
+                            {{ Former::text($item.'[names][]', '')->value($name)->placeholder(lang('common.title')) }} 
+                            {{ Former::url($item.'[urls][]', '')->value($url)->placeholder(lang('common.url')) }}
+                        </div>
                     @endfor
                 </div>
             @endforeach
-        </div>
+        </div> <!-- /.tab-content -->
+        <!-- /names url items -->
+
+        <hr>
 
         <input type="submit" value="{{ lang('game.add.submit') }}" class="btn btn-primary">
     </form>
-</div>
-<!-- /#addgame_form --> 
+</div> <!-- /#addgame --> 
 
 @section('jQuery')
 // from addgame

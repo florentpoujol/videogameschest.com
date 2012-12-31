@@ -10,9 +10,96 @@ return array(
 // COMMON
 
     'common' => array(
-        'teamsize' => 'Teamsize',
+        
+        'blogfeed' => 'Blog RSS/Atom feed',
+
         'country' => 'Country',
+
+        'developer' => 'Developer',
+        'devices' => 'Devices',
+
+        'game' => 'Game',
+        'genres' => 'Genres',
+
+        'languages' => 'Languages',
+
+        'name' => 'Name',
+        'nbplayers' => 'Number of players',
+
+        'operatingsystems' => 'Operating systems',
+
+        'screenshots' => 'Screenshots',
+        'select-first-option' => 'Select below or select this option to delete the item',
+        'site_slogan' => 'The participative and searchable video games database',
+        'socialnetworks' => 'Social networks',
+        'stores' => 'Stores',
+
+        'tags' => 'Tags',
+        'teamsize' => 'Teamsize',
+        'technologies' => 'Technologies',
+        'text-url-delete-help' => 'Leave a title blanck to delete an item.',
+        'themes' => 'Themes',
+        'title' => 'Title',
+
+        'url' => 'URL',
+
+        'videos' => 'Videos and trailers',
+        'viewpoints' => 'Point of view',
+
+        'website' => 'Website URL',
     ),
+
+
+// HOME
+
+    'home' => array(
+        
+
+        'participative' => array(
+            'title' => 'Participative',
+            'text' => 'It would be presumptuous to pretend that we can fill hundreds of thousand of extensive developers and games profiles in the database ourself. That\'s where <strong>you</strong> come in ! <br>
+            <br>
+            VGC allow anyone to submit a developer or game profile but ensure that the developer is in control and has reviewed the profile before it\'s published. <br>
+            <br>
+            You liked a game that is not on VGC yet ? <br>
+            The best way to show your support  to the developer is to add their profile yourself so that they gets to know VGC and everyone on VGC gets to know them. Plus, they may be interested in the services we provide !',
+            
+            'submission_explanation_link' => 'Learn more about the public submission process',
+            'submission_explanation_text' => 'When a new profile is submitted via the public forms, it goes in a first peer review. It\'s a matter of checking if the email belongs to the developer and if there is no offensive or inappropriate content. <br>
+            <br>
+            Once the profile passed the review, an email is send to the developer to let him know that someone created a profile for them. The profile is still private and the developer must review and update/complete it before sending it to a second peer review. <br>
+            <br>
+            The profile become public and is visible and searchable by everyone only when it has passed that second review. <br>
+            <br>
+            The "trusted" users (who have a public developer profile and at least one public game profile) have access to the peer reviews. They can consult the profile and accept it or issue a report if something is wrong. <br>
+            <br>
+            Profiles pass review when they have a minimum number of approval and no open reports.',
+
+            'adddev_link' => 'Add a developer',
+            'addgame_link' => 'Add a game',
+        ),
+
+        'searchable_title' => 'Searchable',
+        'searchable_text' => 'Any piece of information featured on the profiles can be used as a filter criterion.
+        <br>
+        That means that you can built complex searchs that return only <strong>the handfull of games you are really interested on</strong>.',
+        'searchable_link' => 'Search for a profile',
+
+
+        'services_title' => 'Services',
+        'services_text' => 'VGC also provide some cool services to game developers :',
+
+
+        'cross-promotion' => array(
+            'title' => 'Cross-promotion',
+            'text' => 'VGC provides <strong>an evolutive, easy to setup and use cross-promotion solution</strong> for your games. <br>
+            Setup once in your game then update the promoted content  whenever you want online : <br>
+            <br>
+            Make sure the games you want to promote have a profile on VGC, then select them for cross-promotion in your game\'s profile. <br>
+            From your game, just query VGC to get the profiles you selected for cross-promotion in that game. <br>',
+        ),
+    ),
+
 
 // MESSAGES (errors, success)
 
@@ -91,7 +178,7 @@ return array(
 
             'socialnetworks' => 'Social networks',
             'socialnetworks_name' => 'Name',
-            'socialnetworks_url' => 'url',
+            'socialnetworks_url' => 'Url',
             'socialnetworks_url_placeholder' => 'Full profile URL',
 
             'technologies' => 'Technologies',
@@ -131,72 +218,35 @@ return array(
 
 // GAME 
     'game' => array(
-        'fields' => array(
-            'name' => 'Game title',
+        'cover' => 'Box cover URL',
+        'devstate' => 'Developement state',
 
-            'developer' => 'Developer\'s name',
-            'pitch' => 'Game story, features...',
+        'pitch' => 'Game story, features...',
 
-            'devstate_title' => 'Developement state',
+        'publishername' => 'Publisher name',
+        'publisherurl' => 'Publisher\'s website URL',
 
-            'cover' => 'Box cover URL',
-            'website' => 'Website\'s page URL',
-            'blogfeed' => 'Blog RSS/Atom feed',
-            'publishername' => 'Publisher name',
-            'publisherurl' => 'Publisher\'s website URL',
-            'soundtrackurl' => 'Soundtrack URL',
+        'soundtrackurl' => 'Soundtrack URL',
+        
+        'releasedate' => 'Release date',
 
-            'price' => 'Price',
-            'price_help' => 'This is a text field, write whatever is appropriate.',
 
-            'releasedate' => 'Release date',
-            'country' => 'Country',
+        'languages_help' => 'The languages the game is playable in :',
+        'technologies_help' => 'The technologies the game is made with :',
+        'operatingsystems_help' => 'The operating systems the game runs on (not applicable for most console games) :',
+        'devices_help' => 'The devices the game is playable on :',
+        'nbplayers_help' => 'How many players can play the game at the same time. <br>
+        Co-op is usually 1 to 4 humans vs the computer. <br>
+        Multiplayer is human(s) vs human(s), often limited to 64 (sometime a couple hundreds) players on the same server.',
+        'themes_help' => 'Futuristic = up until a hundred year or so from now. After that, Sci-fi is more appropriate.',
+        'genres_help' => '',
+        'tags_help' => '',
+        'viewpoints_help' => 'Isometric = 2.5D = most management/strategy game',
+        'stores_help' => 'The stores the game is purchasable from :',
 
-            'languages' => 'Languages',
-            'languages_help' => 'The languages the game is playable in',
+        'screenshots' => 'Screenshots',
+        'videos' => 'Videos and trailers',
 
-            'technologies' => 'Technologies',
-            'technologies_help' => 'The technologies the game is made with',
-
-            'operatingsystems' => 'Operating systems',
-            'operatingsystems_help' => 'The operating systems the game runs on (not applicable for most console games)',
-
-            'devices' => 'Devices',
-            'devices_help' => 'The devices the game is playable on',
-
-            'nbplayers' => 'Number of players',
-            'nbplayers_help' => 'How many players can play the game at the same time :',
-
-            'themes' => 'Themes',
-            'themes_help' => ' ',
-
-            'genres' => 'Genres',
-            'genres_help' => ' ',
-
-            'tags' => 'Tags',
-            'tags_help' => ' ',
-
-            'viewpoints' => 'Point of view',
-            'viewpoints_help' => 'Not applicable for 2D games',
-
-            'socialnetworks_title' => 'Social networks',
-            'socialnetworks_help' => '',
-            'socialnetworks_name' => 'Name',
-            'socialnetworks_url' => 'URL',
-
-            'stores_title' => 'Stores',
-            'stores_help' => 'The stores the game is purchasable from.',
-            'stores_name' => 'Name',
-            'stores_url' => 'URL',
-
-            'screenshots_title' => 'Screenshots',
-            'screenshots_name' => 'Title',
-            'screenshots_url' => 'URL',
-            
-            'videos_title' => 'Video and trailers',
-            'videos_name' => 'Title',
-            'videos_url' => 'URL',
-        ),
 
         'add' => array(
             'title' => 'Add a game profile',
@@ -213,7 +263,6 @@ return array(
             'website' => 'Go to the game\'s website',
             'blogfeed' => 'Lastest articles from the blog',
             'soundtrack' => 'Get the soudtrack',
-            'price' => 'Price',
         ),
 
     ), // end of game
@@ -358,7 +407,7 @@ return array(
 // TECHOLOGIES
 
     'technologies' => array(
-        'title' => 'Techonologies',
+        'title' => 'Technologies',
 
         'blender' => 'Blender Game Engine',
         'flash' => 'Flash',
@@ -461,7 +510,7 @@ return array(
 
         'fantasy' => 'Fantasy',
         'medieval' => 'Medieval',
-        'comic' => 'Comic',
+        'cartoon' => 'Cartoon',
         'futuristic' => 'Futuristic',
         'horror' => 'Horror',
         'mafia' => 'Mafia',
@@ -502,6 +551,7 @@ return array(
     'viewpoints' => array(
         'title' => 'Point of view',
 
+        '2d' => '2D',
         'firstperson' => 'First Person',
         'isometric' => 'Isometric',
         'thirdperson' => 'Third Person',

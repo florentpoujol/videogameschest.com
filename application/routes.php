@@ -342,7 +342,7 @@ Route::filter('before', function()
         $user = Auth::user();
         define('IS_LOGGED_IN', true);
         define('IS_GUEST', false);
-        define("USER_ID", $user->id);
+        define('USER_ID', $user->id);
 
         if (user()->type == 'admin') {
             define('IS_ADMIN', true);
@@ -362,13 +362,13 @@ Route::filter('before', function()
         define('IS_ADMIN', false);
         define('IS_DEVELOPER', false);
         define('IS_TRUSTED', false);
-        define("DEV_PROFILE_ID", 0);
+        define('DEVELOPER_ID', 0);
     }
 
 
     $route = Request::$route;
     
-    if ($route->controller != null) {
+    if ($route->controller != null) { // seems to never be the case ??
         define('CONTROLLER', $route->controller);
         define('ACTION', $route->controller_action);
     } else {

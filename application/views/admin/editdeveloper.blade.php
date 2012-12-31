@@ -13,7 +13,7 @@ Former::populate($dev);
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
 ?>
-<div id="editdeveloper_form">
+<div id="editdeveloper">
     {{ Former::open_vertical('admin/editdeveloper')->rules($rules) }} 
         <legend>{{ lang('developer.edit.title') }}</legend>
         
@@ -32,46 +32,76 @@ if ( ! empty($old)) Former::populate($old);
 
         {{ Former::select('country')->options(get_array_lang(Config::get('vgc.countries'), 'countries.')) }}
 
-        <?php
-        foreach (Dev::$array_items as $item):
-            $items = Config::get('vgc.'.$item);
-            $options = get_array_lang($items, $item.'.');
-            
-            if (isset($old[$item])) $values = $old[$item];
-            else $values = $dev->$item;
+        <hr>
 
-            $size = count($items);
-            if ($size > 10) {
-                $size = 10;
-            }
-        ?>
-        
-        {{ Former::multiselect($item.'[]', $item)->options($options)->forceValue($values)->size($size) }}
-        @endforeach
+        <!-- arrayitems + socialnetworks -->
+        <div class="tabbable tabs-left">
+            <ul class="nav nav-tabs nav-stacked" id="array_items_tabs">
+                @foreach (Dev::$array_items as $item)
+                <li><a href="#{{ $item }}" data-toggle="tab">{{ lang('developer.fields.'.$item) }}</a></li>
+                @endforeach
 
-        <fieldset>
-            <legend>{{ lang('developer.fields.socialnetworks') }}</legend>
-            
-            <?php
-            $options = get_array_lang(Config::get('vgc.socialnetworks'), 'socialnetworks.');
+                <li><a href="#socialnetworks" data-toggle="tab">{{ lang('developer.fields.socialnetworks') }}</a></li>
+            </ul>
 
-            if (isset($old[$item])) $socialnetworks = clean_names_urls_array($old[$item]);
-            else $socialnetworks = $dev->socialnetworks;
+            <div class="tab-content">
+                <?php
+                foreach (Dev::$array_items as $item):
+                    $items = Config::get('vgc.'.$item);
+                    $options = get_array_lang($items, $item.'.');
+                    
+                    if (isset($old[$item])) $values = $old[$item];
+                    else $values = $dev->$item;
 
-            $length = count($socialnetworks['names']);
-            for ($i = 0; $i < $length; $i++):
-            ?>
-                {{ Former::select('socialnetworks[names][]', lang('developer.fields.socialnetworks_name'))->options($options)->forceValue($socialnetworks['names'][$i]) }} 
-                {{ Former::url('socialnetworks[urls][]', lang('developer.fields.socialnetworks_url'))->forceValue($socialnetworks['urls'][$i]) }}
-            @endfor
+                    $size = count($items);
+                    if ($size > 10) {
+                        $size = 10;
+                    }
+                ?>
+                <div class="tab-pane" id="{{ $item }}">
+                    {{ Former::multiselect($item.'[]', $item)->options($options)->forceValue($values)->size($size) }}
+                </div>
+                @endforeach
 
-            @for ($i = 0; $i < 4; $i++)
-                {{ Former::select('socialnetworks[names][]', lang('developer.fields.socialnetworks_name'))->options($options) }} 
-                {{ Former::url('socialnetworks[urls][]', lang('developer.fields.socialnetworks_url')) }}
-            @endfor
-        </fieldset>
-        
+                <div class="tab-pane" id="socialnetworks">
+                    <?php
+                    $options = get_array_lang(Config::get('vgc.socialnetworks'), 'socialnetworks.');
+                    $options = array_merge(array('' => lang('common.select-first-option')), $options);
+
+                    if (isset($old[$item])) $socialnetworks = clean_names_urls_array($old[$item]);
+                    else $socialnetworks = $dev->socialnetworks;
+
+                    $length = count($socialnetworks['names']);
+                    for ($i = 0; $i < $length; $i++):
+                    ?>
+                        <div class="control-group-inline">
+                            {{ Former::select('socialnetworks[names][]', '')->options($options)->forceValue($socialnetworks['names'][$i]) }} 
+                            {{ Former::url('socialnetworks[urls][]', '')->forceValue($socialnetworks['urls'][$i])->placeholder(lang('developer.fields.socialnetworks_url')) }}
+                        </div>
+                    @endfor
+
+                    @for ($i = 0; $i < 4; $i++)
+                        <div class="control-group-inline">
+                            {{ Former::select('socialnetworks[names][]', '')->options($options) }} 
+                            {{ Former::url('socialnetworks[urls][]', '')->placeholder(lang('developer.fields.socialnetworks_url')) }}
+                        </div>
+                    @endfor
+                </div>
+            </div>
+        </div>    <!-- /.tabable -->
+        <!-- array items + socialnetworks -->
+
+        <hr>
+
         <input type="submit" value="{{ lang('developer.edit.submit') }}" class="btn btn-primary">
     </form>
-</div>
-<!-- /#user_form --> 
+</div><!-- /#editdeveloper --> 
+
+@section('jQuery')
+// from addgame
+$('#array_items_tabs a').click(function (e) {
+  e.preventDefault();
+  $(this).tab('show');
+})
+$('#array_items_tabs a:first').tab('show');
+@endsection

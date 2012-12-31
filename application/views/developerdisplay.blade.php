@@ -4,7 +4,7 @@
 <?php
 
 ?>
-<div id="developer_profile" class="profile dev-profile">
+<div id="developer-profile" class="profile">
     <div class="row">
         <div class="span4">
             <h3>{{ $profile->name }} <small>{{ $profile->class_name }}</small></h3> 

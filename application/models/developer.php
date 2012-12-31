@@ -2,9 +2,9 @@
 
 class Developer extends Profile
 {
-    public static $json_items = array("technologies", "operatingsystems", "devices", "stores", 'socialnetworks', 'approved_by');
+    public static $json_items = array("stores", "devices", "operatingsystems", "technologies", 'socialnetworks', 'approved_by');
 
-    public static $array_items = array("technologies", "operatingsystems", "devices", "stores");
+    public static $array_items = array("stores", "devices", "operatingsystems", "technologies", );
 
     public static $names_urls_items = array('socialnetworks');
 

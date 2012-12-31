@@ -4,7 +4,7 @@
 <?php
 
 ?>
-<div id="game_profile" class="profile game-profile">
+<div id="game-profile" class="profile">
     <div class="row">
         <div class="span9 pitch-block">
             <div class="row">
