@@ -60,7 +60,7 @@ if ( ! empty($old)) Former::populate($old);
                 ?>
                 <div class="tab-pane" id="{{ $item }}">
                     <p>{{ lang('developer.'.$item.'_help') }}</p>
-                    {{ Former::multiselect($item.'[]', '')->options($options)->forceValue($values)->size($size) }}
+                    {{ Former::multiselect($item, '')->options($options)->forceValue($values)->size($size) }}
                 </div>
                 @endforeach
 

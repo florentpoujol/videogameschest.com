@@ -36,6 +36,7 @@ return array(
         'site_slogan' => 'The participative and searchable video games database',
         'socialnetworks' => 'Social networks',
         'stores' => 'Stores',
+        'subscription' => 'Subscription',
 
         'tags' => 'Tags',
         'teamsize' => 'Teamsize',
@@ -298,6 +299,31 @@ return array(
         'msg' => array(
             'profiles_approved' => 'Thanks you for approving :num profile(s).'
         ),
+    ),
+
+
+// ADMIN
+
+    'admin' => array(
+
+        'user' => array(
+            'edit_title' => 'Edit a user account',
+            'id' => 'User Id',
+
+            'subscription_title' => 'Subscriptions',
+
+            'secret_key_help' => 'secret_key_help',
+            'old_password_help' => 'In order to update your password, enter your old password here.',
+
+        ),
+    ),
+
+
+    'crosspromotion' => array(
+        'title' => 'Cross-promotion',
+        'help' => 'Select the games you want to promote from this game',
+
+        'edit_game_non_subscribers_msg' => 'To easily promote other games from within this game <a href=":edituser_link">you can subscribe to the cross-promotion service</a> from your user account.'
     ),
 
 

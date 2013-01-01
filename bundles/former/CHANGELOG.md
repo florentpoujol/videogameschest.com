@@ -1,10 +1,15 @@
 ## Changelog
 
-### 2.6.0 (unreleased)
+### 2.7.0 (unreleased)
+
+- **[add] Former now recognizes grouped fields (name="field[]") and bind them together. You can also use the new `->grouped()` method**
+
+### 2.6.0
 
 - **[add] Former::open()->rules([]) as alias to Former::withRules**
 - **[add] 'required_text' to append a text to required fields's labels**
 - [fix] Fix a bug where labels for radios would fail because of identical ids
+- [fix] Fixed a bug where ->populateField would fail if the form was populated with an object
 
 ### 2.5.0
 

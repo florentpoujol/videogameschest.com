@@ -215,7 +215,7 @@ return array(
     "viewpoints" => array(
         "2d",
         "firstperson",
-        "fromabove",
+        "isometric",
         "thirdperson",
     ),
 

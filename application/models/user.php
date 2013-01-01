@@ -70,6 +70,9 @@ class User extends ExtendedEloquent
         if ($form['password'] != '') $form['password'] = Hash::make($form['password']);
         else unset($form['password']);
 
+        if ( ! isset($form['crosspromotion_subscription'])) $form['crosspromotion_subscription'] = 0;
+        else $form['crosspromotion_subscription'] = 1;
+
         parent::update($id, $form);
         $user = User::find($id);
 

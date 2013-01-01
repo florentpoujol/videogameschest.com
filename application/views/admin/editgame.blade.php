@@ -75,7 +75,7 @@ if ( ! empty($old)) Former::populate($old);
                 ?>
                 <div class="tab-pane" id="{{ $item }}">
                     <p>{{ lang('game.'.$item.'_help') }}</p>
-                    {{ Former::multiselect($item.'[]', '')->options($options)->value($values)->size($size)}}
+                    {{ Former::multiselect($item, '')->options($options)->forceValue($values)->size($size)}}
                 </div>
                 @endforeach
             </div>
@@ -155,6 +155,29 @@ if ( ! empty($old)) Former::populate($old);
             @endforeach
         </div> <!-- /.tab-content -->
         <!-- /names url items -->
+
+        <hr>
+        @if (user()->crosspromotion_subscription == 1 || IS_ADMIN)
+            <h3>{{ lang('crosspromotion.title') }}</h3>
+
+            <p>{{ lang('crosspromotion.help') }}</p>
+
+            <?php 
+            $games = Game::all();
+            $options = array();
+
+            foreach ($games as $temp_game) {
+                if ($temp_game->id != $game->id)
+                    $options[$temp_game->id] = $temp_game->name;
+            }
+
+            if (isset($old['promoted_games'])) $values = $old['promoted_games'];
+            else $values = $game->promoted_games;
+            ?>
+            {{ Former::multiselect('promoted_games', '')->options($options)->forceValue($values) }}
+        @else
+            <p>{{ lang('crosspromotion.') }}</p>
+        @endif
 
         <hr>
 

@@ -9,47 +9,54 @@ $rules = array(
 );
 
 $user = User::find($user_id);
-Former::populate($user);
+
+$a_user = $user->to_array();
+if ($a_user['crosspromotion_subscription'] == 0) unset($a_user['crosspromotion_subscription']);
+Former::populate($a_user);
 
 $old = Input::old();
-
 if ( ! empty($old)) {
-	Former::populate($old);
+    Former::populate($old);
 }
 ?>
+<div id="edituser">
+    <h2>{{ lang('admin.user.edit_title') }}</h2>
 
-<div id="user_form">
-	{{ Former::open_vertical('admin/edituser')->rules($rules) }} 
-		<legend>Edit a user account</legend>
-		{{ Form::token() }}
+    {{ Former::open_vertical('admin/edituser')->rules($rules) }}    
+        {{ Form::token() }}
+        
+        {{ Former::hidden('id', $user->id) }}
+        {{ lang('admin.user.id') }} : {{ $user->id }} <br>
+        <br>
 
-		@if (IS_DEVELOPER)
-		<p>Your "developer" user account is a different entity than your developer profile, while both are created at the same time, with the same name.</p>
-		@endif
-		
-		{{ Former::datetime('created_at', 'Account creation date') }}
-		
-		{{ Former::datetime('updated_at', 'Account last update') }}
+        {{ Former::text('username', lang('common.name')) }}
 
-		{{ Former::number('id', 'Account/User Id')->help("Keep in mind that it's not the same as your developer profile id.") }}
+        {{ Former::email('email') }}
 
-		{{ Former::xlarge_text('secret_key')->help("It's a \"secret\" key used to retreive \"secret\" data as your message's RSS feed.") }}
+        {{ Former::xlarge_text('secret_key', 'Secret key')->help(lang('admin.user.secret_key_help')) }}
 
-		@if (IS_ADMIN)
-		{{ Former::text('type', 'Account type')->help('"dev" or "admin"') }}
-		@endif
+        @if (IS_ADMIN)
+            {{ Former::text('type', 'Account type')->help('"dev" or "admin"') }}
+        @endif
 
-		{{ Former::text('username', 'User name') }}
+        {{ Former::password('password') }}
 
-		{{ Former::email('email') }}
+        {{ Former::password('password_confirmation', 'Password Confirmation') }}
 
-		{{ Former::password('password') }}
+        {{ Former::password('old_password', 'Old password')->help(lang('admin.user.old_password_help')) }}
 
-		{{ Former::password('password_confirmation', 'Password Confirmation') }}
+        <hr>
 
-		{{ Former::password('old_password')->help('In order to update your password, enter your old password here.') }}
+        <h3>{{ lang('admin.user.subscription_title') }}</h3>
 
-		<input type="submit" value="Edit this user" class="btn btn-primary">
-	</form>
-</div>
-<!-- /#user_form --> 
+        @if (IS_ADMIN)
+            {{ Former::checkbox('crosspromotion_subscription', '')->text('Cross promotion') }}
+        @else
+            <p>The cross-promotion service does not yet required a subscription to be active.</p>
+        @endif
+
+        <hr>
+
+        <input type="submit" value="Edit this user" class="btn btn-primary">
+    </form>
+</div> <!-- /#edituser --> 

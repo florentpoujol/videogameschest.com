@@ -168,6 +168,9 @@ class Admin_Controller extends Base_Controller
     {
         $input = Input::all();
         $input['password'] = trim($input['password']);
+
+        if ( ! IS_ADMIN) $input['id'] = USER_ID;
+
         $user = User::find($input['id']);
         
         // checking form

@@ -1,5 +1,9 @@
 language: php
 
+branches:
+  only:
+    - master
+
 php:
   - 5.3
   - 5.4
@@ -11,4 +15,7 @@ before_install:
   - echo "<?php return array('former' => array('auto' => true));" > ./laravel/application/bundles.php
   - cd ./laravel
 
-script: "php artisan test former"
+script: php artisan test former --coverage-clover "clover"
+
+after_success:
+  - curl -sL https://bit.ly/artifact-uploader | php

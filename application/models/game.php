@@ -2,7 +2,7 @@
 
 class Game extends Profile
 {
-    public static $json_items = array('approved_by',
+    public static $json_items = array('approved_by', 'promoted_games',
         'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'themes',
         'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos');
     
@@ -72,10 +72,11 @@ class Game extends Profile
             }
         }
 
-        $game = parent::update($id, $form);
-
-        HTML::set_success(lang('messages.editgame_success') 
-            //array('name'=>$game->name, 'id'=>$game->id))
+        $game = parent::update($id, $form); // 
+        $game = Game::find($id);
+        
+        HTML::set_success(lang('messages.editgame_success')
+            ,array('name'=>$game->name, 'id'=>$game->id)
         );
         return $game;
     }
