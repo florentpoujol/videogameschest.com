@@ -14,21 +14,21 @@ $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
 ?>
 <div id="editdeveloper">
+    <h2>{{ lang('developer.edit.title') }}</h2>
+
     {{ Former::open_vertical('admin/editdeveloper')->rules($rules) }} 
-        <legend>{{ lang('developer.edit.title') }}</legend>
-        
         {{ Form::token() }}
         {{ Form::hidden('id', $profile_id) }}
 
-        {{ Former::text('name', lang('developer.fields.name')) }}
+        {{ Former::text('name', lang('common.name'))->help(lang('developer.name_help')) }}
 
-        {{ Former::textarea('pitch', lang('developer.fields.pitch')) }}
+        {{ Former::textarea('pitch', lang('developer.pitch')) }}
 
-        {{ Former::url('logo', lang('developer.fields.logo')) }}
-        {{ Former::url('website', lang('developer.fields.website')) }}
-        {{ Former::url('blogfeed', lang('developer.fields.blogfeed')) }}
+        {{ Former::url('logo', lang('common.logo')) }}
+        {{ Former::url('website', lang('common.website')) }}
+        {{ Former::url('blogfeed', lang('common.blogfeed')) }}
 
-        {{ Former::number('teamsize', lang('developer.fields.teamsize')) }}
+        {{ Former::number('teamsize', lang('common.teamsize')) }}
 
         {{ Former::select('country')->options(get_array_lang(Config::get('vgc.countries'), 'countries.')) }}
 
@@ -38,10 +38,10 @@ if ( ! empty($old)) Former::populate($old);
         <div class="tabbable tabs-left">
             <ul class="nav nav-tabs nav-stacked" id="array_items_tabs">
                 @foreach (Dev::$array_items as $item)
-                <li><a href="#{{ $item }}" data-toggle="tab">{{ lang('developer.fields.'.$item) }}</a></li>
+                <li><a href="#{{ $item }}" data-toggle="tab">{{ lang($item.'.title') }}</a></li>
                 @endforeach
 
-                <li><a href="#socialnetworks" data-toggle="tab">{{ lang('developer.fields.socialnetworks') }}</a></li>
+                <li><a href="#socialnetworks" data-toggle="tab">{{ lang('socialnetworks.title') }}</a></li>
             </ul>
 
             <div class="tab-content">
@@ -59,7 +59,8 @@ if ( ! empty($old)) Former::populate($old);
                     }
                 ?>
                 <div class="tab-pane" id="{{ $item }}">
-                    {{ Former::multiselect($item.'[]', $item)->options($options)->forceValue($values)->size($size) }}
+                    <p>{{ lang('developer.'.$item.'_help') }}</p>
+                    {{ Former::multiselect($item.'[]', '')->options($options)->forceValue($values)->size($size) }}
                 </div>
                 @endforeach
 
@@ -76,14 +77,14 @@ if ( ! empty($old)) Former::populate($old);
                     ?>
                         <div class="control-group-inline">
                             {{ Former::select('socialnetworks[names][]', '')->options($options)->forceValue($socialnetworks['names'][$i]) }} 
-                            {{ Former::url('socialnetworks[urls][]', '')->forceValue($socialnetworks['urls'][$i])->placeholder(lang('developer.fields.socialnetworks_url')) }}
+                            {{ Former::url('socialnetworks[urls][]', '')->forceValue($socialnetworks['urls'][$i])->placeholder(lang('common.url')) }}
                         </div>
                     @endfor
 
                     @for ($i = 0; $i < 4; $i++)
                         <div class="control-group-inline">
                             {{ Former::select('socialnetworks[names][]', '')->options($options) }} 
-                            {{ Former::url('socialnetworks[urls][]', '')->placeholder(lang('developer.fields.socialnetworks_url')) }}
+                            {{ Former::url('socialnetworks[urls][]', '')->placeholder(lang('common.url')) }}
                         </div>
                     @endfor
                 </div>

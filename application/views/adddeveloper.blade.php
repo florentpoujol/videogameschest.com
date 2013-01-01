@@ -20,20 +20,22 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
 <div id="adddeveloper">
     <h2>{{ lang('developer.add.title') }}</h2>
 
-    {{ Former::open_vertical('admin/adddeveloper')->rules($rules) }}     
+<div class="row">
+    {{ Former::open_vertical('admin/adddeveloper')->rules($rules) }}
+        <div class="span5">
         {{ Form::token() }}
         {{ Form::hidden('controller', CONTROLLER) }}
 
-        {{ Former::text('name', lang('developer.fields.name')) }}
+        {{ Former::text('name', lang('common.name'))->help(lang('developer.name_help')) }}
 
         @if (CONTROLLER == 'admin' && IS_ADMIN)
-            {{ Former::email('email', lang('developer.fields.email'))->help('This will create a new user, OR choose the user below') }}
+            {{ Former::email('email', lang('common.email'))->help('This will create a new user, OR choose the user below') }}
             
             {{ Former::select('user_id', 'User')->fromQuery($users)  }}
 
             {{ Former::select('privacy')->options($privacy) }}
         @else
-            {{ Former::email('email', lang('developer.fields.email')) }}
+            {{ Former::email('email', lang('common.email')) }}
 
             @if (CONTROLLER == 'admin')
                 {{ Former::hidden('privacy', 'private') }}
@@ -42,26 +44,29 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
             @endif
         @endif
         
-        {{ Former::textarea('pitch', lang('developer.fields.pitch')) }}
+        {{ Former::textarea('pitch', lang('developer.pitch')) }}
 
-        {{ Former::url('logo', lang('developer.fields.logo')) }}
-        {{ Former::url('website', lang('developer.fields.website')) }}
-        {{ Former::url('blogfeed', lang('developer.fields.blogfeed')) }}
+        {{ Former::url('logo', lang('common.logo')) }}
+        {{ Former::url('website', lang('common.website')) }}
+        {{ Former::url('blogfeed', lang('common.blogfeed')) }}
 
-        {{ Former::number('teamsize', lang('developer.fields.teamsize'))->value(1) }}
+        {{ Former::number('teamsize', lang('common.teamsize'))->value(1) }}
 
-        {{ Former::select('country', lang('developer.fields.country'))->options(get_array_lang(Config::get('vgc.countries'), 'countries.')) }}
+        {{ Former::select('country', lang('common.country'))->options(get_array_lang(Config::get('vgc.countries'), 'countries.')) }}
 
-        <hr>
+    
+
+        </div>
+        <div class="span7">
 
         <!-- array items + socialnetworks -->
         <div class="tabbable tabs-left">
             <ul class="nav nav-tabs nav-stacked" id="array_items_tabs">
                 @foreach (Dev::$array_items as $item)
-                <li><a href="#{{ $item }}" data-toggle="tab">{{ lang('developer.fields.'.$item) }}</a></li>
+                <li><a href="#{{ $item }}" data-toggle="tab">{{ lang($item.'.title') }}</a></li>
                 @endforeach
 
-                <li><a href="#socialnetworks" data-toggle="tab">{{ lang('developer.fields.socialnetworks') }}</a></li>
+                <li><a href="#socialnetworks" data-toggle="tab">{{ lang('socialnetworks.title') }}</a></li>
             </ul>
 
             <div class="tab-content">
@@ -77,7 +82,8 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
                     if ($size > 10) $size = 10;
                 ?>
                 <div class="tab-pane" id="{{ $item }}">
-                    {{ Former::multiselect($item.'[]', lang('developer.fields.'.$item))->options($options)->value($values)->size($size) }}
+                    <p>{{ lang('developer.'.$item.'_help') }}</p>
+                    {{ Former::multiselect($item.'[]', '')->options($options)->value($values)->size($size) }}
                 </div>
                 @endforeach
 
@@ -96,11 +102,10 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
                         ?>
                         <div class="control-group-inline">
                             {{ Former::select('socialnetworks[names][]', '')->options($options)->value($name) }}  
-                            {{ Former::url('socialnetworks[urls][]', '')->placeholder(lang('developer.fields.socialnetworks_url'))->value($url) }}
+                            {{ Former::url('socialnetworks[urls][]', '')->placeholder(lang('common.url'))->value($url) }}
                         </div>
                     @endfor
 
-                    <div class="clearfix"></div>
                 </div>
             </div>
         </div><!-- /.tabable -->
@@ -109,7 +114,9 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
         <hr>
 
         <input type="submit" value="{{ lang('developer.add.submit') }}" class="btn btn-primary clearfix">
+        </div>
     </form>
+    </div>
 </div><!-- /#adddeveloper --> 
 
 @section('jQuery')

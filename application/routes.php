@@ -94,7 +94,10 @@ Route::get('/developer/(:any)', array('as' => 'get_developer', function($name = 
 {
     if (is_null($name)) return Redirect::to_route('get_search');
     
-    if (is_numeric($name)) $profile = Dev::find($name);
+    if (is_numeric($name)) {
+        $profile = Dev::find($name);
+        return Redirect::to_route('get_developer', array(name_to_url($profile->name)));
+    }
     else $profile = Dev::where_name(url_to_name($name))->first();
 
     if (is_null($profile)) {
@@ -127,7 +130,10 @@ Route::get('/game/(:any)', array('as' => 'get_game', function($name = null) use 
 {
     if (is_null($name)) return Redirect::to_route('get_search');
     
-    if (is_numeric($name)) $profile = Game::find($name);
+    if (is_numeric($name)) {
+        $profile = Game::find($name);
+        return Redirect::to_route('get_game', array(name_to_url($profile->name)));
+    }
     else $profile = Game::where_name(url_to_name($name))->first();
 
     if (is_null($profile)) {

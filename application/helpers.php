@@ -127,7 +127,7 @@ function url_to_name($url)
  * @param string $name the name
  * @return the url
  */
-function name_to_url( $name )
+function name_to_url($name)
 {
     $url = str_replace(array(' '), '-', $name);
     return $url;

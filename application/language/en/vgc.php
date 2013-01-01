@@ -18,10 +18,13 @@ return array(
         'developer' => 'Developer',
         'devices' => 'Devices',
 
+        'email' => 'Email',
+
         'game' => 'Game',
         'genres' => 'Genres',
 
         'languages' => 'Languages',
+        'logo' => 'Logo URL',
 
         'name' => 'Name',
         'nbplayers' => 'Number of players',
@@ -161,39 +164,16 @@ return array(
 
 // DEVELOPER 
     'developer' => array(
-        'fields' => array(
-            'name' => 'Name',
-            'name_help' => 'Company name, if applicable.',
-
-            'email' => 'Email',
-            'pitch' => 'Explain about the developer\'s phylosophy, goals...',
-            'logo' => 'Logo URL',
-            'website' => 'Website URL',
-
-            'blogfeed' => 'Blog RSS/Atom feed',
-            'profile_blogfeed' => 'Lastest articles from the blog',
-
-            'country' => 'Country',
-            'teamsize' => 'Teamsize',
-
-            'socialnetworks' => 'Social networks',
-            'socialnetworks_name' => 'Name',
-            'socialnetworks_url' => 'Url',
-            'socialnetworks_url_placeholder' => 'Full profile URL',
-
-            'technologies' => 'Technologies',
-            'technologies_help' => 'The technologies the developer works with',
-
-            'operatingsystems' => 'Operating systems',
-            'operatingsystems_help' => 'The operating systems the developer\'s games run on (not applicable for most consoles)',
-
-            'devices' => 'Devices',
-            'devices_help' => 'The devices the developer\'s games are playable on',
-
-            'stores' => 'Stores',
-            'stores_help' => 'The stores the developer sells their games on',
-        ), // end fields
         
+        'name_help' => 'Company name, if applicable.',
+
+        'pitch' => 'Explain about the developer\'s phylosophy, goals...',
+
+        'technologies_help' => 'The technologies the developer works with :',
+        'operatingsystems_help' => 'The operating systems the developer\'s games run on (not applicable for most consoles) :',
+        'devices_help' => 'The devices the developer\'s games are playable on :',
+        'stores_help' => 'The stores the developer sells their games on :',
+       
         'add' => array(
             'title' => 'Add a developer profile',
 
@@ -241,7 +221,7 @@ return array(
         'themes_help' => 'Futuristic = up until a hundred year or so from now. After that, Sci-fi is more appropriate.',
         'genres_help' => '',
         'tags_help' => '',
-        'viewpoints_help' => 'Isometric = 2.5D = most management/strategy game',
+        'viewpoints_help' => 'Isometric = 2.5D = most management/strategy game, whether they are in 2D or actual 3D. <a href="http://en.wikipedia.org/wiki/Category:Video_games_with_isometric_graphics" title="Go to the Wikipedia page \'Video games with isometric graphics\'">Example of isometric games</a>.',
         'stores_help' => 'The stores the game is purchasable from :',
 
         'screenshots' => 'Screenshots',
@@ -574,6 +554,7 @@ return array(
         'physics' => 'Physics',
         'sidescrolling' => 'Side-Scrolling',
         'turnbased' => 'Turn-Based',
+        'topdown' => 'Top-Down',
     ),
 
 
