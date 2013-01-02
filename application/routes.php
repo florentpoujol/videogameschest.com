@@ -175,6 +175,30 @@ Route::get('setlanguage/(:any?)', array('as' => 'get_set_language', 'do' => func
 }));
 
 
+// CROSS PROMOTION
+
+Route::get('crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion', 'do' => function($game_id, $user_secret_key)
+{
+    $game = Game::find($game_id);
+
+    if (is_null($game)) {
+        return Response::json(array('No game with id ['.$game_id.'] has been found'));
+    }
+
+    if ($game->dev->user->secret_key != $user_secret_key) {
+        return Response::json(array('The secret key ['.$user_secret_key.'] does not match the secret key of user the game is linked to'));
+    }
+
+    $promoted_games = $game->promoted_games;
+
+    for ($i = 0; $i < count($promoted_games); $i++) {
+        $promoted_games[$i] = Game::find($promoted_games[$i])->to_crosspromotion_array();
+    }
+
+    return Response::json($promoted_games);
+}));
+
+
 //----------------------------------------------------------------------------------
 //  ADMIN CONTROLLER ROUTES
 //----------------------------------------------------------------------------------

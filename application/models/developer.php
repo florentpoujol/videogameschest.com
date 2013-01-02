@@ -8,6 +8,8 @@ class Developer extends Profile
 
     public static $names_urls_items = array('socialnetworks');
 
+    public static $secured_items = array('name', 'email', 'pitch', 'logo', 'website', 'blogfeed', 'country');
+
 
     //----------------------------------------------------------------------------------
     // CONSTRUCTOR
@@ -15,8 +17,6 @@ class Developer extends Profile
     public function __construct($attributes = array(), $exists = false)
     {
         parent::__construct($attributes, $exists);
-
-        $this->_user = $this->user();
     }
 
 
@@ -42,16 +42,14 @@ class Developer extends Profile
 
             $form['user_id'] = $user->id;
         }
-        unset($form['email']);
 
-        if ( ! isset($form['privacy'])) $form['privacy'] = 'private';
-        elseif ($form['privacy'] == 'submission') $form['review_start_date'] = date_create();
+        if ( ! isset($form['privacy'])) $form['privacy'] = 'submission';
         
         $form['approved_by'] = array();
 
         $dev = parent::create($form);
         
-        HTML::set_success(lang('messages.adddev_success',array('name'=>$dev->name)));
+        HTML::set_success(lang('messages.adddev_success', array('name'=>$dev->name)));
         return $dev;
     }
 
@@ -122,6 +120,11 @@ class Developer extends Profile
 	//----------------------------------------------------------------------------------
     // GETTERS
 
+    public function parsed_pitch() 
+    {
+        return nl2br(parse_bbcode($this->get_attribute('pitch')));
+    }
+
 
     //----------------------------------------------------------------------------------
     // MAGIC METHODS
@@ -153,6 +156,11 @@ class Developer extends Profile
     public function __get($key)
     {
         if (in_array($key, static::$json_items)) return json_decode($this->get_attribute($key), true);
+
+        elseif (in_array($key, static::$secured_items)) {
+            return Security::xss_clean(e($this->get_attribute($key)));
+        }
+
         else return parent::__get($key);
     }
 

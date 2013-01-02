@@ -2,7 +2,7 @@
 
 class Profile extends ExtendedEloquent
 {
-    public $_user = null;
+    //public $_user = null;
     public $class_name = 'profile';
 
 
@@ -13,7 +13,7 @@ class Profile extends ExtendedEloquent
     {
         parent::__construct($attributes, $exists);
 
-        $this->class_name = strtolower(get_class($this));
+        $this->class_name = strtolower(get_class($this)); // get the child class name
     }
 
     //----------------------------------------------------------------------------------
@@ -55,39 +55,12 @@ class Profile extends ExtendedEloquent
         // @TODO : send mails 
     }
 
-    /**
-     * Do stuffs when a profile failed a review
-     * @param  string $review  Review type
-     * @param  string $profile Profile type
-     */
-    public function failed_review($review, $profile, $user)
-    {
-        if ($review == 'submission') {
-            if ($profile == 'developer') User::delete($user->id);
-            $this->delete();
-        } elseif ($review == 'publishing') {
-            $this->privacy = 'private';
-            $this->approved_by = '';
-            $this->save();
-
-            // email's text :
-            $html = lang('emails.'.$profile.'_failed_'.$review.'_review', array(
-                'name' => $this->name,
-                'id' => $this->id,
-            ));
-
-            $email = $user->email;
-
-            // @TODO : send mails with 
-        }
-    }
-
 
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
 
     /**
-     * Get ll reports linked to this profile
+     * Get all reports linked to this profile
      * @param  string $type The report type
      * @return array       An array of reports
      */
@@ -100,4 +73,33 @@ class Profile extends ExtendedEloquent
     }
 
     
+    //----------------------------------------------------------------------------------
+    // CROSS PROMOTION
+
+    /**
+     * Sanitize the model to return an array with only relevant data for crosspromotion
+     * @return array The model, sanitized and as array
+     */
+    public function to_crosspromotion_array()
+    {
+        $unset = array('id', 'developer_id', 'created_at', 'updated_at', 'privacy', 'approved_by', 'promoted_games');
+        $game = $this->attributes;
+        
+        foreach ($unset as $item) {
+            if (isset($game[$item])) unset($game[$item]);
+        }
+
+        $game['pitch_html'] = parse_bbcode($game['pitch']);
+        
+        return $game;
+    }
+
+
+    //----------------------------------------------------------------------------------
+    // GETTERS
+
+    public function get_parsed_pitch() 
+    {
+        return nl2br(parse_bbcode($this->pitch));
+    }
 }

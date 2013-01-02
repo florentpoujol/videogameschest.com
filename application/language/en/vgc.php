@@ -57,7 +57,7 @@ return array(
 // HOME
 
     'home' => array(
-        
+        'title' => 'Home',
 
         'participative' => array(
             'title' => 'Participative',
@@ -66,18 +66,19 @@ return array(
             VGC allow anyone to submit a developer or game profile but ensure that the developer is in control and has reviewed the profile before it\'s published. <br>
             <br>
             You liked a game that is not on VGC yet ? <br>
-            The best way to show your support  to the developer is to add their profile yourself so that they gets to know VGC and everyone on VGC gets to know them. Plus, they may be interested in the services we provide !',
+            The best way to show your support to the developer after bying their games is to add their profile yourself so that they gets to know VGC and everyone on VGC gets to know them. <br> 
+            Plus, they may be interested in the services we provide !',
             
             'submission_explanation_link' => 'Learn more about the public submission process',
             'submission_explanation_text' => 'When a new profile is submitted via the public forms, it goes in a first peer review. It\'s a matter of checking if the email belongs to the developer and if there is no offensive or inappropriate content. <br>
             <br>
-            Once the profile passed the review, an email is send to the developer to let him know that someone created a profile for them. The profile is still private and the developer must review and update/complete it before sending it to a second peer review. <br>
+            Once the profile passed the review, an email is sent to the developer to let him know that someone created a profile for them. The profile is still private and the developer must review and update/complete it before sending it to a second peer review. <br>
             <br>
             The profile become public and is visible and searchable by everyone only when it has passed that second review. <br>
             <br>
             The "trusted" users (who have a public developer profile and at least one public game profile) have access to the peer reviews. They can consult the profile and accept it or issue a report if something is wrong. <br>
             <br>
-            Profiles pass review when they have a minimum number of approval and no open reports.',
+            Profiles pass reviews when they have a minimum number of approval and no open reports.',
 
             'adddev_link' => 'Add a developer',
             'addgame_link' => 'Add a game',
@@ -93,15 +94,6 @@ return array(
         'services_title' => 'Services',
         'services_text' => 'VGC also provide some cool services to game developers :',
 
-
-        'cross-promotion' => array(
-            'title' => 'Cross-promotion',
-            'text' => 'VGC provides <strong>an evolutive, easy to setup and use cross-promotion solution</strong> for your games. <br>
-            Setup once in your game then update the promoted content  whenever you want online : <br>
-            <br>
-            Make sure the games you want to promote have a profile on VGC, then select them for cross-promotion in your game\'s profile. <br>
-            From your game, just query VGC to get the profiles you selected for cross-promotion in that game. <br>',
-        ),
     ),
 
 
@@ -167,6 +159,7 @@ return array(
     'developer' => array(
         
         'name_help' => 'Company name, if applicable.',
+        'email_help' => 'This should be the main contact email to be publiquely displayed on the profile. It may not be different than your user email.',
 
         'pitch' => 'Explain about the developer\'s phylosophy, goals...',
 
@@ -187,7 +180,7 @@ return array(
 
         'edit' => array(
             'title' => 'Edit a developer profile',
-            'submit' => 'Edit a developer profile',
+            'submit' => 'Edit this developer profile',
         ),
 
         'profile' => array(
@@ -305,25 +298,74 @@ return array(
 // ADMIN
 
     'admin' => array(
-
+        'bbcode_explanation' => 'You may use the following BBCode tags : b, i and url=. Full urls are automatically parsed in links.',
+        
         'user' => array(
             'edit_title' => 'Edit a user account',
             'id' => 'User Id',
 
             'subscription_title' => 'Subscriptions',
 
-            'secret_key_help' => 'secret_key_help',
+            'secret_key_help' => 
+            'This string is used to access various things linked to your user account like your report RSS feed or the cross-promotion service.<br>
+            This is not a hash of something, this is just a random and unique string stored as-is in the database. You may update it.',
             'old_password_help' => 'In order to update your password, enter your old password here.',
 
         ),
     ),
 
 
+// CROSS PROMOTION
+
     'crosspromotion' => array(
         'title' => 'Cross-promotion',
-        'help' => 'Select the games you want to promote from this game',
 
-        'edit_game_non_subscribers_msg' => 'To easily promote other games from within this game <a href=":edituser_link">you can subscribe to the cross-promotion service</a> from your user account.'
+        'home_text' => 
+        'VGC provides <strong>an evolutive, easy to setup and easy to use cross-promotion solution</strong> for your games. <br>
+        Setup once in your game then update the promoted content  whenever you want online : <br>
+        <br>
+        Make sure the games you want to promote have a profile on VGC, then select them for cross-promotion in your game\'s profile. <br>
+        From your game, just query VGC to get the profiles you selected for cross-promotion in that game. <br>',
+
+        'edit_game_subscribers_help' => 
+        'Select the games you want to promote from this game. <br>
+        Then from the game query the following URL : :url',
+
+        'edit_game_non_subscribers_msg' => 'To easily promote other games from within this game <a href=":edituser_link">you can subscribe to the cross-promotion service</a> from your user account.',
+
+        'edit_user_subscription_text' => 
+        'To be able to cross-promote in your game with VGC, you must subscribe to the service first. <br>
+        The subscription cost 5€ per month. <br>
+        You can subscribe by clicking the button below, with a Paypal account or various credit cards. You will be able to unsubscribe at any time via a similar button or via the Paypal dashboard.<br>
+        <br>
+        Once subscribed, the cross-promotion service must be activated manually by an administrator, which can take up to a few hours.',
+
+        'edit_user_unsubscription_text' => 
+        'You have subscribed to the cross-promotion service, <strong>thanks you</strong> ! <br>
+        [insert explanation here on how to use it] <br>
+        <br>
+        If you want to unsubscribe, click on the button below. It will send you to a Paypal page which will prompt you for confirmation. <br>
+        Once you unsubscribed, the cross-promotion will be deactivated by an administrator without a few hours.',
+
+        'what_is_it' => 
+        'Cross-promotin is a kind of advertising where a product is promoted from within another product. <br>
+        It has two main benefits : it\'s free since you don\'t have to rent advertising space inside you own game and it\'s <em>a priori</em> well targetted since we can imagine that players of one of your game might be interrested in your other games as well. <br>
+        <br>
+        Classic online advertising cost so much that most small to medium sized game studios just can\'t afford it. <br>
+        Cross-promotion is a cheaper alternative that can prove effective if you promote not only your other games but also other developer\'s games. <br>
+        Creating a network of cross-promotion
+
+        if you promote a game made by another developer, tell them, they want to do the same with your game ! 
+        ',
+
+        'how_it_works' => 
+        'Once you will have subscribed to the service, you will have acces to a new section on your games profile\'s where you can select games to promote. <br>
+        <br>
+        From within your game, you just have to query an URL with your game id to get the list of the profiles you selected in the first step. <br>
+        And that\'it.<br>
+        <br>
+        Once you properly setted up the system in your game you can just update the promoted games from your game profile on VGC without the need to update/patch your actual game.',
+
     ),
 
 

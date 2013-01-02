@@ -157,10 +157,13 @@ if ( ! empty($old)) Former::populate($old);
         <!-- /names url items -->
 
         <hr>
-        @if (user()->crosspromotion_subscription == 1 || IS_ADMIN)
-            <h3>{{ lang('crosspromotion.title') }}</h3>
+        <h3>{{ lang('crosspromotion.title') }}</h3>
 
-            <p>{{ lang('crosspromotion.help') }}</p>
+        @if (user()->crosspromotion_subscription == 1 || IS_ADMIN)
+            <?php 
+            $url = route('get_crosspromotion', array($game->id, user()->secret_key));
+            ?>
+            <p>{{ lang('crosspromotion.edit_game_subscribers_help', array('url' => $url)) }}</p>
 
             <?php 
             $games = Game::all();
@@ -176,7 +179,7 @@ if ( ! empty($old)) Former::populate($old);
             ?>
             {{ Former::multiselect('promoted_games', '')->options($options)->forceValue($values) }}
         @else
-            <p>{{ lang('crosspromotion.') }}</p>
+            <p>{{ lang('crosspromotion.edit_game_nonsubscribers_help') }}</p>
         @endif
 
         <hr>

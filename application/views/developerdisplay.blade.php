@@ -1,9 +1,7 @@
 @section('page_title')
     {{ $profile->name }} | {{ lang('developer.profile.title') }}
 @endsection
-<?php
 
-?>
 <div id="developer-profile" class="profile">
     <div class="row">
         <div class="span4">
@@ -11,8 +9,11 @@
             
         </div>
 
-        <div class="span4 align-center website">
-            <a href="{{ $profile->website }}" class="">{{ $profile->website }}</a>
+        <div class="span4 align-center">
+            <ul class="unstyled">
+                <li><a href="{{ $profile->website }}" class="">{{ $profile->website }}</a></li>
+                <li><a href="mailto:{{ $profile->email }}" class="">{{ $profile->email }}</a></li>
+            </ul>
         </div>
 
         <div class="span3 align-center">
@@ -29,7 +30,7 @@
         <div class="span12 pitch">
             <img src="{{ $profile->logo }}" alt="{{ $profile->name }} logo" class="logo pull-right" >
             
-            {{ parse_bbcode($profile->pitch) }}
+            {{ $profile->get_parsed_pitch() }}
         </div>
     </div>
 

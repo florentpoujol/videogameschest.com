@@ -18,8 +18,6 @@ class Game extends Profile
     public function __construct($attributes = array(), $exists = false)
     {
         parent::__construct($attributes, $exists);
-
-        // $this->_user = User::find(Developer::find($this->developer_id)->user_id);
     }
 
 	//----------------------------------------------------------------------------------
@@ -140,6 +138,11 @@ class Game extends Profile
     public function __get($key)
     {
         if (in_array($key, static::$json_items)) return json_decode($this->get_attribute($key), true);
+        
+        elseif (in_array($key, static::$secured_items)) {
+            return Security::xss_clean(e($this->get_attribute($key)));
+        }
+
         else return parent::__get($key);
     }
 

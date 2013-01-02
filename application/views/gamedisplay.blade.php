@@ -18,7 +18,7 @@
 
             <hr>
 
-            {{ parse_bbcode($profile->pitch) }}
+            {{ $profile->get_parsed_pitch() }}
         </div>
 
         <div class="span3">

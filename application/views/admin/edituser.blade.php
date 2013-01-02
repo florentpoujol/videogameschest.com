@@ -45,14 +45,35 @@ if ( ! empty($old)) {
 
         {{ Former::password('old_password', 'Old password')->help(lang('admin.user.old_password_help')) }}
 
-        <hr>
+        @if ($user->type != "admin")
+            <hr>
 
-        <h3>{{ lang('admin.user.subscription_title') }}</h3>
+            <h3>{{ lang('crosspromotion.title') }}</h3>
 
-        @if (IS_ADMIN)
-            {{ Former::checkbox('crosspromotion_subscription', '')->text('Cross promotion') }}
-        @else
-            <p>The cross-promotion service does not yet required a subscription to be active.</p>
+            
+
+            @if (IS_ADMIN)
+                {{ Former::checkbox('crosspromotion_subscription', '')->text('Cross promotion') }}
+            @elseif (false)
+                @if (user()->crosspromotion_subscription == 1)
+                    <p>
+                        {{ lang('crosspromotion.edit_user_subscription_text') }}
+                    </p>
+
+                    <p>[Button to subscribe]</p>
+                @else
+                    <p>
+                        {{ lang('crosspromotion.edit_user_unsubscription_text') }}
+                    </p>
+
+                    <p>[Button to UNsubscribe]</p>
+                @endif
+            @else
+                <p>
+                    The cross-promotion service does not yet require a subscription to be active. <br>
+                    You can select the games you want to cross-promote from your game's profiles.
+                </p>
+            @endif
         @endif
 
         <hr>
