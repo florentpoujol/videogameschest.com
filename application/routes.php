@@ -220,15 +220,14 @@ Route::group(array('before' => 'auth'), function()
 
     Route::get('admin/logout', array('as' => 'get_logout', 'uses' => 'admin@logout'));
 
-    Route::get('admin/edituser/(:num?)', array('as' => 'get_edituser', 'uses' => 'admin@edituser'));
-
+    Route::get('admin/user/edit/(:num?)', array('as' => 'get_edituser', 'uses' => 'admin@edituser'));
     
-    Route::get('admin/editdeveloper/(:num?)', array('as' => 'get_editdeveloper', 'uses' => 'admin@editdeveloper'));
+    Route::get('admin/developer/edit/(:num?)', array('as' => 'get_editdeveloper', 'uses' => 'admin@editdeveloper'));
     // I could also use
     // Route::get('admin/(add|edit)developer', 'admin@(:1)developer');
 
-    Route::get('admin/addgame', array('as' => 'get_admin_addgame', 'uses' => 'admin@addgame'));
-    Route::get('admin/editgame/(:num?)', array('as' => 'get_editgame', 'uses' => 'admin@editgame'));
+    Route::get('admin/game/add', array('as' => 'get_admin_addgame', 'uses' => 'admin@addgame'));
+    Route::get('admin/game/edit/(:num?)', array('as' => 'get_editgame', 'uses' => 'admin@editgame'));
 
     Route::get('admin/reviews/(:any?)', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));
     Route::get('admin/review_approve/(:any)/(:any)/(:num)', array('as' => 'get_review_approve', 'uses' => 'admin@reviewapprove'));
@@ -240,8 +239,8 @@ Route::group(array('before' => 'auth'), function()
 // must be logged in + admin
 Route::group(array('before' => 'auth|admin'), function()
 {
-    Route::get('admin/adduser', array('as' => 'get_adduser', 'uses' => 'admin@adduser'));
-    Route::get('admin/adddeveloper', array('as' => 'get_admin_adddeveloper', 'uses' => 'admin@adddeveloper'));
+    Route::get('admin/user/add', array('as' => 'get_adduser', 'uses' => 'admin@adduser'));
+    Route::get('admin/developer/add', array('as' => 'get_admin_adddeveloper', 'uses' => 'admin@adddeveloper'));
 });
 
 

@@ -11,6 +11,7 @@ class Game extends Profile
 
     public static $names_urls_items = array('socialnetworks', 'stores', 'screenshots', 'videos');
 
+    public static $secured_items = array('name', 'pitch', 'cover', 'website', 'blogfeed', 'country');
 
     //----------------------------------------------------------------------------------
     // CONSTRUCTOR

@@ -57,7 +57,7 @@
                     <li><a href="{{ route('get_login') }}"><i class="icon-user"></i>{{ lang('menu.login.title') }}</a></li>
                 @endif
 
-                <!-- language menu -->
+                <!-- language menu 
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         {{ lang('menu.languages') }}
@@ -69,7 +69,7 @@
                         <li><a href="{{ route('get_set_language', array($language)) }}">{{ lang("languages.$language") }}</a></li>
                     @endforeach
                     </ul>
-                </li><!-- /language menu -->
+                </li> /language menu -->
             </ul>
         </div>
     </div>

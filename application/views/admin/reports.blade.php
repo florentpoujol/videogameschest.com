@@ -63,7 +63,7 @@ if (IS_ADMIN) {
                 <a href="{{ route('get_'.$profile->class_name, array($profile->id)) }}">{{ $profile->name }}</a> ({{ $profile->class_name }})
             </td>
 
-            <td>
+            <td class="span8">
                 {{ $report->message }}
             </td>
             
