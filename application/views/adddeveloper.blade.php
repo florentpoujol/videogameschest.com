@@ -76,7 +76,7 @@ if (IS_ADMIN) {
                         ?>
                         <div class="tab-pane" id="{{ $item }}">
                             <p>{{ lang('developer.'.$item.'_help') }}</p>
-                            {{ Former::multiselect($item.'[]', '')->options($options)->value($values)->size($size) }}
+                            {{ Former::multiselect($item, '')->options($options)->value($values)->size($size) }}
                         </div>
                         @endforeach
 

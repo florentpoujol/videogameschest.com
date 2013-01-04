@@ -51,10 +51,8 @@ Route::post('test', function() use ($layout)
 
 
 //----------------------------------------------------------------------------------
-// ROUTES
+// HOME
 //----------------------------------------------------------------------------------
-
-// Home
 
 Route::get('/', function() use ($layout)
 {
@@ -68,7 +66,10 @@ Route::get('home', array('as' => 'get_home', 'do' => function() use ($layout)
 }));
 
 
+
+//----------------------------------------------------------------------------------
 // ADD DEVELOPER / GAME
+//----------------------------------------------------------------------------------
 
 Route::get('/adddeveloper', array('as' => 'get_adddeveloper', function() use ($layout)
 {
@@ -81,15 +82,24 @@ Route::get('/addgame', array('as' => 'get_addgame', function() use ($layout)
 }));
 
 
+
+//----------------------------------------------------------------------------------
 // SEARCH PROFILE
+//----------------------------------------------------------------------------------
 
 Route::get('/search', array('as' => 'get_search', function() use ($layout)
 {
-    return $layout->nest('page_content', 'search')->with('page_title', 'search');
+    return $layout->nest('page_content', 'search');
 }));
 
 
+// for post search, see below in CSRF group
+
+
+
+//----------------------------------------------------------------------------------
 // DISPLAY PROFILE
+//----------------------------------------------------------------------------------
 
 Route::get('/developer/(:any)', array('as' => 'get_developer', function($name = null) use ($layout)
 {
@@ -162,7 +172,10 @@ Route::get('/game/(:any)', array('as' => 'get_game', function($name = null) use 
 }));
 
 
+
+//----------------------------------------------------------------------------------
 // SET LANGUAGE
+//----------------------------------------------------------------------------------
 
 Route::get('setlanguage/(:any?)', array('as' => 'get_set_language', 'do' => function($language = null) use ($layout)
 {
@@ -175,7 +188,10 @@ Route::get('setlanguage/(:any?)', array('as' => 'get_set_language', 'do' => func
 }));
 
 
+
+//----------------------------------------------------------------------------------
 // CROSS PROMOTION
+//----------------------------------------------------------------------------------
 
 Route::get('crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion', 'do' => function($game_id, $user_secret_key)
 {
@@ -199,12 +215,13 @@ Route::get('crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion', '
 }));
 
 
+
 //----------------------------------------------------------------------------------
 //  ADMIN CONTROLLER ROUTES
 //----------------------------------------------------------------------------------
 
 // controller
-// Route:controller('controlerName');
+// Route::controller('controlerName');
 // custom route to a controller method :
 // Route::get('customroute', 'controlerName@methodName');
 // nammed route with controller
@@ -229,8 +246,7 @@ Route::group(array('before' => 'auth'), function()
     Route::get('admin/game/add', array('as' => 'get_admin_addgame', 'uses' => 'admin@addgame'));
     Route::get('admin/game/edit/(:num?)', array('as' => 'get_editgame', 'uses' => 'admin@editgame'));
 
-    Route::get('admin/reviews/(:any?)', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));
-    Route::get('admin/review_approve/(:any)/(:any)/(:num)', array('as' => 'get_review_approve', 'uses' => 'admin@reviewapprove'));
+    Route::get('admin/reviews/(:any?)', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));    
 
     Route::get('admin/reports/(:any?)', array('as' => 'get_reports', 'uses' => 'admin@reports'));
 });
@@ -275,13 +291,66 @@ Route::group(array('before' => 'csrf'), function()
     Route::post('admin/addgame', array('as' => 'post_addgame', 'uses' => 'admin@addgame'));
     Route::post('admin/reports', array('as' => 'post_reports', 'uses' => 'admin@reports'));
 
-
     // SEARCH
-
-    Route::post('/search', array('as' => 'post_search', function()
+    Route::post('/search', array('as' => 'post_search', 'before' => 'csrf', function()
     {
         $input = Input::all();
-        $type = $input['type'];
+        var_dump($input);
+        $where = array();
+
+        $class = $input['class'];
+
+        if ($class != 'developer' && $class != 'game') {
+            // problem
+            return Redirect::back();
+        }
+
+        
+        // words in name or title
+        $words = array();
+        $words_search_mode = $input['words_search_mode'];
+
+        if (isset($input['search_in_name']) || isset($input['search_in_pitch']) && trim($input['words']) != '') {
+            $_words = explode(' ', e(trim($input['words'])));
+            
+            if (isset($input['search_in_name'])) $words['name'] = $_words;
+            if (isset($input['search_in_pitch'])) $words['pitch'] = $_words;
+        }
+
+
+        // array items
+        $array_items = array();
+        if (isset($input['arrayitems']))
+            $array_items = $input['arrayitems'];
+
+
+        $profiles = $class::
+        where(function($query) use ($words, $input, $array_items)
+        {
+            // words
+            foreach ($words as $field => $values) {
+                $query->or_where(function($query) use ($field, $values, $input)
+                {
+                    foreach ($values as $value) {
+                        $query->{$input['words_search_mode'].'where'}($field, 'LIKE', '%'.$value.'%');
+                    }
+                });
+            }
+            
+            // array items
+            foreach ($array_items as $field => $values) {
+                $query->where(function($query) use ($field, $values)
+                {
+                    foreach ($values as $value) {
+                        $query->or_where($field, 'LIKE', '%'.$value.'%');
+                    }
+                });
+            }
+        })
+        ->get();
+
+        dd($profiles);
+        /*$type = $input['type'];
         $name = $input['name'];
 
         if (is_numeric($name)) {
@@ -295,12 +364,14 @@ Route::group(array('before' => 'csrf'), function()
             return Redirect::to_route('get_search');
         }
 
-        return Redirect::to_route('get_'.$input['type'], array($profile->id));
-        
+        return Redirect::to_route('get_'.$input['type'], array($profile->id));*/
     }));
 });
 
+Event::listen('laravel.query', function($sql, $bindings, $time) {
+    var_dump($sql);
 
+});
 
 
 

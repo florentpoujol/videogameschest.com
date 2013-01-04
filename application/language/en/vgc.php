@@ -31,6 +31,8 @@ return array(
 
         'operatingsystems' => 'Operating systems',
 
+        'pitch' => 'Pitch',
+
         'screenshots' => 'Screenshots',
         'select-first-option' => 'Select below or select this option to delete the item',
         'site_slogan' => 'The participative and searchable video games database',
@@ -156,6 +158,7 @@ return array(
 
 
 // DEVELOPER 
+
     'developer' => array(
         
         'name_help' => 'Company name, if applicable.',
@@ -368,6 +371,40 @@ return array(
 
     ),
 
+
+// SEARCH
+
+    'search' => array(
+        'title' => 'Search',
+
+        'name_or_pitch_help' => 'Whose',
+        'words_search_mode_help' => 'Contains',
+        'search_mode_all' => 'All',
+        'search_mode_any' => 'Any of',
+        'words_help' => 'the following words :',
+
+        'dev' => array(
+            
+
+
+            'stores_help' => 'are sold on,',
+            'devices_help' => 'are playable on,',
+            'operatingsystems_help' => 'runs on,',
+            'technologies_help' => 'and are made with,',
+
+            'submit' => 'Search for developers',
+        ),
+
+        'game' => array(
+            'stores_help' => 'are sold on,',
+            'devices_help' => 'are playable with,',
+            'operatingsystems_help' => 'runs on,',
+            'technologies_help' => 'and are made with :',
+
+            'submit' => 'Search for games',
+        ),
+        
+    ),
 
 // LANGUAGES
 
