@@ -156,6 +156,7 @@ return array(
         "moddb",
         "pinterest",
         "reddit",
+        "slidedb",
         "steam",
         "twitter"
     ),

@@ -4,14 +4,14 @@ class Game extends Profile
 {
     public static $json_items = array('approved_by', 'promoted_games',
         'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'themes',
-        'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos');
+        'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos', 'reviews');
     
     public static $array_items = array(
      "devices", "operatingsystems", 'genres', 'themes', 'viewpoints', 'nbplayers', 'tags', 'languages', "technologies",  );
 
-    public static $names_urls_items = array('socialnetworks', 'stores', 'screenshots', 'videos');
+    public static $names_urls_items = array('socialnetworks', 'stores', 'screenshots', 'videos', 'reviews');
 
-    public static $secured_items = array('name', 'pitch', 'cover', 'website', 'blogfeed', 'country');
+    public static $secured_items = array('name', 'pitch', 'cover', 'website', 'blogfeed', 'presskit', 'country');
 
     //----------------------------------------------------------------------------------
     // CONSTRUCTOR
@@ -138,7 +138,10 @@ class Game extends Profile
      */
     public function __get($key)
     {
-        if (in_array($key, static::$json_items)) return json_decode($this->get_attribute($key), true);
+        if (in_array($key, static::$json_items)) {
+            $attr = $this->get_attribute($key);
+            return json_decode($attr, true);
+        }
         
         elseif (in_array($key, static::$secured_items)) {
             return Security::xss_clean(e($this->get_attribute($key)));

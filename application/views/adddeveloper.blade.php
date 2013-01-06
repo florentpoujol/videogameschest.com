@@ -1,3 +1,6 @@
+@section('page_title')
+    {{ lang('developer.add.title') }}
+@endsection
 <?php
 $rules = array(
     'name' => 'required|min:5',
@@ -44,6 +47,7 @@ if (IS_ADMIN) {
                 {{ Former::url('logo', lang('common.logo')) }}
                 {{ Former::url('website', lang('common.website')) }}
                 {{ Former::url('blogfeed', lang('common.blogfeed')) }}
+                {{ Former::url('presskit', lang('common.presskit')) }}
 
                 {{ Former::number('teamsize', lang('common.teamsize'))->value(1) }}
 

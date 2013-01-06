@@ -8,7 +8,7 @@ class Developer extends Profile
 
     public static $names_urls_items = array('socialnetworks');
 
-    public static $secured_items = array('name', 'email', 'pitch', 'logo', 'website', 'blogfeed', 'country');
+    public static $secured_items = array('name', 'email', 'pitch', 'logo', 'website', 'blogfeed', 'presskit','country');
 
 
     //----------------------------------------------------------------------------------

@@ -32,6 +32,9 @@ return array(
         'operatingsystems' => 'Operating systems',
 
         'pitch' => 'Pitch',
+        'presskit' => 'Press Kit',
+
+        'reviews' => 'Reviews',
 
         'screenshots' => 'Screenshots',
         'select-first-option' => 'Select below or select this option to delete the item',
@@ -49,7 +52,7 @@ return array(
 
         'url' => 'URL',
 
-        'videos' => 'Videos and trailers',
+        'videos' => 'Videos',
         'viewpoints' => 'Point of view',
 
         'website' => 'Website URL',
@@ -221,10 +224,6 @@ return array(
         'viewpoints_help' => 'Isometric = 2.5D = most management/strategy game, whether they are in 2D or actual 3D. <a href="http://en.wikipedia.org/wiki/Category:Video_games_with_isometric_graphics" title="Go to the Wikipedia page \'Video games with isometric graphics\'">Example of isometric games</a>.',
         'stores_help' => 'The stores the game is purchasable from :',
 
-        'screenshots' => 'Screenshots',
-        'videos' => 'Videos and trailers',
-
-
         'add' => array(
             'title' => 'Add a game profile',
             'submit' => 'Submit this game profile',
@@ -375,7 +374,7 @@ return array(
 // SEARCH
 
     'search' => array(
-        'title' => 'Search',
+        'title' => 'Search a profile',
 
         'name_or_pitch_help' => 'Whose',
         'words_search_mode_help' => 'Contains',
@@ -558,6 +557,7 @@ return array(
         'twitter' => 'Twitter',
         'googleplus' => 'Google+',
         'indiedb' => 'Indie DB',
+        'slidedb' => 'Slide DB',
         'linkedin' => 'Linked In',
         'moddb' => 'Mod DB',
     ),

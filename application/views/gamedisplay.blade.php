@@ -1,5 +1,5 @@
 @section('page_title')
-    {{ $profile->name }} | {{ lang('game.profile.title') }}
+    {{ $profile->name }}
 @endsection
 <?php
 

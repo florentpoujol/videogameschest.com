@@ -1,5 +1,5 @@
 @section('page_title')
-    {{ $profile->name }} | {{ lang('developer.profile.title') }}
+    {{ $profile->name }}
 @endsection
 
 <div id="developer-profile" class="profile">

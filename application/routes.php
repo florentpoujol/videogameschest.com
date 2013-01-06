@@ -295,59 +295,7 @@ Route::group(array('before' => 'csrf'), function()
     Route::post('/search', array('as' => 'post_search', 'before' => 'csrf', function()
     {
         $input = Input::all();
-        var_dump($input);
-        $where = array();
-
-        $class = $input['class'];
-
-        if ($class != 'developer' && $class != 'game') {
-            // problem
-            return Redirect::back();
-        }
-
-        
-        // words in name or title
-        $words = array();
-        $words_search_mode = $input['words_search_mode'];
-
-        if (isset($input['search_in_name']) || isset($input['search_in_pitch']) && trim($input['words']) != '') {
-            $_words = explode(' ', e(trim($input['words'])));
-            
-            if (isset($input['search_in_name'])) $words['name'] = $_words;
-            if (isset($input['search_in_pitch'])) $words['pitch'] = $_words;
-        }
-
-
-        // array items
-        $array_items = array();
-        if (isset($input['arrayitems']))
-            $array_items = $input['arrayitems'];
-
-
-        $profiles = $class::
-        where(function($query) use ($words, $input, $array_items)
-        {
-            // words
-            foreach ($words as $field => $values) {
-                $query->or_where(function($query) use ($field, $values, $input)
-                {
-                    foreach ($values as $value) {
-                        $query->{$input['words_search_mode'].'where'}($field, 'LIKE', '%'.$value.'%');
-                    }
-                });
-            }
-            
-            // array items
-            foreach ($array_items as $field => $values) {
-                $query->where(function($query) use ($field, $values)
-                {
-                    foreach ($values as $value) {
-                        $query->or_where($field, 'LIKE', '%'.$value.'%');
-                    }
-                });
-            }
-        })
-        ->get();
+        $profiles = search_profiles($input);
 
         dd($profiles);
         /*$type = $input['type'];
@@ -369,7 +317,7 @@ Route::group(array('before' => 'csrf'), function()
 });
 
 Event::listen('laravel.query', function($sql, $bindings, $time) {
-    var_dump($sql);
+    //var_dump($sql);
 
 });
 

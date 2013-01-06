@@ -5,27 +5,34 @@ if (isset($old)) {
  Former::populate($old);
 }
 
+$rules = array();
 
-
-
-
-
-$rules = array(
-	'test' => 'min:5'
-);
-
-$options = array('1' => 'un', '2'=>'deux');
 ?>
 {{ Former::open_vertical('test')->rules($rules) }} 
 	
+<?php
+$item = 'tags';
+$items = Config::get('vgc.tags');
+$options = get_array_lang($items, $item.'.');
 
-	{{ Former::multiselect('field[]')->options($options) }}
-	{{ Former::text('test', 'truc')->required_text() }}
-    
-    {{ Former::danger_button('truc1') }}
-    {{ Former::danger_reset('truc2') }}
-    {{ Former::danger_submit('truc3') }}
-    {{ Former::primary_text('truc4') }}
+$values = array();
+if (isset($old[$item])) $values = $old[$item];
 
-	{{ Former::submit('submit') }}
+$size = count($items);
+if ($size > 10) $size = 10;
+?>
+
+{{ Former::multiselect($item, '')->options($options)->forceValue($values)->size($size) }}
+
+<br>
+
+
+{{ array_to_checkboxes('stores', $old) }}
+<?php
+
+
+
+?>
+
+{{ Former::submit() }}
 </form>

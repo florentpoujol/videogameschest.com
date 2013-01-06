@@ -35,7 +35,7 @@ if ( ! empty($old)) Former::populate($old);
                     <div class="span2 offset1">
                         <?php 
                         echo Former::checkboxes('search_in', lang('search.name_or_pitch_help'))->checkboxes(array(
-                        lang('common.name') => array('value' => 'name', 'name'=>'search_in', 'id'=>'dev_name'),
+                        lang('common.name') => array('value' => 'name', 'name'=>'search_in', 'id'=>'dev_name', 'checked'=>'checked'),
                         lang('common.pitch') => array('value' => 'pitch', 'name'=>"search_in", 'id'=>'dev_pitch'),
                         ));?>
                     </div>

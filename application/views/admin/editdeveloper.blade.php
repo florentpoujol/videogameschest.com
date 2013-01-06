@@ -1,3 +1,7 @@
+@section('page_title')
+    {{ lang('developer.edit.title') }}
+@endsection
+
 <?php
 $rules = array(
     'name' => 'required|min:5|unique:users,username',
@@ -18,7 +22,7 @@ if ( ! empty($old)) Former::populate($old);
     <hr>
 
     <div class="row">
-        {{ Former::open_vertical('admin/editdeveloper')->rules($rules) }} 
+        {{ Former::open_vertical(route('post_editdeveloper'))->rules($rules) }} 
             <div class="span5">
                 {{ Form::token() }}
                 {{ Form::hidden('id', $profile_id) }}
@@ -31,6 +35,7 @@ if ( ! empty($old)) Former::populate($old);
                 {{ Former::url('logo', lang('common.logo')) }}
                 {{ Former::url('website', lang('common.website')) }}
                 {{ Former::url('blogfeed', lang('common.blogfeed')) }}
+                {{ Former::url('presskit', lang('common.presskit')) }}
 
                 {{ Former::number('teamsize', lang('common.teamsize')) }}
 
