@@ -4,14 +4,13 @@
 <?php
 $rules = array(
     'name' => 'required|min:5',
-    'developer_id' => 'required|exists:developers,id',
     'cover' => 'url',
     'website' => 'url',
     'blogfeed' => 'url',
+    'presskit' => 'url',
     'soundtrackurl' => 'url',
     'publishername' => 'min:2',
     'publisherurl' => 'url|required_with:publishername',
-    'price' => 'min:0',
 );
 
 $game = Game::find($profile_id);
@@ -24,7 +23,7 @@ if ( ! empty($old)) Former::populate($old);
 <div id="editgame">
     <h2>{{ lang('game.edit.title') }}</h2>
 
-    {{ Former::open_vertical('admin/editgame')->rules($rules) }} 
+    {{ Former::open_vertical(route('post_editgame'))->rules($rules) }} 
         {{ Form::token() }}
         {{ Form::hidden('id', $profile_id) }}
         
@@ -36,7 +35,6 @@ if ( ! empty($old)) Former::populate($old);
                     {{ Former::select('developer_id', lang('common.developer'))->fromQuery(Dev::all()) }}
                 @else
                     You are the developer of this game. <br>
-                    {{ Former::hidden('developer_id', DEV_PROFILE_ID) }}
                 @endif
 
                 {{ Former::select('devstate', lang('game.devstate'))->options(get_array_lang(Config::get('vgc.developmentstates'), 'developmentstates.'))->value('released') }}
@@ -61,14 +59,14 @@ if ( ! empty($old)) Former::populate($old);
                 <!-- array items -->
                 <div class="tabbable tabs-left">
                     <ul class="nav nav-tabs nav-stacked" id="array_items_tabs">
-                        @foreach (Game::$array_items as $item)
+                        @foreach (Game::$array_fields as $item)
                         <li><a href="#{{ $item }}" data-toggle="tab">{{ lang($item.'.title') }}</a></li>
                         @endforeach
                     </ul>
 
                     <div class="tab-content">
                         <?php
-                        foreach (Game::$array_items as $item):
+                        foreach (Game::$array_fields as $item):
                             /*$items = Config::get('vgc.'.$item);
                             $options = get_array_lang($items, $item.'.');
 
@@ -96,7 +94,7 @@ if ( ! empty($old)) Former::populate($old);
 
                 <!-- names urls items -->
                 <ul class="nav nav-tabs" id="nu_items_tabs">
-                    @foreach (Game::$names_urls_items as $item)
+                    @foreach (Game::$names_urls_fields as $item)
                     <li><a href="#{{ $item }}" data-toggle="tab">{{ lang('common.'.$item) }}</a></li>
                     @endforeach
                 </ul>
@@ -202,17 +200,7 @@ if ( ! empty($old)) Former::populate($old);
 </div> <!-- /#editgame --> 
 
 @section('jQuery')
-// from addgame
-$('#array_items_tabs a').click(function (e) {
-  e.preventDefault();
-  $(this).tab('show');
-})
+// from editgame
 $('#array_items_tabs a:first').tab('show');
-
-$('#nu_items_tabs a').click(function (e) {
-  e.preventDefault();
-  $(this).tab('show');
-})
 $('#nu_items_tabs a:first').tab('show');
-// from addgame
 @endsection

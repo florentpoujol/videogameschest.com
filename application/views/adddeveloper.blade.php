@@ -8,6 +8,7 @@ $rules = array(
     'logo' => 'url',
     'website' => 'url',
     'blogfeed' => 'url',
+    'presskit' => 'url',
     'teamsize' => 'min:1'
 );
 
@@ -17,24 +18,26 @@ if ( ! empty($old)) Former::populate($old);
 if (IS_ADMIN) {
     $rules['email'] = 'min:5|email';
     $users = User::get(array('id', 'username'));
-    $privacy = array_set_values_as_keys(Config::get('vgc.privacy'));
+    $privacy = array_set_values_as_keys(Config::get('vgc.privacy_and_reviews'));
 }
 ?>
 <div id="adddeveloper">
     <h2>{{ lang('developer.add.title') }}</h2>
+
     <hr>
 
     <div class="row">
         {{ Former::open_vertical('admin/adddeveloper')->rules($rules) }}
-            <div class="span5">
-                {{ Form::token() }}
+            {{ Form::token() }}
 
+            <div class="span5">
                 {{ Former::text('name', lang('common.name'))->help(lang('developer.name_help')) }}
 
                 {{ Former::email('email', lang('common.email')) }}
 
                 @if (IS_ADMIN)
-                    Setting the email above will create a new user, OR choose the user below : <br>
+                    Setting the email above will create a new user, <br>
+                    OR choose the user below : <br>
                     <br>
                     
                     {{ Former::select('user_id', 'User')->fromQuery($users)  }}
@@ -59,7 +62,7 @@ if (IS_ADMIN) {
                 <!-- array items + socialnetworks -->
                 <div class="tabbable tabs-left">
                     <ul class="nav nav-tabs nav-stacked" id="array_items_tabs">
-                        @foreach (Dev::$array_items as $item)
+                        @foreach (Dev::$array_fields as $item)
                         <li><a href="#{{ $item }}" data-toggle="tab">{{ lang($item.'.title') }}</a></li>
                         @endforeach
 
@@ -68,19 +71,13 @@ if (IS_ADMIN) {
 
                     <div class="tab-content">
                         <?php
-                        foreach (Dev::$array_items as $item):
-                            $items = Config::get('vgc.'.$item);
-                            $options = get_array_lang($items, $item.'.');
-
+                        foreach (Dev::$array_fields as $field):
                             $values = array();
-                            if (isset($old[$item])) $values = $old[$item];
-
-                            $size = count($items);
-                            if ($size > 10) $size = 10;
+                            if (isset($old[$field])) $values = $old[$field];
                         ?>
-                        <div class="tab-pane" id="{{ $item }}">
-                            <p>{{ lang('developer.'.$item.'_help') }}</p>
-                            {{ Former::multiselect($item, '')->options($options)->value($values)->size($size) }}
+                        <div class="tab-pane" id="{{ $field }}">
+                            <p>{{ lang('developer.'.$field.'_help') }}</p>
+                            {{ array_to_checkboxes($field, $values) }}
                         </div>
                         @endforeach
 
@@ -117,10 +114,6 @@ if (IS_ADMIN) {
 </div><!-- /#adddeveloper --> 
 
 @section('jQuery')
-// from addgame
-$('#array_items_tabs a').click(function (e) {
-  e.preventDefault();
-  $(this).tab('show');
-})
+// from adddeveloper
 $('#array_items_tabs a:first').tab('show');
 @endsection

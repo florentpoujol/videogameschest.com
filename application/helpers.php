@@ -237,7 +237,6 @@ function clean_form_input($input, $supl_attributes = array())
 /**
  * Wrapper around the SwiftMailer bundle
  * @param  string $message The email's corps
- * @return [type]          [description]
  */
 function send_mail($email, $message) 
 {
@@ -261,7 +260,13 @@ function array_set_values_as_keys($array)
 }
 
 
-function icon($icon, $icon_white = '')
+/**
+ * Return the html to display an icon, whether a glyphicon or a custom icon
+ * @param  string $icon       The icon name
+ * @param  bool $icon_white   Use the white version of the glyphicons
+ * @return string             The html
+ */
+function icon($icon, $icon_white = false)
 {
     $icon = strtolower($icon);
 
@@ -338,24 +343,31 @@ function search_profiles($input)
 }
 
 
-function array_to_checkboxes($field_name, $values = array()) 
+/**
+ * return a list of checkboxes
+ * @param  string $field_name The array field name
+ * @param  array  $values     The values to be checked comming from the DB or the old form
+ * @return HTML             The formated checkboxes
+ */
+function array_to_checkboxes($field_name, $values = null) 
 {
-    if (is_null($values)) $values = array();
+    if (is_null($values)) $values = array(); // some times null is passed
+
     $temp_items = Config::get('vgc.'.$field_name);
-    $items = array();
+    $checkboxes = array();
 
     for ($i = 0; $i < count($temp_items); $i++) {
         $item = $temp_items[$i];
         $lang = lang($field_name.'.'.$item);
 
-        $items[$lang] = array('value' => $item);
+        $checkboxes[$lang] = array('value' => $item);
 
         if (in_array($item, $values)) {
-            $items[$lang]['checked'] = 'checked';
+            $checkboxes[$lang]['checked'] = 'checked';
         }
     }
 
-    return Former::checkbox($field_name.'[]', '')->checkboxes($items);
+    return Former::checkbox($field_name.'[]', '')->checkboxes($checkboxes);
 }
 
 

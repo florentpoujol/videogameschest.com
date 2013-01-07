@@ -17,20 +17,19 @@ $rules = array(
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
 
-if (IS_ADMIN) $devs = Dev::get(array('id', 'name'));
-else $devs = Dev::where('privacy', '=', 'public')->get(array('id', 'name'));
-
-if (CONTROLLER == 'admin' && IS_ADMIN) {
-    $privacy = array_set_values_as_keys(Config::get('vgc.privacy'));
+if (IS_ADMIN) {
+    $devs = Dev::get(array('id', 'name'));
+    $privacy = array_set_values_as_keys(Config::get('vgc.privacy_and_reviews'));
 }
+else $devs = Dev::where_privacy('public')->get(array('id', 'name'));
 ?>
 <div id="addgame">
     <h2>{{ lang('game.add.title') }}</h2>
+
     <hr>
 
-    {{ Former::open_vertical('admin/addgame')->rules($rules) }} 
+    {{ Former::open_vertical(route('post_addgame'))->rules($rules) }} 
         {{ Form::token() }}
-        {{ Form::hidden('controller', CONTROLLER) }}
 
         <div class="row">
             <div class="span5">
@@ -43,14 +42,8 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
                     {{ Former::hidden('developer_id', DEVELOPER_ID) }}
                 @endif
 
-                @if (CONTROLLER == 'admin')
-                    @if (IS_ADMIN)
-                        {{ Former::select('privacy')->options($privacy) }}
-                    @else
-                        {{ Former::hidden('privacy', 'private') }}
-                    @endif
-                @elseif (CONTROLLER == 'addgame')
-                    {{ Former::hidden('privacy', 'submission') }}
+                @if (IS_ADMIN)
+                    {{ Former::select('privacy')->options($privacy) }}
                 @endif
 
                 {{ Former::select('devstate', lang('game.devstate'))->options(get_array_lang(Config::get('vgc.developmentstates'), 'developmentstates.'))->value('released') }}
@@ -73,13 +66,13 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
                 <!-- array items -->
                 <div class="tabbable tabs-left">
                     <ul class="nav nav-tabs nav-stacked" id="array_items_tabs">
-                        @foreach (Game::$array_items as $item)
+                        @foreach (Game::$array_fields as $item)
                         <li><a href="#{{ $item }}" data-toggle="tab">{{ lang($item.'.title') }}</a></li>
                         @endforeach
                     </ul>
 
                     <div class="tab-content">
-                        @foreach (Game::$array_items as $item)
+                        @foreach (Game::$array_fields as $item)
                             <?php
                             /*$items = Config::get('vgc.'.$item);
                             $options = get_array_lang($items, $item.'.');
@@ -106,7 +99,7 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
 
                 <!-- names urls items -->
                 <ul class="nav nav-tabs" id="nu_items_tabs">
-                    @foreach (Game::$names_urls_items as $item)
+                    @foreach (Game::$names_urls_fields as $item)
                     <li><a href="#{{ $item }}" data-toggle="tab">{{ lang('common.'.$item) }}</a></li>
                     @endforeach
                 </ul>
@@ -166,16 +159,10 @@ if (CONTROLLER == 'admin' && IS_ADMIN) {
 
 @section('jQuery')
 // from addgame
-$('#array_items_tabs a').click(function (e) {
-  e.preventDefault();
-  $(this).tab('show');
-})
+
 $('#array_items_tabs a:first').tab('show');
 
-$('#nu_items_tabs a').click(function (e) {
-  e.preventDefault();
-  $(this).tab('show');
-})
+
 $('#nu_items_tabs a:first').tab('show');
 // from addgame
 @endsection

@@ -121,4 +121,9 @@ class User extends ExtendedEloquent
     {
         return $this->has_one('Developer');
     }
+
+    public function games()
+    {
+        return $this->has_many('Game');
+    }
 }   

@@ -8,6 +8,7 @@ $rules = array(
     'logo' => 'url',
     'website' => 'url',
     'blogfeed' => 'url',
+    'presskit' => 'url',
     'teamsize' => 'min:1'
 );
 
@@ -23,10 +24,10 @@ if ( ! empty($old)) Former::populate($old);
 
     <div class="row">
         {{ Former::open_vertical(route('post_editdeveloper'))->rules($rules) }} 
-            <div class="span5">
-                {{ Form::token() }}
-                {{ Form::hidden('id', $profile_id) }}
+            {{ Form::token() }}
+            {{ Form::hidden('id', $profile_id) }}
 
+            <div class="span5">
                 {{ Former::text('name', lang('common.name'))->help(lang('developer.name_help')) }}
                 {{ Former::text('email', lang('common.email')) }}
 
@@ -47,8 +48,8 @@ if ( ! empty($old)) Former::populate($old);
                 <!-- arrayitems + socialnetworks -->
                 <div class="tabbable tabs-left">
                     <ul class="nav nav-tabs nav-stacked" id="array_items_tabs">
-                        @foreach (Dev::$array_items as $item)
-                        <li><a href="#{{ $item }}" data-toggle="tab">{{ lang($item.'.title') }}</a></li>
+                        @foreach (Dev::$array_fields as $field)
+                        <li><a href="#{{ $field }}" data-toggle="tab">{{ lang($field.'.title') }}</a></li>
                         @endforeach
 
                         <li><a href="#socialnetworks" data-toggle="tab">{{ lang('socialnetworks.title') }}</a></li>
@@ -56,21 +57,13 @@ if ( ! empty($old)) Former::populate($old);
 
                     <div class="tab-content">
                         <?php
-                        foreach (Dev::$array_items as $item):
-                            $items = Config::get('vgc.'.$item);
-                            $options = get_array_lang($items, $item.'.');
-                            
-                            if (isset($old[$item])) $values = $old[$item];
-                            else $values = $dev->$item;
-
-                            $size = count($items);
-                            if ($size > 10) {
-                                $size = 10;
-                            }
+                        foreach (Dev::$array_fields as $field):
+                            if (isset($old[$field])) $values = $old[$field];
+                            else $values = $dev->$field;
                         ?>
-                        <div class="tab-pane" id="{{ $item }}">
-                            <p>{{ lang('developer.'.$item.'_help') }}</p>
-                            {{ Former::multiselect($item, '')->options($options)->forceValue($values)->size($size) }}
+                        <div class="tab-pane" id="{{ $field }}">
+                            <p>{{ lang('developer.'.$field.'_help') }}</p>
+                            {{ array_to_checkboxes($field, $values) }}
                         </div>
                         @endforeach
 
@@ -79,7 +72,7 @@ if ( ! empty($old)) Former::populate($old);
                             $options = get_array_lang(Config::get('vgc.socialnetworks'), 'socialnetworks.');
                             $options = array_merge(array('' => lang('common.select-first-option')), $options);
 
-                            if (isset($old[$item])) $socialnetworks = clean_names_urls_array($old[$item]);
+                            if (isset($old['socialnetworks'])) $socialnetworks = clean_names_urls_array($old['socialnetworks']);
                             else $socialnetworks = $dev->socialnetworks;
 
                             $length = count($socialnetworks['names']);
@@ -111,10 +104,6 @@ if ( ! empty($old)) Former::populate($old);
 </div><!-- /#editdeveloper --> 
 
 @section('jQuery')
-// from addgame
-$('#array_items_tabs a').click(function (e) {
-  e.preventDefault();
-  $(this).tab('show');
-})
+// from editdeveloper
 $('#array_items_tabs a:first').tab('show');
 @endsection

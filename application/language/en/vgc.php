@@ -300,8 +300,8 @@ return array(
 // ADMIN
 
     'admin' => array(
-        'bbcode_explanation' => 'You may use the following BBCode tags : b, i and url=. Full urls are automatically parsed in links.',
-        
+        'bbcode_explanation' => 'You may use HTML in the textarea above (only when editing a profile).',
+        // 'You may use the following BBCode tags : b, i and url=. Full urls are automatically parsed in links.'
         'user' => array(
             'edit_title' => 'Edit a user account',
             'id' => 'User Id',

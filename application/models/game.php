@@ -2,16 +2,16 @@
 
 class Game extends Profile
 {
-    public static $json_items = array('approved_by', 'promoted_games',
+    public static $json_fields = array('approved_by', 'promoted_games',
         'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'themes',
         'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos', 'reviews');
     
-    public static $array_items = array(
+    public static $array_fields = array(
      "devices", "operatingsystems", 'genres', 'themes', 'viewpoints', 'nbplayers', 'tags', 'languages', "technologies",  );
 
-    public static $names_urls_items = array('socialnetworks', 'stores', 'screenshots', 'videos', 'reviews');
+    public static $names_urls_fields = array('socialnetworks', 'stores', 'screenshots', 'videos', 'reviews');
 
-    public static $secured_items = array('name', 'pitch', 'cover', 'website', 'blogfeed', 'presskit', 'country');
+    public static $secured_fields = array('name', 'pitch', 'cover', 'website', 'blogfeed', 'presskit', 'country');
 
     //----------------------------------------------------------------------------------
     // CONSTRUCTOR
@@ -29,14 +29,18 @@ class Game extends Profile
      * @param  array $game Data comming from the form
      * @return Game       The Game instance
      */
-	public static function create($form) 
+	public static function create($input) 
 	{
-        $form = clean_form_input($form);
+        $input = clean_form_input($input);
 
-        if ( ! isset($game['privacy'])) $game['privacy'] = 'private';
-        $form['approved_by'] = array();
+        if ( ! isset($game['privacy'])) {
+            $game['privacy'] = 'submission';
+        }
+
+        $input['approved_by'] = array();
+        $input['pitch'] = e($input['pitch']);
         
-        $game = parent::create($form);
+        $game = parent::create($input);
         
         HTML::set_success(lang('messages.addgame_success',array('name'=>$game->name)));
         return $game;
@@ -45,37 +49,34 @@ class Game extends Profile
     /**
      * Update a game profile
      * @param  int $id         The game id
-     * @param  array $attributes The game's data
+     * @param  array $input The game's data
      * @return Game The updated game instance
      */
-    public static function update($id, $form)
+    public static function update($id, $input)
     {
-        $form = clean_form_input($form);
+        $input = clean_form_input($input);
 
         // checking name change
         $game = parent::find($id);
-        if (isset($form['name'])) {
-            
-            if ($game->name != $form['name']) { // the user want to change the name, must check is the name is not taken
-                if (parent::where('name', '=', $form['name'])->first() != null) {
-                    HTML::set_error(
-                        lang('messages.editgame_nametaken', array(
-                            'name'=>$game->name,
-                            'id'=>$game->id,
-                            'newname'=>$form['name'])
-                        )
-                    );
+        if (isset($input['name']) && $game->name != $input['name']) {  // the user want to change the name, must check is the name is not taken
+            if (parent::where_name($input['name'])->first() != null) {
+                HTML::set_error(
+                    lang('messages.editgame_nametaken', array(
+                        'name'=>$game->name,
+                        'id'=>$game->id,
+                        'newname'=>$input['name'])
+                    )
+                );
 
-                    return false;
-                }
+                return false;
             }
         }
 
-        $game = parent::update($id, $form); // 
+        $game = parent::update($id, $input); // 
         $game = Game::find($id);
         
-        HTML::set_success(lang('messages.editgame_success')
-            ,array('name'=>$game->name, 'id'=>$game->id)
+        HTML::set_success(lang('messages.editgame_success'
+            ,array('name'=>$game->name, 'id'=>$game->id))
         );
         return $game;
     }
@@ -121,7 +122,7 @@ class Game extends Profile
      */
     public function __set($key, $value)
     {
-        if (in_array($key, static::$json_items)) {
+        if (in_array($key, static::$json_fields)) {
             if (in_array($key, static::$names_urls_items)) {
                 $value = clean_names_urls_array($value);
             }
@@ -138,22 +139,29 @@ class Game extends Profile
      */
     public function __get($key)
     {
-        if (in_array($key, static::$json_items)) {
+        if (in_array($key, static::$json_fields)) {
             $attr = $this->get_attribute($key);
-            return json_decode($attr, true);
+            $data = json_decode($attr, true);
         }
         
-        elseif (in_array($key, static::$secured_items)) {
-            return Security::xss_clean(e($this->get_attribute($key)));
-        }
+        /*elseif (in_array($key, static::$secured_items)) {
+            $data Security::xss_clean(e($this->get_attribute($key)));
+        }*/
 
-        else return parent::__get($key);
+        else $data = parent::__get($key);
+
+        return $data; // I could also use the helper e() (html_entities())
     }
 
 
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
 
+    public function user()
+    {
+        return $this->belongs_to('User');
+    }
+    
     public function developer()
     {
         return $this->belongs_to('Developer');

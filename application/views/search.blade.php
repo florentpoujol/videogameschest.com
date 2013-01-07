@@ -60,7 +60,7 @@ if ( ! empty($old)) Former::populate($old);
                         And whose games...<br><br>
                     </div>
                     
-                    @foreach (Dev::$array_items as $item)
+                    @foreach (Dev::$array_fields as $item)
                         <?php
                         $items = Config::get('vgc.'.$item);
                         $options = get_array_lang($items, $item.'.');

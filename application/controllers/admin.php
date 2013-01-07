@@ -233,6 +233,7 @@ class Admin_Controller extends Base_Controller
             'cover' => 'url',
             'website' => 'url',
             'blogfeed' => 'url',
+            'presskit' => 'url',
             'teamsize' => 'min:1',
         );
 
@@ -321,6 +322,7 @@ class Admin_Controller extends Base_Controller
             'cover' => 'url',
             'website' => 'url',
             'blogfeed' => 'url',
+            'presskit' => 'url',
             'teamsize' => 'min:1'
         );
         
@@ -363,8 +365,12 @@ class Admin_Controller extends Base_Controller
         $validation = Validator::make($input, $rules);
         
         if ($validation->passes()) {
-            Game::create($input);
-            return Redirect::to_route('get_home');
+            $game = Game::create($input);
+            
+            if (IS_ADMIN)
+                return Redirect::to_route('get_editgame', array($game->id));
+            else
+                return Redirect::to_route('get_home');
         } else {
             Input::flash();
             return Redirect::back()->with_errors($validation);
@@ -416,14 +422,13 @@ class Admin_Controller extends Base_Controller
         // checking form
         $rules = array(
             'name' => 'required|min:5',
-            'developer_id' => 'required|exists:developers,id',
             'logo' => 'url',
             'website' => 'url',
             'blogfeed' => 'url',
+            'presskit' => 'url',
             'soundtrackurl' => 'url',
             'publishername' => 'min:2',
             'publisherurl' => 'url|required_with:publishername',
-            'price' => 'min:0',
         );
         
         $validation = Validator::make($input, $rules);
