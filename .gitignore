@@ -3,6 +3,7 @@
 nbproject/
 gitignore/
 application/cache/
+application/views/test.blade.php
 bundles/
 
 ############
