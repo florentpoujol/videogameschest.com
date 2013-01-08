@@ -16,7 +16,10 @@ class ExtendedEloquent extends Eloquent
      */
     public function __get($key)
     {
-        return Security::xss_clean(parent::__get($key)); // could use the helper e()
+        $value = parent::__get($key);
+
+        if (is_string($value)) return e($value); // could also use Security::xss_clean() to allow safe html
+        else return $value; 
     }
 
 
@@ -26,6 +29,7 @@ class ExtendedEloquent extends Eloquent
     public function __toString()
     {
         if ($this instanceof User) return $this->username;
-        else return $this->name;
+        elseif ($this instanceof Developer || $this instanceof Game) return $this->name;
+        else return static::$table;
     }
 }
