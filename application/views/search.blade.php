@@ -89,46 +89,57 @@ if ( ! empty($old)) Former::populate($old);
                 {{ Form::token() }}
                 {{ Former::hidden('class', 'game') }}
 
-            <!--
-                <!-- array items 
-                <div class="tabbable tabs-left">
-                    <ul class="nav nav-tabs nav-stacked" id="array_items_dev_tabs">
-                        <?php
-                        $items = Dev::$array_items;
-                        ?>
-                        @foreach ($items as $item)
-                        <li><a href="#{{ $item }}" data-toggle="tab">{{ lang($item.'.title') }}</a></li>
-                        @endforeach
-                    </ul>
-
-                    <div class="tab-content">
-                        @foreach (Dev::$array_items as $item)
-                            <?php
-                            $items = Config::get('vgc.'.$item);
-                            $options = get_array_lang($items, $item.'.');
-                            
-                            $values = array();
-                            if (isset($old[$item])) $values = $old[$item];
-                            
-                            $size = count($items);
-                            if ($size > 15) $size = 15;
-                            ?>
-                            <div class="tab-pane" id="{{ $item }}">
-                                <p>{{ lang('game.'.$item.'_help') }}</p>
-                                {{ Former::multiselect('arrayitems['.$item.']', '')->options($options)->value($values)->size($size) }}
-                            </div>
-                        @endforeach
+                <div class="row">
+                    <div class="span2 offset1">
+                        <?php 
+                        echo Former::checkboxes('search_in', lang('search.name_or_pitch_help'))->checkboxes(array(
+                        lang('common.name') => array('value' => 'name', 'name'=>'search_in', 'id'=>'dev_name', 'checked'=>'checked'),
+                        lang('common.pitch') => array('value' => 'pitch', 'name'=>"search_in", 'id'=>'dev_pitch'),
+                        ));?>
                     </div>
-                </div> <!-- /.tabbable -->
-                <!-- /array items -->
+
+                    <div class="span2">
+                        <?php 
+                        echo Former::radios('words_search_mode', lang('search.words_search_mode_help'))->radios(array(
+                        lang('search.search_mode_all') => array('value' => ''),
+                        lang('search.search_mode_any') => array('value' => 'or_', 'checked'=>'checked'),
+                        ));?>
+                    </div>
+
+                    <div class="span2">
+                        {{ Former::xlarge_text('words', lang('search.words_help')) }}
+                    </div>
+                </div>
 
                 <hr>
 
-                {{ Former::checkbox('has_soundtrackurl', '')->text('Has a soundtrack url') }}
+                <div class="row">
+                    <div class="row span12">
+                        And whose games...<br><br>
+                    </div>
+                    
+                    @foreach (Dev::$array_fields as $item)
+                        <?php
+                        $items = Config::get('vgc.'.$item);
+                        $options = get_array_lang($items, $item.'.');
+                        
+                        $values = array();
+                        if (isset($old[$item])) $values = $old[$item];
+                        
+                        $size = count($items);
+                        if ($size > 15) $size = 15;
+                        ?>
+                        <div class="span3">
+                            <p>{{ lang('search.dev.'.$item.'_help') }}</p>
+                            {{ Former::multiselect('arrayitems['.$item.']', '')->options($options)->value($values)->size($size) }}
+                        </div>
+                    @endforeach
+                </div>
 
                 <hr>
 
-                {{ Former::submit(lang('search.dev.submit')) }}
+                {{ Former::submit(lang('search.game.submit')) }}
+            </form> 
         </div> <!-- /.tab-pane #game-tab -->
     </div> <!-- /.tab-content -->
 </div> <!-- /.search-form -->
