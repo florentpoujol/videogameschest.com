@@ -27,8 +27,10 @@ class Search extends ExtendedEloquent
 
         if (is_string($input)) $input = json_decode($input, true);
 
-        //var_dump($input);
+        var_dump($input);
 
+
+        // class (dev or game)
         $class = $input['class'];
 
         if ($class != 'developer' && $class != 'game') {
@@ -39,29 +41,32 @@ class Search extends ExtendedEloquent
         
         // words in name or title
         $words = array();
-        $words_search_mode = $input['words_search_mode'];
+
+        if ($input['words_contains'] == 'all') $words_where = 'where';
+        else $words_where = 'or_where';
 
         if (isset($input['search_in_name']) || isset($input['search_in_pitch']) && trim($input['words']) != '') {
-            $_words = explode(' ', e(trim($input['words'])));
+            $words_list = explode(' ', e(trim($input['words_list'])));
             
-            if (isset($input['search_in_name'])) $words['name'] = $_words;
-            if (isset($input['search_in_pitch'])) $words['pitch'] = $_words;
+            if (isset($input['search_in_name'])) $words['name'] = $words_list;
+            if (isset($input['search_in_pitch'])) $words['pitch'] = $words_list;
         }
-
 
         // array items
         isset($input['arrayitems']) ? $array_items = $input['arrayitems'] : $array_items = array();
 
 
         $profiles = $class::
-        where(function($query) use ($words, $input, $array_items)
+        where(function($query) use ($words, $input, $array_items, $words_where)
         {
             // words
             foreach ($words as $field => $values) {
-                $query->or_where(function($query) use ($field, $values, $input)
+                $query->or_where(function($query) use ($field, $values, $input, $words_where)
                 {
                     foreach ($values as $value) {
-                        $query->{$input['words_search_mode'].'where'}($field, 'LIKE', '%'.$value.'%');
+                        //if ($input['words_search_mode'] == 'part') $value = '%'.$value.'%';
+
+                        $query->$words_where($field, 'LIKE', '%'.$value.'%');
                     }
                 });
             }
@@ -126,6 +131,6 @@ class Search extends ExtendedEloquent
 
     public function get_array_data()
     {
-        return json_decode($this->get_attributes('data'), true);
+        return json_decode($this->get_attribute('data'), true);
     }
 }

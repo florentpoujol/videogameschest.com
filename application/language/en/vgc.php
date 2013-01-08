@@ -374,13 +374,23 @@ return array(
 // SEARCH
 
     'search' => array(
-        'title' => 'Search a profile',
+        'title' => 'Search profiles',
 
         'name_or_pitch_help' => 'Whose',
-        'words_search_mode_help' => 'Contains',
-        'search_mode_all' => 'All',
-        'search_mode_any' => 'Any of',
-        'words_help' => 'the following words :',
+        
+        'words_contains' => 'Contains',
+        'words_contains_all' => 'All',
+        'words_contains_any' => 'Any of',
+
+        'words_list' => 'the following words :',
+
+        'words_search_mode' => 'Search mode :',
+        'words_search_mode_whole' => 'As entire words',
+        'words_search_mode_part' => 'As part of words',
+
+        'no_profile_found' => 'Sorry, no profiles where found with these criteria.',
+        'profiles_found' => ':num profiles were found :',
+
 
         'dev' => array(
             

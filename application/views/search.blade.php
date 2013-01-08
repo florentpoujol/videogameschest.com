@@ -3,14 +3,11 @@
 @endsection
 
 <?php 
-/*Former::radios('words_search_mode', '')->radios(array(
-'all or ' => array('value' => 'all'),
-' any  ' => array('value' => 'any', 'checked'=>'checked'),
-));*/
-
-
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
+
+if ( ! isset($search_data)) $search_data = array();
+if ( ! empty($search_data)) Former::populate($search_data);
 ?> 
 
 <div id="search-form">
@@ -31,27 +28,7 @@ if ( ! empty($old)) Former::populate($old);
                 {{ Form::token() }}
                 {{ Former::hidden('class', 'developer') }}
 
-                <div class="row">
-                    <div class="span2 offset1">
-                        <?php 
-                        echo Former::checkboxes('search_in', lang('search.name_or_pitch_help'))->checkboxes(array(
-                        lang('common.name') => array('value' => 'name', 'name'=>'search_in', 'id'=>'dev_name', 'checked'=>'checked'),
-                        lang('common.pitch') => array('value' => 'pitch', 'name'=>"search_in", 'id'=>'dev_pitch'),
-                        ));?>
-                    </div>
-
-                    <div class="span2">
-                        <?php 
-                        echo Former::radios('words_search_mode', lang('search.words_search_mode_help'))->radios(array(
-                        lang('search.search_mode_all') => array('value' => ''),
-                        lang('search.search_mode_any') => array('value' => 'or_', 'checked'=>'checked'),
-                        ));?>
-                    </div>
-
-                    <div class="span2">
-                        {{ Former::xlarge_text('words', lang('search.words_help')) }}
-                    </div>
-                </div>
+                @include('partials.search_words')
 
                 <hr>
 
@@ -60,20 +37,31 @@ if ( ! empty($old)) Former::populate($old);
                         And whose games...<br><br>
                     </div>
                     
-                    @foreach (Dev::$array_fields as $item)
+                    @foreach (Dev::$array_fields as $field)
                         <?php
-                        $items = Config::get('vgc.'.$item);
-                        $options = get_array_lang($items, $item.'.');
+                        $items = Config::get('vgc.'.$field);
+                        $options = get_array_lang($items, $field.'.');
                         
                         $values = array();
-                        if (isset($old[$item])) $values = $old[$item];
+                        if (isset($old['arrayitems']) &&
+                            isset($old['arrayitems'][$field])
+                        ) {
+                            $values = $old[$field];
+                        }
+
+                        if (isset($search_data['arrayitems']) && 
+                            isset($search_data['arrayitems'][$field])
+                        ) {
+                            $values = $search_data['arrayitems'][$field];
+                        }
                         
                         $size = count($items);
                         if ($size > 15) $size = 15;
                         ?>
                         <div class="span3">
-                            <p>{{ lang('search.dev.'.$item.'_help') }}</p>
-                            {{ Former::multiselect('arrayitems['.$item.']', '')->options($options)->value($values)->size($size) }}
+                            <p>{{ lang('search.dev.'.$field.'_help') }}</p>
+                            {{ Former::multiselect('arrayitems['.$field.']', '')->options($options)->value($values)->size($size) }}
+                            {{-- array_to_checkboxes($field, $values) }}
                         </div>
                     @endforeach
                 </div>
@@ -142,10 +130,19 @@ if ( ! empty($old)) Former::populate($old);
             </form> 
         </div> <!-- /.tab-pane #game-tab -->
     </div> <!-- /.tab-content -->
-</div> <!-- /.search-form -->
+</div> <!-- /#search-form -->
+
+@if (isset($profiles))
+    <br>
+    <hr>
+    <br>
+
+    @include('profile_list')
+@endif 
+{{-- if (isset($profiles)) --}}
+
 
 @section('jQuery')
 $('#search_tabs a:first').tab('show');
 $('#array_items_dev_tabs a:first').tab('show');
-
 @endsection

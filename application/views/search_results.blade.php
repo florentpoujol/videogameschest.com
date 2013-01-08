@@ -3,8 +3,7 @@
 @endsection
 
 <?php
-
-
-var_dump($profiles);
-
+//var_dump($profiles);
 ?>
+
+@include('profile_list')

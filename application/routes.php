@@ -90,9 +90,10 @@ Route::get('/addgame', array('as' => 'get_addgame', function() use ($layout)
 Route::get('/search/(:num?)', array('as' => 'get_search', function($search_id = null) use ($layout)
 {
     if ( ! is_null($search_id)) {
-        if (Search::has($search_id)) {
-            $profiles = Search::get_profiles($search_id);
-            return $layout->nest('page_content', 'search_results', array('profiles'=>$profiles));
+        $search = Search::has($search_id);
+        if ($search !== false) {
+            $profiles = Search::get_profiles($search->data);
+            return $layout->nest('page_content', 'search', array('profiles'=>$profiles, 'search_data'=>$search->array_data));
         }
         else {
             HTML::set_error(lang('search.msg.id_not_found', array('id'=>$search_id)));
@@ -307,15 +308,12 @@ Route::group(array('before' => 'csrf'), function()
     {
         $input = Input::all();
         $search = Search::create($input);
-        
         return Redirect::to_route('get_search', array($search->id));
-        dd($profiles);
     }));
 });
 
 Event::listen('laravel.query', function($sql, $bindings, $time) {
-    //var_dump($sql);
-
+    var_dump($sql);
 });
 
 
