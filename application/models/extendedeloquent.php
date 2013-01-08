@@ -18,7 +18,7 @@ class ExtendedEloquent extends Eloquent
     {
         $value = parent::__get($key);
 
-        if (is_string($value)) return e($value); // could also use Security::xss_clean() to allow safe html
+        if (is_string($value)) return Security::xss_clean($value); // could also use Security::xss_clean() to allow safe html
         else return $value; 
     }
 

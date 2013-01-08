@@ -402,6 +402,12 @@ return array(
 
             'submit' => 'Search for games',
         ),
+
+
+        'msg' => array(
+            'id_not_found' => 'The search with id [:id] has not been found !',
+        ),
+
         
     ),
 

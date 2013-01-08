@@ -7,16 +7,7 @@ if (isset($old)) {
 
 $rules = array();
 
-$search = new Search;
-$search->data = json_encode(
 
-array(
-  'class' =>  'developer' ,
-  'search_in' =>  'name' ,
-  'words_search_mode' =>  'or_' ,
-  'words' =>  'Developer' ,
-  ));
-$search->save();
 
 ?>
 {{ Former::open_vertical('test')->rules($rules) }} 

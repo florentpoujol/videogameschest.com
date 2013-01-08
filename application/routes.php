@@ -87,8 +87,19 @@ Route::get('/addgame', array('as' => 'get_addgame', function() use ($layout)
 // SEARCH PROFILE
 //----------------------------------------------------------------------------------
 
-Route::get('/search', array('as' => 'get_search', function() use ($layout)
+Route::get('/search/(:num?)', array('as' => 'get_search', function($search_id = null) use ($layout)
 {
+    if ( ! is_null($search_id)) {
+        if (Search::has($search_id)) {
+            $profiles = Search::get_profiles($search_id);
+            return $layout->nest('page_content', 'search_results', array('profiles'=>$profiles));
+        }
+        else {
+            HTML::set_error(lang('search.msg.id_not_found', array('id'=>$search_id)));
+            return Redirect::to_route('get_search');
+        }
+    }
+
     return $layout->nest('page_content', 'search');
 }));
 
@@ -295,24 +306,10 @@ Route::group(array('before' => 'csrf'), function()
     Route::post('/search', array('as' => 'post_search', 'before' => 'csrf', function()
     {
         $input = Input::all();
-        $profiles = search_profiles($input);
-
+        $search = Search::create($input);
+        
+        return Redirect::to_route('get_search', array($search->id));
         dd($profiles);
-        /*$type = $input['type'];
-        $name = $input['name'];
-
-        if (is_numeric($name)) {
-            $profile = $type::find($name);
-        } else {
-            $profile = $type::where_name($name)->first();
-        }
-
-        if (is_null($profile)) {
-            HTML::set_error('Profile not found');
-            return Redirect::to_route('get_search');
-        }
-
-        return Redirect::to_route('get_'.$input['type'], array($profile->id));*/
     }));
 });
 

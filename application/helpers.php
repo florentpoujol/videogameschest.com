@@ -286,62 +286,6 @@ function icon($icon, $icon_white = false)
 }
 
 
-function search_profiles($input)
-{
-    var_dump($input);
-
-    $class = $input['class'];
-
-    if ($class != 'developer' && $class != 'game') {
-        // problem
-        return Redirect::back();
-    }
-
-    
-    // words in name or title
-    $words = array();
-    $words_search_mode = $input['words_search_mode'];
-
-    if (isset($input['search_in_name']) || isset($input['search_in_pitch']) && trim($input['words']) != '') {
-        $_words = explode(' ', e(trim($input['words'])));
-        
-        if (isset($input['search_in_name'])) $words['name'] = $_words;
-        if (isset($input['search_in_pitch'])) $words['pitch'] = $_words;
-    }
-
-
-    // array items
-    isset($input['arrayitems']) ? $array_items = $input['arrayitems'] : $array_items = array();
-
-
-    $profiles = $class::
-    where(function($query) use ($words, $input, $array_items)
-    {
-        // words
-        foreach ($words as $field => $values) {
-            $query->or_where(function($query) use ($field, $values, $input)
-            {
-                foreach ($values as $value) {
-                    $query->{$input['words_search_mode'].'where'}($field, 'LIKE', '%'.$value.'%');
-                }
-            });
-        }
-        
-        // array items
-        foreach ($array_items as $field => $values) {
-            $query->where(function($query) use ($field, $values)
-            {
-                foreach ($values as $value) {
-                    $query->or_where($field, 'LIKE', '%'.$value.'%');
-                }
-            });
-        }
-    })
-    ->get();
-
-    return $profiles;
-}
-
 
 /**
  * return a list of checkboxes
