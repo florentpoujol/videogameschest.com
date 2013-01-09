@@ -405,13 +405,20 @@ Route::filter('before', function()
 
         if (user()->type == 'admin') {
             define('IS_ADMIN', true);
-            define('IS_TRUSTED', true);
             define('IS_DEVELOPER', false);
-            define('DEVELOPER_ID', 0);
-        } else {
+            define('IS_USER', false);
+            define('IS_TRUSTED', true);
+        } 
+        elseif (user()->type == 'dev') {
             define('IS_ADMIN', false);
             define('IS_DEVELOPER', true);
-            define('DEVELOPER_ID', $user->developer->id);
+            define('IS_USER', false);
+            define('IS_TRUSTED', $user->is_trusted);
+        }
+        elseif (user()->type == 'user') {
+            define('IS_ADMIN', false);
+            define('IS_DEVELOPER', true);
+            define('IS_USER', true);
             define('IS_TRUSTED', $user->is_trusted);
         }
     } else {
@@ -420,6 +427,7 @@ Route::filter('before', function()
         define('USER_ID', 0);
         define('IS_ADMIN', false);
         define('IS_DEVELOPER', false);
+        define('IS_USER', false);
         define('IS_TRUSTED', false);
         define('DEVELOPER_ID', 0);
     }
@@ -445,6 +453,7 @@ Route::filter('before', function()
 
     // checking success of reviews
     // check number of approvals
+    // will also be called by a cron tab job
     $last_check_date = new DateTime(DBConfig::get('review_check_date'));
     $interval = new DateInterval('PT'. Config::get('vgc.review.check_interval') .'M');
     $last_check_date->add($interval);

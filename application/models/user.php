@@ -63,7 +63,7 @@ class User extends ExtendedEloquent
             'temp_key' => $user->temp_key
         ));
 
-        $text = lang('mail.register_confirmation', array(
+        $text = lang('email.register_confirmation', array(
             'username' => $user->username,
             'link' => $link
         ));
@@ -123,19 +123,19 @@ class User extends ExtendedEloquent
             Log::write('user lostpassword info', 'User "'.$this->username.'" asked for a new password. (id='.$this->id.') (email='.$this->email.') (temp_key='.$this->temp_key.')');
 
             // email
-            $link = URL::to_route('get_lostpassword_confirmation', array($user->id, $user->temp_key));
+            $link = URL::to_route('get_lostpassword_confirmation', array($this->id, $this->temp_key));
 
-            $text = lang('mail.lostpassword_confirmation', array(
-                'username' => $user->username,
+            $text = lang('email.lostpassword_confirmation', array(
+                'username' => $this->username,
                 'link' => $link
             ));
 
-            send_mail($user->email, lang('mail.lostpassword_confirmation_subject'), $text);
+            send_mail($this->email, lang('email.lostpassword_confirmation_subject'), $text);
         } 
         
         // setp 2 : generate new password then send by mail
         else {
-            $password = Str::random(10).mt_rand(0,9999);
+            $password = Str::random(20);
 
             $this->password = Hash::make($password);
             $this->temp_key = '';
@@ -146,13 +146,13 @@ class User extends ExtendedEloquent
             Log::write('user lostpassword success', 'A new password for user "'.$this->username.'" (id='.$this->id.') as successfully been generated.');
 
             // email
-            $text = lang('mail.lostpassword_success', array(
-                'username' => $user->username,
+            $text = lang('email.lostpassword_success', array(
+                'username' => $this->username,
                 'password' => $password,
                 'login_link' => URL::to_route('get_login'),
 
             ));
-            send_mail($user->email, lang('mail.lostpassword_success_subject'), $text);
+            send_mail($this->email, lang('email.lostpassword_success_subject'), $text);
         }
     }
 

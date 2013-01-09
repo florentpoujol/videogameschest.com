@@ -202,7 +202,7 @@ return array(
         'msg' => array(
             'confirmation_email_sent' => 'An email with a confirmation link has been sent to you. Click the link in that email to generate a new temporary password.',
             'confirmation_error' => 'Unable to generate a new password because no user account with id ":id" and temp_key ":temp_key" has been found, or the id and the temp_key do not match, or the user account is not activated.',
-            'new_password_success' => 'A new password has been successfully generatd then send to you by email.',
+            'new_password_success' => 'A new password has been successfully generated and sent to your email adress.',
 
         ),
     ),

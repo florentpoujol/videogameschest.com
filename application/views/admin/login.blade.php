@@ -1,7 +1,10 @@
 @section('page_title')
 	{{ lang('login.title') }}
 @endsection
-
+<?php
+$old = Input::old();
+if ( ! empty($old)) Former::populate($old);
+?>
 <div id="login-form">
 	<h2>{{ lang('login.title') }}</h2>
 
@@ -21,7 +24,7 @@
 
 	<hr>
 
-	{{ Former::open_inline(route('post_lostpassword'))->rules(array('username' => 'required')) }}
+	{{ Former::open_inline(route('post_lostpassword'))->rules(array('username' => 'required|min:5')) }}
 		{{ Form::token() }}
 
 		{{ Former::text('username', '')->placeholder(lang('login.name_label')) }} 

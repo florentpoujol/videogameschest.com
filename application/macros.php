@@ -101,7 +101,7 @@ HTML::macro('set_error', function($error)
         }
     }
 
-    Session::put("vgc_errors", json_encode($session_errors));
+    Session::put("vgc_errors", to_json($session_errors));
 });
 
 
@@ -152,7 +152,7 @@ HTML::macro('set_success', function($success)
     {
         $session_success = json_decode($session_success, true);
         $session_success[] = $success;
-        Session::put("vgc_success", json_encode($session_success));
+        Session::put("vgc_success", to_json($session_success));
     }
     else
         Session::put("vgc_success", '["'.$success.'"]');
@@ -171,13 +171,14 @@ HTML::macro('get_infos', function()
 {
     $json_success = Session::get('vgc_infos');
     $html_success = "";
-
+    
     if ($json_success != "") 
     {
-        $html_success .= '<div class="alert alert-info">
+        $html_success .= '<div class="alert alert-infos">
         ';
 
         $array_success = json_decode($json_success, true);
+
         foreach ($array_success as $success) 
         {
             $html_success .= $success.' <br>
@@ -205,8 +206,8 @@ HTML::macro('set_info', function($success)
     if ($session_success != "") 
     {
         $session_success = json_decode($session_success, true);
-        $session_success[] = '"'.$success.'"';
-        Session::put("vgc_infos", json_encode($session_success));
+        $session_success[] = $success;
+        Session::put("vgc_infos", to_json($session_success));
     }
     else
         Session::put("vgc_infos", '["'.$success.'"]');

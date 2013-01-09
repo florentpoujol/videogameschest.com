@@ -138,51 +138,45 @@ function name_to_url($name)
 }
 
 
-/**
- * Wrapped around Auth::guest()
- * @return boolean True if the user is a guest (not logged in)
- */
+//----------------------------------------------------------------------------------
+
+
 function is_guest()
 {
     return Auth::guest();
 }
+function is_admin()
+{
+    return (Auth::user()->type == 'admin');
+}
+function is_trusted()
+{
+    return (is_admin() || Auth::user()->is_trusted == 1);
+}
 
-/**
- * Wrapped around Auth::user()
- * @return User The currently logged in user
- */
+
 function user()
 {
     return Auth::user();
 }
-
-/**
- * Wrapped around Auth::user()->dev
- * @return Developer The developer profile that belongs to the current user
- */
-function dev()
+function user_id()
 {
-    return Auth::user()->developer;
+    return Auth::user()->id;
 }
 
-/**
- * Wrapped around Auth::user()->dev
- * @return Developer The developer profile that belongs to the current user
- */
 function devs()
 {
     return Auth::user()->developers;
 }
 
-/**
- * Wrapped around Auth::user()->dev->games
- * @return array Array of games
- */
 function games()
 {
     return Auth::user()->games;
 }
 
+
+//----------------------------------------------------------------------------------
+// JSON
 
 /**
  * Wrapper around json_decode($data, true)
@@ -196,7 +190,6 @@ function json_to_array($string, $to_array = true)
     return json_decode($string, $to_array);
 }
 
-
 /**
  * Wrapper around json_encode()
  * Encode an array or object to json
@@ -205,7 +198,20 @@ function json_to_array($string, $to_array = true)
  */
 function to_json($data)
 {
+    if (is_string($data)) $data = json_escape($data);
+    
     return json_encode($data);
+}
+
+/*
+ * From http://stackoverflow.com/questions/1048487/phps-json-encode-does-not-escape-all-json-control-characters
+ */
+function json_escape($string) 
+{   
+    $search = array("\n", "\r", "\u", "\t", "\f", "\b", "/", '"');
+    $replace = array("\\n", "\\r", "\\u", "\\t", "\\f", "\\b", "\/", "\"");
+    $string = str_replace($search, $replace, $string);
+    return $string;
 }
 
 
@@ -252,7 +258,7 @@ function clean_form_input($input, $supl_attributes = array())
 function send_mail($email, $subject, $text) 
 {
 
-    HTML::set_infos('Email sent : [to: '.$email.'] [subject: '.$subject.'] [msgkey: '.$message_key.'] [text: '.$text.']');
+    HTML::set_info('Email sent : (to='.$email.') (subject='.$subject.') (text=)');
     Log::write('email', 'Email sent : (to='.$email.') (subject='.$subject.') (text='.$text.')');
 }
 
@@ -326,5 +332,8 @@ function array_to_checkboxes($field_name, $values = null)
 
     return Former::checkbox($field_name.'[]', '')->checkboxes($checkboxes);
 }
+
+
+
 
 
