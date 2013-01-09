@@ -6,6 +6,9 @@ return array(
         "french"
     ),
 
+    'lang_files' => array('vgc', 'email'),
+    
+
     "date_formats" => array(
         "date_sql" => "Y-m-d",
         "datetime_sql" => "Y-m-d H:i:s",
@@ -33,6 +36,10 @@ return array(
     'form_attributes_to_clean' => array('csrf_token', 'password_confirmation', 'old_password', 'controller'),
 
     'dummie_password' => 'testtest', //r!&5éT[79m},D?4â+5w% temp password while user is in submission review
+
+    
+
+
 
     // form
 

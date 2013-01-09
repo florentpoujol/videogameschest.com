@@ -15,7 +15,9 @@ function lang($key, $replacements = array(), $language = null)
     // then look in the config, or in last resort default to 'en'
     if (is_null($language)) $language = Session::get('language', $default_language);
     
-    $key = 'vgc.'.$key;
+    $key_parts = explode('.', $key);
+    if ( ! in_array($key_parts[0], Config::get('vgc.lang_files'))) $key = 'vgc.'.$key;
+
     $string = Lang::line($key, $replacements, $language)->get();
 
     if ($string == $key) {
@@ -238,9 +240,10 @@ function clean_form_input($input, $supl_attributes = array())
  * Wrapper around the SwiftMailer bundle
  * @param  string $message The email's corps
  */
-function send_mail($email, $message) 
+function send_mail($email, $message_key) 
 {
-    HTML::set_infos($email.' '.$message);
+    HTML::set_infos('Email sent : '.$email.'. Message : '.$message_key);
+    Log::info('Email \"'.$message_key.'\" sent to '.$email.'.');
 }
 
 
