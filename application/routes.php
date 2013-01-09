@@ -240,6 +240,9 @@ Route::get('crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion', '
 // Route::get('the route', array('as' => 'thenameoftheroute', 'uses' => 'controlerName@methodName'));
 
 Route::get('admin/login', array('as' => 'get_login', 'uses' => 'admin@login'));
+Route::get('register', array('as' => 'get_register', 'uses' => 'admin@register'));
+Route::get('register/confirmation/(:num)/(:any)', array('as' => 'get_register_confirmation', 'uses' => 'admin@register_confirmation'));
+
 
 
 // must be logged in
@@ -297,6 +300,8 @@ Route::group(array('before' => 'auth|csrf'), function()
 // must be legit post
 Route::group(array('before' => 'csrf'), function()
 {
+    Route::post('register', array('as' => 'post_register', 'uses' => 'admin@register'));
+
     Route::post('admin/login', array('as' => 'post_login', 'uses' => 'admin@login'));
     Route::post('admin/lostpassword', array('as' => 'post_lostpassword', 'uses' => 'admin@lostpassword'));
     Route::post('admin/adddeveloper', array('as' => 'post_adddeveloper', 'uses' => 'admin@adddeveloper'));
@@ -313,7 +318,7 @@ Route::group(array('before' => 'csrf'), function()
 });
 
 Event::listen('laravel.query', function($sql, $bindings, $time) {
-    var_dump($sql);
+    //var_dump($sql);
 });
 
 

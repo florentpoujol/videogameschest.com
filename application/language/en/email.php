@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    
+
     'developer_passed_submission_review' =>
 'Hi :name <br>
 <br>
@@ -24,4 +24,15 @@ The VideoGamesChest.com team
     'game_passed_publishing_review' => 'game_passed_publishing_review',
     'game_failed_publishing_review' => 'game_failed_publishing_review',
 
+
+    'register_confirmation' =>
+    'Hello :username <br>
+    <br>
+    It seems your created a user account on <a href="http://videogameschest.com" title="Go to VideoGamesChest.com">VideoGamesChest.com</a>. <br>
+    To be able to log in, you need to activate your account by clicking on the link below : <br>
+    <a href=":link" title="Follow the link to activate your user account">:link</a> <br>
+    <br>
+    Regards, <br>
+    The VideoGamesChest team <br>
+    ',
 );

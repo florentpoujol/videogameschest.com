@@ -51,6 +51,7 @@ return array(
         'title' => 'Title',
 
         'url' => 'URL',
+        'username' => 'User name',
 
         'videos' => 'Videos',
         'viewpoints' => 'Point of view',
@@ -157,7 +158,26 @@ return array(
             'lost_password' => 'I lost my password',
             'lostpassword_help' => 'If you lost your password, just fill the field below with your username, email or user id and click the button to get a new temporary password by email.',
         ),
+
+        'register' => 'Register'
     ),
+
+    'register' => array(
+        'title' => 'Create a user account',
+        'submit' => 'Register !',
+        'username' => 'Choose your user name',
+        'password' => 'Choose your password',
+        'password_confirmation' => 'Verify password',
+
+        'msg_register_success' => 'Thank you :username, your user account has been created. 
+        An email has been sent to your email adress with a link to activate your account. 
+        You will be able to login as soon as to activated your account.',
+
+        'msg_confirmation_error' => 'Unable to confirm the user account because none with id ":id" and temp_key ":temp_key" has been found, or the id and the temp_key do not match, or the user account is already activated.',
+        'msg_confirmation_success' => 'Thank you :username, you have successfully activated your user account, you may now log in.',
+
+    ),
+
 
 
 // DEVELOPER 

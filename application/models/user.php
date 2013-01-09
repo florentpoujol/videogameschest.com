@@ -16,11 +16,11 @@ class User extends ExtendedEloquent
         $user = clean_form_input($user);
 
         // display success msg ?
-        $display_msg = true;
+        /*$display_msg = true;
 
         if (isset($user['do_not_display_success_msg'])) {
             $display_msg = false;
-        }
+        }*/
 
         unset($user['do_not_display_success_msg']);
 
@@ -36,23 +36,40 @@ class User extends ExtendedEloquent
         }
         
         // secret key
-        $user["secret_key"] = md5(mt_rand().mt_rand());
-
-        while (parent::where('secret_key', '=', $user['secret_key'])->first() != null) {
-            $user["secret_key"] = md5(mt_rand().mt_rand());
+        $user["secret_key"] = md5(mt_rand().mt_rand().mt_rand().mt_rand());
+        $try = 0;
+        while ($try < 1000 && parent::where('secret_key', '=', $user['secret_key'])->first() != null) {
+            $user["secret_key"] = md5(mt_rand().mt_rand().mt_rand().mt_rand());
+            $try++;
         }
 
         // type
-        if ( ! isset($user['type'])) $user['type'] = 'dev';
+        if ( ! isset($user['type'])) $user['type'] = 'user';
 
         if ($user['type'] == 'admin') $user['is_trusted'] = 1;
 
+        // temp key
+        $user['temp_key'] = Str::random(10);
 
         $user = parent::create($user);
 
-        if ($display_msg) {
-            HTML::set_success('The user with name \''.$user->username.'\' has successfully been created.');
-        }
+        // 
+        $msg = lang('register.msg_register_success', array('username'=>$user->username));
+        HTML::set_success($msg);
+        Log::write('user create success', $msg);
+
+        // email
+        $link = URL::to_route('get_register_confirmation', array(
+            'user_id' => $user->id,
+            'temp_key' => $user->temp_key
+        ));
+
+        $text = lang('mail.register_confirmation', array(
+            'username' => $user->username,
+            'link' => $link
+        ));
+
+        send_mail($user->email, 'mail.register_confirmation', $text);
 
         return $user;
     }
@@ -83,6 +100,18 @@ class User extends ExtendedEloquent
 
     //----------------------------------------------------------------------------------
 
+
+    public function activate() 
+    {
+        $this->activated = 1;
+        $this->temp_key = '';
+        $this->save();
+
+        $msg = lang('register.msg_confirmation_success', array('username' => $this->username));
+        html::set_success($msg);
+        Log::write('user confirmation success', $msg);
+    }
+
     /**
      * Check if the user is now a trusted user, then send a mail if yes
      * @param  boolean $send_mail Do send an email to the user to let him know he is now trusted ?
@@ -110,6 +139,15 @@ class User extends ExtendedEloquent
 
 
     //----------------------------------------------------------------------------------
+    // GETTERS
+
+    public function get_name()
+    {
+        return $this->get_attribute('username');
+    }
+
+
+    //----------------------------------------------------------------------------------
     // RELATIONSHIPS
 
     public function developer()
@@ -120,6 +158,16 @@ class User extends ExtendedEloquent
     public function dev() 
     {
         return $this->has_one('Developer');
+    }
+
+    public function developers()
+    {
+        return $this->has_many('Developer');
+    }
+
+    public function devs() 
+    {
+        return $this->has_many('Developer');
     }
 
     public function games()

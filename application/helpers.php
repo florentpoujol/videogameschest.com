@@ -166,12 +166,21 @@ function dev()
 }
 
 /**
+ * Wrapped around Auth::user()->dev
+ * @return Developer The developer profile that belongs to the current user
+ */
+function devs()
+{
+    return Auth::user()->developers;
+}
+
+/**
  * Wrapped around Auth::user()->dev->games
  * @return array Array of games
  */
 function games()
 {
-    return Auth::user()->developer->games;
+    return Auth::user()->games;
 }
 
 
@@ -240,10 +249,11 @@ function clean_form_input($input, $supl_attributes = array())
  * Wrapper around the SwiftMailer bundle
  * @param  string $message The email's corps
  */
-function send_mail($email, $message_key) 
+function send_mail($email, $subject, $text, $message_key = '[no message key]') 
 {
-    HTML::set_infos('Email sent : '.$email.'. Message : '.$message_key);
-    Log::info('Email \"'.$message_key.'\" sent to '.$email.'.');
+
+    HTML::set_infos('Email sent : [to: '.$email.'] [subject: '.$subject.'] [msgkey: '.$message_key.'] [text: '.$text.']');
+    Log::write('user email success', 'Email sent : [to: '.$email.'] [subject: '.$subject.'] [msgkey: '.$message_key.'] [text: '.$text.']');
 }
 
 

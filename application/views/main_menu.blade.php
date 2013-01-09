@@ -9,7 +9,7 @@
 
             <ul class="nav pull-right">
                 <!-- Ganeral menu -->
-                <?php $menu_items = array('home', 'search', 'adddeveloper', 'addgame'); ?>
+                <?php $menu_items = array('home', 'search', 'register'); ?>
                 @foreach ($menu_items as $menu_item)
                     <li><a href="{{ route('get_'.$menu_item) }}">{{ lang('menu.'.$menu_item) }}</a></li>
                 @endforeach

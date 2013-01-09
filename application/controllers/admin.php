@@ -15,6 +15,57 @@ class Admin_Controller extends Base_Controller
 
 
     //----------------------------------------------------------------------------------
+    // REGISTER USER ACCOUNT
+
+    public function get_register() 
+    {
+        $this->layout->nest('page_content', 'register');
+    }
+
+    public function post_register() 
+    {
+        $input = Input::all();
+
+        $rules = array(
+            'username' => 'required|min:5|unique:users',
+            'email' => 'required|min:5|email|unique:users',
+            'password' => 'required|min:5|confirmed',
+            'password_confirmation' => 'min:5|required|required_with:password',
+        );
+
+        $validation = Validator::make($input, $rules);
+        
+        if ($validation->passes()) {
+            $user = User::create($input);
+            return Redirect::to_route('get_home');
+        } else {
+            Former::withErrors($validation);
+            $this->layout->nest('page_content', 'register');
+        }
+    }
+
+    public function get_register_confirmation($user_id, $temp_key) 
+    {
+        $user = User::where_id($user_id)->where_temp_key($temp_key)->where_activated(0)->first();
+
+        if (is_null($user)) {
+            $msg = lang('register.msg_confirmation_error', array(
+                'id' => $user_id,
+                'temp_key' => $temp_key,
+            ));
+            html::set_error($msg);
+            Log::write('user confirmation error', $msg);
+
+            return Redirect::to_route('get_home');
+        }
+
+        // if user if found
+        $user->activate();
+
+        return Redirect::to_route('get_login');
+    }
+
+    //----------------------------------------------------------------------------------
     // LOGIN
 
     public function get_login() 
