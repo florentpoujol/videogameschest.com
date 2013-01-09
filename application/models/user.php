@@ -36,10 +36,10 @@ class User extends ExtendedEloquent
         }
         
         // secret key
-        $user["secret_key"] = md5(mt_rand().mt_rand().mt_rand().mt_rand());
+        $user["secret_key"] = md5(mt_rand().mt_rand());
         $try = 0;
         while ($try < 1000 && parent::where('secret_key', '=', $user['secret_key'])->first() != null) {
-            $user["secret_key"] = md5(mt_rand().mt_rand().mt_rand().mt_rand());
+            $user["secret_key"] = md5(mt_rand().mt_rand());
             $try++;
         }
 
@@ -49,14 +49,13 @@ class User extends ExtendedEloquent
         if ($user['type'] == 'admin') $user['is_trusted'] = 1;
 
         // temp key
-        $user['temp_key'] = Str::random(10);
+        $user['temp_key'] = Str::random(20);
 
         $user = parent::create($user);
 
-        // 
-        $msg = lang('register.msg_register_success', array('username'=>$user->username));
-        HTML::set_success($msg);
-        Log::write('user create success', $msg);
+        // Log
+        HTML::set_success(lang('register.msg_register_success', array('username'=>$user->username)));
+        Log::write('user create success', 'New user created (id='.$user->id.') (username='.$user->username.') (email='.$user->email.') (temp_key='.$user->temp_key.')');
 
         // email
         $link = URL::to_route('get_register_confirmation', array(
@@ -109,7 +108,52 @@ class User extends ExtendedEloquent
 
         $msg = lang('register.msg_confirmation_success', array('username' => $this->username));
         html::set_success($msg);
-        Log::write('user confirmation success', $msg);
+        Log::write('user activation confirmation success', $msg);
+    }
+
+    public function set_new_password($step = 2) 
+    {
+        // step 1 : send conf email to user
+        if ($step == 1) {
+            $this->temp_key = Str::random(20);
+            $this->save();
+
+            // message
+            HTML::set_success(lang('lostpassword.msg.confirmation_email_sent'));
+            Log::write('user lostpassword info', 'User "'.$this->username.'" asked for a new password. (id='.$this->id.') (email='.$this->email.') (temp_key='.$this->temp_key.')');
+
+            // email
+            $link = URL::to_route('get_lostpassword_confirmation', array($user->id, $user->temp_key));
+
+            $text = lang('mail.lostpassword_confirmation', array(
+                'username' => $user->username,
+                'link' => $link
+            ));
+
+            send_mail($user->email, lang('mail.lostpassword_confirmation_subject'), $text);
+        } 
+        
+        // setp 2 : generate new password then send by mail
+        else {
+            $password = Str::random(10).mt_rand(0,9999);
+
+            $this->password = Hash::make($password);
+            $this->temp_key = '';
+            $this->save();
+
+            // message
+            HTML::set_success(lang('lostpassword.msg.new_password_success'));
+            Log::write('user lostpassword success', 'A new password for user "'.$this->username.'" (id='.$this->id.') as successfully been generated.');
+
+            // email
+            $text = lang('mail.lostpassword_success', array(
+                'username' => $user->username,
+                'password' => $password,
+                'login_link' => URL::to_route('get_login'),
+
+            ));
+            send_mail($user->email, lang('mail.lostpassword_success_subject'), $text);
+        }
     }
 
     /**

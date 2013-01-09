@@ -8,10 +8,10 @@ class Admin_Controller extends Base_Controller
        
     }
 
-	public function get_index()
-	{
-		$this->layout->nest('page_content', 'admin/adminhome');
-	}
+    public function get_index()
+    {
+        $this->layout->nest('page_content', 'admin/adminhome');
+    }
 
 
     //----------------------------------------------------------------------------------
@@ -54,12 +54,12 @@ class Admin_Controller extends Base_Controller
                 'temp_key' => $temp_key,
             ));
             html::set_error($msg);
-            Log::write('user confirmation error', $msg);
+            Log::write('user activation confirmation error', $msg);
 
             return Redirect::to_route('get_home');
         }
 
-        // if user if found
+        // if user is found
         $user->activate();
 
         return Redirect::to_route('get_login');
@@ -73,96 +73,126 @@ class Admin_Controller extends Base_Controller
         $this->layout->nest('page_content', 'admin.login');
     }
 
-    /**
-     * Process the login form
-     */
-	public function post_login() 
-	{
+    public function post_login() 
+    {
         $rules = array(
             "username" => "required",
             "password" => "required|min:5"
         );
 
         $validation = Validator::make(Input::all(), $rules);
-        //Input::flash(); // in case of errors
           
         if ($validation->passes()) {
             $username = Input::get("username", '');
             $field = "username";
 
-            if (is_numeric($username)) {
-                $field = "id";
-            } elseif (strpos($username, "@")) { // the name is actually an email
+            if (strpos($username, "@")) { // the name is actually an email
                 $field = "email";
             }
 
             $user = User::where($field, '=', $username)->first();
             
             if ($user != null) {
-                if (Auth::attempt(array('username' => $user->username, 'password' => Input::get('password')))) {
-                    $keep_logged_in = Input::get('keep_logged_in', '0');
+                if ($user->activated == 1) {
+                    if (Auth::attempt(array('username' => $user->username, 'password' => Input::get('password')))) {
+                        $keep_logged_in = Input::get('keep_logged_in', '0');
 
-                    if ($keep_logged_in == '1') {
-                        Cookie::put('user_logged_in', $user->id, 43200); //43200 min = 1 month
+                        if ($keep_logged_in == '1') {
+                            Cookie::put('user_logged_in', $user->id, 43200); //43200 min = 1 month
+                        }
+
+                        HTML::set_success(lang('login.msg.login_success', array(
+                            'username' => $user->username
+                        )));
+                        Log::write('user login', 'User '.$user->username.' (id='.$user->id.') has logged in');
+                        return Redirect::to_route('get_admin_home');
+                    } else {
+                        HTML::set_error(lang('login.msg.wrong_password', array(
+                            'field' => $field,
+                            'username' => $username
+                        )));
                     }
-
-                    return Redirect::to_route('get_admin_home');
                 } else {
-                    HTML::set_error("The password provided for user $field [$username] is incorrect.");
+                    HTML::set_error(lang('login.msg.not_activated', array(
+                      'username' => $username
+                    )));
                 }
             } else {
-                HTML::set_error("No user with the $field [$username] has been found.");
+                HTML::set_error(lang('login.msg.user_not_found', array(
+                    'field' => $field,
+                    'username' => $username
+                )));
             }
         } else {
             Former::withErrors($validation);
         }
         
-		$this->layout->nest('page_content', 'admin/login');
-	}
+        return Redirect::to_route('get_login');
+    }
 
-    /**
-     * Process the lost password form
-     */
+    
+
     public function post_lostpassword()
     {
-        $validation = Validator::make(Input::all(), array("username" => "required"));
+        $input = Input::all();
+        $validation = Validator::make($input, array("username" => "required"));
         
         if ($validation->passes()) {
-            $username = Input::get("username", '');
+            $username = $input["username"];
             $field = "username";
 
-            if (is_numeric($username)) {
-                $field = "id";
-            } elseif (strpos($username, "@")) { // the name is actually an email
+            if (strpos($username, "@")) { // the name is actually an email
                 $field = "email";
             }
             
             $user = User::where($field, '=', $username)->first();
             
             if ($user != null) {
-                // send email here
-                $email = $user->email;
-                $password = get_random_string(5);
-                $user->password = Hash::make($password);
-                $user->save();
-
-                HTML::set_success('An email with your credentials and a new temporary password has been sent to '.$email.'. '.$password);
+                $user->set_new_password(1); // step 1 : send conf email to user
             } else {
-                HTML::set_error("No user with the $field [$username] has been found.");
+                HTML::set_error(lang('login.msg.user_not_found', array(
+                    'field' => $field,
+                    'username' => $username
+                )));
             }
 
             return Redirect::to_route('get_login');
         } else {
-            // Former::withErrors($validation);
             return Redirect::to_route('get_login')->with_errors($validation);
         }
     }
 
+    public function get_lostpassword_confirmation($user_id, $temp_key)
+    {
+        $user = User::where_id($user_id)->where_temp_key($temp_key)->where_activated(1)->first();
+
+        if (is_null($user)) {
+            $msg = lang('lostpassword.msg.confirmation_error', array(
+                'id' => $user_id,
+                'temp_key' => $temp_key,
+            ));
+            HTML::set_error($msg);
+            Log::write('user lostpassword confirmation error', $msg);
+
+            return Redirect::to_route('get_home');
+        }
+
+        // if user is found
+        $user->set_new_password(2); // setp 2 : generate new password then send by mail
+
+        return Redirect::to_route('get_login');
+    }
+
     public function get_logout()
     {
+        HTML::set_success(lang('login.logout_success'));
+
+        $user = user();
+        Log::write('user logout', 'User '.$user->username.' (id='.$user->id.') has logged out.');
+
         Cookie::forget('user_logged_in');
         Auth::logout();
-    	return Redirect::to_route('get_login');
+        return Redirect::to_route('get_login');
     }
 
 

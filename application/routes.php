@@ -239,10 +239,15 @@ Route::get('crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion', '
 // nammed route with controller
 // Route::get('the route', array('as' => 'thenameoftheroute', 'uses' => 'controlerName@methodName'));
 
-Route::get('admin/login', array('as' => 'get_login', 'uses' => 'admin@login'));
-Route::get('register', array('as' => 'get_register', 'uses' => 'admin@register'));
-Route::get('register/confirmation/(:num)/(:any)', array('as' => 'get_register_confirmation', 'uses' => 'admin@register_confirmation'));
 
+// must be guest
+Route::group(array('before' => 'is_guest'), function()
+{
+    Route::get('login', array('as' => 'get_login', 'uses' => 'admin@login'));
+    Route::get('register', array('as' => 'get_register', 'uses' => 'admin@register'));
+    Route::get('register/confirmation/(:num)/(:any)', array('as' => 'get_register_confirmation', 'uses' => 'admin@register_confirmation'));
+    Route::get('lostpassword/(:num)/(:any)', array('as' => 'get_lostpassword_confirmation', 'uses' => 'admin@lostpassword_confirmation'));
+});
 
 
 // must be logged in
@@ -297,13 +302,18 @@ Route::group(array('before' => 'auth|csrf'), function()
 });
 
 
+// must be guest and legit post
+Route::group(array('before' => 'is_guest|csrf'), function()
+{
+    Route::post('register', array('as' => 'post_register', 'uses' => 'admin@register'));
+    Route::post('login', array('as' => 'post_login', 'uses' => 'admin@login'));
+    Route::post('lostpassword', array('as' => 'post_lostpassword', 'uses' => 'admin@lostpassword'));
+});
+
+
 // must be legit post
 Route::group(array('before' => 'csrf'), function()
 {
-    Route::post('register', array('as' => 'post_register', 'uses' => 'admin@register'));
-
-    Route::post('admin/login', array('as' => 'post_login', 'uses' => 'admin@login'));
-    Route::post('admin/lostpassword', array('as' => 'post_lostpassword', 'uses' => 'admin@lostpassword'));
     Route::post('admin/adddeveloper', array('as' => 'post_adddeveloper', 'uses' => 'admin@adddeveloper'));
     Route::post('admin/addgame', array('as' => 'post_addgame', 'uses' => 'admin@addgame'));
     Route::post('admin/reports', array('as' => 'post_reports', 'uses' => 'admin@reports'));
@@ -478,6 +488,13 @@ Route::filter('auth', function()
     if (Auth::guest()) {
         HTML::set_error(lang('messages.logged_in_only'));
         return Redirect::to_route('get_login');
+    }
+});
+
+Route::filter('is_gest', function()
+{
+    if ( ! Auth::guest()) {
+        return Redirect::to_route('get_admin_home');
     }
 });
 

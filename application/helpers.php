@@ -249,11 +249,11 @@ function clean_form_input($input, $supl_attributes = array())
  * Wrapper around the SwiftMailer bundle
  * @param  string $message The email's corps
  */
-function send_mail($email, $subject, $text, $message_key = '[no message key]') 
+function send_mail($email, $subject, $text) 
 {
 
     HTML::set_infos('Email sent : [to: '.$email.'] [subject: '.$subject.'] [msgkey: '.$message_key.'] [text: '.$text.']');
-    Log::write('user email success', 'Email sent : [to: '.$email.'] [subject: '.$subject.'] [msgkey: '.$message_key.'] [text: '.$text.']');
+    Log::write('email', 'Email sent : (to='.$email.') (subject='.$subject.') (text='.$text.')');
 }
 
 

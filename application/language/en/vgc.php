@@ -173,9 +173,38 @@ return array(
         An email has been sent to your email adress with a link to activate your account. 
         You will be able to login as soon as to activated your account.',
 
-        'msg_confirmation_error' => 'Unable to confirm the user account because none with id ":id" and temp_key ":temp_key" has been found, or the id and the temp_key do not match, or the user account is already activated.',
+        'msg_confirmation_error' => 'Unable to activate the user account because none with id ":id" and temp_key ":temp_key" has been found, or the id and the temp_key do not match, or the user account is already activated.',
         'msg_confirmation_success' => 'Thank you :username, you have successfully activated your user account, you may now log in.',
 
+    ),
+
+    'login' => array(
+        'name_label' => 'Your user name or email',
+        'password_label' => 'Your password',
+        'keep_logged_in_label' => 'Keep me logged in',
+        'title' => 'Log In',
+        'submit' => 'Log In',
+        'lost_password' => 'I lost my password',
+        'lostpassword_help' => 'If you lost your password, just fill the field below with your username, email or user id and click the button to get a new temporary password by email.',
+    
+
+        'msg' => array(
+            'wrong_password' => 'The password provided for user :field ":username" is incorrect.',
+            'not_activated' => 'The user account with the :field ":username" is not activated yet. You will be able to login once you will have clicked the activation link that can be found in the email sent to you upon registration.',
+            'user_not_found' => 'No user with the :field ":username" has been found.',
+
+            'login_success' => 'Welcome :username, you successfully logged in.',
+            'logout_success' => 'You successfully logged out. See you soon !',
+        ),
+    ),
+
+    'lostpassword' => array(
+        'msg' => array(
+            'confirmation_email_sent' => 'An email with a confirmation link has been sent to you. Click the link in that email to generate a new temporary password.',
+            'confirmation_error' => 'Unable to generate a new password because no user account with id ":id" and temp_key ":temp_key" has been found, or the id and the temp_key do not match, or the user account is not activated.',
+            'new_password_success' => 'A new password has been successfully generatd then send to you by email.',
+
+        ),
     ),
 
 
