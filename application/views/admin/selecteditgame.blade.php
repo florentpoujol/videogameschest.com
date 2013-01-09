@@ -1,9 +1,9 @@
 <?php
-if (IS_DEVELOPER) $games = user()->dev->games;
-else $games = Game::all('id', 'name');
+if (is_admin()) $games = Game::all('id', 'name');
+else $games = user()->games;
 ?>
-<div id="selecteditgame_form">
-	{{ Former::open_vertical('admin/selecteditgame')->rules(array('game_name' => 'required')) }} 
+<div id="selecteditgame-form">
+	{{ Former::open_vertical(route('post_selecteditgame'))->rules(array('game_id' => 'required')) }} 
 		<legend>Select the game to edit</legend>
 		{{ Form::token() }}
 
@@ -12,5 +12,4 @@ else $games = Game::all('id', 'name');
 
 		<input type="submit" value="Edit this game" class="btn btn-primary">
 	</form>
-</div>
-<!-- /#user_form --> 
+</div> <!-- /#selecteditgame-form --> 

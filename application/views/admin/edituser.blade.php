@@ -1,3 +1,7 @@
+@section('page_title')
+    {{ lang('user.edit_title') }}
+@endsection
+
 <?php
 $rules = array(
     'username' => 'required|min:5',
@@ -20,22 +24,28 @@ if ( ! empty($old)) {
 }
 ?>
 <div id="edituser">
-    <h2>{{ lang('admin.user.edit_title') }}</h2>
+    <h1>{{ lang('user.edit_title') }}</h1>
 
-    {{ Former::open_vertical('admin/edituser')->rules($rules) }}    
+    <hr>
+
+    {{ Former::open_vertical(route('post_edituser'))->rules($rules) }}    
         {{ Form::token() }}
+
+        @if (is_admin())
+            {{ Former::hidden('id', $user->id) }}
+        @endif
+
+        {{ lang('user.id') }} : {{ $user->id }} <br>
         
-        {{ Former::hidden('id', $user->id) }}
-        {{ lang('admin.user.id') }} : {{ $user->id }} <br>
         <br>
 
         {{ Former::text('username', lang('common.name')) }}
 
-        {{ Former::email('email') }}
+        {{ Former::email('email', lang('common.email')) }}
 
-        {{ Former::xlarge_text('secret_key', 'Secret key')->help(lang('admin.user.secret_key_help')) }}
+        {{ Former::xlarge_text('secret_key', 'Secret key')->help(lang('user.secret_key_help')) }}
 
-        @if (IS_ADMIN)
+        @if (is_admin())
             {{ Former::text('type', 'Account type')->help('"dev" or "admin"') }}
         @endif
 
@@ -43,16 +53,18 @@ if ( ! empty($old)) {
 
         {{ Former::password('password_confirmation', 'Password Confirmation') }}
 
-        {{ Former::password('old_password', 'Old password')->help(lang('admin.user.old_password_help')) }}
+        {{ Former::password('old_password', 'Old password')->help(lang('user.old_password_help')) }}
 
-        @if ($user->type != "admin")
+        {{ Former::primary_submit(lang('user.edit_title')) }}
+
+
+        @if ( ! is_admin())
+            <!-- crosspromotion -->
             <hr>
 
             <h3>{{ lang('crosspromotion.title') }}</h3>
 
-            
-
-            @if (IS_ADMIN)
+            @if (is_admin())
                 {{ Former::checkbox('crosspromotion_subscription', '')->text('Cross promotion') }}
             @elseif (false)
                 @if (user()->crosspromotion_subscription == 1)
@@ -74,10 +86,12 @@ if ( ! empty($old)) {
                     You can select the games you want to cross-promote from your game's profiles.
                 </p>
             @endif
+
+            <!-- /crosspromotion -->
         @endif
 
         <hr>
 
-        <input type="submit" value="Edit this user" class="btn btn-primary">
+        
     </form>
 </div> <!-- /#edituser --> 

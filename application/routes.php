@@ -71,7 +71,7 @@ Route::get('home', array('as' => 'get_home', 'do' => function() use ($layout)
 // ADD DEVELOPER / GAME
 //----------------------------------------------------------------------------------
 
-Route::get('/adddeveloper', array('as' => 'get_adddeveloper', function() use ($layout)
+/*Route::get('/adddeveloper', array('as' => 'get_adddeveloper', function() use ($layout)
 {
     return $layout->nest('page_content', 'adddeveloper')->with('page_title', lang('developer.add.title'));
 }));
@@ -79,7 +79,7 @@ Route::get('/adddeveloper', array('as' => 'get_adddeveloper', function() use ($l
 Route::get('/addgame', array('as' => 'get_addgame', function() use ($layout)
 {
     return $layout->nest('page_content', 'addgame')->with('page_title', lang('game.add.title'));
-}));
+}));*/
 
 
 
@@ -229,6 +229,17 @@ Route::get('crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion', '
 
 
 //----------------------------------------------------------------------------------
+// ADVERTISING
+//----------------------------------------------------------------------------------
+
+Route::get('advertising/', array('as' => 'get_advertising', 'do' => function()
+{
+    return "advertising";
+}));
+
+
+
+//----------------------------------------------------------------------------------
 //  ADMIN CONTROLLER ROUTES
 //----------------------------------------------------------------------------------
 
@@ -238,6 +249,7 @@ Route::get('crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion', '
 // Route::get('customroute', 'controlerName@methodName');
 // nammed route with controller
 // Route::get('the route', array('as' => 'thenameoftheroute', 'uses' => 'controlerName@methodName'));
+
 
 
 // must be guest
@@ -259,11 +271,12 @@ Route::group(array('before' => 'auth'), function()
 
     Route::get('admin/user/edit/(:num?)', array('as' => 'get_edituser', 'uses' => 'admin@edituser'));
     
+    Route::get('admin/developer/add', array('as' => 'get_adddeveloper', 'uses' => 'admin@adddeveloper'));
     Route::get('admin/developer/edit/(:num?)', array('as' => 'get_editdeveloper', 'uses' => 'admin@editdeveloper'));
     // I could also use
     // Route::get('admin/(add|edit)developer', 'admin@(:1)developer');
 
-    Route::get('admin/game/add', array('as' => 'get_admin_addgame', 'uses' => 'admin@addgame'));
+    Route::get('admin/game/add', array('as' => 'get_addgame', 'uses' => 'admin@addgame'));
     Route::get('admin/game/edit/(:num?)', array('as' => 'get_editgame', 'uses' => 'admin@editgame'));
 
     Route::get('admin/reviews/(:any?)', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));    
@@ -276,7 +289,7 @@ Route::group(array('before' => 'auth'), function()
 Route::group(array('before' => 'auth|admin'), function()
 {
     Route::get('admin/user/add', array('as' => 'get_adduser', 'uses' => 'admin@adduser'));
-    Route::get('admin/developer/add', array('as' => 'get_admin_adddeveloper', 'uses' => 'admin@adddeveloper'));
+    
 });
 
 
@@ -314,8 +327,8 @@ Route::group(array('before' => 'is_guest|csrf'), function()
 // must be legit post
 Route::group(array('before' => 'csrf'), function()
 {
-    Route::post('admin/adddeveloper', array('as' => 'post_adddeveloper', 'uses' => 'admin@adddeveloper'));
-    Route::post('admin/addgame', array('as' => 'post_addgame', 'uses' => 'admin@addgame'));
+    Route::post('admin/developer/add', array('as' => 'post_adddeveloper', 'uses' => 'admin@adddeveloper'));
+    Route::post('admin/game/add', array('as' => 'post_addgame', 'uses' => 'admin@addgame'));
     Route::post('admin/reports', array('as' => 'post_reports', 'uses' => 'admin@reports'));
 
     // SEARCH
@@ -395,42 +408,6 @@ Route::filter('before', function()
     // check if user has the logged in cokkie
     $logged_in = Cookie::get('user_logged_in', '0');
     if ($logged_in != '0') Auth::login((int) $logged_in);
-
-    // set some CONST
-    if (Auth::check()) { // user is logged in
-        $user = Auth::user();
-        define('IS_LOGGED_IN', true);
-        define('IS_GUEST', false);
-        define('USER_ID', $user->id);
-
-        if (user()->type == 'admin') {
-            define('IS_ADMIN', true);
-            define('IS_DEVELOPER', false);
-            define('IS_USER', false);
-            define('IS_TRUSTED', true);
-        } 
-        elseif (user()->type == 'dev') {
-            define('IS_ADMIN', false);
-            define('IS_DEVELOPER', true);
-            define('IS_USER', false);
-            define('IS_TRUSTED', $user->is_trusted);
-        }
-        elseif (user()->type == 'user') {
-            define('IS_ADMIN', false);
-            define('IS_DEVELOPER', true);
-            define('IS_USER', true);
-            define('IS_TRUSTED', $user->is_trusted);
-        }
-    } else {
-        define('IS_LOGGED_IN', false);
-        define('IS_GUEST', true);
-        define('USER_ID', 0);
-        define('IS_ADMIN', false);
-        define('IS_DEVELOPER', false);
-        define('IS_USER', false);
-        define('IS_TRUSTED', false);
-        define('DEVELOPER_ID', 0);
-    }
 
 
     $route = Request::$route;

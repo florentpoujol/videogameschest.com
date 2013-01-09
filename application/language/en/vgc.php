@@ -24,7 +24,7 @@ return array(
         'genres' => 'Genres',
 
         'languages' => 'Languages',
-        'logo' => 'Logo URL',
+        'logo' => 'Logo',
 
         'name' => 'Name',
         'nbplayers' => 'Number of players',
@@ -56,9 +56,16 @@ return array(
         'videos' => 'Videos',
         'viewpoints' => 'Point of view',
 
-        'website' => 'Website URL',
-    ),
+        'website' => 'Website',
 
+
+
+
+        'msg' => array( 
+            'edit_other_users_proile_not_allowed' => 'You are not allowed to edit other user\'s profiles',
+
+        ),
+    ),
 
 // HOME
 
@@ -102,17 +109,16 @@ return array(
 
     ),
 
-
 // MESSAGES (errors, success)
 
     'messages' => array(
-        'adddev_success' => 'The developer profile with name \":name\" has successfully been submitted.',
+        
         'addgame_success' => 'The game profile with name \":name\" has successfully been submitted.',
 
         'editdev_nametaken' => 'Can\'t rename the developer profile with name \":name\" (id : :id) because the name \":newname\" is already taken.',
         'editgame_nametaken' => 'Can\'t rename the game profile with name \":name\" (id : :id) because the name \":newname" is already taken.',
         
-        'editdev_success' => 'The developer profile with name \":name\" (id : :id) has successfully been updated.',
+        
         'editgame_success' => 'The game profile with name \":name\" (id : :id) has successfully been updated.',
 
         'logged_in_only' => "You must be logged in to access this page.",
@@ -178,6 +184,8 @@ return array(
 
     ),
 
+// LOGIN
+
     'login' => array(
         'name_label' => 'Your user name or email',
         'password_label' => 'Your password',
@@ -207,14 +215,30 @@ return array(
         ),
     ),
 
+// USER
 
+    'user' => array(
+        'edit_title' => 'Edit your user account',
+        
+        'id' => 'User Id',
+
+        'subscription_title' => 'Subscriptions',
+
+        'secret_key_help' => 
+        'This string is used to access various things linked to your user account like your report RSS feed or the cross-promotion service.<br>
+        This is not a hash of something, this is just a random and unique string stored as-is in the database. You may update it.',
+        'old_password_help' => 'In order to update your password, enter your old password here.',
+
+        'msg_wrong_old_password' => 'The old password does not match your current password.',
+        'msg_update_success' => 'Your user account has successfully been updated.'
+    ),
 
 // DEVELOPER 
 
     'developer' => array(
         
         'name_help' => 'Company name, if applicable.',
-        'email_help' => 'This should be the main contact email to be publiquely displayed on the profile. It may not be different than your user email.',
+        'email' => 'Contact email',
 
         'pitch' => 'Explain about the developer\'s phylosophy, goals...',
 
@@ -242,8 +266,18 @@ return array(
             'title' => 'Developer',
             'website' => 'Go to the developer\'s website',
         ),
-    ),
 
+        'msg' => array(
+            'adddev_success' => 'The developer profile with name \":name\" (id=:id) has successfully been created.',
+            'editdev_success' => 'The developer profile with name \":name\" (id=:id) has successfully been updated.',
+
+            'select_editdev_id_not_found' => 'No developer with id ":id" was found.',
+            'select_editdev_name_not_found' => 'No developer with name ":name" was found.',
+
+            'profile_not_found' => 'No developer profile with id ":id" was found.',
+        ),
+
+    ),
 
 // GAME 
     'game' => array(
@@ -292,7 +326,27 @@ return array(
 
     ), // end of game
 
+// ADMIN
 
+    'admin' => array(
+        'bbcode_explanation' => 'You may use the following BBCode tags : b, i and url=. Full urls are automatically parsed in links.',
+        // 'You may use HTML in the textarea above (only when editing a profile).'
+
+
+        'home' => array(
+            'title' => 'Admin home',
+            'hello' => 'Hello',
+        ),
+
+
+        'menu' => array(
+            'add_developer' => 'Add a developer',
+            'edit_developer' => 'Edit a developer',
+            'add_game' => 'Add a game',
+            'edit_game' => 'Edit a game',
+            'edit_user_account' => 'Edit your user account',
+        ),
+    ),
 
 // REPORTS
 
@@ -322,7 +376,6 @@ return array(
         ),
     ),
 
-
 // REVIEW
 
     'reviews' => array(
@@ -344,27 +397,6 @@ return array(
             'profiles_approved' => 'Thanks you for approving :num profile(s).'
         ),
     ),
-
-
-// ADMIN
-
-    'admin' => array(
-        'bbcode_explanation' => 'You may use HTML in the textarea above (only when editing a profile).',
-        // 'You may use the following BBCode tags : b, i and url=. Full urls are automatically parsed in links.'
-        'user' => array(
-            'edit_title' => 'Edit a user account',
-            'id' => 'User Id',
-
-            'subscription_title' => 'Subscriptions',
-
-            'secret_key_help' => 
-            'This string is used to access various things linked to your user account like your report RSS feed or the cross-promotion service.<br>
-            This is not a hash of something, this is just a random and unique string stored as-is in the database. You may update it.',
-            'old_password_help' => 'In order to update your password, enter your old password here.',
-
-        ),
-    ),
-
 
 // CROSS PROMOTION
 
@@ -418,7 +450,6 @@ return array(
         Once you properly setted up the system in your game you can just update the promoted games from your game profile on VGC without the need to update/patch your actual game.',
 
     ),
-
 
 // SEARCH
 
@@ -484,7 +515,6 @@ return array(
         'japonese' => 'Japonese',
         'chinese' => 'Chinese',
     ),
-
 
 // COUNTRIES
 
@@ -651,7 +681,6 @@ return array(
         'released' => '6 - Released',
         'canceled' => 'Canceled',
     ),
-
 
 // THEMES
 

@@ -9,13 +9,17 @@
 
             <ul class="nav pull-right">
                 <!-- Ganeral menu -->
-                <?php $menu_items = array('home', 'search', 'register'); ?>
+                <?php 
+                $menu_items = array('home', 'search'); 
+
+                if (is_guest()) $menu_items[] = 'register';
+                ?>
                 @foreach ($menu_items as $menu_item)
                     <li><a href="{{ route('get_'.$menu_item) }}">{{ lang('menu.'.$menu_item) }}</a></li>
                 @endforeach
                 <!-- /ganeral menu --> 
 
-                @if (IS_LOGGED_IN)
+                @if (is_logged_in())
                     <!-- Admin menu -->
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -23,31 +27,34 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ route('get_admin_home') }}">Admin home</a></li>
+                            <li><a href="{{ route('get_admin_home') }}">{{ lang('admin.home.title') }}</a></li>
 
                             <li class="divider"></li>
-                        @if (IS_ADMIN)
-                            <li><a href="{{ route('get_adduser') }}">Add a user</a></li>
-                        @endif
-                            <li><a href="{{ route('get_edituser') }}">Edit your user account</a></li>
+                            @if (is_admin())
+                                <li><a href="{{ route('get_adduser') }}">Add a user</a></li>
+                            @endif
+                            <li><a href="{{ route('get_edituser') }}">{{ lang('admin.menu.edit_user_account') }}</a></li>
 
                             <li class="divider"></li>
-                        @if (IS_ADMIN) 
-                            <li><a href="{{ route('get_admin_adddeveloper') }}">Add a developer</a></li>
-                            <li><a href="{{ route('get_editdeveloper') }}">Edit a developer</a></li>
-                        @elseif (IS_DEVELOPER)
-                            <li><a href="{{ route('get_editdeveloper', array(USER_ID)) }}">Edit your developer profile</a></li>
-                        @endif 
+                            <li><a href="{{ route('get_adddeveloper') }}">{{ lang('admin.menu.add_developer') }}</a></li>
+                            @if ( ! empty(user()->devs) || is_admin())
+                                <li><a href="{{ route('get_editdeveloper') }}">{{ lang('admin.menu.edit_developer') }}</a></li>
+                            @endif
+
 
                             <li class="divider"></li>
-                            <li><a href="{{ route('get_admin_addgame') }}">Add a game</a></li>
-                            <li><a href="{{ route('get_editgame') }}">Edit a game</a></li>
+                            <li><a href="{{ route('get_addgame') }}">{{ lang('admin.menu.add_game') }}</a></li>
+                            @if ( ! empty(user()->devs) || is_admin())
+                                <li><a href="{{ route('get_editgame') }}">{{ lang('admin.menu.add_game') }}</a></li>
+                            @endif
 
                             <li class="divider"></li>
-                        @if (IS_TRUSTED)
-                            <li><a href="{{ route('get_reviews') }}">{{ lang('reviews.title') }}</a></li>
-                        @endif
-                            <li><a href="{{ route('get_reports') }}">{{ lang('reports.title') }}</a></li>
+                            @if (is_trusted())
+                                <li><a href="{{ route('get_reviews') }}">{{ lang('reviews.title') }}</a></li>
+                            @endif
+                            @if ( ! empty(user()->devs) || ! empty(user()->games) || is_admin())
+                                <li><a href="{{ route('get_reports') }}">{{ lang('reports.title') }}</a></li>
+                            @endif
                             
                             <li class="divider"></li>
                             <li><a href="{{ route('get_logout') }}">{{ lang('menu.logout') }}</a></li>

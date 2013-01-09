@@ -8,50 +8,42 @@ class User extends ExtendedEloquent
 
     /**
      * Create a new user
-     * @param  array $form data comming from the form, or the Developer::create() method
+     * @param  array $input data comming from the form, or the Developer::create() method
      * @return User       The user instance
      */
-	public static function create($user) 
+	public static function create($input) 
 	{
-        $user = clean_form_input($user);
-
-        // display success msg ?
-        /*$display_msg = true;
-
-        if (isset($user['do_not_display_success_msg'])) {
-            $display_msg = false;
-        }*/
-
-        unset($user['do_not_display_success_msg']);
+        $input = clean_form_input($input);
+        unset($input['do_not_display_success_msg']);
 
         // password
-        if (isset($user["password"]) && trim($user["password"]) != "") {
-            $user["password"] = Hash::make($user["password"]);
+        if (isset($input["password"]) && trim($input["password"]) != "") {
+            $input["password"] = Hash::make($input["password"]);
         } else {
             // dummy password
-            $user['password'] = Hash::make(Config::get('dummie_password'));
+            $input['password'] = Hash::make(Config::get('dummie_password'));
             // the password will be updated by hand via th edituser page or
             // when a random password will be generated when the dev profile will 
             // have passed the submission review (in ExtendedEloquent.passed_review())
         }
         
         // secret key
-        $user["secret_key"] = md5(mt_rand().mt_rand());
+        $input["secret_key"] = Str::random(20);
         $try = 0;
-        while ($try < 1000 && parent::where('secret_key', '=', $user['secret_key'])->first() != null) {
-            $user["secret_key"] = md5(mt_rand().mt_rand());
+        while ($try < 10000 && parent::where('secret_key', '=', $input['secret_key'])->first() != null) {
+            $input["secret_key"] = Str::random(20);
             $try++;
         }
 
         // type
-        if ( ! isset($user['type'])) $user['type'] = 'user';
+        if ( ! isset($input['type'])) $input['type'] = 'user';
 
-        if ($user['type'] == 'admin') $user['is_trusted'] = 1;
+        if ($input['type'] == 'admin') $input['is_trusted'] = 1;
 
         // temp key
-        $user['temp_key'] = Str::random(20);
+        $input['temp_key'] = Str::random(20);
 
-        $user = parent::create($user);
+        $user = parent::create($input);
 
         // Log
         HTML::set_success(lang('register.msg_register_success', array('username'=>$user->username)));
@@ -76,29 +68,32 @@ class User extends ExtendedEloquent
     /**
      * Update a user
      * @param  int $id         The user id
-     * @param  array $attributes The user's data
+     * @param  array $input The user's data
      * @return User The user instance
      */
-    public static function update($id, $form)
+    public static function update($id, $input)
     {
-        $form = clean_form_input($form);
+        $input = clean_form_input($input);
 
-        if ($form['password'] != '') $form['password'] = Hash::make($form['password']);
-        else unset($form['password']);
+        if ($input['password'] != '') $input['password'] = Hash::make($input['password']);
+        else unset($input['password']);
 
-        if ( ! isset($form['crosspromotion_subscription'])) $form['crosspromotion_subscription'] = 0;
-        else $form['crosspromotion_subscription'] = 1;
+        if ( ! isset($input['crosspromotion_subscription'])) $input['crosspromotion_subscription'] = 0;
+        else $input['crosspromotion_subscription'] = 1;
 
-        parent::update($id, $form);
+        parent::update($id, $input);
         $user = User::find($id);
 
-        HTML::set_success('The user \"'.$user->username.'\" (id : '.$user->id.') has successfully been updated.');
+        if ($user->id != user_id()) $msg = 'The user \"'.$user->username.'\" (id='.$user->id.') has successfully been updated.';
+        else $msg = lang('user.msg_update_success');
+        HTML::set_success($msg);
+        Log::write('user update success', 'The user \"'.$user->username.'\" (id='.$user->id.') has successfully been updated.');
+
         return $user;
     }
 
 
     //----------------------------------------------------------------------------------
-
 
     public function activate() 
     {

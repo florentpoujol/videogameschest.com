@@ -4,7 +4,7 @@
 
 <?php
 $rules = array(
-    'name' => 'required|min:5|unique:users,username',
+    'name' => 'required|min:5',
     'logo' => 'url',
     'website' => 'url',
     'blogfeed' => 'url',
@@ -19,7 +19,7 @@ $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
 ?>
 <div id="editdeveloper">
-    <h2>{{ lang('developer.edit.title') }}</h2>
+    <h1>{{ lang('developer.edit.title') }}</h1>
     <hr>
 
     <div class="row">
@@ -33,10 +33,10 @@ if ( ! empty($old)) Former::populate($old);
 
                 {{ Former::textarea('pitch', lang('developer.pitch'))->help(lang('admin.bbcode_explanation')) }}
 
-                {{ Former::url('logo', lang('common.logo')) }}
-                {{ Former::url('website', lang('common.website')) }}
-                {{ Former::url('blogfeed', lang('common.blogfeed')) }}
-                {{ Former::url('presskit', lang('common.presskit')) }}
+                {{ Former::url('logo', lang('common.logo'))->placeholder(lang('common.url')) }}
+                {{ Former::url('website', lang('common.website'))->placeholder(lang('common.url')) }}
+                {{ Former::url('blogfeed', lang('common.blogfeed'))->placeholder(lang('common.url')) }}
+                {{ Former::url('presskit', lang('common.presskit'))->placeholder(lang('common.url')) }}
 
                 {{ Former::number('teamsize', lang('common.teamsize')) }}
 

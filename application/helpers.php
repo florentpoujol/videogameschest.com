@@ -145,15 +145,23 @@ function is_guest()
 {
     return Auth::guest();
 }
+function is_logged_in()
+{
+    return ( ! Auth::guest());
+}
+
 function is_admin()
 {
     return (Auth::user()->type == 'admin');
+}
+function is_not_admin()
+{
+    return (Auth::user()->type != 'admin');
 }
 function is_trusted()
 {
     return (is_admin() || Auth::user()->is_trusted == 1);
 }
-
 
 function user()
 {

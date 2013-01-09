@@ -234,12 +234,12 @@ class Admin_Controller extends Base_Controller
 
     public function get_edituser($user_id = null)
     {
-        if ($user_id == null || (IS_DEVELOPER && $user_id != USER_ID))
-            return Redirect::to_route('get_edituser', array(USER_ID));
+        if ($user_id == null || ( ! is_admin() && $user_id != user_id()))
+            return Redirect::to_route('get_edituser', array(user_id()));
 
         if (User::find($user_id) == null) {
-            HTML::set_error("Can't find user with id '$user_id' ! Using your user id '".USER_ID."'.");
-            return Redirect::to_route('get_edituser', array(USER_ID));
+            HTML::set_error("Can't find user with id '$user_id' ! Using your user id '".user_id()."'.");
+            return Redirect::to_route('get_edituser', array(user_id()));
         }
 
         $this->layout->nest('page_content', 'admin/edituser', array('user_id'=>$user_id));
@@ -250,7 +250,7 @@ class Admin_Controller extends Base_Controller
         $input = Input::all();
         $input['password'] = trim($input['password']);
 
-        if ( ! IS_ADMIN) $input['id'] = USER_ID;
+        if ( ! is_admin()) $input['id'] = user_id();
 
         $user = User::find($input['id']);
         
@@ -258,7 +258,6 @@ class Admin_Controller extends Base_Controller
         $rules = array(
             'username' => 'required|min:5',
             'email' => 'required|min:5|email',
-            'type' => 'required|in:dev,admin'
         );
         
         $validation = Validator::make($input, $rules);
@@ -268,12 +267,12 @@ class Admin_Controller extends Base_Controller
                 $old_password_ok = true;
                 if ( ! Hash::check($input['old_password'], $user->password)) {
                     $old_password_ok = false;
-                    HTML::set_error('The old password does not match your currently stored password !');
+                    HTML::set_error(lang('user.wrong_old_password'));
                 }
 
                 $rules = array(
                     'password' => 'required|min:5|confirmed',
-                    'password_confirmation' => 'required|min:5',
+                    'password_confirmation' => 'required|min:5|required_with:password',
                     'old_password' => 'required|min:5',
                 );
 
@@ -309,29 +308,21 @@ class Admin_Controller extends Base_Controller
 
         // checking form
         $rules = array(
-            'name' => 'required|min:5|unique:users,username',
-            'email' => 'required|min:5|unique:users|email',
-            'cover' => 'url',
+            'name' => 'required|min:5|unique:developers',
+            'email' => 'min:5|email',
+            'logo' => 'url',
             'website' => 'url',
             'blogfeed' => 'url',
             'presskit' => 'url',
             'teamsize' => 'min:1',
         );
 
-        if (IS_ADMIN) {
-            $rules['name'] = 'required|min:5|unique:developers';
-            $rules['email'] = 'min:5|unique:users|email';
-        }
-
         $validation = Validator::make($input, $rules);
         
         if ($validation->passes()) {
             $dev = Dev::create($input);
 
-            if (IS_ADMIN)
-                return Redirect::to_route('get_editdeveloper', array($dev->id));
-            else
-                return Redirect::to_route('get_home');
+            return Redirect::to_route('get_editdeveloper', array($dev->id));
         } else {
             Input::flash();
             return Redirect::back()->with_errors($validation);
@@ -349,15 +340,15 @@ class Admin_Controller extends Base_Controller
         
         if (is_numeric($name)) {
             if (Dev::find($name) == null) {
-                HTML::set_error('No developer with id ['.$name.'] was found !');
+                HTML::set_error(lang('developer.msg.select_editdev_id_not_found', array('id'=>$name)));
             } else {
                 $id = $name;
             }
         } else {
-            $profile = Dev::where('name', '=', $name)->first();
+            $profile = Dev::where_name($name)->first();
             
             if ($profile == null) {
-                HTML::set_error('No developer with name ['.$name.'] was found !');
+                HTML::set_error(lang('developer.msg.select_editdev_name_not_found', array('name'=>$name)));
             } else {
                 $id = $profile->id;
             }
@@ -368,25 +359,24 @@ class Admin_Controller extends Base_Controller
 
     public function get_editdeveloper($profile_id = null)
     {
+        if ( ! is_admin() && empty(user()->devs)) {
+            return Redirect::to_route('get_adddeveloper');
+        }
+
         if ($profile_id == null) {
-            if (IS_DEVELOPER) {
-                return Redirect::to_route('get_editdeveloper', array(DEVELOPER_ID));
-            } else {
-                $this->layout->nest('page_content', 'admin/selecteditdeveloper');
-                return;
-            }
+            $this->layout->nest('page_content', 'admin/selecteditdeveloper');
+            return;
         }
 
-        if (IS_DEVELOPER && $profile_id != DEVELOPER_ID) {
-            HTML::set_error("You are not allowed to edit other developer's profiles !");
-            return Redirect::to_route('get_editdeveloper', array(DEVELOPER_ID));
+        $dev = Dev::find($profile_id);
+
+        if ($dev == null) {
+            HTML::set_error(lang('developer.msg.profile_not_found'));
+            return Redirect::to_route('get_editdeveloper');
         }
 
-        if (Dev::find($profile_id) == null) {
-            // $profile_id was set but no dev profile was found
-            // this should only happens when user is an admin
-            // since dev with bad dev profile id are already redirected
-            HTML::set_error("Can't find the developer profile with id '$profile_id' !");
+        if ( ! is_admin() && $dev->user_id != user_id()) {
+            HTML::set_error(lang('common.msg.edit_other_users_proile_not_allowed'));
             return Redirect::to_route('get_editdeveloper');
         }
 
@@ -396,11 +386,25 @@ class Admin_Controller extends Base_Controller
     public function post_editdeveloper() 
     {
         $input = Input::all();
+
+        if (is_not_admin()) {
+            // check that $input['id'] is one of the user's dev profiles
+            $forged = true;
+            foreach ($user()->devs() as $dev) {
+                if ($dev->id == $input['id']) $forged = false;
+            }
+
+            if ($forged) { // a user try to edit a dev profile which does not own
+                HTML::set_error(lang('common.msg.edit_other_users_proile_not_allowed'));
+                Input::flash();
+                return Redirect::back();
+            }
+        }
         
         // checking form
         $rules = array(
             'name' => 'required|min:5',
-            'cover' => 'url',
+            'logo' => 'url',
             'website' => 'url',
             'blogfeed' => 'url',
             'presskit' => 'url',
@@ -448,7 +452,7 @@ class Admin_Controller extends Base_Controller
         if ($validation->passes()) {
             $game = Game::create($input);
             
-            if (IS_ADMIN)
+            if (is_admin())
                 return Redirect::to_route('get_editgame', array($game->id));
             else
                 return Redirect::to_route('get_home');
@@ -488,7 +492,7 @@ class Admin_Controller extends Base_Controller
             return Redirect::to_route('get_editgame');
         }
 
-        if (IS_DEVELOPER && $game->developer_id != DEVELOPER_ID) {
+        if (! is_admin() && $game->developer_id != DEVELOPER_ID) {
             HTML::set_error(lang('messages.can_not_edit_others_games'));
             return Redirect::to_route('get_editgame');
         }
@@ -553,7 +557,7 @@ class Admin_Controller extends Base_Controller
         $input = Input::all();
         $profile_ids = $input['approved_profiles'];
 
-        if (IS_ADMIN) {
+        if (is_admin()) {
             foreach ($input['approved_profiles'] as $id) {
                 $input['profile_type']::find($id)->passed_review();
             }
@@ -563,7 +567,7 @@ class Admin_Controller extends Base_Controller
                 $profile = $input['profile_type']::find($id);
 
                 $approved_by = $profile->approved_by;
-                $approved_by[] = USER_ID;
+                $approved_by[] = user_id();
                 $profile->approved_by = $approved_by;
                 $profile->save();
                 $num++;
@@ -588,7 +592,7 @@ class Admin_Controller extends Base_Controller
             return Redirect::to_route('get_reports', array('dev'));
         }
 
-        if (IS_DEVELOPER && $report != 'dev') {
+        if (! is_admin() && $report != 'dev') {
             return Redirect::to_route('get_reports', array('dev'));
         }
 

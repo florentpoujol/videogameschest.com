@@ -1,10 +1,11 @@
 @section('page_title')
     {{ lang('developer.add.title') }}
 @endsection
+
 <?php
 $rules = array(
     'name' => 'required|min:5',
-    'email' => 'required|min:5|email',
+    'email' => 'min:5|email',
     'logo' => 'url',
     'website' => 'url',
     'blogfeed' => 'url',
@@ -15,8 +16,7 @@ $rules = array(
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
 
-if (IS_ADMIN) {
-    $rules['email'] = 'min:5|email';
+if (is_admin()) {
     $users = User::get(array('id', 'username'));
     $privacy = array_set_values_as_keys(Config::get('vgc.privacy_and_reviews'));
 }
@@ -27,19 +27,15 @@ if (IS_ADMIN) {
     <hr>
 
     <div class="row">
-        {{ Former::open_vertical('admin/adddeveloper')->rules($rules) }}
+        {{ Former::open_vertical(route('post_adddeveloper'))->rules($rules) }}
             {{ Form::token() }}
 
             <div class="span5">
                 {{ Former::text('name', lang('common.name'))->help(lang('developer.name_help')) }}
 
-                {{ Former::email('email', lang('common.email')) }}
+                {{ Former::email('email', lang('developer.email')) }}
 
-                @if (IS_ADMIN)
-                    Setting the email above will create a new user, <br>
-                    OR choose the user below : <br>
-                    <br>
-                    
+                @if (is_admin())
                     {{ Former::select('user_id', 'User')->fromQuery($users)  }}
 
                     {{ Former::select('privacy')->options($privacy) }}
@@ -47,10 +43,10 @@ if (IS_ADMIN) {
                 
                 {{ Former::textarea('pitch', lang('developer.pitch')) }}
 
-                {{ Former::url('logo', lang('common.logo')) }}
-                {{ Former::url('website', lang('common.website')) }}
-                {{ Former::url('blogfeed', lang('common.blogfeed')) }}
-                {{ Former::url('presskit', lang('common.presskit')) }}
+                {{ Former::url('logo', lang('common.logo'))->placeholder(lang('common.url')) }}
+                {{ Former::url('website', lang('common.website'))->placeholder(lang('common.url')) }}
+                {{ Former::url('blogfeed', lang('common.blogfeed'))->placeholder(lang('common.url')) }}
+                {{ Former::url('presskit', lang('common.presskit'))->placeholder(lang('common.url')) }}
 
                 {{ Former::number('teamsize', lang('common.teamsize'))->value(1) }}
 

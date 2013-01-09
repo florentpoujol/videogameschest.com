@@ -14,10 +14,10 @@ class Developer extends Profile
     //----------------------------------------------------------------------------------
     // CONSTRUCTOR
 
-    public function __construct($attributes = array(), $exists = false)
+    /*public function __construct($attributes = array(), $exists = false)
     {
         parent::__construct($attributes, $exists);
-    }
+    }*/
 
 
     //----------------------------------------------------------------------------------
@@ -32,25 +32,20 @@ class Developer extends Profile
 	{
         $input = clean_form_input($input);
 
-        // create user if email is set
-        if (isset($input['email']) && trim($input['email']) != '') {
-            $user = User::create(array(
-                'username' => $input['name'],
-                'email' => $input['email'],
-                'do_not_display_success_msg' => '' // keep that
-            ));
-
-            $input['user_id'] = $user->id;
-        }
-
-        if ( ! isset($input['privacy'])) $input['privacy'] = 'submission';
+        if ( ! isset($input['privacy'])) $input['privacy'] = 'private';
         
         $input['approved_by'] = array();
-        $input['pitch'] = e($input['pitch']);
+        $input['pitch'] = $input['pitch'];
 
         $dev = parent::create($input);
         
-        HTML::set_success(lang('messages.adddev_success', array('name'=>$dev->name)));
+        $msg = lang('developer.msg.adddev_success', array(
+            'name'=>$dev->name,
+            'id' => $dev->id
+        ));
+        HTML::set_success($msg);
+        Log::write('developer create success', $msg);
+
         return $dev;
     }
 
@@ -66,13 +61,13 @@ class Developer extends Profile
 
         $dev = parent::find($id);
         // checking name change
-        if (isset($input['name']) && $dev->name != $input['name']) { // the user wan to change the dev name, must check is the name is not taken
+        if (isset($input['name']) && $dev->name != $input['name']) { // the user want to change the dev name, must check is the name is not taken
             if (parent::where_name($input['name'])->first() != null) {
                 HTML::set_error(
-                    lang('messages.editdev_nametaken', array(
-                        'name'=>$dev->name,
-                        'id'=>$dev->id,
-                        'newname'=>$input['name'])
+                    lang('developer.msg.editdev_nametaken', array(
+                        'name' => $dev->name,
+                        'id' => $dev->id,
+                        'newname' => $input['name'])
                     )
                 );
 
@@ -83,9 +78,12 @@ class Developer extends Profile
         parent::update($id, $input); // returns an int ?
         $dev = Dev::find($id);
 
-        HTML::set_success(lang('messages.editdev_success'
-            ,array('name'=>$dev->name, 'id'=>$dev->id)
+        $msg = lang('developer.msg.editdev_success', array(
+            'name' => $dev->name,
+            'id' => $dev->id
         ));
+        HTML::set_success($msg);
+        Log::write('developer update success', $msg);
 
         return true;
     }
@@ -137,8 +135,8 @@ class Developer extends Profile
      */
     public function __set($key, $value)
     {
-        if (in_array($key, static::$json_items)) {
-            if (in_array($key, static::$names_urls_items)) {
+        if (in_array($key, static::$json_fields)) {
+            if (in_array($key, static::$names_urls_fields)) {
                 $value = clean_names_urls_array($value);
             }
 
