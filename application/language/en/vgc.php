@@ -275,6 +275,8 @@ return array(
             'select_editdev_name_not_found' => 'No developer with name ":name" was found.',
 
             'profile_not_found' => 'No developer profile with id ":id" was found.',
+
+            'editdev_nametaken' => 'Can\'t rename the developer profile with name \":name\" (id=:id) because the name \":newname\" is already taken.',
         ),
 
     ),
