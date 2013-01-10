@@ -1,9 +1,11 @@
+
+
 <div class="row">
     <div class="span2">
         <?php 
         echo Former::checkboxes('', lang('search.name_or_pitch_help'))->checkboxes(array(
-        lang('common.name') => array('value' => 'name', 'name'=>'search_in_name', 'id'=>'dev_name', 'checked'=>'checked'),
-        lang('common.pitch') => array('value' => 'pitch', 'name'=>"search_in_pitch", 'id'=>'dev_pitch'),
+        lang('common.name') => array('value' => 'name', 'name'=> 'search_in_name', 'id'=>'dev_name', 'checked'=>'checked'),
+        lang('common.pitch') => array('value' => 'pitch', 'name'=> 'search_in_pitch', 'id'=>'dev_pitch'),
         ));?>
     </div>
 

@@ -27,7 +27,7 @@ class Search extends ExtendedEloquent
 
         if (is_string($input)) $input = json_decode($input, true);
 
-        var_dump($input);
+        //var_dump($input);
 
 
         // class (dev or game)

@@ -297,7 +297,6 @@ Route::group(array('before' => 'auth|admin'), function()
 Route::group(array('before' => 'auth|admin|csrf'), function()
 {
     Route::post('admin/adduser', array('as' => 'post_adduser', 'uses' => 'admin@adduser'));
-    Route::post('admin/selecteditdeveloper', array('as' => 'post_selecteditdeveloper', 'uses' => 'admin@selecteditdeveloper'));
 });
 
 
@@ -306,9 +305,12 @@ Route::group(array('before' => 'auth|csrf'), function()
 {
     Route::post('admin/edituser', array('as' => 'post_edituser', 'uses' => 'admin@edituser'));
 
+    Route::post('admin/selecteditdeveloper', array('as' => 'post_selecteditdeveloper', 'uses' => 'admin@selecteditdeveloper'));
+    Route::post('admin/developer/add', array('as' => 'post_adddeveloper', 'uses' => 'admin@adddeveloper'));
     Route::post('admin/editdeveloper', array('as' => 'post_editdeveloper', 'uses' => 'admin@editdeveloper'));
 
     Route::post('admin/selecteditgame', array('as' => 'post_selecteditgame', 'uses' => 'admin@selecteditgame'));
+    Route::post('admin/game/add', array('as' => 'post_addgame', 'uses' => 'admin@addgame'));
     Route::post('admin/editgame', array('as' => 'post_editgame', 'uses' => 'admin@editgame'));
 
     Route::post('admin/reviews', array('as' => 'post_review', 'uses' => 'admin@reviews'));
@@ -327,8 +329,7 @@ Route::group(array('before' => 'is_guest|csrf'), function()
 // must be legit post
 Route::group(array('before' => 'csrf'), function()
 {
-    Route::post('admin/developer/add', array('as' => 'post_adddeveloper', 'uses' => 'admin@adddeveloper'));
-    Route::post('admin/game/add', array('as' => 'post_addgame', 'uses' => 'admin@addgame'));
+    
     Route::post('admin/reports', array('as' => 'post_reports', 'uses' => 'admin@reports'));
 
     // SEARCH
@@ -477,7 +478,7 @@ Route::filter('auth', function()
     }
 });
 
-Route::filter('is_gest', function()
+Route::filter('is_guest', function()
 {
     if ( ! Auth::guest()) {
         return Redirect::to_route('get_admin_home');

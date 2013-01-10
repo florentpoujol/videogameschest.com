@@ -20,7 +20,7 @@ $count = count($profiles);
                     $alt = $profile->name.' logo';
                 }
                 else {
-                    $src = $profile->boxcover;
+                    $src = $profile->cover;
                     $alt = $profile->name.' box cover';
                 }
 
@@ -31,8 +31,6 @@ $count = count($profiles);
                 
                 <div class="media-body">    
                     <h4 class="media-heading"><a href="{{ route('get_'.$profile->class_name, array(name_to_url($profile->name))) }}">{{ $profile->name }}</h4>
-                        
-                    
                 </div><!-- /.media-body -->
             </div> <!-- /.media -->
         @endforeach
