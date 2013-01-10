@@ -16,33 +16,44 @@ class Game extends Profile
     //----------------------------------------------------------------------------------
     // CONSTRUCTOR
 
-    public function __construct($attributes = array(), $exists = false)
+    /*public function __construct($attributes = array(), $exists = false)
     {
         parent::__construct($attributes, $exists);
-    }
+    }*/
 
 	//----------------------------------------------------------------------------------
     // CRUD METHODS
 
     /**
      * Create a new game profile
-     * @param  array $game Data comming from the form
+     * @param  array $input Data comming from the form
      * @return Game       The Game instance
      */
 	public static function create($input) 
 	{
         $input = clean_form_input($input);
 
-        if ( ! isset($game['privacy'])) {
-            $game['privacy'] = 'submission';
+        $dev = Dev::where_name($input['developer_name'])->first();
+        if ( ! is_null($dev)) {
+            $input['developer_name'] = '';
+            $input['developer_id'] = $dev->id;
         }
+        else $input['developer_id'] = 0;
+
+        if ( ! isset($game['privacy'])) $game['privacy'] = 'private';
 
         $input['approved_by'] = array();
-        $input['pitch'] = e($input['pitch']);
-        
+                
         $game = parent::create($input);
         
-        HTML::set_success(lang('messages.addgame_success',array('name'=>$game->name)));
+
+        $msg = lang('game.msg.addgame_success', array(
+            'name'=>$game->name,
+            'id' => $game->id
+        ));
+        HTML::set_success($msg);
+        Log::write('game create success', $msg);
+
         return $game;
     }
 
@@ -72,6 +83,14 @@ class Game extends Profile
             }
         }
 
+
+        $dev = Dev::where_name($input['developer_name'])->first();
+        if ( ! is_null($dev)) {
+            $input['developer_name'] = '';
+            $input['developer_id'] = $dev->id;
+        } 
+        else $input['developer_id'] = 0;
+        
         $game = parent::update($id, $input); // 
         $game = Game::find($id);
         
@@ -95,20 +114,6 @@ class Game extends Profile
         parent::passed_review($this->dev->user);
     }
 
-    /**
-     * Do stuffs when the profile failed a review
-     * @param  string $review       Review type
-     * @param  string $profile The profile type
-     */
-    public function failed_review($review, $profile = 'game', $user = null)
-    {
-        parent::failed_review($review, $profile, $this->dev->user);
-    }
-
-
-    //----------------------------------------------------------------------------------
-    // GETTERS
-
     
     //----------------------------------------------------------------------------------
     // MAGIC METHODS
@@ -123,7 +128,7 @@ class Game extends Profile
     public function __set($key, $value)
     {
         if (in_array($key, static::$json_fields)) {
-            if (in_array($key, static::$names_urls_items)) {
+            if (in_array($key, static::$names_urls_fields)) {
                 $value = clean_names_urls_array($value);
             }
 

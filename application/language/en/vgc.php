@@ -37,7 +37,8 @@ return array(
         'reviews' => 'Reviews',
 
         'screenshots' => 'Screenshots',
-        'select-first-option' => 'Select below or select this option to delete the item',
+        'select_first_option' => 'Please select',
+        'select-arrayitem-first-option' => 'Select below or select this option to delete the item',
         'site_slogan' => 'The participative and searchable video games database',
         'socialnetworks' => 'Social networks',
         'stores' => 'Stores',
@@ -62,7 +63,7 @@ return array(
 
 
         'msg' => array( 
-            'edit_other_users_proile_not_allowed' => 'You are not allowed to edit other user\'s profiles',
+            'edit_other_users_profile_not_allowed' => 'You are not allowed to edit other user\'s profiles',
 
         ),
     ),
@@ -119,7 +120,7 @@ return array(
         'editgame_nametaken' => 'Can\'t rename the game profile with name \":name\" (id : :id) because the name \":newname" is already taken.',
         
         
-        'editgame_success' => 'The game profile with name \":name\" (id : :id) has successfully been updated.',
+        
 
         'logged_in_only' => "You must be logged in to access this page.",
         'admin_only' => "You must be an administrator to access this page.",
@@ -141,7 +142,6 @@ return array(
         'game_profile_name_not_found' => "Can't find the game profile with name ':name'.",
         'game_profile_id_not_found' => "Can't find the game profile with id ':id'.",
     ),
-
 
 // MENU
 
@@ -260,6 +260,8 @@ return array(
         'edit' => array(
             'title' => 'Edit a developer profile',
             'submit' => 'Edit this developer profile',
+            'select_profile_placeholder' => 'Name or id',
+            'select_profile_help' => 'Select the developer to edit',
         ),
 
         'profile' => array(
@@ -268,22 +270,25 @@ return array(
         ),
 
         'msg' => array(
-            'adddev_success' => 'The developer profile with name \":name\" (id=:id) has successfully been created.',
-            'editdev_success' => 'The developer profile with name \":name\" (id=:id) has successfully been updated.',
+            'adddev_success' => 'The developer profile with name \":name\" (id : :id) has successfully been created.',
+            'editdev_success' => 'The developer profile with name \":name\" (id : :id) has successfully been updated.',
 
             'select_editdev_id_not_found' => 'No developer with id ":id" was found.',
             'select_editdev_name_not_found' => 'No developer with name ":name" was found.',
 
             'profile_not_found' => 'No developer profile with id ":id" was found.',
 
-            'editdev_nametaken' => 'Can\'t rename the developer profile with name \":name\" (id=:id) because the name \":newname\" is already taken.',
+            'editdev_nametaken' => 'Can\'t rename the developer profile with name \":name\" (id : :id) because the name \":newname\" is already taken.',
         ),
 
     ),
 
 // GAME 
     'game' => array(
-        'cover' => 'Box cover URL',
+        'developer_name_help' => 'OR if the developer profile does not yet exist on VGC, you can just',
+        'dev_not_in_list_link' => 'enter its name and website URL below :',
+
+        'cover' => 'Box cover',
         'devstate' => 'Developement state',
 
         'pitch' => 'Game story, features...',
@@ -316,7 +321,9 @@ return array(
 
         'edit' => array(
             'title' => 'Edit a game profile',
-            'submit' => 'Edit this game profile',            
+            'submit' => 'Edit this game profile',
+            'select_profile_placeholder' => 'Name or id',
+            'select_profile_help' => 'Select the game to edit',
         ),
 
         'profile' => array(
@@ -324,6 +331,19 @@ return array(
             'website' => 'Go to the game\'s website',
             'blogfeed' => 'Lastest articles from the blog',
             'soundtrack' => 'Get the soudtrack',
+        ),
+
+
+        'msg' => array(
+            'addgame_success' => 'The game profile with name \":name\" (id : :id) has successfully been created.',
+            'editgame_success' => 'The game profile with name \":name\" (id : :id) has successfully been updated.',
+
+            'select_editdev_id_not_found' => 'No game profile with id ":id" was found.',
+            'select_editdev_name_not_found' => 'No game profile with name ":name" was found.',
+
+            'profile_not_found' => 'No game profile with id ":id" was found.',
+
+            'editgame_nametaken' => 'Can\'t rename the game profile with name \":name\" (id : :id) because the name \":newname\" is already taken.',
         ),
 
     ), // end of game

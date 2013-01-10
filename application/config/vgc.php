@@ -23,7 +23,7 @@ return array(
 
 
     'review' => array(
-        'types' => array('submission', 'publishing'),
+        'types' => array('publishing'),
         'duration' => 7,
         'approval_threshold' => 20,
         'check_interval' => 60, // time in minutes between two review success check
@@ -31,7 +31,7 @@ return array(
 
     'privacy' => array('private', 'public'),
 
-    'privacy_and_reviews' => array('private', 'public', 'submission', 'publishing'),
+    'privacy_and_reviews' => array('private', 'public', 'publishing'),
 
     'form_attributes_to_clean' => array('csrf_token', 'password_confirmation', 'old_password', 'controller'),
 

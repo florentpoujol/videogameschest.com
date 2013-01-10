@@ -130,8 +130,6 @@ class Admin_Controller extends Base_Controller
         return Redirect::to_route('get_login');
     }
 
-    
-
     public function post_lostpassword()
     {
         $input = Input::all();
@@ -185,7 +183,7 @@ class Admin_Controller extends Base_Controller
 
     public function get_logout()
     {
-        HTML::set_success(lang('login.logout_success'));
+        HTML::set_success(lang('login.msg.logout_success'));
 
         $user = user();
         Log::write('user logout', 'User '.$user->username.' (id='.$user->id.') has logged out.');
@@ -376,7 +374,7 @@ class Admin_Controller extends Base_Controller
         }
 
         if ( ! is_admin() && $dev->user_id != user_id()) {
-            HTML::set_error(lang('common.msg.edit_other_users_proile_not_allowed'));
+            HTML::set_error(lang('common.msg.edit_other_users_profile_not_allowed'));
             return Redirect::to_route('get_editdeveloper');
         }
 
@@ -437,8 +435,8 @@ class Admin_Controller extends Base_Controller
         // checking form
         $rules = array(
             'name' => 'required|min:5|unique:games',
-            'developer_id' => 'required|exists:developers,id',
-            'logo' => 'url',
+            'developer_name' => 'required|min:5',
+            'cover' => 'url',
             'website' => 'url',
             'blogfeed' => 'url',
             'soundtrackurl' => 'url',
@@ -452,10 +450,7 @@ class Admin_Controller extends Base_Controller
         if ($validation->passes()) {
             $game = Game::create($input);
             
-            if (is_admin())
-                return Redirect::to_route('get_editgame', array($game->id));
-            else
-                return Redirect::to_route('get_home');
+            return Redirect::to_route('get_editgame', array($game->id));
         } else {
             Input::flash();
             return Redirect::back()->with_errors($validation);
@@ -468,10 +463,23 @@ class Admin_Controller extends Base_Controller
    
     public function post_selecteditgame()
     {
-        $id = Input::get('game_id', null);
-
-        if (Game::find($id) == null) {
-            HTML::set_error('No game with id ['.$id.'] was found !');
+        $name = Input::get('game_name');
+        $id = null;
+        
+        if (is_numeric($name)) {
+            if (Game::find($name) == null) {
+                HTML::set_error(lang('game.msg.select_editgame_id_not_found', array('id'=>$name)));
+            } else {
+                $id = $name;
+            }
+        } else {
+            $profile = Game::where_name($name)->first();
+            
+            if ($profile == null) {
+                HTML::set_error(lang('game.msg.select_editgame_name_not_found', array('name'=>$name)));
+            } else {
+                $id = $profile->id;
+            }
         }
 
         return Redirect::to_route('get_editgame', array($id));
@@ -479,6 +487,10 @@ class Admin_Controller extends Base_Controller
 
     public function get_editgame($profile_id = null)
     {
+        if ( ! is_admin() && empty(user()->games)) {
+            return Redirect::to_route('get_addgame');
+        }
+
         if ($profile_id == null) {
             $this->layout->nest('page_content', 'admin/selecteditgame');
             return;
@@ -487,13 +499,12 @@ class Admin_Controller extends Base_Controller
         $game = Game::find($profile_id);
 
         if ($game == null) {
-            // $profile_id was set but no game profile was found
-            HTML::set_error(lang('messages.game_profile_not_found', array('profile_id'=>$profile_id)));
+            HTML::set_error(lang('game.msg.profile_not_found'));
             return Redirect::to_route('get_editgame');
         }
 
-        if (! is_admin() && $game->developer_id != DEVELOPER_ID) {
-            HTML::set_error(lang('messages.can_not_edit_others_games'));
+        if ( ! is_admin() && $game->user_id != user_id()) {
+            HTML::set_error(lang('common.msg.edit_other_users_profile_not_allowed'));
             return Redirect::to_route('get_editgame');
         }
 
@@ -507,7 +518,7 @@ class Admin_Controller extends Base_Controller
         // checking form
         $rules = array(
             'name' => 'required|min:5',
-            'logo' => 'url',
+            'cover' => 'url',
             'website' => 'url',
             'blogfeed' => 'url',
             'presskit' => 'url',

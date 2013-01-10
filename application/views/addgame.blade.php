@@ -4,7 +4,7 @@
 <?php
 $rules = array(
     'name' => 'required|min:5',
-    'developer_id' => 'required|exists:developers,id',
+    'developer_name' => 'required|min:5',
     'cover' => 'url',
     'website' => 'url',
     'blogfeed' => 'url',
@@ -17,14 +17,21 @@ $rules = array(
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
 
-if (IS_ADMIN) {
+
+if (is_admin()) {
     $devs = Dev::get(array('id', 'name'));
     $privacy = array_set_values_as_keys(Config::get('vgc.privacy_and_reviews'));
 }
 else $devs = Dev::where_privacy('public')->get(array('id', 'name'));
+
+/*$old_devs = $devs;
+$devs = array(lang('common.select_first_option'));
+foreach ($old_devs as $dev) {
+    $devs[$dev->id] = $dev;
+}*/
 ?>
 <div id="addgame">
-    <h2>{{ lang('game.add.title') }}</h2>
+    <h1>{{ lang('game.add.title') }}</h1>
 
     <hr>
 
@@ -35,14 +42,9 @@ else $devs = Dev::where_privacy('public')->get(array('id', 'name'));
             <div class="span5">
                 {{ Former::text('name', lang('common.name')) }}
 
-                @if (Auth::guest() || IS_ADMIN)
-                    {{ Former::select('developer_id', lang('common.developer'))->fromQuery($devs) }}
-                @else
-                    You are the developer of this game. <br>
-                    {{ Former::hidden('developer_id', DEVELOPER_ID) }}
-                @endif
-
-                @if (IS_ADMIN)
+                {{ Former::text('developer_name', lang('common.developer'))->useDatalist($devs, 'name') }}
+                
+                @if (is_admin())
                     {{ Former::select('privacy')->options($privacy) }}
                 @endif
 
@@ -50,15 +52,15 @@ else $devs = Dev::where_privacy('public')->get(array('id', 'name'));
 
                 {{ Former::textarea('pitch', lang('game.pitch')) }}
 
-                {{ Former::url('cover', lang('game.cover')) }}
-                {{ Former::url('website', lang('common.website')) }}
-                {{ Former::url('blogfeed', lang('common.blogfeed')) }}
-                {{ Former::url('presskit', lang('common.presskit')) }}
-                {{ Former::url('soundtrackurl', lang('game.soundtrackurl')) }}
+                {{ Former::url('cover', lang('game.cover'))->placeholder(lang('common.url')) }}
+                {{ Former::url('website', lang('common.website'))->placeholder(lang('common.url')) }}
+                {{ Former::url('blogfeed', lang('common.blogfeed'))->placeholder(lang('common.url')) }}
+                {{ Former::url('presskit', lang('common.presskit'))->placeholder(lang('common.url')) }}
+                {{ Former::url('soundtrackurl', lang('game.soundtrackurl'))->placeholder(lang('common.url')) }}
 
                 <div class="control-group-inline">
                     {{ Former::text('publishername', lang('game.publishername')) }}
-                    {{ Former::url('publisherurl', lang('game.publisherurl')) }}
+                    {{ Former::url('publisherurl', lang('game.publisherurl'))->placeholder(lang('common.url')) }}
                 </div>  
             </div> <!-- /.span5 -->
 
@@ -109,7 +111,7 @@ else $devs = Dev::where_privacy('public')->get(array('id', 'name'));
                     $nu_select = array('socialnetworks', 'stores'); // name url select
                     foreach ($nu_select as $item):
                         $options = get_array_lang(Config::get('vgc.'.$item), $item.'.');
-                        $options = array_merge(array('' => lang('common.select-first-option')), $options);
+                        $options = array_merge(array('' => lang('common.select-arrayitem-first-option')), $options);
 
                         $values = array();
                         if (isset($old[$item])) $values = clean_names_urls_array($old[$item]);

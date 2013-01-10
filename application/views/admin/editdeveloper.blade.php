@@ -20,6 +20,7 @@ if ( ! empty($old)) Former::populate($old);
 ?>
 <div id="editdeveloper">
     <h1>{{ lang('developer.edit.title') }}</h1>
+    
     <hr>
 
     <div class="row">

@@ -18,10 +18,21 @@ Former::populate($game);
 
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
+
+if (is_admin()) {
+    $devs = Dev::get(array('id', 'name'));
+    $privacy = array_set_values_as_keys(Config::get('vgc.privacy_and_reviews'));
+}
+else $devs = Dev::where_privacy('public')->get(array('id', 'name'));
+
+if ($game->developer_id != 0) $developer_name = $game->dev->name;
+else $developer_name = $game->developer_name;
 ?>
 
 <div id="editgame">
-    <h2>{{ lang('game.edit.title') }}</h2>
+    <h1>{{ lang('game.edit.title') }}</h1>
+
+    <hr>
 
     {{ Former::open_vertical(route('post_editgame'))->rules($rules) }} 
         {{ Form::token() }}
@@ -31,25 +42,25 @@ if ( ! empty($old)) Former::populate($old);
             <div class="span5">
                 {{ Former::text('name', lang('common.name')) }}
 
-                @if (IS_ADMIN)
-                    {{ Former::select('developer_id', lang('common.developer'))->fromQuery(Dev::all()) }}
-                @else
-                    You are the developer of this game. <br>
+                {{ Former::text('developer_name', lang('common.developer'))->useDatalist($devs, 'name')->value($developer_name) }}
+                
+                @if (is_admin())
+                    {{ Former::select('privacy')->options($privacy) }}
                 @endif
 
                 {{ Former::select('devstate', lang('game.devstate'))->options(get_array_lang(Config::get('vgc.developmentstates'), 'developmentstates.'))->value('released') }}
 
                 {{ Former::textarea('pitch', lang('game.pitch')) }}
 
-                {{ Former::url('cover', lang('game.cover')) }}
-                {{ Former::url('website', lang('common.website')) }}
-                {{ Former::url('blogfeed', lang('common.blogfeed')) }}
-                {{ Former::url('presskit', lang('common.presskit')) }}
-                {{ Former::url('soundtrackurl', lang('game.soundtrackurl')) }}
+                {{ Former::url('cover', lang('game.cover'))->placeholder(lang('common.url')) }}
+                {{ Former::url('website', lang('common.website'))->placeholder(lang('common.url')) }}
+                {{ Former::url('blogfeed', lang('common.blogfeed'))->placeholder(lang('common.url')) }}
+                {{ Former::url('presskit', lang('common.presskit'))->placeholder(lang('common.url')) }}
+                {{ Former::url('soundtrackurl', lang('game.soundtrackurl'))->placeholder(lang('common.url')) }}
 
                 <div class="control-group-inline">
                     {{ Former::text('publishername', lang('game.publishername')) }}
-                    {{ Former::url('publisherurl', lang('game.publisherurl')) }}
+                    {{ Former::url('publisherurl', lang('game.publisherurl'))->placeholder(lang('common.url')) }}
                 </div>
                 <div class="clearfix"></div>
 
@@ -108,7 +119,7 @@ if ( ! empty($old)) Former::populate($old);
                         <div class="tab-pane" id="{{ $item }}">
                             <?php
                             $options = get_array_lang(Config::get('vgc.'.$item), $item.'.');
-                            $options = array_merge(array('' => lang('common.select-first-option')), $options);
+                            $options = array_merge(array('' => lang('common.select-arrayitem-first-option')), $options);
                             
                             if (isset($old[$item])) $values = clean_names_urls_array($old[$item]);
                             else $values = $game->$item;
@@ -165,37 +176,8 @@ if ( ! empty($old)) Former::populate($old);
                 <!-- /names url items -->
             </div> <!-- /.span -->
         </div> <!-- /.row -->
-                
-        <hr>
 
-        <h3>{{ lang('crosspromotion.title') }}</h3>
-
-        @if (user()->crosspromotion_subscription == 1 || IS_ADMIN)
-            <?php 
-            $url = route('get_crosspromotion', array($game->id, user()->secret_key));
-            ?>
-            <p>{{ lang('crosspromotion.edit_game_subscribers_help', array('url' => $url)) }}</p>
-
-            <?php 
-            $games = Game::all();
-            $options = array();
-
-            foreach ($games as $temp_game) {
-                if ($temp_game->id != $game->id)
-                    $options[$temp_game->id] = $temp_game->name;
-            }
-
-            if (isset($old['promoted_games'])) $values = $old['promoted_games'];
-            else $values = $game->promoted_games;
-            ?>
-            {{ Former::multiselect('promoted_games', '')->options($options)->forceValue($values) }}
-        @else
-            <p>{{ lang('crosspromotion.edit_game_nonsubscribers_help') }}</p>
-        @endif
-
-        <hr>
-
-        <input type="submit" value="{{ lang('game.edit.submit') }}" class="btn btn-primary">  
+        {{ Former::primary_submit(lang('game.edit.submit')) }}  
     </form>
 </div> <!-- /#editgame --> 
 
