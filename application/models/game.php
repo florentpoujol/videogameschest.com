@@ -6,8 +6,8 @@ class Game extends Profile
         'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'themes',
         'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos', 'reviews');
     
-    public static $array_fields = array(
-     "devices", "operatingsystems", 'genres', 'themes', 'viewpoints', 'nbplayers', 'tags', 'languages', "technologies",  );
+    public static $array_fields = array('devices', 'operatingsystems', 'genres', 'themes',
+     'viewpoints', 'nbplayers', 'tags', 'languages', 'technologies',  );
 
     public static $names_urls_fields = array('socialnetworks', 'stores', 'screenshots', 'videos', 'reviews');
 

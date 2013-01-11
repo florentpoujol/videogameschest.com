@@ -320,7 +320,7 @@ function icon($icon, $icon_white = false)
  * @param  array  $values     The values to be checked comming from the DB or the old form
  * @return HTML             The formated checkboxes
  */
-function array_to_checkboxes($field_name, $values = null) 
+function array_to_checkboxes($field_name, $values = null, $name = null) 
 {
     if (is_null($values)) $values = array(); // some times null is passed
 
@@ -338,7 +338,9 @@ function array_to_checkboxes($field_name, $values = null)
         }
     }
 
-    return Former::checkbox($field_name.'[]', '')->checkboxes($checkboxes);
+    if (is_null($name)) $name = $field_name.'[]';
+
+    return Former::checkbox($name, '')->checkboxes($checkboxes);
 }
 
 

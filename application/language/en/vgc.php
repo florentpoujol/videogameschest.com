@@ -16,11 +16,13 @@ return array(
         'country' => 'Country',
 
         'developer' => 'Developer',
+        'developers' => 'Developers',
         'devices' => 'Devices',
 
         'email' => 'Email',
 
         'game' => 'Game',
+        'games' => 'Games',
         'genres' => 'Genres',
 
         'languages' => 'Languages',
@@ -478,6 +480,10 @@ return array(
     'search' => array(
         'title' => 'Search profiles',
 
+        'hide_show_link' => 'Show/hide the search form',
+        'game_accordion_link' => 'Show more criteria for games',
+
+        'looking_for' => 'I am looking for',
         'name_or_pitch_help' => 'Whose',
         
         'words_contains' => 'Contains',
@@ -493,11 +499,24 @@ return array(
         'no_profile_found' => 'Sorry, no profiles where found with these criteria.',
         'profiles_found' => ':num profiles were found :',
 
+        'submit' => 'Search',
+
+        'devices_help' => 'are playable on,',
+        'operatingsystems_help' => 'runs on,',
+        'genres_help' => 'genre is,',
+        'themes_help' => 'theme is,',
+        'viewpoints_help' => 'point of view is,',
+        'nbplayers_help' => 'player mode is,',
+        'tags_help' => 'are tagged,',
+        'languages_help' => 'languages is,',
+        'technologies_help' => 'are made with,',
+        'stores_help' => 'and are sold on,',
+        
+        
+        
+
 
         'dev' => array(
-            
-
-
             'stores_help' => 'are sold on,',
             'devices_help' => 'are playable on,',
             'operatingsystems_help' => 'runs on,',

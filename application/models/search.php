@@ -45,7 +45,7 @@ class Search extends ExtendedEloquent
         if ($input['words_contains'] == 'all') $words_where = 'where';
         else $words_where = 'or_where';
 
-        if (isset($input['search_in_name']) || isset($input['search_in_pitch']) && trim($input['words']) != '') {
+        if (trim($input['words_list']) != '' && (isset($input['search_in_name']) || isset($input['search_in_pitch']))) {
             $words_list = explode(' ', e(trim($input['words_list'])));
             
             if (isset($input['search_in_name'])) $words['name'] = $words_list;
@@ -57,7 +57,7 @@ class Search extends ExtendedEloquent
 
 
         $profiles = $class::
-        where(function($query) use ($words, $input, $array_items, $words_where)
+        where(function($query) use ($words, $input, $array_items, $words_where, $class)
         {
             // words
             foreach ($words as $field => $values) {
@@ -73,12 +73,14 @@ class Search extends ExtendedEloquent
             
             // array items
             foreach ($array_items as $field => $values) {
-                $query->where(function($query) use ($field, $values)
-                {
-                    foreach ($values as $value) {
-                        $query->or_where($field, 'LIKE', '%'.$value.'%');
-                    }
-                });
+                if (in_array($field, $class::$array_fields)) {
+                    $query->where(function($query) use ($field, $values)
+                    {
+                        foreach ($values as $value) {
+                            $query->or_where($field, 'LIKE', '%'.$value.'%');
+                        }
+                    });
+                }
             }
         })
         ->get();
@@ -91,7 +93,7 @@ class Search extends ExtendedEloquent
      * @param  mixed  $search The search id, or search data, as array or json
      * @return mixed     False if the search does not exists, or the Search model
      */
-    public static function has($search) 
+    public static function get($search) 
     {   
         // if search is a search id
         if (is_numeric($search)) {
@@ -101,10 +103,17 @@ class Search extends ExtendedEloquent
             $search = static::where_data($search)->first();
         }
 
-        if (is_null($search)) return false;
-        else return $search;
+        return $search;
     }
 
+    public static function has($search) 
+    {   
+        // if search is a search id
+        $search = static::get($search);
+
+        if (is_null($search)) return false;
+        else return true;
+    }
 
     /**
      * Add a search in the DB if it does not exists yet
@@ -116,9 +125,9 @@ class Search extends ExtendedEloquent
     {
         if (is_array($data)) $data = json_encode(clean_form_input($data));
 
-        $search = static::has($data);
+        $search = static::get($data);
 
-        if ($search == false) {
+        if (is_null($search)) {
             $search = parent::create(array('data'=>$data));
         }
 
