@@ -2,7 +2,7 @@
 
 class Game extends Profile
 {
-    // text fields which data is stored as json
+    // fields which data is stored as json
     public static $json_fields = array('approved_by', 'promoted_games',
         'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'themes',
         'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos', 'reviews');
@@ -76,7 +76,7 @@ class Game extends Profile
         if (isset($input['name']) && $game->name != $input['name']) {  // the user want to change the name, must check is the name is not taken
             if (parent::where_name($input['name'])->first() != null) {
                 HTML::set_error(
-                    lang('messages.editgame_nametaken', array(
+                    lang('game.msg.editgame_nametaken', array(
                         'name'=>$game->name,
                         'id'=>$game->id,
                         'newname'=>$input['name'])
@@ -98,7 +98,7 @@ class Game extends Profile
         $game = parent::update($id, $input); // 
         $game = Game::find($id);
         
-        HTML::set_success(lang('messages.editgame_success'
+        HTML::set_success(lang('game.msg.editgame_success'
             ,array('name'=>$game->name, 'id'=>$game->id))
         );
         return $game;

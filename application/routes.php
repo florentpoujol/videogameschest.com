@@ -135,9 +135,9 @@ Route::get('/developer/(:any)', array('as' => 'get_developer', function($name = 
     // profile is public
     // user is admin
     // user is dev and profile is user's or in review   
-    if ($profile->privacy == 'public' || IS_ADMIN ||
-        IS_DEVELOPER && 
-            ($profile->user_id == USER_ID ||
+    if ($profile->privacy == 'public' || is_admin() ||
+        is_trusted() && 
+            ($profile->user_id == user_id() ||
             in_array($profile->privacy, Config::get('vgc.review.types')))
     ) {
         return $layout->nest('page_content', 'developerdisplay', array('profile' => $profile));

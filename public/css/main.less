@@ -97,6 +97,18 @@ body {
 
         }
 
+        .media-container {
+            overflow: auto;
+            
+            img {
+                display: inline;
+                max-width: 200px;
+                max-height: 150px;
+            }
+
+            
+        }
+
         .json-field-row {
             margin: auto; // prevent the row to go out of the cotainer
             
@@ -136,12 +148,30 @@ body {
             padding-top : 0px;
         }
 
+        #game-cover {
+            max-width: 100px;
+            max-height: 100px;
+        }
+
         #screenshots-container {
-            overflow: scroll;
-            
+            // for smoothScrollDiv jQuery plugin
+            position: relative;
+
+            div.scrollableArea *
+            {
+                position: relative;
+                display: block
+                float: left;
+                margin: 0;
+                padding: 0;
+            }
+            // /for smoothScrollDiv jQuery plugin
+
+            height: 380px;
+
             img {
-                max-width: 200px;
-                max-height: 200px;
+                max-width:480px;
+                max-height: 380px;
             }
         }
     }
@@ -169,3 +199,4 @@ body {
 
     
 }
+

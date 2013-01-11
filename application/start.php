@@ -177,4 +177,7 @@ if ( ! Request::cli() and Config::get('session.driver') !== '')
 include_once('helpers.php');
 include_once('macros.php');
 
-
+Asset::container('smoothDivScroll')->add('jquery-ui', 'js/jquery-ui-1.9.2.custom.min.js');
+Asset::container('smoothDivScroll')->add('mousewheel', 'js/jquery.mousewheel.min.js');
+Asset::container('smoothDivScroll')->add('kinetic', 'js/jquery.kinetic.js');
+Asset::container('smoothDivScroll')->add('smoothdivscroll', 'js/jquery.smoothdivscroll-1.3-min.js');

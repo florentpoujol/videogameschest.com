@@ -5,81 +5,90 @@
 
 ?>
 <div id="game-profile" class="profile">
-    <div class="row">
-        <div class="span9 pitch-block">
-            <div class="row">
-                <div class="span5">
-                    <h3>{{ $profile->name }} <small>{{ $profile->class_name }}</small></h3> 
-                </div>
-                <div class="span4 website align-center">
-                    <a href="{{ $profile->website }}" class="">{{ $profile->website }}</a>
-                </div>
-            </div>
-
-            <hr>
-
-            <p>
-                {{ $profile->get_parsed_pitch() }}
-            </p>
+    <div class="row-fluid">
+        <div class="span4">
+            <h3>{{ $profile->name }} <small>{{ $profile->class_name }}</small></h3> 
         </div>
 
-        <div class="span3">
-            <img src="{{ $profile->cover }}" alt="{{ $profile->name }} cover" class="logo" >
-
+        <div class="span3 align-center">
             <ul class="unstyled">
-                <li>{{ lang('developmentstates.title') }} : {{ substr(lang('developmentstates.'.$profile->devstate), 4) }}</li>
-
-                @if ($profile->soundtrackurl != '')
-                    <li><a href="{{ $profile->soundtrackurl }}">{{ lang('game.profile.soundtrack') }}</a></li>
-                @endif
-
                 @if ($profile->publishername != '')
                     <li>{{ lang('common.publisher') }} : <a href="{{ $profile->publisherurl }}" title="{{ $profile->publishername }}" class="">{{ $profile->publishername }}</a></li>
                 @endif
+
+                <li>{{ lang('common.developer') }} : <a href="{{ route('get_developer', array(name_to_url($profile->dev->name))) }}" title="{{ $profile->dev->name }}" class="">{{ $profile->dev->name }}</a></li>
             </ul>
+        </div>
 
-            @if ($profile->blogfeed != '')
-                <h4>{{ lang('game.profile.blogfeed') }}</h4>
+        <div class="span3 align-center">
+            <ul class="unstyled">
+                <a href="{{ $profile->website }}" class="">{{ lang('game.profile.website') }}</a>
+                @if ($profile->soundtrackurl != '')
+                    <li><a href="{{ $profile->soundtrackurl }}">{{ lang('game.profile.soundtrack') }}</a></li>
+                @endif
+            </ul>
+        </div>
 
-                <ul class="unstyled">
-                    <li>bla</li>
-                </ul>
-            @endif
+        <div class="span2">
+            <img src="{{ $profile->cover }}" alt="{{ $profile->name }} cover" id="game-cover" >
         </div>
     </div>
 
     <hr>
 
-    <div class="row json-item-row">
-        
-        <h4>{{ lang('common.screenshots') }}</h4>
-
-        <div id="screenshots-container">
-            <?php
-            $screenshots = $profile->screenshots;
+    <div class="row-fluid">
+            <?php 
+            if ($profile->blogfeed == '') $span = '12';
+            else $span = '9';
             ?>
-            @for ($i = 0; $i < count($screenshots['names']); $i++)
-                <a href="{{ $screenshots['urls'][$i] }}" title="{{ $screenshots['names'][$i] }}" class="colorbox-group1">
-                    <img src="{{ $screenshots['urls'][$i] }}" alt="{{ $screenshots['names'][$i] }}">
-                </a> 
-            @endfor
-        </div> 
+            <div class="span{{ $span }}">
+                {{ $profile->get_parsed_pitch() }}
+            </div>
+
+            @if ($profile->blogfeed != '')
+                <div class="span3">
+                    <h4>{{ lang('game.profile.blogfeed') }}</h4>
+
+                    <ul class="unstyled">
+                        <li>bla</li>
+                    </ul>
+                </div>
+            @endif
     </div>
 
     <hr>
 
-    <div class="row json-item-row">
+    <div class="row-fluid">
+        <div class="span5">
+            <h4>{{ lang('common.screenshots') }}</h4>
+
+            <div id="screenshots-container">
+                <?php
+                $screenshots = $profile->screenshots;
+                ?>
+                @for ($i = 0; $i < count($screenshots['names']); $i++)
+                    <a href="{{ $screenshots['urls'][$i] }}" title="{{ $screenshots['names'][$i] }}" class="colorbox-group1">
+                        <img src="{{ $screenshots['urls'][$i] }}" alt="{{ $screenshots['names'][$i] }}" id="utyhg_{{ $i }}">
+                    </a> 
+                @endfor
+            </div> 
+        </div>
+
+        <div class="span5 offset1">
+            <h4>{{ lang('common.videos') }}</h4>
         
-        <h4>{{ lang('common.videos') }}</h4>
-        
-        <div id="videos-container">
-            <?php
-            $videos = $profile->videos;
-            ?>
-            @for ($i = 0; $i < count($videos['names']); $i++)
-                
-            @endfor
-        </div> 
+            <div class="media-container">
+                <?php
+                $videos = $profile->videos;
+                ?>
+                @for ($i = 0; $i < count($videos['names']); $i++)
+                    <!-- <a href="{{ $videos['urls'][$i] }}" title="{{ $videos['names'][$i] }}" class="colorbox-group1">
+                           {{  $videos['names'][$i] }} <br>
+                        </a> --> 
+                        {{ video_frame($videos['urls'][$i])}}
+                @endfor
+            </div>
+        </div>
     </div>
 
     <hr>
@@ -149,12 +158,22 @@
 
 @section('cssfiles')
     {{ HTML::style('css/colorbox.css') }}
+    {{ HTML::style('css/smoothDivScroll.css') }}
 @endsection
+
 @section('jsfiles')
     {{ HTML::script('js/jquery.colorbox-min.js') }}
+    <!-- smoothDivScroll js files -->
+    {{ Asset::container('smoothDivScroll')->scripts() }}
+    <!-- /smoothDivScroll -->
 @endsection
 
 @section('jQuery')
     $(".colorbox-group1").colorbox({rel:"group1"});
+
+    $("#screenshots-container").smoothDivScroll({
+        manualContinuousScrolling: true,
+        autoScrollingMode: "onStart",
+    });
 @endsection
 

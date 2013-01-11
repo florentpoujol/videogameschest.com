@@ -350,5 +350,16 @@ function xss_secure($string)
     else return $string;
 }
 
+function video_frame($link, $width = null, $height = null)
+{
+    // ration wdith/height : 1.8
+    if (is_null($width)) {
+        $width = 450;
+    }
 
+    if(is_null($height)) $height = $width/1.8;
+
+    return '<iframe width="'.$width.'" height="'.$height.'" src="'.$link.'" frameborder="0"
+    allowfullscreen></iframe>';
+}
 
