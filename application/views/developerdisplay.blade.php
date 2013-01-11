@@ -4,7 +4,7 @@
 
 <div id="developer-profile" class="profile">
     <div class="row">
-        <div class="span4">
+        <div class="span5">
             <h3>{{ $profile->name }} <small>{{ $profile->class_name }}</small></h3> 
             
         </div>
@@ -36,31 +36,52 @@
 
     <hr>
 
-    <div class="row json-item-row">
+    <div class="row json-field-row">
         
         <?php 
-        $items = array('socialnetworks', 'stores', 'devices', 'operatingsystems', 'technologies');
-        foreach ($items as $item):
+        $fields = array('socialnetworks', 'stores', 'devices', 'operatingsystems', 'technologies');
+        foreach ($fields as $field):
         ?>
-            <div class="span2 json-item-div">
-                <h4>{{ lang($item.'.title') }}</h4>
+            <div class="span2 json-field-div">
+                <h4>{{ lang($field.'.title') }}</h4>
 
                 <ul class="unstyled">
-                    @if ($item == 'socialnetworks')
-                        <?php $array = $profile->$item; ?>
+                    @if ($field == 'socialnetworks')
+                        <?php $array = $profile->$field; ?>
 
                         @for ($i = 0; $i < count($array['names']); $i++)
-                            <li>{{ icon($array['names'][$i]) }}<a href="{{ $array['urls'][$i] }}">{{ lang($item.'.'.$array['names'][$i]) }}</a></li>
+                            <li>{{ icon($array['names'][$i]) }}<a href="{{ xss_secure($array['urls'][$i]) }}">{{ lang($field.'.'.$array['names'][$i]) }}</a></li>
                         @endfor
                     @else
-                        @foreach ($profile->$item as $name)
-                            <li>{{ icon($name) }}{{ lang($item.'.'.$name) }}</li>
+                        @foreach ($profile->$field as $name)
+                            <li>{{ icon($name) }}{{ lang($field.'.'.$name) }}</li>
                         @endforeach
                     @endif
                 </ul>
             </div>
         @endforeach 
     
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="span12">
+            <h3>{{ lang('common.games') }}</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span12">
+            <?php
+            $profiles = $profile->games;
+            ?>
+            @if (empty($profiles))
+                <p>No games</p>
+            @else
+                @include('partials.profile_list')
+            @endif
+        </div>
     </div>
 
     <hr>

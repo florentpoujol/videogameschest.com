@@ -32,7 +32,7 @@ if ( ! empty($old)) Former::populate($old);
                 {{ Former::text('name', lang('common.name'))->help(lang('developer.name_help')) }}
                 {{ Former::text('email', lang('common.email')) }}
 
-                {{ Former::textarea('pitch', lang('developer.pitch'))->help(lang('admin.bbcode_explanation')) }}
+                {{ Former::textarea('pitch', lang('developer.pitch'))->help(lang('common.bbcode_explanation')) }}
 
                 {{ Former::url('logo', lang('common.logo'))->placeholder(lang('common.url')) }}
                 {{ Former::url('website', lang('common.website'))->placeholder(lang('common.url')) }}

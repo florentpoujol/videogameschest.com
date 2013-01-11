@@ -10,15 +10,12 @@ if ( ! isset($modal)) $modal = false;
     <h3>{{ lang('reports.form_title') }}</h3>
 
     @if ($modal)
-        </div> <!-- /.modal-body -->
-    @endif
-
-    {{ Former::open_vertical('admin/reports')->rules(array('message'=>'required|min:10')) }}
+        </div> <!-- /.modal-header -->
     
-    @if ($modal)
         <div class="modal-body">
     @endif
 
+    {{ Former::open_vertical('admin/reports')->rules(array('message'=>'required|min:10')) }}
         {{ Form::token() }}
         {{ Former::hidden('action', 'create') }}
         {{ Former::hidden(strtolower(get_class($profile)).'_id', $profile->id) }}
@@ -36,10 +33,9 @@ if ( ! isset($modal)) $modal = false;
 
         <input type="submit" value="{{ lang('reports.submit_dev') }}" class="btn btn-primary left-align"> 
         <input type="submit" name="admin" value="{{ lang('reports.submit_admin') }}" class="btn btn-danger btn-small">
-
+    </form>
+    
     @if ($modal)
         </div> <!-- /.modal-footer -->
-    @endif
-
-    </form>
+    @endif    
 </div>

@@ -12,13 +12,15 @@
                     <h3>{{ $profile->name }} <small>{{ $profile->class_name }}</small></h3> 
                 </div>
                 <div class="span4 website align-center">
-                    <a href="{{ $profile->website }}" class="">{{ lang('game.profile.website') }}</a>
+                    <a href="{{ $profile->website }}" class="">{{ $profile->website }}</a>
                 </div>
             </div>
 
             <hr>
 
-            {{ $profile->get_parsed_pitch() }}
+            <p>
+                {{ $profile->get_parsed_pitch() }}
+            </p>
         </div>
 
         <div class="span3">
@@ -31,17 +33,17 @@
                     <li><a href="{{ $profile->soundtrackurl }}">{{ lang('game.profile.soundtrack') }}</a></li>
                 @endif
 
-                @if ($profile->price != '')
-                    <li>{{ lang('game.profile.price') }} : {{ $profile->price }}</a></li>
-                @endif
-
                 @if ($profile->publishername != '')
-                    <li><a href="{{ $profile->publisherurl }}" title="{{ $profile->publishername }}" class="">{{ $profile->publishername }}</a> }}</li>
+                    <li>{{ lang('common.publisher') }} : <a href="{{ $profile->publisherurl }}" title="{{ $profile->publishername }}" class="">{{ $profile->publishername }}</a></li>
                 @endif
             </ul>
 
             @if ($profile->blogfeed != '')
                 <h4>{{ lang('game.profile.blogfeed') }}</h4>
+
+                <ul class="unstyled">
+                    <li>bla</li>
+                </ul>
             @endif
         </div>
     </div>
@@ -50,16 +52,16 @@
 
     <div class="row json-item-row">
         
-        <h4>{{ lang('game.fields.screenshots_title') }}</h4>
+        <h4>{{ lang('common.screenshots') }}</h4>
 
         <div id="screenshots-container">
             <?php
             $screenshots = $profile->screenshots;
-            for ($i = 0; $i < count($screenshots['names']); $i++):
             ?>
-            <a href="{{ $screenshots['urls'][$i] }}" title="{{ $screenshots['names'][$i] }}" class="colorbox-group1">
-                <img src="{{ $screenshots['urls'][$i] }}" alt="{{ $screenshots['names'][$i] }}">
-            </a>
+            @for ($i = 0; $i < count($screenshots['names']); $i++)
+                <a href="{{ $screenshots['urls'][$i] }}" title="{{ $screenshots['names'][$i] }}" class="colorbox-group1">
+                    <img src="{{ $screenshots['urls'][$i] }}" alt="{{ $screenshots['names'][$i] }}">
+                </a> 
             @endfor
         </div> 
     </div>
@@ -68,8 +70,16 @@
 
     <div class="row json-item-row">
         
-        <h4>{{ lang('game.fields.videos_title') }}</h4>
-    
+        <h4>{{ lang('common.videos') }}</h4>
+        
+        <div id="videos-container">
+            <?php
+            $videos = $profile->videos;
+            ?>
+            @for ($i = 0; $i < count($videos['names']); $i++)
+                
+            @endfor
+        </div> 
     </div>
 
     <hr>

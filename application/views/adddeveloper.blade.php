@@ -41,7 +41,7 @@ if (is_admin()) {
                     {{ Former::select('privacy')->options($privacy) }}
                 @endif
                 
-                {{ Former::textarea('pitch', lang('developer.pitch')) }}
+                {{ Former::textarea('pitch', lang('developer.pitch'))->placeholder(lang('common.bbcode_explanation')) }}
 
                 {{ Former::url('logo', lang('common.logo'))->placeholder(lang('common.url')) }}
                 {{ Former::url('website', lang('common.website'))->placeholder(lang('common.url')) }}

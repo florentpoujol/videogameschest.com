@@ -344,6 +344,11 @@ function array_to_checkboxes($field_name, $values = null, $name = null)
 }
 
 
+function xss_secure($string)
+{
+    if (is_string($string)) return e($string);
+    else return $string;
+}
 
 
 

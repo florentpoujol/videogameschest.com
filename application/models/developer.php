@@ -2,13 +2,17 @@
 
 class Developer extends Profile
 {
+    // text fields which data is stored as json
     public static $json_fields = array("stores", "devices", "operatingsystems", "technologies", 'socialnetworks', 'approved_by');
 
+    // text fields which data is stored as json array
     public static $array_fields = array("stores", "devices", "operatingsystems", "technologies", );
 
+    // text fields which data is stored as json object with a 'names' and 'urls' keys containing an array ot items
     public static $names_urls_fields = array('socialnetworks');
 
-    public static $secured_fields = array('name', 'email', 'pitch', 'logo', 'website', 'blogfeed', 'presskit','country');
+    // fields to secure against XSS before displaying
+    public static $secured_fields = array('name', 'email', 'pitch', 'logo', 'website', 'email', 'blogfeed', 'presskit');
 
 
     //----------------------------------------------------------------------------------
@@ -153,12 +157,19 @@ class Developer extends Profile
     public function __get($key)
     {
         if (in_array($key, static::$json_fields)) {
-            $data = json_decode($this->get_attribute($key), true);
+            $attr = $this->get_attribute($key);
+
+            if (in_array($key, static::$array_fields)) {
+                // make sure $attr is a json array and not an empty string
+                if (trim($attr) == '') $attr = '[]';
+            }
+
+            $data = json_decode($attr, true);
         }
 
-       /* elseif (in_array($key, static::$secured_items)) {
-            return Security::xss_clean(e($this->get_attribute($key)));
-        }*/
+        elseif (in_array($key, static::$secured_fields)) {
+            return xss_secure($this->get_attribute($key));
+        }
 
         else $data = parent::__get($key);
 

@@ -50,7 +50,7 @@ foreach ($old_devs as $dev) {
 
                 {{ Former::select('devstate', lang('game.devstate'))->options(get_array_lang(Config::get('vgc.developmentstates'), 'developmentstates.'))->value('released') }}
 
-                {{ Former::textarea('pitch', lang('game.pitch')) }}
+                {{ Former::textarea('pitch', lang('game.pitch'))->placeholder(lang('common.bbcode_explanation')) }}
 
                 {{ Former::url('cover', lang('game.cover'))->placeholder(lang('common.url')) }}
                 {{ Former::url('website', lang('common.website'))->placeholder(lang('common.url')) }}

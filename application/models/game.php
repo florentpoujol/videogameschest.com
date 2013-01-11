@@ -2,16 +2,20 @@
 
 class Game extends Profile
 {
+    // text fields which data is stored as json
     public static $json_fields = array('approved_by', 'promoted_games',
         'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'themes',
         'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos', 'reviews');
     
+    // text fields which data is stored as json array
     public static $array_fields = array('devices', 'operatingsystems', 'genres', 'themes',
      'viewpoints', 'nbplayers', 'tags', 'languages', 'technologies',  );
 
+    // text fields which data is stored as json object with a 'names' and 'urls' keys containing an array ot items
     public static $names_urls_fields = array('socialnetworks', 'stores', 'screenshots', 'videos', 'reviews');
 
-    public static $secured_fields = array('name', 'pitch', 'cover', 'website', 'blogfeed', 'presskit', 'country');
+    // fields to secure against XSS before displaying
+    public static $secured_fields = array('name', 'pitch', 'cover', 'website', 'blogfeed', 'presskit',);
 
     //----------------------------------------------------------------------------------
     // CONSTRUCTOR

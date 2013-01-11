@@ -171,9 +171,9 @@ Route::get('/game/(:any)', array('as' => 'get_game', function($name = null) use 
     // profile is public
     // user is admin
     // user is dev and profile is user's or in review
-    if ($profile->privacy == 'public' || IS_ADMIN ||
-        IS_DEVELOPER && 
-            ($profile->user_id == USER_ID ||
+    if ($profile->privacy == 'public' || is_admin() ||
+        is_trusted() && 
+            ($profile->user_id == user_id() ||
             in_array($profile->privacy, Config::get('vgc.review.types')))
     ) {
         return $layout->nest('page_content', 'gamedisplay', array('profile' => $profile));
@@ -342,7 +342,7 @@ Route::group(array('before' => 'csrf'), function()
 });
 
 Event::listen('laravel.query', function($sql, $bindings, $time) {
-    var_dump($sql);
+    //var_dump($sql);
 });
 
 

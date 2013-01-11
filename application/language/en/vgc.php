@@ -10,7 +10,9 @@ return array(
 // COMMON
 
     'common' => array(
-        
+        'bbcode_explanation' => 'You may use the following BBCode tags : h1, h2, b, i and url=. Full urls are automatically parsed in links.',
+        // 'You may use HTML in the textarea above (only when editing a profile).'
+
         'blogfeed' => 'Blog RSS/Atom feed',
 
         'country' => 'Country',
@@ -35,6 +37,7 @@ return array(
 
         'pitch' => 'Pitch',
         'presskit' => 'Press Kit',
+        'publisher' => 'Publisher',
 
         'reviews' => 'Reviews',
 
@@ -353,8 +356,7 @@ return array(
 // ADMIN
 
     'admin' => array(
-        'bbcode_explanation' => 'You may use the following BBCode tags : b, i and url=. Full urls are automatically parsed in links.',
-        // 'You may use HTML in the textarea above (only when editing a profile).'
+        
 
 
         'home' => array(

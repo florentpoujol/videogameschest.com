@@ -9,7 +9,7 @@ if ( ! empty($old)) Former::populate($old);
 if ( ! isset($search_data)) $search_data = array();
 if ( ! empty($search_data)) Former::populate($search_data);
 
-var_dump($search_data);
+//var_dump($search_data);
 
 $default_tab = 'developer';
 if (isset($old['class'])) $default_tab = $old['class'];
@@ -46,7 +46,20 @@ else $accordion_default_state = 'in';
 @if (isset($profiles))
     <hr>
 
-    @include('profile_list')
+    <?php
+    $count = count($profiles);
+    ?>
+    @if ($count <= 0)
+        <p id="profile-list">
+            {{ lang('search.no_profile_found') }}
+        </p>
+    @else
+        <p id="profile-list">
+            {{ lang('search.profiles_found', array('num'=>$count)) }}
+        </p>
+
+        @include('partials.profile_list')
+    @endif
 @endif 
 {{-- if (isset($profiles)) --}}
 

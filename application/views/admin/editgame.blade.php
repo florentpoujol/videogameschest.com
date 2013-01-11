@@ -50,7 +50,7 @@ else $developer_name = $game->developer_name;
 
                 {{ Former::select('devstate', lang('game.devstate'))->options(get_array_lang(Config::get('vgc.developmentstates'), 'developmentstates.'))->value('released') }}
 
-                {{ Former::textarea('pitch', lang('game.pitch')) }}
+                {{ Former::textarea('pitch', lang('game.pitch'))->help(lang('common.bbcode_explanation')) }}
 
                 {{ Former::url('cover', lang('game.cover'))->placeholder(lang('common.url')) }}
                 {{ Former::url('website', lang('common.website'))->placeholder(lang('common.url')) }}
