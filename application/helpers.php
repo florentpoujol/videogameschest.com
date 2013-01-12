@@ -350,16 +350,41 @@ function xss_secure($string)
     else return $string;
 }
 
+
+
 function video_frame($link, $width = null, $height = null)
 {
-    // ration wdith/height : 1.8
+    // ration wdith/height : 1.77
     if (is_null($width)) {
         $width = 450;
     }
 
-    if(is_null($height)) $height = $width/1.8;
+    if(is_null($height)) $height = $width/1.77;
 
-    return '<iframe width="'.$width.'" height="'.$height.'" src="'.$link.'" frameborder="0"
-    allowfullscreen></iframe>';
+    // youtube
+    // standard urls : youtube.com/watch?v=B0ewUjc3wbs youtu.be/B0ewUjc3wbs  
+    // embed : http://www.youtube.com/embed/B0ewUjc3wbs http://youtube.googleapis.com/v/0l9oOGCie4w
+    if (strpos($link, 'youtu') && ! strpos($link, 'youtube.googleapis.com') && ! strpos($link, '/embed/')) {
+        $embed_link = preg_replace("#(.*)(/watch\?v=|\.be/|/v/)([a-zA-Z0-9]+)((&|/)?.*)#", 'http://www.youtube.com/embed/$3', $link);
+    }
+
+    // vimeo
+    // stadard : http://vimeo.com/57183688
+    // embed : http://player.vimeo.com/video/57183688
+    elseif (strpos($link, 'vimeo.com')) {
+        $embed_link = preg_replace("#(.*)(vimeo\.com/)([0-9]{8})(.*)#", 'http://player.vimeo.com/video/$3?title=0&amp;byline=0&amp;portrait=0', $link);
+    }
+
+    // dailymotion
+    // standard : http://www.dailymotion.com/video/{id}_{long text}
+    // embed : http://www.dailymotion.com/embed/video/{id}
+    elseif (strpos($link, 'dailymotion.com')) {
+        $embed_link = preg_replace("#(.*)(video/)([a-zA-Z0-9]+)(_.*)#", 'http://www.dailymotion.com/embed/video/$3', $link);
+    }
+
+    if ( ! is_null($embed_link)) {
+        return '<iframe width="'.$width.'" height="'.$height.'" src="'.$embed_link.'" frameborder="0"
+        allowfullscreen></iframe>';
+    } else return '';
 }
 

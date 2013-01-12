@@ -240,6 +240,7 @@ return array(
         "sidescrolling",
         "turnbased",
         "topdown",
+        'pixelart',
     ),
 
     // ICONS

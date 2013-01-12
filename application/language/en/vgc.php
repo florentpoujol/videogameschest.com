@@ -797,5 +797,6 @@ return array(
         'sidescrolling' => 'Side-Scrolling',
         'turnbased' => 'Turn-Based',
         'topdown' => 'Top-Down',
+        'pixelart' => 'Pixel Art'
     ),
 );
