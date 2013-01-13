@@ -205,6 +205,7 @@ return array(
         "arcade",
         "citybuilding",
         "fighting",
+        "hackandslash",
         "platformer",
         "pointandclick",
         "puzzle",

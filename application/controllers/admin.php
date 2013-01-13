@@ -256,6 +256,7 @@ class Admin_Controller extends Base_Controller
         $rules = array(
             'username' => 'required|min:5',
             'email' => 'required|min:5|email',
+            'url_key' => 'min:10|alpha_num',
         );
         
         $validation = Validator::make($input, $rules);
@@ -270,7 +271,7 @@ class Admin_Controller extends Base_Controller
 
                 $rules = array(
                     'password' => 'required|min:5|confirmed',
-                    'password_confirmation' => 'required|min:5|required_with:password',
+                    'password_confirmation' => 'required|min:5',
                     'old_password' => 'required|min:5',
                 );
 
@@ -440,9 +441,9 @@ class Admin_Controller extends Base_Controller
             'website' => 'url',
             'blogfeed' => 'url',
             'soundtrackurl' => 'url',
-            'publishername' => 'min:2|required_with:publisherurl',
+            'publishername' => 'min:2|alpha',
             'publisherurl' => 'url|required_with:publishername',
-            'price' => 'min:0',
+
         );
 
         $validation = Validator::make($input, $rules);

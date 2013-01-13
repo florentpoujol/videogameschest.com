@@ -6,10 +6,10 @@
 $rules = array(
     'username' => 'required|min:5',
     'email' => 'required|min:5|email',
+    'url_key' => 'min:10|alpha_num',
     'password' => 'min:5|confirmed',
     'password_confirmation' => 'min:5|required_with:password',
     'oldpassword' => 'min:5|required_with:password',
-    'type' => 'required|in:dev,admin'
 );
 
 $user = User::find($user_id);
@@ -43,10 +43,10 @@ if ( ! empty($old)) {
 
         {{ Former::email('email', lang('common.email')) }}
 
-        {{ Former::xlarge_text('secret_key', 'Secret key')->help(lang('user.secret_key_help')) }}
+        {{ Former::text('url_key', 'Url key')->help(lang('user.url_key_help')) }}
 
         @if (is_admin())
-            {{ Former::text('type', 'Account type')->help('"dev" or "admin"') }}
+            {{ Former::text('type', 'Account type')->help('"user," "dev" or "admin"') }}
         @endif
 
         {{ Former::password('password') }}
@@ -54,6 +54,8 @@ if ( ! empty($old)) {
         {{ Former::password('password_confirmation', 'Password Confirmation') }}
 
         {{ Former::password('old_password', 'Old password')->help(lang('user.old_password_help')) }}
+
+        <hr>
 
         {{ Former::primary_submit(lang('user.edit_title')) }}
 

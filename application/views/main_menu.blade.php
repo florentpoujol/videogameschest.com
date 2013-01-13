@@ -12,7 +12,7 @@
                 <?php 
                 $menu_items = array('home', 'search'); 
 
-                if (is_guest()) $menu_items[] = 'register';
+                
                 ?>
                 @foreach ($menu_items as $menu_item)
                     <li><a href="{{ route('get_'.$menu_item) }}">{{ lang('menu.'.$menu_item) }}</a></li>
@@ -61,7 +61,8 @@
                         </ul>
                     </li> <!-- /Admin menu -->
                 @else
-                    <li><a href="{{ route('get_login') }}"><i class="icon-user"></i>{{ lang('menu.login.title') }}</a></li>
+                    <li><a href="{{ route('get_register') }}">{{ lang('menu.register') }}</a></li>
+                    <li><a href="{{ route('get_login') }}">{{ lang('menu.login.title') }}</a></li>
                 @endif
 
                 <!-- language menu 

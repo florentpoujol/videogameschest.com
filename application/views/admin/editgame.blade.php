@@ -9,7 +9,7 @@ $rules = array(
     'blogfeed' => 'url',
     'presskit' => 'url',
     'soundtrackurl' => 'url',
-    'publishername' => 'min:2',
+    'publishername' => 'min:2|aplha',
     'publisherurl' => 'url|required_with:publishername',
 );
 

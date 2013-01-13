@@ -67,7 +67,7 @@
     <hr>
 
     <div class="row-fluid">
-        <div class="span5">
+        <div class="span12">
             <h4>{{ lang('common.screenshots') }}</h4>
 
             <div id="screenshots-container">
@@ -81,19 +81,20 @@
                 @endfor
             </div> 
         </div>
+    </div>
 
-        <div class="span5 offset1">
+    <hr>
+
+    <div class="row-fluid">
+        <div class="span12">
             <h4>{{ lang('common.videos') }}</h4>
         
-            <div class="media-container">
+            <div id="videos-container">
                 <?php
                 $videos = $profile->videos;
                 ?>
                 @for ($i = 0; $i < count($videos['names']); $i++)
-                    <!-- <a href="{{ $videos['urls'][$i] }}" title="{{ $videos['names'][$i] }}" class="colorbox-group1">
-                           {{  $videos['names'][$i] }} <br>
-                        </a> --> 
-                        {{ video_frame($videos['urls'][$i])}}
+                    {{ video_frame($videos['urls'][$i]) }}
                 @endfor
             </div>
         </div>
@@ -101,7 +102,7 @@
 
     <hr>
 
-    <div class="row json-item-row json-item-row-6">
+    <div class="row-fluid json-item-row json-item-row-6">
         
         <?php 
         $items = array('socialnetworks', 'stores', 'devices', 'operatingsystems',  'genres','themes',);
@@ -163,8 +164,6 @@
             @include('report_form')
         </div>
     </div>
-
-    {{ var_dump(RSSReader::read('http://forums.laravel.io/extern.php?action=feed'))}}
 </div>
 
 @section('cssfiles')
@@ -183,7 +182,12 @@
     $(".colorbox-group1").colorbox({rel:"group1"});
 
     $("#screenshots-container").smoothDivScroll({
-        manualContinuousScrolling: true,
+        manualContinuousScrolling: false,
+        autoScrollingMode: "onStart",
+    });
+
+    $("#videos-container").smoothDivScroll({
+        manualContinuousScrolling: false,
         autoScrollingMode: "onStart",
     });
 @endsection

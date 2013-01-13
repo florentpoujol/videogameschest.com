@@ -71,11 +71,11 @@ function parse_bbcode($input)
 {
     $input = preg_replace( "#\[b\](.+)\[/b\]#", "<strong>$1</strong>", $input);
     $input = preg_replace( "#\[i\](.+)\[/i\]#", "<em>$1</em>", $input);
-    $input = preg_replace( "#\[h3\](.+)\[/h3\]#", "<h3>$1</h3>", $input);
-    $input = preg_replace( "#\[h4\](.+)\[/h4\]#", "<h4>$1</h4>", $input);
-    $input = preg_replace( "#https?://[^ ]+#i", '<a href="$0">$0</a>', $input);
+    $input = preg_replace( "#\[h1\](.+)\[/h1\]#", "<h3>$1</h3>", $input);
+    $input = preg_replace( "#\[h2\](.+)\[/h2\]#", "<h4>$1</h4>", $input);
+    //$input = preg_replace( "#https?://[^ ]+#i", '<a href="$0">$0</a>', $input);
     //$input = preg_replace( "#\[url\](.+)\[/url\]#", '<a href="$1">$1</a>', $input);
-    $input = preg_replace( "#\[url=(.+)\](.+)\[/url\]#", '<a href="$1" title="$2">$2</a>', $input);
+    //$input = preg_replace( "#\[url=(.+)\](.+)\[/url\]#", '<a href="$1" title="$2">$2</a>', $input);
     //$input = preg_replace( "#\[br\]#", '<br>', $input);
     return $input;
 }
@@ -355,11 +355,15 @@ function xss_secure($string)
 function video_frame($link, $width = null, $height = null)
 {
     // ration wdith/height : 1.77
-    if (is_null($width)) {
-        $width = 450;
+    $ratio = 1.77;
+    if (is_null($width) && is_null($height)) {
+        $width = 530; // w530 = h300
+        $height = $width/$ratio;
+    } elseif ( ! is_null($width) && is_null($height)) {
+        $height = $width/$ratio;
+    } elseif (is_null($width) && ! is_null($height)) {
+        $width = $height*$ratio;
     }
-
-    if(is_null($height)) $height = $width/1.77;
 
     // youtube
     // standard urls : youtube.com/watch?v=B0ewUjc3wbs youtu.be/B0ewUjc3wbs  

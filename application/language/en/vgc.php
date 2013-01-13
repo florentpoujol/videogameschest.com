@@ -10,7 +10,7 @@ return array(
 // COMMON
 
     'common' => array(
-        'bbcode_explanation' => 'You may use the following BBCode tags : h1, h2, b, i and url=. Full urls are automatically parsed in links.',
+        'bbcode_explanation' => 'You may use the following BBCode tags : h1, h2, b and i.',
         // 'You may use HTML in the textarea above (only when editing a profile).'
 
         'blogfeed' => 'Blog RSS/Atom feed',
@@ -231,9 +231,7 @@ return array(
 
         'subscription_title' => 'Subscriptions',
 
-        'secret_key_help' => 
-        'This string is used to access various things linked to your user account like your report RSS feed or the cross-promotion service.<br>
-        This is not a hash of something, this is just a random and unique string stored as-is in the database. You may update it.',
+        'url_key_help' => 'This random string is used to access various things related to you user account via URL. You may update it but keep it secret.',
         'old_password_help' => 'In order to update your password, enter your old password here.',
 
         'msg_wrong_old_password' => 'The old password does not match your current password.',
@@ -766,8 +764,9 @@ return array(
         'roguelike' => 'Rogue-like',
         'roleplaying' => 'Role playing',
         'rts' => 'Real Time Strategy',
-        'shootemup' => 'Shoot\'Em\'Up',
+        'shootemup' => 'Shoot\'Em Up',
         'towerdefense' => 'Tower Defense',
+        'hackandslash' => 'Hack and slash',
     ),
 
 // POINT OF VIEW

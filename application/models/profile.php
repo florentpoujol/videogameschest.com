@@ -83,13 +83,15 @@ class Profile extends ExtendedEloquent
     public function to_crosspromotion_array()
     {
         $unset = array('id', 'developer_id', 'created_at', 'updated_at', 'privacy', 'approved_by', 'promoted_games');
+        
         $game = $this->attributes;
         
-        foreach ($unset as $item) {
-            if (isset($game[$item])) unset($game[$item]);
+        foreach ($unset as $field) {
+            if (isset($game[$field])) unset($game[$field]);
         }
 
-        $game['pitch_html'] = parse_bbcode($game['pitch']);
+        $game['pitch_html'] = get_parsed_pitch();
+        $game['url'] = 'http://videogameschest.com/'.$this->class_name.'/'.name_to_url($this->name);
         
         return $game;
     }

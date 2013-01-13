@@ -113,7 +113,7 @@ Route::get('/search/(:num?)', array('as' => 'get_search', function($search_id = 
 // DISPLAY PROFILE
 //----------------------------------------------------------------------------------
 
-Route::get('/developer/(:any)', array('as' => 'get_developer', function($name = null) use ($layout)
+Route::get('/developer/(:any?)', array('as' => 'get_developer', function($name = null) use ($layout)
 {
     if (is_null($name)) return Redirect::to_route('get_search');
     
@@ -149,7 +149,7 @@ Route::get('/developer/(:any)', array('as' => 'get_developer', function($name = 
 
 
 
-Route::get('/game/(:any)', array('as' => 'get_game', function($name = null) use ($layout)
+Route::get('/game/(:any?)', array('as' => 'get_game', function($name = null) use ($layout)
 {
     if (is_null($name)) return Redirect::to_route('get_search');
     
@@ -205,16 +205,16 @@ Route::get('setlanguage/(:any?)', array('as' => 'get_set_language', 'do' => func
 // CROSS PROMOTION
 //----------------------------------------------------------------------------------
 
-Route::get('crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion', 'do' => function($game_id, $user_secret_key)
+Route::get('crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion', 'do' => function($game_id, $user_url_key)
 {
     $game = Game::find($game_id);
 
     if (is_null($game)) {
-        return Response::json(array('No game with id ['.$game_id.'] has been found'));
+        return Response::json(array('No game with id ['.$game_id.'] has been found.'));
     }
 
-    if ($game->user->secret_key != $user_secret_key) {
-        return Response::json(array('The secret key ['.$user_secret_key.'] does not match the secret key of user the game is linked to'));
+    if ($game->user->url_key != $user_url_key) {
+        return Response::json(array('The url key ['.$user_url_key.'] does not match the url key of the user the game is linked to.'));
     }
 
     $promoted_games = $game->promoted_games;

@@ -28,12 +28,12 @@ class User extends ExtendedEloquent
         }
         
         // secret key
-        $input["secret_key"] = Str::random(20);
-        $try = 0;
+        $input["url_key"] = Str::random(20);
+        /*$try = 0;
         while ($try < 10000 && parent::where('secret_key', '=', $input['secret_key'])->first() != null) {
             $input["secret_key"] = Str::random(20);
             $try++;
-        }
+        }*/
 
         // type
         if ( ! isset($input['type'])) $input['type'] = 'user';
@@ -80,6 +80,8 @@ class User extends ExtendedEloquent
 
         if ( ! isset($input['crosspromotion_subscription'])) $input['crosspromotion_subscription'] = 0;
         else $input['crosspromotion_subscription'] = 1;
+
+        $input['url_key'] = str_replace('/', '', $input['url_key']);
 
         parent::update($id, $input);
         $user = User::find($id);
