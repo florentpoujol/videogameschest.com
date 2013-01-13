@@ -10,7 +10,7 @@ $page_content .= Section::yield('page_content');
 ?><!DOCTYPE html>
 <html lang="{{ LANGUAGE }}"> 
     <head>
-        <title>{{ $page_title }} | VideoGamesChest.com</title>
+        <title>{{ $page_title }} - VideoGamesChest.com</title>
 
         <!-- Meta --> 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">

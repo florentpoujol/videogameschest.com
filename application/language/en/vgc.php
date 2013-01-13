@@ -39,12 +39,14 @@ return array(
         'presskit' => 'Press Kit',
         'publisher' => 'Publisher',
 
+        'report_profile_link' => 'Report this profile',
         'reviews' => 'Reviews',
 
         'screenshots' => 'Screenshots',
         'select_first_option' => 'Please select',
         'select-arrayitem-first-option' => 'Select below or select this option to delete the item',
-        'site_slogan' => 'The participative and searchable video games database',
+        //'site_slogan' => 'The participative and searchable video games database',
+        'site_slogan' => 'The place to hunt down for the treasures of video games',
         'socialnetworks' => 'Social networks',
         'stores' => 'Stores',
         'subscription' => 'Subscription',

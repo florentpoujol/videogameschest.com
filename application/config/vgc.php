@@ -37,7 +37,8 @@ return array(
 
     'dummie_password' => 'testtest', //r!&5éT[79m},D?4â+5w% temp password while user is in submission review
 
-     
+    'dev_feed_item_count' => 6,
+    'game_feed_item_count' => 6,
 
 
 

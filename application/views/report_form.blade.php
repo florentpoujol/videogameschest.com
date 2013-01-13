@@ -4,17 +4,18 @@ if ( ! isset($modal)) $modal = false;
 <div id="report_form">
     @if ($modal)
         <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     @endif
 
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3>{{ lang('reports.form_title') }}</h3>
+    <!-- <h3>{{ lang('reports.form_title') }}</h3> -->
 
     @if ($modal)
         </div> <!-- /.modal-header -->
     
         <div class="modal-body">
     @endif
-
+    <br>
+    
     {{ Former::open_vertical('admin/reports')->rules(array('message'=>'required|min:10')) }}
         {{ Form::token() }}
         {{ Former::hidden('action', 'create') }}

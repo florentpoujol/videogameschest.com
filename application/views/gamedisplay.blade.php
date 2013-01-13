@@ -50,7 +50,15 @@
                     <h4>{{ lang('game.profile.blogfeed') }}</h4>
 
                     <ul class="unstyled">
-                        <li>bla</li>
+                        <?php
+                        $feed = RSSReader::read($profile->blogfeed, Config::get('vgc.game_feed_item_count'));
+                        ?>
+
+                        @foreach ($feed['items'] as $item)
+                            <li><a href="{{ $item['link'] }}">{{ $item['title'] }}</a></li>
+                        @endforeach
+                        
+                        
                     </ul>
                 </div>
             @endif
@@ -146,14 +154,17 @@
     <hr>
 
     <!-- Button to trigger modal -->
-    <a href="#report_modal" data-toggle="modal" class="muted">Report this profile</a>
-</div>
+    <a class="muted accordion-toggle" data-toggle="collapse" href="#collapse-report">
+        {{ lang('common.report_profile_link') }}
+    </a>
+            
+    <div id="collapse-report" class="collapse">
+        <div class="accordion-inner">
+            @include('report_form')
+        </div>
+    </div>
 
- 
-<!-- Modal -->
-<div id="report_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-   <?php $modal = true; ?>
-   @include('report')
+    {{ var_dump(RSSReader::read('http://forums.laravel.io/extern.php?action=feed'))}}
 </div>
 
 @section('cssfiles')

@@ -213,7 +213,7 @@ Route::get('crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion', '
         return Response::json(array('No game with id ['.$game_id.'] has been found'));
     }
 
-    if ($game->dev->user->secret_key != $user_secret_key) {
+    if ($game->user->secret_key != $user_secret_key) {
         return Response::json(array('The secret key ['.$user_secret_key.'] does not match the secret key of user the game is linked to'));
     }
 
@@ -329,7 +329,6 @@ Route::group(array('before' => 'is_guest|csrf'), function()
 // must be legit post
 Route::group(array('before' => 'csrf'), function()
 {
-    
     Route::post('admin/reports', array('as' => 'post_reports', 'uses' => 'admin@reports'));
 
     // SEARCH

@@ -86,14 +86,14 @@
 
     <hr>
 
-    <!-- Button to trigger modal -->
-    <a href="#report_modal" data-toggle="modal" class="muted">Report this profile</a>
+    <a class="muted accordion-toggle" data-toggle="collapse" href="#collapse-report">
+        {{ lang('common.report_profile_link') }}
+    </a>
+    
+    <div id="collapse-report" class="collapse">
+        @include('report_form')
+    </div>
 </div>
 
  
-<!-- Modal -->
-<div id="report_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-   <?php $modal = true; ?>
-   @include('report')
-</div>
 
