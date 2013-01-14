@@ -60,7 +60,7 @@ class User extends ExtendedEloquent
             'link' => $link
         ));
 
-        send_mail($user->email, 'mail.register_confirmation', $text);
+        sendMail($user->email, 'mail.register_confirmation', $text);
 
         return $user;
     }
@@ -127,7 +127,7 @@ class User extends ExtendedEloquent
                 'link' => $link
             ));
 
-            send_mail($this->email, lang('email.lostpassword_confirmation_subject'), $text);
+            sendMail($this->email, lang('email.lostpassword_confirmation_subject'), $text);
         } 
         
         // setp 2 : generate new password then send by mail
@@ -149,7 +149,7 @@ class User extends ExtendedEloquent
                 'login_link' => URL::to_route('get_login'),
 
             ));
-            send_mail($this->email, lang('email.lostpassword_success_subject'), $text);
+            sendMail($this->email, lang('email.lostpassword_success_subject'), $text);
         }
     }
 

@@ -77,7 +77,8 @@ class Admin_Controller extends Base_Controller
     {
         $rules = array(
             "username" => "required",
-            "password" => "required|min:5"
+            "password" => "required|min:5",
+            'recaptcha_response_field' => 'recaptcha:'.Config::get('recaptcha_private_key')
         );
 
         $validation = Validator::make(Input::all(), $rules);

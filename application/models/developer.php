@@ -168,7 +168,7 @@ class Developer extends Profile
         }
 
         elseif (in_array($key, static::$secured_fields)) {
-            return xss_secure($this->get_attribute($key));
+            return xssSecure($this->get_attribute($key));
         }
 
         else $data = parent::__get($key);

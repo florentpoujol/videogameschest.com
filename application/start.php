@@ -177,7 +177,14 @@ if ( ! Request::cli() and Config::get('session.driver') !== '')
 include_once('helpers.php');
 include_once('macros.php');
 
-Asset::container('smoothDivScroll')->add('jquery-ui', 'js/jquery-ui-1.9.2.custom.min.js');
+/*Asset::container('smoothDivScroll')->add('jquery-ui', 'js/jquery-ui-1.9.2.custom.min.js');
 Asset::container('smoothDivScroll')->add('mousewheel', 'js/jquery.mousewheel.min.js');
 Asset::container('smoothDivScroll')->add('kinetic', 'js/jquery.kinetic.js');
-Asset::container('smoothDivScroll')->add('smoothdivscroll', 'js/jquery.smoothdivscroll-1.3-min.js');
+Asset::container('smoothDivScroll')->add('smoothdivscroll', 'js/jquery.smoothdivscroll-1.3-min.js');*/
+
+Asset::container('nivo-slider')->add('main-css', 'css/nivo-slider/nivo-slider.css');
+Asset::container('nivo-slider')->add('bar-theme', 'css/nivo-slider/themes/bar/bar.css');
+Asset::container('nivo-slider')->add('dark-theme', 'css/nivo-slider/themes/dark/dark.css');
+Asset::container('nivo-slider')->add('light-theme', 'css/nivo-slider/themes/light/light.css');
+Asset::container('nivo-slider')->add('default-theme', 'css/nivo-slider/themes/default/default.css');
+Asset::container('nivo-slider')->add('js-pack', 'js/jquery.nivo.slider.pack.js');

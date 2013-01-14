@@ -38,5 +38,6 @@ return array(
 	'docs' => array('handles' => 'docs'),
 	'former' => array('auto' => true),
 	'bootstrapper' => array('auto' => true),
-
+    'swiftmailer' => array('auto' => true),
+    'recaptcha' => array('auto' => true),
 );

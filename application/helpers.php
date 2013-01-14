@@ -261,13 +261,71 @@ function clean_form_input($input, $supl_attributes = array())
 
 /**
  * Wrapper around the SwiftMailer bundle
- * @param  string $message The email's corps
  */
-function send_mail($email, $subject, $text) 
+function sendMail($email, $subject, $body_html, $body_text = null, $priority = null) 
 {
+    if (is_null($body_text)) $body_text = $body_html;
 
-    HTML::set_info('Email sent : (to='.$email.') (subject='.$subject.') (text=)');
-    Log::write('email', 'Email sent : (to='.$email.') (subject='.$subject.') (text='.$text.')');
+
+    //Using SwiftMailer
+
+    // transport
+    $smtp_server = Config::get('vgc.smtp.server');
+    if ($smtp_server != 'localhost') {
+        $transport = Swift_SmtpTransport::newInstance($smtp_server, Config::get('vgc.smtp.server_port'))
+            ->setUsername(Config::get('vgc.smtp.username'))
+            ->setPassword(Config::get('vgc.smtp.password'));
+    } else {
+        $transport = Swift_MailTransport::newInstance();
+    }
+
+    // check early if the trnsport is going to throw an exception
+    try {
+        $transport->start();
+    } 
+    catch (Exception $e) {
+        dd('error connextion'.var_dump($e));
+    }
+
+    // new mailer instance
+    $mailer = Swift_Mailer::newInstance($transport);    
+    // the laravel bundle doc suggest :
+    // $mailer = IoC::resolve('mailer');
+
+    // Construct the message
+    $message = Swift_Message::newInstance()
+        ->setFrom(array(Config::get('vgc.automatic_email_from') => Config::get('vgc.automatic_email_from_name')))
+        ->setTo($email)
+        ->setSubject($subject)
+        ->setBody($body_html,'text/html')
+        ->addPart($body_text,'text/plain');
+
+    if (is_integer($priority)) $message->setPriority($priority);
+        
+    // Send the email
+    $failures = array();
+    $num_sent = $mailer->send($message, $failures);
+
+    //HTML::set_info('Email sent : (to='.$email.') (subject='.$subject.') (body_text='.$body_text.')');
+    if ($num_sent > 0) {
+        Log::write('email', 'Email sent : (to='.$email.') (subject='.$subject.') (body_text='.$body_text.') (body_html='.$body_html.')');
+    } else {
+        Log::write('email error', 'Email NOT SENT : (to='.$email.') (subject='.$subject.') (body_text='.$body_text.') (body_html='.$body_html.')');
+    }
+
+    if ( ! empty($failures)) {
+        $msg = 'The following adresses failed : '.var_dump($failures).' <br>
+        <br>
+        ___________ <br>
+        <br>
+        subject : '.$subject.' <br>
+        <br>
+        body : <br>
+        '.$body_html;
+
+        Log::write('email error', $msg);
+        sendMail(Config::get('admin_email'), 'Send mail recipient failures', $msg, $msg, 1);
+    }
 }
 
 
@@ -344,7 +402,7 @@ function array_to_checkboxes($field_name, $values = null, $name = null)
 }
 
 
-function xss_secure($string)
+function xssSecure($string)
 {
     if (is_string($string)) return e($string);
     else return $string;
@@ -352,7 +410,7 @@ function xss_secure($string)
 
 
 
-function video_frame($link, $width = null, $height = null)
+function videoFrame($link, $width = null, $height = null)
 {
     // ration wdith/height : 1.77
     $ratio = 1.77;

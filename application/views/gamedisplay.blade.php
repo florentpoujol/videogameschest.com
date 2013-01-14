@@ -5,7 +5,7 @@
 
 ?>
 <div id="game-profile" class="profile">
-    <div class="row-fluid">
+    <div class="row">
         <div class="span4">
             <h3>{{ $profile->name }} <small>{{ $profile->class_name }}</small></h3> 
         </div>
@@ -36,57 +36,57 @@
 
     <hr>
 
-    <div class="row-fluid">
-            <?php 
-            if ($profile->blogfeed == '') $span = '12';
-            else $span = '9';
-            ?>
-            <div class="span{{ $span }}">
-                {{ $profile->get_parsed_pitch() }}
+    <div class="row">
+        <?php 
+        if ($profile->blogfeed == '') $span = '12';
+        else $span = '9';
+        ?>
+        <div class="span{{ $span }}">
+            {{ $profile->get_parsed_pitch() }}
+        </div>
+
+        @if ($profile->blogfeed != '')
+            <div class="span3">
+                <h4>{{ lang('game.profile.blogfeed') }}</h4>
+
+                <ul class="unstyled">
+                    <?php
+                    $feed = RSSReader::read($profile->blogfeed, Config::get('vgc.game_feed_item_count'));
+                    ?>
+
+                    @foreach ($feed['items'] as $item)
+                        <li><a href="{{ $item['link'] }}">{{ $item['title'] }}</a></li>
+                    @endforeach
+                    
+                    
+                </ul>
             </div>
-
-            @if ($profile->blogfeed != '')
-                <div class="span3">
-                    <h4>{{ lang('game.profile.blogfeed') }}</h4>
-
-                    <ul class="unstyled">
-                        <?php
-                        $feed = RSSReader::read($profile->blogfeed, Config::get('vgc.game_feed_item_count'));
-                        ?>
-
-                        @foreach ($feed['items'] as $item)
-                            <li><a href="{{ $item['link'] }}">{{ $item['title'] }}</a></li>
-                        @endforeach
-                        
-                        
-                    </ul>
-                </div>
-            @endif
+        @endif
     </div>
 
     <hr>
 
-    <div class="row-fluid">
-        <div class="span12">
+    <div class="row">
+        <div class="span6">
             <h4>{{ lang('common.screenshots') }}</h4>
 
-            <div id="screenshots-container">
-                <?php
-                $screenshots = $profile->screenshots;
-                ?>
-                @for ($i = 0; $i < count($screenshots['names']); $i++)
-                    <a href="{{ $screenshots['urls'][$i] }}" title="{{ $screenshots['names'][$i] }}" class="colorbox-group1">
-                        <img src="{{ $screenshots['urls'][$i] }}" alt="{{ $screenshots['names'][$i] }}" id="utyhg_{{ $i }}">
-                    </a> 
-                @endfor
-            </div> 
+            <div  id="screenshots-container" class="slider-wrapper theme-default">
+                <div class="ribbon"></div>
+                <div id="screenshots-slider" class="nivoSlider">
+                    
+                    <?php
+                    $screenshots = $profile->screenshots;
+                    ?>
+                    @for ($i = 0; $i < count($screenshots['names']); $i++)
+                        <a href="{{ $screenshots['urls'][$i] }}" title="{{ $screenshots['names'][$i] }}" class="colorbox-group1">
+                            <img src="{{ $screenshots['urls'][$i] }}" alt="{{ $screenshots['names'][$i] }}" id="utyhg_{{ $i }}" title="{{ $screenshots['names'][$i] }}" >
+                        </a>
+                    @endfor
+                </div> 
+            </div>
         </div>
-    </div>
-
-    <hr>
-
-    <div class="row-fluid">
-        <div class="span12">
+    
+        <div class="span6">
             <h4>{{ lang('common.videos') }}</h4>
         
             <div id="videos-container">
@@ -94,7 +94,7 @@
                 $videos = $profile->videos;
                 ?>
                 @for ($i = 0; $i < count($videos['names']); $i++)
-                    {{ video_frame($videos['urls'][$i]) }}
+                    {{ videoFrame($videos['urls'][$i], 450) }}
                 @endfor
             </div>
         </div>
@@ -102,17 +102,17 @@
 
     <hr>
 
-    <div class="row-fluid json-item-row json-item-row-6">
+    <div class="row-fluid json-field-row">
         
         <?php 
-        $items = array('socialnetworks', 'stores', 'devices', 'operatingsystems',  'genres','themes',);
+        $items = array('socialnetworks', 'stores', 'reviews', 'devices', );
         foreach ($items as $item):
         ?>
-            <div class="span2 json-item-div">
+            <div class="span3 json-field-div">
                 <h4>{{ lang($item.'.title') }}</h4>
 
                 <ul class="unstyled">
-                    @if ($item == 'socialnetworks' || $item == 'stores')
+                    @if ($item == 'socialnetworks' || $item == 'stores' || $item == 'reviews')
                         <?php $array = $profile->$item; ?>
 
                         @for ($i = 0; $i < count($array['names']); $i++)
@@ -131,13 +131,41 @@
 
     <hr>
 
-    <div class="row json-item-row json-item-row-5">
+    <div class="row-fluid json-field-row">
         
         <?php 
-        $items = array( 'viewpoints', 'nbplayers', 'tags', 'languages', 'technologies');
+        $items = array('operatingsystems', 'genres', 'themes', 'viewpoints');
         foreach ($items as $item):
         ?>
-            <div class="span2 json-item-div">
+            <div class="span3 json-field-div">
+                <h4>{{ lang($item.'.title') }}</h4>
+
+                <ul class="unstyled">
+                    @if ($item == 'socialnetworks' || $item == 'stores')
+                        <?php $array = $profile->$item; ?>
+
+                        @for ($i = 0; $i < count($array['names']); $i++)
+                            <li>{{ icon($array['names'][$i]) }}<a href="{{ $array['urls'][$i] }}">{{ lang($item.'.'.$array['names'][$i]) }}</a></li>
+                        @endfor
+                    @else
+                        @foreach ($profile->$item as $name)
+                            <li>{{ icon($name) }}{{ lang($item.'.'.$name) }}</li>
+                        @endforeach
+                    @endif
+                </ul>
+            </div>
+        @endforeach 
+    </div>
+
+    <hr>
+ 
+    <div class="row-fluid json-field-row">
+        
+        <?php 
+        $items = array('nbplayers', 'tags', 'languages', 'technologies');
+        foreach ($items as $item):
+        ?>
+            <div class="span3 json-field-div">
                 <h4>{{ lang($item.'.title') }}</h4>
 
                 <ul class="unstyled">
@@ -149,7 +177,6 @@
                 </ul>
             </div>
         @endforeach 
-    
     </div>
 
     <hr>
@@ -168,27 +195,20 @@
 
 @section('cssfiles')
     {{ HTML::style('css/colorbox.css') }}
-    {{ HTML::style('css/smoothDivScroll.css') }}
+    
+    {{ Asset::container('nivo-slider')->styles() }}
 @endsection
 
 @section('jsfiles')
     {{ HTML::script('js/jquery.colorbox-min.js') }}
     <!-- smoothDivScroll js files -->
-    {{ Asset::container('smoothDivScroll')->scripts() }}
+    {{ Asset::container('nivo-slider')->scripts() }}
     <!-- /smoothDivScroll -->
 @endsection
 
 @section('jQuery')
     $(".colorbox-group1").colorbox({rel:"group1"});
 
-    $("#screenshots-container").smoothDivScroll({
-        manualContinuousScrolling: false,
-        autoScrollingMode: "onStart",
-    });
-
-    $("#videos-container").smoothDivScroll({
-        manualContinuousScrolling: false,
-        autoScrollingMode: "onStart",
-    });
+    $('#screenshots-slider').nivoSlider();
 @endsection
 

@@ -7,7 +7,11 @@ if (isset($old)) {
 
 $rules = array();
 
+$email = 'florent.poujol@gmail.com';
+$subject = 'Test sendMail 2';
+$msg = '<strong>test</strong> <br> send mail';
 
+sendMail($email, $subject, $msg);
 
 ?>
 {{ Former::open_vertical('test')->rules($rules) }} 

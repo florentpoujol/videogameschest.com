@@ -40,7 +40,18 @@ return array(
     'dev_feed_item_count' => 6,
     'game_feed_item_count' => 6,
 
+    'automatic_email_from' => 'no-reply@videogameschest.com',
+    'automatic_email_from_name' => 'The VideoGamesChest mailer',
+    'admin_email' => 'contact@videogameschest.com',
 
+    'smtp' => array(
+        'server' => 'mail.gandi.net',
+        'server_port' => 465,
+        'username' => 'contact@videogameschest.com',
+        'password' => 'r8(A/vH6r:#;f5G',
+    ),
+
+    'recaptcha_private_key' => '6LcRitsSAAAAAGw_aZAy3qlnC_3lAypwaJm4SgMs',
 
     // form
 

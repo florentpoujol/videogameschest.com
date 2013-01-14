@@ -68,44 +68,33 @@ Route::get('home', array('as' => 'get_home', 'do' => function() use ($layout)
 
 
 //----------------------------------------------------------------------------------
-// ADD DEVELOPER / GAME
-//----------------------------------------------------------------------------------
-
-/*Route::get('/adddeveloper', array('as' => 'get_adddeveloper', function() use ($layout)
-{
-    return $layout->nest('page_content', 'adddeveloper')->with('page_title', lang('developer.add.title'));
-}));
-
-Route::get('/addgame', array('as' => 'get_addgame', function() use ($layout)
-{
-    return $layout->nest('page_content', 'addgame')->with('page_title', lang('game.add.title'));
-}));*/
-
-
-
-//----------------------------------------------------------------------------------
 // SEARCH PROFILE
 //----------------------------------------------------------------------------------
 
-Route::get('/search/(:num?)', array('as' => 'get_search', function($search_id = null) use ($layout)
+Route::get('search/(:num?)', array('as' => 'get_search', function($search_id = null) use ($layout)
 {
     if ( ! is_null($search_id)) {
         $search = Search::get($search_id);
         if ( ! is_null($search)) {
             $profiles = Search::get_profiles($search->data);
             return $layout->nest('page_content', 'search', array('profiles'=>$profiles, 'search_data'=>$search->array_data));
-        }
-        else {
+        } else {
             HTML::set_error(lang('search.msg.id_not_found', array('id'=>$search_id)));
             return Redirect::to_route('get_search');
         }
     }
-
+    echo error_reporting().'<br>';
     return $layout->nest('page_content', 'search');
 }));
 
 
 // for post search, see below in CSRF group
+Route::post('/search', array('as' => 'post_search', 'before' => 'csrf', function()
+{
+    $input = Input::all();
+    $search = Search::create($input);
+    return Redirect::to_route('get_search', array($search->id));
+}));
 
 
 
@@ -113,15 +102,16 @@ Route::get('/search/(:num?)', array('as' => 'get_search', function($search_id = 
 // DISPLAY PROFILE
 //----------------------------------------------------------------------------------
 
-Route::get('/developer/(:any?)', array('as' => 'get_developer', function($name = null) use ($layout)
+Route::get('developer/(:all?)', array('as' => 'get_developer', function($name = null) use ($layout)
 {
     if (is_null($name)) return Redirect::to_route('get_search');
     
     if (is_numeric($name)) {
         $profile = Dev::find($name);
         return Redirect::to_route('get_developer', array(name_to_url($profile->name)));
-    }
-    else $profile = Dev::where_name(url_to_name($name))->first();
+    } 
+
+    $profile = Dev::where_name(url_to_name($name))->first();
 
     if (is_null($profile)) {
         if (is_numeric($name)) {
@@ -149,15 +139,16 @@ Route::get('/developer/(:any?)', array('as' => 'get_developer', function($name =
 
 
 
-Route::get('/game/(:any?)', array('as' => 'get_game', function($name = null) use ($layout)
+Route::get('game/(:all?)', array('as' => 'get_game', function($name = null) use ($layout)
 {
     if (is_null($name)) return Redirect::to_route('get_search');
     
     if (is_numeric($name)) {
         $profile = Game::find($name);
         return Redirect::to_route('get_game', array(name_to_url($profile->name)));
-    }
-    else $profile = Game::where_name(url_to_name($name))->first();
+    } 
+
+    $profile = Game::where_name(url_to_name($name))->first();
 
     if (is_null($profile)) {
         if (is_numeric($name)) {
@@ -331,13 +322,7 @@ Route::group(array('before' => 'csrf'), function()
 {
     Route::post('admin/reports', array('as' => 'post_reports', 'uses' => 'admin@reports'));
 
-    // SEARCH
-    Route::post('/search', array('as' => 'post_search', 'before' => 'csrf', function()
-    {
-        $input = Input::all();
-        $search = Search::create($input);
-        return Redirect::to_route('get_search', array($search->id));
-    }));
+    
 });
 
 Event::listen('laravel.query', function($sql, $bindings, $time) {
