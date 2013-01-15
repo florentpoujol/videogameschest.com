@@ -1,6 +1,6 @@
-<header id="main-menu" class="navbar navbar-fixed-top">
+<header id="main-menu" class="navbar container">
     <div class="navbar-inner">
-        <div class="container">
+        <!-- <div class="container"> -->
 
             <div class="brand">
                 Video Games Chest <br>
@@ -10,14 +10,16 @@
             <ul class="nav pull-right">
                 <!-- Ganeral menu -->
                 <?php 
-                $menu_items = array('home', 'search'); 
-
-                
+                $menu_items = array('home', 'search', 'find'); 
                 ?>
                 @foreach ($menu_items as $menu_item)
                     <li><a href="{{ route('get_'.$menu_item) }}">{{ lang('menu.'.$menu_item) }}</a></li>
                 @endforeach
-                <!-- /ganeral menu --> 
+
+                @if (is_logged_in())
+                    <li><a href="{{ route('get_advertising') }}">{{ lang('menu.advertising') }}</a></li>
+                @endif
+                <!-- /general menu --> 
 
                 @if (is_logged_in())
                     <!-- Admin menu -->
@@ -79,6 +81,6 @@
                     </ul>
                 </li> /language menu -->
             </ul>
-        </div>
-    </div>
+        <!-- </div> .container -->
+    </div> <!-- .navbar-inner -->
 </header> <!-- /header #main-menu .navbar .navbar-fixed-top  -->

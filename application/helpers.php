@@ -270,21 +270,19 @@ function sendMail($email, $subject, $body_html, $body_text = null, $priority = n
     //Using SwiftMailer
 
     // transport
-    $smtp_server = Config::get('vgc.smtp.server');
-    if ($smtp_server != 'localhost') {
-        $transport = Swift_SmtpTransport::newInstance($smtp_server, Config::get('vgc.smtp.server_port'))
+    $transport = Swift_MailTransport::newInstance();
+    // note : with Gandi, there is no need to set an smtp transport, because
+    // IT SEEMS that the PHP mail function will take care of smtp with Gandi by itself
+/* $transport = Swift_SmtpTransport::newInstance($smtp_server, Config::get('vgc.smtp.server_port'))
             ->setUsername(Config::get('vgc.smtp.username'))
-            ->setPassword(Config::get('vgc.smtp.password'));
-    } else {
-        $transport = Swift_MailTransport::newInstance();
-    }
-
+            ->setPassword(Config::get('vgc.smtp.password'));*/
+    
     // check early if the trnsport is going to throw an exception
     try {
         $transport->start();
     } 
     catch (Exception $e) {
-        dd('error connextion'.var_dump($e));
+        var_dump($e);
     }
 
     // new mailer instance
@@ -450,3 +448,22 @@ function videoFrame($link, $width = null, $height = null)
     } else return '';
 }
 
+
+function captcha($text_name = 'captcha')
+{
+    if (is_guest()) {
+        //return Recaptcha\Recaptcha::recaptcha_get_html(Config::get('vgc.recaptcha_public_key'));
+        // cool captcha
+        
+        $html = Form::text($text_name, '', array(
+            'class' => 'captchainput',
+            'placeholder' => lang('common.insert_captcha'),
+            'required' => true
+        ));
+        $html .= Form::image(CoolCaptcha\Captcha::img(), 'captcha', array('class' => 'captchaimg'));
+        $html .= '';
+        return $html;
+    }
+
+    return '';
+}

@@ -3,7 +3,7 @@
 class Game extends Profile
 {
     // fields which data is stored as json
-    public static $json_fields = array('approved_by', 'promoted_games',
+    public static $json_fields = array('approved_by', 'crosspromotion_profiles',
         'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'themes',
         'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos', 'reviews');
     
@@ -16,14 +16,6 @@ class Game extends Profile
 
     // fields to secure against XSS before displaying
     public static $secured_fields = array('name', 'pitch', 'cover', 'website', 'blogfeed', 'presskit',);
-
-    //----------------------------------------------------------------------------------
-    // CONSTRUCTOR
-
-    /*public function __construct($attributes = array(), $exists = false)
-    {
-        parent::__construct($attributes, $exists);
-    }*/
 
 	//----------------------------------------------------------------------------------
     // CRUD METHODS
@@ -47,6 +39,9 @@ class Game extends Profile
         if ( ! isset($game['privacy'])) $game['privacy'] = 'private';
 
         $input['approved_by'] = array();
+
+        $input['crosspromotion_profiles'] = array('developers'=>array(),'games'=>array());
+        $input['crosspromotion_key'] = Str::random(20);
                 
         $game = parent::create($input);
         

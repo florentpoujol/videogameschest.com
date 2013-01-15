@@ -1,35 +1,57 @@
 @section('page_title')
-	{{ lang('login.title') }}
+    {{ lang('login.title') }}
 @endsection
 <?php
-$old = Input::old();
-if ( ! empty($old)) Former::populate($old);
+$rules = array(
+    'username' => 'required|min:5',
+    'password' => 'required|min:5',
+);
 ?>
 <div id="login-form">
-	<h2>{{ lang('login.title') }}</h2>
+    <h2>{{ lang('login.title') }}</h2>
 
-	<hr>
+    <hr>
 
-	{{ Former::open_vertical(route('post_login'))->rules(array('username' => 'required', 'password' => 'required')) }}
-		{{ Form::token() }}
-		
-		{{ Former::text('username', '')->placeholder(lang('login.name_label')) }}
-		
-		{{ Former::password('password', '')->placeholder(lang('login.password_label')) }}
+    {{ Former::open_vertical(route('post_login'))->rules($rules) }}
+        {{ Form::token() }}
+        
+        {{ Former::text('username', '')->placeholder(lang('login.name_label')) }}
+        
+        {{ Former::password('password', '')->placeholder(lang('login.password_label')) }}
 
-		{{ Former::checkbox('keep_logged_in', '')->text(lang('login.keep_logged_in_label'))->check() }}
-		
-		{{ Former::primary_submit(lang('login.submit')) }}
-	</form>
+        {{ Former::checkbox('keep_logged_in', '')->text(lang('login.keep_logged_in_label'))->check() }}
+        
+        {{ captcha() }}
 
-	<hr>
+        <br>
 
-	{{ Former::open_inline(route('post_lostpassword'))->rules(array('username' => 'required|min:5')) }}
-		{{ Form::token() }}
+        {{ Former::primary_submit(lang('login.submit')) }}
+    </form>
 
-		{{ Former::text('username', '')->placeholder(lang('login.name_label')) }} 
-		{{ Former::info_submit(lang('login.lost_password')) }}
-	</form>
+    <hr>
+
+    <p>
+        <a href="#collapse1" class="accordion-toggle" data-toggle="collapse">
+            {{ lang('login.lost_password') }}
+        </a>
+    </p>
+
+    <div id="collapse1" class="collapse">
+        <?php
+        $rules = array(
+            'lost_password_username' => 'required|min:5',
+        );
+        ?>
+        {{ Former::open_inline(route('post_lostpassword'))->rules($rules) }}
+            {{ Form::token() }}
+
+            {{ Former::text('lost_password_username', '')->placeholder(lang('login.name_label')) }} 
+
+            {{ captcha('lost_password_captcha') }}
+
+            {{ Former::info_submit(lang('login.lost_password')) }}
+        </form>
+    </div>
 </div> 
 <!-- /#admin_login -->
 

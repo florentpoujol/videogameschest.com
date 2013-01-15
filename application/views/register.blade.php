@@ -3,7 +3,7 @@ $rules = array(
 	'username' => 'required|min:5',
 	'email' => 'required|min:5|email',
 	'password' => 'required|min:5|confirmed',
-	'password_confirmation' => 'min:5|required|required_with:password',
+	'password_confirmation' => 'required|min:5|required_with:password',
 );
 ?>
 <div id="register-form">
@@ -21,6 +21,10 @@ $rules = array(
 		{{ Former::password('password', '')->placeholder(lang('register.password')) }}
 
 		{{ Former::password('password_confirmation', '')->placeholder(lang('register.password_confirmation')) }}
+		
+		{{ captcha() }}
+
+		<br>
 		
 		{{ Former::primary_submit(lang('register.submit')) }}
 	</form>

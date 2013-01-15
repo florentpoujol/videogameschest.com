@@ -76,20 +76,12 @@ foreach ($old_devs as $dev) {
                     <div class="tab-content">
                         @foreach (Game::$array_fields as $item)
                             <?php
-                            /*$items = Config::get('vgc.'.$item);
-                            $options = get_array_lang($items, $item.'.');
-                            
-                            $values = array();
-                            if (isset($old[$item])) $values = $old[$item];
-                            
-                            $size = count($items);
-                            if ($size > 15) $size = 15;*/
-                            $values = array();
+                             $values = array();
                             if (isset($old[$item])) $values = $old[$item];
                             ?>
                             <div class="tab-pane" id="{{ $item }}">
                                 <p>{{ lang('game.'.$item.'_help') }}</p>
-                                {{-- Former::multiselect($item, '')->options($options)->value($values)->size($size) }}
+
                                 {{ array_to_checkboxes($item, $values) }}
                             </div>
                         @endforeach
@@ -111,7 +103,7 @@ foreach ($old_devs as $dev) {
                     $nu_select = array('socialnetworks', 'stores'); // name url select
                     foreach ($nu_select as $item):
                         $options = get_array_lang(Config::get('vgc.'.$item), $item.'.');
-                        $options = array_merge(array('' => lang('common.select-arrayitem-first-option')), $options);
+                        $options = array_merge(array('' => lang('common.select_first_option')), $options);
 
                         $values = array();
                         if (isset($old[$item])) $values = clean_names_urls_array($old[$item]);

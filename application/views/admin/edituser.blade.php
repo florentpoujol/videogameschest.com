@@ -19,9 +19,7 @@ if ($a_user['crosspromotion_subscription'] == 0) unset($a_user['crosspromotion_s
 Former::populate($a_user);
 
 $old = Input::old();
-if ( ! empty($old)) {
-    Former::populate($old);
-}
+if ( ! empty($old)) Former::populate($old);
 ?>
 <div id="edituser">
     <h1>{{ lang('user.edit_title') }}</h1>
@@ -43,7 +41,7 @@ if ( ! empty($old)) {
 
         {{ Former::email('email', lang('common.email')) }}
 
-        {{ Former::text('url_key', 'Url key')->help(lang('user.url_key_help')) }}
+        {{-- Former::text('url_key', 'Url key')->help(lang('user.url_key_help')) --}}
 
         @if (is_admin())
             {{ Former::text('type', 'Account type')->help('"user," "dev" or "admin"') }}
@@ -57,43 +55,6 @@ if ( ! empty($old)) {
 
         <hr>
 
-        {{ Former::primary_submit(lang('user.edit_title')) }}
-
-
-        @if ( ! is_admin())
-            <!-- crosspromotion -->
-            <hr>
-
-            <h3>{{ lang('crosspromotion.title') }}</h3>
-
-            @if (is_admin())
-                {{ Former::checkbox('crosspromotion_subscription', '')->text('Cross promotion') }}
-            @elseif (false)
-                @if (user()->crosspromotion_subscription == 1)
-                    <p>
-                        {{ lang('crosspromotion.edit_user_subscription_text') }}
-                    </p>
-
-                    <p>[Button to subscribe]</p>
-                @else
-                    <p>
-                        {{ lang('crosspromotion.edit_user_unsubscription_text') }}
-                    </p>
-
-                    <p>[Button to UNsubscribe]</p>
-                @endif
-            @else
-                <p>
-                    The cross-promotion service does not yet require a subscription to be active. <br>
-                    You can select the games you want to cross-promote from your game's profiles.
-                </p>
-            @endif
-
-            <!-- /crosspromotion -->
-        @endif
-
-        <hr>
-
-        
+        {{ Former::primary_submit(lang('user.edit_title')) }}     
     </form>
 </div> <!-- /#edituser --> 

@@ -41,7 +41,7 @@ class User extends ExtendedEloquent
         if ($input['type'] == 'admin') $input['is_trusted'] = 1;
 
         // temp key
-        $input['temp_key'] = Str::random(20);
+        //$input['temp_key'] = Str::random(20);
 
         $user = parent::create($input);
 
@@ -52,7 +52,7 @@ class User extends ExtendedEloquent
         // email
         $link = URL::to_route('get_register_confirmation', array(
             'user_id' => $user->id,
-            'temp_key' => $user->temp_key
+            'url_key' => $user->url_key
         ));
 
         $text = lang('email.register_confirmation', array(
@@ -100,15 +100,14 @@ class User extends ExtendedEloquent
     public function activate() 
     {
         $this->activated = 1;
-        $this->temp_key = '';
         $this->save();
 
         $msg = lang('register.msg_confirmation_success', array('username' => $this->username));
-        html::set_success($msg);
+        HTML::set_success($msg);
         Log::write('user activation confirmation success', $msg);
     }
 
-    public function set_new_password($step = 2) 
+    public function setNewPassword($step = 2) 
     {
         // step 1 : send conf email to user
         if ($step == 1) {
@@ -135,7 +134,6 @@ class User extends ExtendedEloquent
             $password = Str::random(20);
 
             $this->password = Hash::make($password);
-            $this->temp_key = '';
             $this->save();
 
             // message
@@ -147,8 +145,8 @@ class User extends ExtendedEloquent
                 'username' => $this->username,
                 'password' => $password,
                 'login_link' => URL::to_route('get_login'),
-
             ));
+
             sendMail($this->email, lang('email.lostpassword_success_subject'), $text);
         }
     }
@@ -190,16 +188,6 @@ class User extends ExtendedEloquent
 
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
-
-    public function developer()
-    {
-        return $this->has_one('Developer');
-    }
-
-    public function dev() 
-    {
-        return $this->has_one('Developer');
-    }
 
     public function developers()
     {

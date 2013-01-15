@@ -119,7 +119,7 @@ else $developer_name = $game->developer_name;
                         <div class="tab-pane" id="{{ $item }}">
                             <?php
                             $options = get_array_lang(Config::get('vgc.'.$item), $item.'.');
-                            $options = array_merge(array('' => lang('common.select-arrayitem-first-option')), $options);
+                            $options = array_merge(array('' => lang('common.select_arrayitem_first_option')), $options);
                             
                             if (isset($old[$item])) $values = clean_names_urls_array($old[$item]);
                             else $values = $game->$item;
@@ -174,10 +174,18 @@ else $developer_name = $game->developer_name;
                     @endforeach
                 </div> <!-- /.tab-content -->
                 <!-- /names url items -->
+
+                <hr>
+
+                {{ Former::primary_submit(lang('game.edit.submit')) }}
             </div> <!-- /.span -->
         </div> <!-- /.row -->
 
-        {{ Former::primary_submit(lang('game.edit.submit')) }}  
+        <div class="row">
+            
+
+        </div>
+        
     </form>
 </div> <!-- /#editgame --> 
 

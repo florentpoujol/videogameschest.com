@@ -27,6 +27,8 @@ return array(
         'games' => 'Games',
         'genres' => 'Genres',
 
+        'insert_captcha' => 'Insert captcha',
+
         'languages' => 'Languages',
         'logo' => 'Logo',
 
@@ -43,8 +45,8 @@ return array(
         'reviews' => 'Reviews',
 
         'screenshots' => 'Screenshots',
-        'select_first_option' => 'Please select',
-        'select-arrayitem-first-option' => 'Select below or select this option to delete the item',
+        'select_first_option' => 'Select below',
+        'select_arrayitem_first_option' => 'Select below or select this option to delete the item',
         //'site_slogan' => 'The participative and searchable video games database',
         'site_slogan' => 'The place to hunt down for the treasures of video games',
         'socialnetworks' => 'Social networks',
@@ -58,6 +60,7 @@ return array(
         'themes' => 'Themes',
         'title' => 'Title',
 
+        'update' => 'Update',
         'url' => 'URL',
         'username' => 'User name',
 
@@ -156,7 +159,11 @@ return array(
         'home' => 'Home',
         'featured' => 'Featured',
         'search' => 'Search',
+        'find' => 'Find',
+        'advertising' => 'Be finded',
         'about' => 'About',
+
+
         'adddeveloper' => 'Add a developer',
         'addgame' => 'Add a game',
         'logout' => 'Log Out',
@@ -175,6 +182,8 @@ return array(
         'register' => 'Register'
     ),
 
+// REGISTER
+    
     'register' => array(
         'title' => 'Create a user account',
         'submit' => 'Register !',
@@ -186,7 +195,7 @@ return array(
         An email has been sent to your email adress with a link to activate your account. 
         You will be able to login as soon as to activated your account.',
 
-        'msg_confirmation_error' => 'Unable to activate the user account because none with id ":id" and temp_key ":temp_key" has been found, or the id and the temp_key do not match, or the user account is already activated.',
+        'msg_confirmation_error' => 'Unable to activate the user account because none with id ":id" and url key ":url_key" has been found, or the user account is already activated.',
         'msg_confirmation_success' => 'Thank you :username, you have successfully activated your user account, you may now log in.',
 
     ),
@@ -213,10 +222,12 @@ return array(
         ),
     ),
 
+// LOSTPASSWORD
+
     'lostpassword' => array(
         'msg' => array(
-            'confirmation_email_sent' => 'An email with a confirmation link has been sent to you. Click the link in that email to generate a new temporary password.',
-            'confirmation_error' => 'Unable to generate a new password because no user account with id ":id" and temp_key ":temp_key" has been found, or the id and the temp_key do not match, or the user account is not activated.',
+            'confirmation_email_sent' => 'An email with a confirmation link has been sent to your email adress. Click the link in that email to generate a new temporary password.',
+            'confirmation_error' => 'Unable to generate a new password because no user account with id ":id" and url key ":url_key" has been found, or the user account is not activated.',
             'new_password_success' => 'A new password has been successfully generated and sent to your email adress.',
 
         ),
@@ -231,7 +242,7 @@ return array(
 
         'subscription_title' => 'Subscriptions',
 
-        'url_key_help' => 'This random string is used to access various things related to you user account via URL. You may update it but keep it secret.',
+        'url_key_help' => 'This random string is used to access various things related to your user account via URL. You may update it but keep it secret.',
         'old_password_help' => 'In order to update your password, enter your old password here.',
 
         'msg_wrong_old_password' => 'The old password does not match your current password.',
@@ -343,8 +354,8 @@ return array(
             'addgame_success' => 'The game profile with name \":name\" (id : :id) has successfully been created.',
             'editgame_success' => 'The game profile with name \":name\" (id : :id) has successfully been updated.',
 
-            'select_editdev_id_not_found' => 'No game profile with id ":id" was found.',
-            'select_editdev_name_not_found' => 'No game profile with name ":name" was found.',
+            'select_editgame_id_not_found' => 'No game profile with id ":id" was found.',
+            'select_editgame_name_not_found' => 'No game profile with name ":name" was found.',
 
             'profile_not_found' => 'No game profile with id ":id" was found.',
 
@@ -442,19 +453,13 @@ return array(
 
         'edit_game_non_subscribers_msg' => 'To easily promote other games from within this game <a href=":edituser_link">you can subscribe to the cross-promotion service</a> from your user account.',
 
-        'edit_user_subscription_text' => 
-        'To be able to cross-promote in your game with VGC, you must subscribe to the service first. <br>
-        The subscription cost 5€ per month. <br>
-        You can subscribe by clicking the button below, with a Paypal account or various credit cards. You will be able to unsubscribe at any time via a similar button or via the Paypal dashboard.<br>
-        <br>
-        Once subscribed, the cross-promotion service must be activated manually by an administrator, which can take up to a few hours.',
+        'non_activated_text' => 'To subscribe or activate the cross-promotion service, just check the box below and click on the Update button.',
+        'activated_text' => 'To unsubscribe or deactivate the cross-promotion service, just check the box below and click on the Update button.',
 
-        'edit_user_unsubscription_text' => 
-        'You have subscribed to the cross-promotion service, <strong>thanks you</strong> ! <br>
-        [insert explanation here on how to use it] <br>
-        <br>
-        If you want to unsubscribe, click on the button below. It will send you to a Paypal page which will prompt you for confirmation. <br>
-        Once you unsubscribed, the cross-promotion will be deactivated by an administrator without a few hours.',
+        'subsciption_checkbox_label' => 'Activate the cross promotion service for my games.',
+
+        'no_game' => 'Using the cross promotion service starts by <a href=":add_game_link" title="Go the the \'Add game profile\' form">creating a game profile</a>.', 
+
 
         'what_is_it' => 
         'Cross-promotin is a kind of advertising where a product is promoted from within another product. <br>
@@ -468,11 +473,11 @@ return array(
         ',
 
         'how_it_works' => 
-        'Once you will have subscribed to the service, you will have acces to a new section on your games profile\'s where you can select games to promote. <br>
-        <br>
-        From within your game, you just have to query an URL with your game id to get the list of the profiles you selected in the first step. <br>
+        'Once you subscribed to the service, you will have acces to a new section on your games profile\'s where you can select profiles to promote. <br>
+        
+        From within your game, you just have to query an URL to get the list of the profiles you selected in the first step. <br>
         And that\'it.<br>
-        <br>
+        
         Once you properly setted up the system in your game you can just update the promoted games from your game profile on VGC without the need to update/patch your actual game.',
 
     ),
@@ -504,14 +509,14 @@ return array(
         'submit' => 'Search',
 
         'devices_help' => 'are playable on,',
-        'operatingsystems_help' => 'runs on,',
-        'genres_help' => 'genre is,',
-        'themes_help' => 'theme is,',
-        'viewpoints_help' => 'point of view is,',
-        'nbplayers_help' => 'player mode is,',
-        'tags_help' => 'are tagged,',
-        'languages_help' => 'languages is,',
-        'technologies_help' => 'are made with,',
+        'operatingsystems_help' => 'and runs on,',
+        'genres_help' => 'and genre is,',
+        'themes_help' => 'and theme is,',
+        'viewpoints_help' => 'and point of view is,',
+        'nbplayers_help' => 'and player mode is,',
+        'tags_help' => 'and are tagged,',
+        'languages_help' => 'and languages is,',
+        'technologies_help' => 'and are made with,',
         'stores_help' => 'and are sold on,',
         
         

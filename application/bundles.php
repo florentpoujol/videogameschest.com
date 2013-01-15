@@ -39,5 +39,6 @@ return array(
 	'former' => array('auto' => true),
 	'bootstrapper' => array('auto' => true),
     'swiftmailer' => array('auto' => true),
-    'recaptcha' => array('auto' => true),
+    
+    'coolcaptcha' => array('auto' => true, 'handles' => 'coolcaptcha'),
 );

@@ -30,7 +30,8 @@ class Admin_Controller extends Base_Controller
             'username' => 'required|min:5|unique:users',
             'email' => 'required|min:5|email|unique:users',
             'password' => 'required|min:5|confirmed',
-            'password_confirmation' => 'min:5|required|required_with:password',
+            'password_confirmation' => 'required|min:5|required_with:password',
+            'captcha' => 'required|coolcaptcha',
         );
 
         $validation = Validator::make($input, $rules);
@@ -38,22 +39,22 @@ class Admin_Controller extends Base_Controller
         if ($validation->passes()) {
             $user = User::create($input);
             return Redirect::to_route('get_home');
-        } else {
-            Former::withErrors($validation);
-            $this->layout->nest('page_content', 'register');
         }
+        
+        return Redirect::to_route('get_register')->with_errors($validation)->with_input();
     }
 
-    public function get_register_confirmation($user_id, $temp_key) 
+    public function get_register_confirmation($user_id, $url_key) 
     {
-        $user = User::where_id($user_id)->where_temp_key($temp_key)->where_activated(0)->first();
+        $user = User::where_id($user_id)->where_url_key($url_key)->where_activated(0)->first();
 
         if (is_null($user)) {
             $msg = lang('register.msg_confirmation_error', array(
                 'id' => $user_id,
-                'temp_key' => $temp_key,
+                'url_key' => $url_key,
             ));
-            html::set_error($msg);
+
+            HTML::set_error($msg);
             Log::write('user activation confirmation error', $msg);
 
             return Redirect::to_route('get_home');
@@ -76,9 +77,10 @@ class Admin_Controller extends Base_Controller
     public function post_login() 
     {
         $rules = array(
-            "username" => "required",
+            "username" => "required|min:5",
             "password" => "required|min:5",
-            'recaptcha_response_field' => 'recaptcha:'.Config::get('recaptcha_private_key')
+            'captcha' => 'required|coolcaptcha',
+            
         );
 
         $validation = Validator::make(Input::all(), $rules);
@@ -124,20 +126,24 @@ class Admin_Controller extends Base_Controller
                     'username' => $username
                 )));
             }
-        } else {
-            Former::withErrors($validation);
         }
-        
-        return Redirect::to_route('get_login');
+
+        return Redirect::to_route('get_login')->with_errors($validation)->with_input();
     }
 
     public function post_lostpassword()
     {
         $input = Input::all();
-        $validation = Validator::make($input, array("username" => "required"));
+        
+        $rules = array(
+            'lost_password_username' => 'required|min:5',
+            'lost_password_captcha' => 'required|coolcaptcha',
+        );
+        
+        $validation = Validator::make($input, $rules);
         
         if ($validation->passes()) {
-            $username = $input["username"];
+            $username = $input["lost_password_username"];
             $field = "username";
 
             if (strpos($username, "@")) { // the name is actually an email
@@ -147,28 +153,26 @@ class Admin_Controller extends Base_Controller
             $user = User::where($field, '=', $username)->first();
             
             if ($user != null) {
-                $user->set_new_password(1); // step 1 : send conf email to user
+                $user->setNewPassword(1); // step 1 : send conf email to user
             } else {
                 HTML::set_error(lang('login.msg.user_not_found', array(
                     'field' => $field,
                     'username' => $username
                 )));
             }
-
-            return Redirect::to_route('get_login');
-        } else {
-            return Redirect::to_route('get_login')->with_errors($validation);
         }
+            
+        return Redirect::to_route('get_login')->with_errors($validation)->with_input();
     }
 
-    public function get_lostpassword_confirmation($user_id, $temp_key)
+    public function get_lostpassword_confirmation($user_id, $url_key)
     {
-        $user = User::where_id($user_id)->where_temp_key($temp_key)->where_activated(1)->first();
+        $user = User::where_id($user_id)->where_url_key($url_key)->where_activated(1)->first();
 
         if (is_null($user)) {
             $msg = lang('lostpassword.msg.confirmation_error', array(
                 'id' => $user_id,
-                'temp_key' => $temp_key,
+                'url_key' => $url_key,
             ));
             HTML::set_error($msg);
             Log::write('user lostpassword confirmation error', $msg);
@@ -177,7 +181,7 @@ class Admin_Controller extends Base_Controller
         }
 
         // if user is found
-        $user->set_new_password(2); // setp 2 : generate new password then send by mail
+        $user->setNewPassword(2); // setp 2 : generate new password then send by mail
 
         return Redirect::to_route('get_login');
     }
@@ -279,15 +283,17 @@ class Admin_Controller extends Base_Controller
                 $pass_validation = Validator::make($input, $rules);
             
                 if ($pass_validation->fails() || $old_password_ok == false) {
-                    Input::flash('except', array('password', 'password_confirmation', 'old_password'));
-                    return Redirect::to_route('get_edituser', array($user->id))->with_errors($pass_validation);
+                    return Redirect::to_route('get_edituser', array($user->id))
+                    ->with_errors($pass_validation)
+                    ->with_input('except', array('password', 'password_confirmation', 'old_password'));
                 }
             }
 
             User::update($input['id'], $input);
         } else {
-            Input::flash('except', array('password', 'password_confirmation', 'old_password'));
-            return Redirect::to_route('get_edituser', array($user->id))->with_errors($validation);
+            return Redirect::to_route('get_edituser', array($user->id))
+            ->with_errors($validation)
+            ->with_input('except', array('password', 'password_confirmation', 'old_password'));
         }
 
         return Redirect::to_route('get_edituser', array($user->id));
@@ -323,10 +329,9 @@ class Admin_Controller extends Base_Controller
             $dev = Dev::create($input);
 
             return Redirect::to_route('get_editdeveloper', array($dev->id));
-        } else {
-            Input::flash();
-            return Redirect::back()->with_errors($validation);
         }
+
+        return Redirect::back()->with_errors($validation)->with_input();
     }
 
 
@@ -359,11 +364,20 @@ class Admin_Controller extends Base_Controller
 
     public function get_editdeveloper($profile_id = null)
     {
-        if ( ! is_admin() && empty(user()->devs)) {
+        $devs = user()->devs;
+        // can't use user()->ddevs in the condition because it would always return an empty array
+
+        if ( ! is_admin() && empty($devs)) {
             return Redirect::to_route('get_adddeveloper');
         }
 
-        if ($profile_id == null) {
+        if (is_null($profile_id)) {
+            if ( ! is_admin() && count($devs) == 1) { 
+                // if user has only one profile, redirect to it, or show the select form
+                $profile_id = $devs[0]->id;
+                return Redirect::to_route('get_editdeveloper', array($profile_id));
+            }
+
             $this->layout->nest('page_content', 'admin/selecteditdeveloper');
             return;
         }
@@ -371,7 +385,7 @@ class Admin_Controller extends Base_Controller
         $dev = Dev::find($profile_id);
 
         if ($dev == null) {
-            HTML::set_error(lang('developer.msg.profile_not_found'));
+            HTML::set_error(lang('developer.msg.profile_not_found', array('id'=>$profile_id)));
             return Redirect::to_route('get_editdeveloper');
         }
 
@@ -453,10 +467,9 @@ class Admin_Controller extends Base_Controller
             $game = Game::create($input);
             
             return Redirect::to_route('get_editgame', array($game->id));
-        } else {
-            Input::flash();
-            return Redirect::back()->with_errors($validation);
         }
+
+        return Redirect::back()->with_errors($validation)->with_input();
     }
 
 
@@ -489,19 +502,27 @@ class Admin_Controller extends Base_Controller
 
     public function get_editgame($profile_id = null)
     {
-        if ( ! is_admin() && empty(user()->games)) {
+        $games = user()->games; 
+        // can't use user()->games in the condition because it would always return an empty array
+
+        if ( ! is_admin() && empty($games)) {
             return Redirect::to_route('get_addgame');
         }
 
-        if ($profile_id == null) {
+        if (is_null($profile_id)) {
+            if ( ! is_admin() && count($games) == 1) {
+                $profile_id = $games[0]->id;
+                return Redirect::to_route('get_editgame', array($profile_id));
+            }
+
             $this->layout->nest('page_content', 'admin/selecteditgame');
             return;
         }
 
         $game = Game::find($profile_id);
 
-        if ($game == null) {
-            HTML::set_error(lang('game.msg.profile_not_found'));
+        if (is_null($game)) {
+            HTML::set_error(lang('game.msg.profile_not_found', array('id'=>$profile_id)));
             return Redirect::to_route('get_editgame');
         }
 

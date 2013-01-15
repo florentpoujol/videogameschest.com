@@ -11,7 +11,7 @@ $tabs = array(array(
     'label' => lang('reports.dev_title'),
 ));
 
-if (IS_ADMIN) {
+if (is_admin()) {
     $tabs[] = array(
         'url' => route('get_reports', array('admin')),
         'label' => lang('reports.admin_title'),
@@ -25,7 +25,7 @@ if (IS_ADMIN) {
 $reports = Report::where_type($report_type)->get();
 
 $profiles = array();
-if (IS_ADMIN) {
+if (is_admin()) {
     $users = User::where_type('dev')->get();
     foreach ($users as $user) {
         if ($user->dev != null) {

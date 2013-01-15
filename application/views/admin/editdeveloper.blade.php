@@ -71,7 +71,7 @@ if ( ! empty($old)) Former::populate($old);
                         <div class="tab-pane" id="socialnetworks">
                             <?php
                             $options = get_array_lang(Config::get('vgc.socialnetworks'), 'socialnetworks.');
-                            $options = array_merge(array('' => lang('common.select-first-option')), $options);
+                            $options = array_merge(array('' => lang('common.select_arrayitem_first_option')), $options);
 
                             if (isset($old['socialnetworks'])) $socialnetworks = clean_names_urls_array($old['socialnetworks']);
                             else $socialnetworks = $dev->socialnetworks;

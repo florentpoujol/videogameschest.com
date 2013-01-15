@@ -84,13 +84,13 @@ HTML::macro('set_error', function($error)
     }
 
     if (is_string($error)) {
-        $session_errors[] = '"'.$error.'"';
+        $session_errors[] = $error;
     }
     elseif (is_array($error)) 
     {
         $errors = $error;
         foreach ($errors as $error) {
-            $session_errors[] = '"'.$error.'"';
+            $session_errors[] = $error;
         }
     }
     else 

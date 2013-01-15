@@ -29,210 +29,7 @@
 |       {
 |           return "Welcome, $name.";
 |       });
-|
-*/
 
-View::name('layouts.main', 'layout');
-$layout = View::of('layout');
-
-
-
-Route::get('test', function() use ($layout)
-{
-    return $layout->nest('page_content', 'test');
-});
-Route::post('test', function() use ($layout)
-{
-    var_dump(Input::all());
-    Input::flash();
-    return $layout->nest('page_content', 'test')->with('input', Input::all());
-});
-
-
-
-//----------------------------------------------------------------------------------
-// HOME
-//----------------------------------------------------------------------------------
-
-Route::get('/', function() use ($layout)
-{
-    return $layout->nest('page_content', 'home');
-});
-
-
-Route::get('home', array('as' => 'get_home', 'do' => function() use ($layout)
-{
-    return $layout->nest('page_content', 'home');
-}));
-
-
-
-//----------------------------------------------------------------------------------
-// SEARCH PROFILE
-//----------------------------------------------------------------------------------
-
-Route::get('search/(:num?)', array('as' => 'get_search', function($search_id = null) use ($layout)
-{
-    if ( ! is_null($search_id)) {
-        $search = Search::get($search_id);
-        if ( ! is_null($search)) {
-            $profiles = Search::get_profiles($search->data);
-            return $layout->nest('page_content', 'search', array('profiles'=>$profiles, 'search_data'=>$search->array_data));
-        } else {
-            HTML::set_error(lang('search.msg.id_not_found', array('id'=>$search_id)));
-            return Redirect::to_route('get_search');
-        }
-    }
-    echo error_reporting().'<br>';
-    return $layout->nest('page_content', 'search');
-}));
-
-
-// for post search, see below in CSRF group
-Route::post('/search', array('as' => 'post_search', 'before' => 'csrf', function()
-{
-    $input = Input::all();
-    $search = Search::create($input);
-    return Redirect::to_route('get_search', array($search->id));
-}));
-
-
-
-//----------------------------------------------------------------------------------
-// DISPLAY PROFILE
-//----------------------------------------------------------------------------------
-
-Route::get('developer/(:all?)', array('as' => 'get_developer', function($name = null) use ($layout)
-{
-    if (is_null($name)) return Redirect::to_route('get_search');
-    
-    if (is_numeric($name)) {
-        $profile = Dev::find($name);
-        return Redirect::to_route('get_developer', array(name_to_url($profile->name)));
-    } 
-
-    $profile = Dev::where_name(url_to_name($name))->first();
-
-    if (is_null($profile)) {
-        if (is_numeric($name)) {
-            HTML::set_error(lang('errors.developer_profile_id_not_found', array('id'=>$name)));
-        } else HTML::set_error(lang('errors.developer_profile_name_not_found', array('name'=>$name)));
-
-        return Redirect::to_route('get_search');
-    }
-
-    // display profile if :
-    // profile is public
-    // user is admin
-    // user is dev and profile is user's or in review   
-    if ($profile->privacy == 'public' || is_admin() ||
-        is_trusted() && 
-            ($profile->user_id == user_id() ||
-            in_array($profile->privacy, Config::get('vgc.review.types')))
-    ) {
-        return $layout->nest('page_content', 'developerdisplay', array('profile' => $profile));
-    } else {
-        HTML::set_error(lang('errors.access_not_allowed', array('page' => 'Developer profile '.$name)));
-        return Redirect::to_route('get_search');
-    }
-}));
-
-
-
-Route::get('game/(:all?)', array('as' => 'get_game', function($name = null) use ($layout)
-{
-    if (is_null($name)) return Redirect::to_route('get_search');
-    
-    if (is_numeric($name)) {
-        $profile = Game::find($name);
-        return Redirect::to_route('get_game', array(name_to_url($profile->name)));
-    } 
-
-    $profile = Game::where_name(url_to_name($name))->first();
-
-    if (is_null($profile)) {
-        if (is_numeric($name)) {
-            HTML::set_error(lang('errors.game_profile_id_not_found', array('id'=>$name)));
-        } else HTML::set_error(lang('errors.game_profile_name_not_found', array('name'=>$name)));
-
-        return Redirect::to_route('get_search');
-    }
-
-    // display profile if :
-    // profile is public
-    // user is admin
-    // user is dev and profile is user's or in review
-    if ($profile->privacy == 'public' || is_admin() ||
-        is_trusted() && 
-            ($profile->user_id == user_id() ||
-            in_array($profile->privacy, Config::get('vgc.review.types')))
-    ) {
-        return $layout->nest('page_content', 'gamedisplay', array('profile' => $profile));
-    } else {
-        HTML::set_error(lang('errors.access_not_allowed', array('page' => 'Game profile '.$name)));
-        return Redirect::to_route('get_search');
-    }
-}));
-
-
-
-//----------------------------------------------------------------------------------
-// SET LANGUAGE
-//----------------------------------------------------------------------------------
-
-Route::get('setlanguage/(:any?)', array('as' => 'get_set_language', 'do' => function($language = null) use ($layout)
-{
-    if (is_null($language)) {
-        $language = Session::get('language', Config::get('language', 'en'));
-    }
-
-    Session::put('language', substr($language, 0, 2));
-    return Redirect::back();
-}));
-
-
-
-//----------------------------------------------------------------------------------
-// CROSS PROMOTION
-//----------------------------------------------------------------------------------
-
-Route::get('crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion', 'do' => function($game_id, $user_url_key)
-{
-    $game = Game::find($game_id);
-
-    if (is_null($game)) {
-        return Response::json(array('No game with id ['.$game_id.'] has been found.'));
-    }
-
-    if ($game->user->url_key != $user_url_key) {
-        return Response::json(array('The url key ['.$user_url_key.'] does not match the url key of the user the game is linked to.'));
-    }
-
-    $promoted_games = $game->promoted_games;
-
-    for ($i = 0; $i < count($promoted_games); $i++) {
-        $promoted_games[$i] = Game::find($promoted_games[$i])->to_crosspromotion_array();
-    }
-
-    return Response::json($promoted_games);
-}));
-
-
-
-//----------------------------------------------------------------------------------
-// ADVERTISING
-//----------------------------------------------------------------------------------
-
-Route::get('advertising/', array('as' => 'get_advertising', 'do' => function()
-{
-    return "advertising";
-}));
-
-
-
-//----------------------------------------------------------------------------------
-//  ADMIN CONTROLLER ROUTES
-//----------------------------------------------------------------------------------
 
 // controller
 // Route::controller('controlerName');
@@ -240,90 +37,292 @@ Route::get('advertising/', array('as' => 'get_advertising', 'do' => function()
 // Route::get('customroute', 'controlerName@methodName');
 // nammed route with controller
 // Route::get('the route', array('as' => 'thenameoftheroute', 'uses' => 'controlerName@methodName'));
+|
+*/
+
+View::name('layouts.main', 'layout');
+$layout = View::of('layout');
+
+
+//----------------------------------------------------------------------------------
+// NO FILTERS
+//----------------------------------------------------------------------------------
+
+    Route::get('test', function() use ($layout)
+    {
+        return $layout->nest('page_content', 'test');
+    });
+
+    Route::post('test', array('as' => 'post_test', function() use ($layout)
+    {
+        Input::flash();
+
+
+        return $layout->nest('page_content', 'test');
+    }));
+
+
+    // HOME
+
+    Route::get('/', function() use ($layout)
+    {
+        return $layout->nest('page_content', 'home');
+    });
+
+
+    Route::get('home', array('as' => 'get_home', 'do' => function() use ($layout)
+    {
+        return $layout->nest('page_content', 'home');
+    }));
+
+
+    // SEARCH PROFILE
+
+    Route::get('search/(:num?)', array('as' => 'get_search', function($search_id = null) use ($layout)
+    {
+        if ( ! is_null($search_id)) {
+            $search = Search::get($search_id);
+            if ( ! is_null($search)) {
+                $profiles = Search::get_profiles($search->data);
+                return $layout->nest('page_content', 'search', array('profiles'=>$profiles, 'search_data'=>$search->array_data));
+            } else {
+                HTML::set_error(lang('search.msg.id_not_found', array('id'=>$search_id)));
+                return Redirect::to_route('get_search');
+            }
+        }
+        
+        return $layout->nest('page_content', 'search');
+    }));
+
+    // for POST search, see below in CSRF group
+
+
+    // FIND
+    Route::get('find', array('as' => 'get_find', 'do' => function()
+    {
+        return 'Comming soon...';
+    }));
+
+
+    // SET LANGUAGE
+
+    Route::get('setlanguage/(:any?)', array('as' => 'get_set_language', 'do' => function($language = null) use ($layout)
+    {
+        if (is_null($language)) {
+            $language = Session::get('language', Config::get('language', 'en'));
+        }
+
+        Session::put('language', substr($language, 0, 2));
+        return Redirect::back();
+    }));
+
+
+    // When games wants their promoted profiles
+    Route::get('abvertising/crosspromoted_profiles/(:num)/(:any)', array('as' => 'get_crosspromoted_profiles', 'uses' => 'advertising@crosspromoted_profiles'));
 
 
 
-// must be guest
-Route::group(array('before' => 'is_guest'), function()
-{
-    Route::get('login', array('as' => 'get_login', 'uses' => 'admin@login'));
-    Route::get('register', array('as' => 'get_register', 'uses' => 'admin@register'));
-    Route::get('register/confirmation/(:num)/(:any)', array('as' => 'get_register_confirmation', 'uses' => 'admin@register_confirmation'));
-    Route::get('lostpassword/(:num)/(:any)', array('as' => 'get_lostpassword_confirmation', 'uses' => 'admin@lostpassword_confirmation'));
-});
+//----------------------------------------------------------------------------------
+//  MUST BE GUEST
+//----------------------------------------------------------------------------------
+
+    Route::group(array('before' => 'is_guest'), function()
+    {
+        Route::get('login', array('as' => 'get_login', 'uses' => 'admin@login'));
+        Route::get('register', array('as' => 'get_register', 'uses' => 'admin@register'));
+        Route::get('register/confirmation/(:num)/(:any)', array('as' => 'get_register_confirmation', 'uses' => 'admin@register_confirmation'));
+        Route::get('lostpassword/(:num)/(:any)', array('as' => 'get_lostpassword_confirmation', 'uses' => 'admin@lostpassword_confirmation'));
+    });
 
 
-// must be logged in
-Route::group(array('before' => 'auth'), function()
-{
-    Route::get('admin', array('as' => 'get_admin_home', 'uses' => 'admin@index'));
 
-    Route::get('admin/logout', array('as' => 'get_logout', 'uses' => 'admin@logout'));
+//----------------------------------------------------------------------------------
+//  MUST BE LOGGED IN + display developers and games
+//----------------------------------------------------------------------------------
 
-    Route::get('admin/user/edit/(:num?)', array('as' => 'get_edituser', 'uses' => 'admin@edituser'));
-    
-    Route::get('admin/developer/add', array('as' => 'get_adddeveloper', 'uses' => 'admin@adddeveloper'));
-    Route::get('admin/developer/edit/(:num?)', array('as' => 'get_editdeveloper', 'uses' => 'admin@editdeveloper'));
-    // I could also use
-    // Route::get('admin/(add|edit)developer', 'admin@(:1)developer');
+    Route::group(array('before' => 'auth'), function()
+    {
+        //admin routes
+        Route::get('admin', array('as' => 'get_admin_home', 'uses' => 'admin@index'));
 
-    Route::get('admin/game/add', array('as' => 'get_addgame', 'uses' => 'admin@addgame'));
-    Route::get('admin/game/edit/(:num?)', array('as' => 'get_editgame', 'uses' => 'admin@editgame'));
+        Route::get('logout', array('as' => 'get_logout', 'uses' => 'admin@logout'));
 
-    Route::get('admin/reviews/(:any?)', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));    
+        Route::get('user/edit/(:num?)', array('as' => 'get_edituser', 'uses' => 'admin@edituser'));
+        
+        Route::get('developer/add', array('as' => 'get_adddeveloper', 'uses' => 'admin@adddeveloper'));
+        Route::get('developer/edit/(:num?)', array('as' => 'get_editdeveloper', 'uses' => 'admin@editdeveloper'));
+        // I could also use
+        // Route::get('(add|edit)developer', 'admin@(:1)developer');
 
-    Route::get('admin/reports/(:any?)', array('as' => 'get_reports', 'uses' => 'admin@reports'));
-});
+        Route::get('game/add', array('as' => 'get_addgame', 'uses' => 'admin@addgame'));
+        Route::get('game/edit/(:num?)', array('as' => 'get_editgame', 'uses' => 'admin@editgame'));
 
+        Route::get('reviews/(:any?)', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));    
 
-// must be logged in + admin
-Route::group(array('before' => 'auth|admin'), function()
-{
-    Route::get('admin/user/add', array('as' => 'get_adduser', 'uses' => 'admin@adduser'));
-    
-});
+        Route::get('reports/(:any?)', array('as' => 'get_reports', 'uses' => 'admin@reports'));
 
+        // abvertising
+        Route::get('abvertising', array('as' => 'get_advertising', 'uses' => 'advertising@index'));
 
-// must be logged in + admin + logit post
-Route::group(array('before' => 'auth|admin|csrf'), function()
-{
-    Route::post('admin/adduser', array('as' => 'post_adduser', 'uses' => 'admin@adduser'));
-});
+        Route::get('abvertising/crosspromotion', array('as' => 'get_crosspromotion', 'uses' => 'advertising@crosspromotion'));
+    });
 
 
-// must be logged in + legit post
-Route::group(array('before' => 'auth|csrf'), function()
-{
-    Route::post('admin/edituser', array('as' => 'post_edituser', 'uses' => 'admin@edituser'));
+    // DISPLAY DEVELOPERS
+    // they are written in order to be after the add and edit routing
 
-    Route::post('admin/selecteditdeveloper', array('as' => 'post_selecteditdeveloper', 'uses' => 'admin@selecteditdeveloper'));
-    Route::post('admin/developer/add', array('as' => 'post_adddeveloper', 'uses' => 'admin@adddeveloper'));
-    Route::post('admin/editdeveloper', array('as' => 'post_editdeveloper', 'uses' => 'admin@editdeveloper'));
+    Route::get('developer/(:all?)', array('as' => 'get_developer', function($name = null) use ($layout)
+    {
+        if (is_null($name)) return Redirect::to_route('get_search');
+        
+        if (is_numeric($name)) {
+            $profile = Dev::find($name);
+            return Redirect::to_route('get_developer', array(name_to_url($profile->name)));
+        }
 
-    Route::post('admin/selecteditgame', array('as' => 'post_selecteditgame', 'uses' => 'admin@selecteditgame'));
-    Route::post('admin/game/add', array('as' => 'post_addgame', 'uses' => 'admin@addgame'));
-    Route::post('admin/editgame', array('as' => 'post_editgame', 'uses' => 'admin@editgame'));
+        $profile = Dev::where_name(url_to_name($name))->first();
 
-    Route::post('admin/reviews', array('as' => 'post_review', 'uses' => 'admin@reviews'));
-});
+        if (is_null($profile)) {
+            if (is_numeric($name)) {
+                HTML::set_error(lang('errors.developer_profile_id_not_found', array('id'=>$name)));
+            } else HTML::set_error(lang('errors.developer_profile_name_not_found', array('name'=>$name)));
+
+            return Redirect::to_route('get_search');
+        }
+
+        // display profile if :
+        // profile is public
+        // user is admin
+        // user is dev and profile is user's or in review   
+        if ($profile->privacy == 'public' || is_admin() ||
+            is_trusted() && 
+                ($profile->user_id == user_id() ||
+                in_array($profile->privacy, Config::get('vgc.review.types')))
+        ) {
+            return $layout->nest('page_content', 'developerdisplay', array('profile' => $profile));
+        } else {
+            HTML::set_error(lang('errors.access_not_allowed', array('page' => 'Developer profile '.$name)));
+            return Redirect::to_route('get_search');
+        }
+    }));
 
 
-// must be guest and legit post
-Route::group(array('before' => 'is_guest|csrf'), function()
-{
-    Route::post('register', array('as' => 'post_register', 'uses' => 'admin@register'));
-    Route::post('login', array('as' => 'post_login', 'uses' => 'admin@login'));
-    Route::post('lostpassword', array('as' => 'post_lostpassword', 'uses' => 'admin@lostpassword'));
-});
+    // DISPLAY DEVELOPERS
+
+    Route::get('game/(:all?)', array('as' => 'get_game', function($name = null) use ($layout)
+    {
+        if (is_null($name)) return Redirect::to_route('get_search');
+        
+        if (is_numeric($name)) {
+            $profile = Game::find($name);
+            return Redirect::to_route('get_game', array(name_to_url($profile->name)));
+        } 
+
+        $profile = Game::where_name(url_to_name($name))->first();
+
+        if (is_null($profile)) {
+            if (is_numeric($name)) {
+                HTML::set_error(lang('errors.game_profile_id_not_found', array('id'=>$name)));
+            } else HTML::set_error(lang('errors.game_profile_name_not_found', array('name'=>$name)));
+
+            return Redirect::to_route('get_search');
+        }
+
+        // display profile if :
+        // profile is public
+        // user is admin
+        // user is dev and profile is user's or in review
+        if ($profile->privacy == 'public' || is_admin() ||
+            is_trusted() && 
+                ($profile->user_id == user_id() ||
+                in_array($profile->privacy, Config::get('vgc.review.types')))
+        ) {
+            return $layout->nest('page_content', 'gamedisplay', array('profile' => $profile));
+        } else {
+            HTML::set_error(lang('errors.access_not_allowed', array('page' => 'Game profile '.$name)));
+            return Redirect::to_route('get_search');
+        }
+    }));
 
 
-// must be legit post
-Route::group(array('before' => 'csrf'), function()
-{
-    Route::post('admin/reports', array('as' => 'post_reports', 'uses' => 'admin@reports'));
 
-    
-});
+//----------------------------------------------------------------------------------
+//  MUST BE ADMIN
+//----------------------------------------------------------------------------------
+
+    Route::group(array('before' => 'auth|admin'), function()
+    {
+        Route::get('user/add', array('as' => 'get_adduser', 'uses' => 'admin@adduser'));
+        
+    });
+
+
+
+//----------------------------------------------------------------------------------
+//  MUST BE ADMIN AND LEGIT POST
+//----------------------------------------------------------------------------------
+
+    Route::group(array('before' => 'auth|admin|csrf'), function()
+    {
+        Route::post('adduser', array('as' => 'post_adduser', 'uses' => 'admin@adduser'));
+    });
+
+
+
+//----------------------------------------------------------------------------------
+//  MUST BE LOGGED IN AND LEGIT POST
+//----------------------------------------------------------------------------------
+
+    Route::group(array('before' => 'auth|csrf'), function()
+    {
+        Route::post('edituser', array('as' => 'post_edituser', 'uses' => 'admin@edituser'));
+
+        Route::post('selecteditdeveloper', array('as' => 'post_selecteditdeveloper', 'uses' => 'admin@selecteditdeveloper'));
+        Route::post('developer/add', array('as' => 'post_adddeveloper', 'uses' => 'admin@adddeveloper'));
+        Route::post('editdeveloper', array('as' => 'post_editdeveloper', 'uses' => 'admin@editdeveloper'));
+
+        Route::post('selecteditgame', array('as' => 'post_selecteditgame', 'uses' => 'admin@selecteditgame'));
+        Route::post('game/add', array('as' => 'post_addgame', 'uses' => 'admin@addgame'));
+        Route::post('editgame', array('as' => 'post_editgame', 'uses' => 'admin@editgame'));
+
+        Route::post('reviews', array('as' => 'post_review', 'uses' => 'admin@reviews'));
+
+        Route::post('abvertising/crosspromotion', array('as' => 'post_crosspromotion', 'uses' => 'advertising@crosspromotion'));
+    });
+
+
+
+//----------------------------------------------------------------------------------
+//  MUST BE GUEST AND LEGIT POST
+//----------------------------------------------------------------------------------
+
+    Route::group(array('before' => 'is_guest|csrf'), function()
+    {
+        Route::post('register', array('as' => 'post_register', 'uses' => 'admin@register'));
+        Route::post('login', array('as' => 'post_login', 'uses' => 'admin@login'));
+        Route::post('lostpassword', array('as' => 'post_lostpassword', 'uses' => 'admin@lostpassword'));
+    });
+
+
+
+//----------------------------------------------------------------------------------
+//  MUST BE LEGIT POST
+//----------------------------------------------------------------------------------
+
+    Route::group(array('before' => 'csrf'), function()
+    {
+        Route::post('reports', array('as' => 'post_reports', 'uses' => 'admin@reports'));
+
+        Route::post('/search', array('as' => 'post_search', 'before' => 'csrf', function()
+        {
+            $input = Input::all();
+            $search = Search::create($input);
+            return Redirect::to_route('get_search', array($search->id));
+        }));
+    });
+
+
+
 
 Event::listen('laravel.query', function($sql, $bindings, $time) {
     //var_dump($sql);
@@ -411,6 +410,8 @@ Route::filter('before', function()
 
         define('ACTION', $segments[1]);
     }
+
+
 
 
     // checking success of reviews

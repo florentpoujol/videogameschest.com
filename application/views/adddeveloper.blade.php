@@ -80,7 +80,7 @@ if (is_admin()) {
                         <div class="tab-pane" id="socialnetworks">
                             <?php
                             $options = get_array_lang(Config::get('vgc.socialnetworks'), 'socialnetworks.');
-                            $options = array_merge(array('' => lang('common.select-first-option')), $options);
+                            $options = array_merge(array('' => lang('common.select_first_option')), $options);
 
                             $values = array();
                             if (isset($old['socialnetworks'])) $values = clean_names_urls_array($old['socialnetworks']);
