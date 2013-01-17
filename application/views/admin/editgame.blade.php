@@ -10,7 +10,7 @@ $rules = array(
     'presskit' => 'url',
     'soundtrackurl' => 'url',
     'publishername' => 'min:2|aplha',
-    'publisherurl' => 'url|required_with:publishername',
+    'publisherurl' => 'url',
 );
 
 $game = Game::find($profile_id);
@@ -25,8 +25,7 @@ if (is_admin()) {
 }
 else $devs = Dev::where_privacy('public')->get(array('id', 'name'));
 
-if ($game->developer_id != 0) $developer_name = $game->dev->name;
-else $developer_name = $game->developer_name;
+$developer_name = $game->actual_developer_name;
 ?>
 
 <div id="editgame">
@@ -46,6 +45,8 @@ else $developer_name = $game->developer_name;
                 {{ Form::hidden('id', $profile_id) }}
 
                 {{ Former::primary_submit(lang('game.edit.submit')) }}
+
+                <a href="{{ route('get_game', array(name_to_url($game->name))) }}">{{ lang('common.view_profile_link') }}</a>
 
                 <hr>
                 
@@ -201,63 +202,56 @@ else $developer_name = $game->developer_name;
         </div> <!-- /.tab-pane #edit_profile -->
 
         <div class="tab-pane" id="edit_crosspromotion">
-            @if (user()->crosspromotion_active == 1)
-                <h2>{{ lang('crosspromotion.title') }}</h2>
+            <h2>{{ lang('crosspromotion.title') }}</h2>
 
-                <hr>
+            <hr>
 
-                {{ Former::open_vertical(route('post_crosspromotion_editgame')) }}
-                    {{ Form::token() }}
-                    {{ Former::hidden('id', $game->id)}}
-                    
-                    <p>
-                        {{ lang('crosspromotion.editgame.select_text') }}
-                    </p>
-
-                    <div class="row-fluid">
-                        <div class="span4">
-                            <?php
-                            $options = Dev::where_privacy('public');
-
-                            $values = $game->crosspromotion_profiles['developers'];
-                            
-                            $size = count($options);
-                            if ($size > 15) $size = 15;
-                            ?>
-                            {{ Former::multiselect('developers', lang('common.developers'))->fromQuery($options)->size($size)->value($values) }}
-                        </div>
-
-                        <div class="span4">
-                            <?php
-                            $options = Game::where_privacy('public');
-                            
-                            $values = $game->crosspromotion_profiles['games'];
-
-                            $size = count($options);
-                            if ($size > 15) $size = 15;
-                            ?>
-                            {{ Former::multiselect('games', lang('common.games'))->fromQuery($options)->size($size)->value($values) }}
-                        </div>
-                    </div> <!-- /.row -->
-
-                    {{ Former::primary_submit(lang('common.update')) }}
-                </form>
-
-                <hr>
-
+            {{ Former::open_vertical(route('post_crosspromotion_editgame')) }}
+                {{ Form::token() }}
+                {{ Former::hidden('id', $game->id)}}
+                
                 <p>
-                    
-                    <?php
-                    $link = route('get_crosspromotion_from_game', array($game->id, $game->crosspromotion_key)); 
-                    ?>
-                    {{ lang('crosspromotion.editgame.link_text', array('url'=>$link)) }}
+                    {{ lang('crosspromotion.editgame.select_text') }}
                 </p>
-            @else
-                <p>
-                    {{ lang('crosspromotion.editgame.non_subscribers_msg', array('link'=>route('get_crosspromotion'))) }}
 
-                </p>
-            @endif {{-- endif crosspromotion is active --}}
+                <div class="row-fluid">
+                    <div class="span4">
+                        <?php
+                        $options = Dev::where_privacy('public');
+
+                        $values = $game->crosspromotion_profiles['developers'];
+                        
+                        $size = count($options);
+                        if ($size > 15) $size = 15;
+                        ?>
+                        {{ Former::multiselect('developers', lang('common.developers'))->fromQuery($options)->size($size)->value($values) }}
+                    </div>
+
+                    <div class="span4">
+                        <?php
+                        $options = Game::where_privacy('public');
+                        
+                        $values = $game->crosspromotion_profiles['games'];
+
+                        $size = count($options);
+                        if ($size > 15) $size = 15;
+                        ?>
+                        {{ Former::multiselect('games', lang('common.games'))->fromQuery($options)->size($size)->value($values) }}
+                    </div>
+                </div> <!-- /.row -->
+
+                {{ Former::primary_submit(lang('common.update')) }}
+            </form>
+
+            <hr>
+
+            <p>
+                
+                <?php
+                $link = route('get_crosspromotion_from_game', array($game->id, $game->crosspromotion_key)); 
+                ?>
+                {{ lang('crosspromotion.editgame.link_text', array('url'=>$link)) }}
+            </p>
         </div> <!-- /.tab-pane #edit_crosspromotion -->
     </div> <!-- /.tab-sontent -->
 </div> <!-- /#editgame --> 

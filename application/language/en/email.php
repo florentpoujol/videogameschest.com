@@ -2,6 +2,8 @@
 
 return array(
 
+// REVIEWS
+
     'developer_passed_submission_review' =>
     'Hi :name <br>
     <br>
@@ -41,7 +43,7 @@ return array(
     To be able to log in, you need to activate your account by clicking on the link below : <br>
     <a href=":link" title="Follow the link to activate your user account">:link</a> <br>
     <br>
-    --
+    -- <br>
     Regards, <br>
     The VideoGamesChest team <br>
     ',
@@ -71,7 +73,23 @@ return array(
     <br>
     You can now <a href=":login_link" title="Go to the login form">log in</a>. <br>
     <br>
+    --
     Regards, <br>
     The VideoGamesChest team <br>
     ',
+
+// NEW PROFILE
+
+    'profile_created_subject' => 'New profile created on VideoGamesChest.com',
+    'profile_created' =>
+    'Hi :user_name <br>
+    <br>
+    You just created a new :profile_type profile ":profile_name". This profile is currently private, only you can see it when you are logged in. <br>
+    An administrator must review and approve it before it becomes public and visible by everyone. You will get another email when it will be approved. <br>
+    <br>
+    Meanwhile, you can still edit the profiles or add another profiles. <br>
+    <br>
+    -- <br>
+    Regards, <br>
+    The VideoGamesChest team'
 );

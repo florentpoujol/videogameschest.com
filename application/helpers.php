@@ -69,10 +69,10 @@ function clean_names_urls_array($array)
  */
 function parse_bbcode($input)
 {
-    $input = preg_replace( "#\[b\](.+)\[/b\]#", "<strong>$1</strong>", $input);
-    $input = preg_replace( "#\[i\](.+)\[/i\]#", "<em>$1</em>", $input);
-    $input = preg_replace( "#\[h1\](.+)\[/h1\]#", "<h3>$1</h3>", $input);
-    $input = preg_replace( "#\[h2\](.+)\[/h2\]#", "<h4>$1</h4>", $input);
+    $input = preg_replace( "#\[b\](.+)\[/b\]#i", "<strong>$1</strong>", $input);
+    $input = preg_replace( "#\[i\](.+)\[/i\]#i", "<em>$1</em>", $input);
+    $input = preg_replace( "#\[h1\](.+)\[/h1\]#i", "<h3>$1</h3>", $input);
+    $input = preg_replace( "#\[h2\](.+)\[/h2\]#i", "<h4>$1</h4>", $input);
     //$input = preg_replace( "#https?://[^ ]+#i", '<a href="$0">$0</a>', $input);
     //$input = preg_replace( "#\[url\](.+)\[/url\]#", '<a href="$1">$1</a>', $input);
     //$input = preg_replace( "#\[url=(.+)\](.+)\[/url\]#", '<a href="$1" title="$2">$2</a>', $input);
@@ -350,23 +350,23 @@ function array_set_values_as_keys($array)
  * @param  bool $icon_white   Use the white version of the glyphicons
  * @return string             The html
  */
-function icon($icon, $icon_white = false, $size = null)
+function icon($icon, $title = null, $size = null)
 {
     $icon = strtolower($icon);
+
+    if (is_string($title) && trim($title) != '') $title = ' title="'.$title.'"';
+    else $title = '';
 
     if (is_null($size)) $size = '14';
 
     $vgc_icons = Config::get('vgc.icons');
-
-    $glyhpicons = Config::get('vgc.glyphicons');
+    $glyphicons = Config::get('vgc.glyphicons');
 
     if (array_key_exists($icon, $vgc_icons)) {
-        $html = '<img src="'.URL::to($vgc_icons[$icon]).'" alt="$icon icon" width="'.$size.'px" height="'.$size.'px"> ';
-    } elseif (in_array($icon, $glyhpicons)) {
-        if ($icon_white === true) $icon_white = ' icon-white';
-        $html = '<i class="icon-'.$icon.$icon_white.'"></i> ';
-    }
-    else $html = '';
+        $html = '<img src="'.URL::to($vgc_icons[$icon]).'" alt="$icon icon" width="'.$size.'px" height="'.$size.'px" '.$title.'> ';
+    } elseif (in_array($icon, $glyphicons)) {
+        $html = '<i class="icon-'.$icon.'" '.$title.'></i> ';
+    } else $html = '';
 
     return $html;
 }
@@ -470,3 +470,9 @@ function captcha($text_name = 'captcha')
 
     return '';
 }
+
+function shortenUrl($url)
+{
+    return preg_replace("#(https?://[^/]+/)(.*)#i", "$1...", $url);
+}
+

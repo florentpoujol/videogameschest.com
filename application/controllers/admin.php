@@ -457,7 +457,7 @@ class Admin_Controller extends Base_Controller
             'blogfeed' => 'url',
             'soundtrackurl' => 'url',
             'publishername' => 'min:2|alpha',
-            'publisherurl' => 'url|required_with:publishername',
+            'publisherurl' => 'url',
 
         );
 
@@ -560,7 +560,7 @@ class Admin_Controller extends Base_Controller
             'presskit' => 'url',
             'soundtrackurl' => 'url',
             'publishername' => 'min:2',
-            'publisherurl' => 'url|required_with:publishername',
+            'publisherurl' => 'url',
         );
         
         $validation = Validator::make($input, $rules);

@@ -10,7 +10,7 @@ $rules = array(
     'blogfeed' => 'url',
     'soundtrackurl' => 'url',
     'publishername' => 'min:2|alpa',
-    'publisherurl' => 'url|required_with:publishername',
+    'publisherurl' => 'url',
 
 );
 

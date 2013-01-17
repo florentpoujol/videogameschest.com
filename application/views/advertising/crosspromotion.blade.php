@@ -9,7 +9,7 @@
 
     <hr>
 
-    @if (is_logged_in())
+    @if (false && is_logged_in())
         <?php
         $has_subscribed = (user()->crosspromotion_active == 1);
         ?>

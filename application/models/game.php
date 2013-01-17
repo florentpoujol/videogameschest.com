@@ -36,7 +36,7 @@ class Game extends Profile
         }
         else $input['developer_id'] = 0;
 
-        if ( ! isset($game['privacy'])) $game['privacy'] = 'private';
+        if ( ! isset($game['privacy'])) $game['privacy'] = 'publishing';
 
         $input['approved_by'] = array();
 
@@ -52,6 +52,16 @@ class Game extends Profile
         ));
         HTML::set_success($msg);
         Log::write('game create success', $msg);
+
+
+        $text = lang('emails.profile_created', array(
+            'user_name' => $this->user->name,
+            'profile_type' => 'game',
+            'profile_name' => $dev->name,
+        ));
+
+        sendMail($this->user->email, lang('emails.profile_created_subject'), $text);
+
 
         return $game;
     }
@@ -93,9 +103,13 @@ class Game extends Profile
         $game = parent::update($id, $input); // 
         $game = Game::find($id);
         
-        HTML::set_success(lang('game.msg.editgame_success'
-            ,array('name'=>$game->name, 'id'=>$game->id))
-        );
+
+        $msg = lang('game.msg.editgame_success', array(
+            'name'=>$game->name,
+            'id'=>$game->id
+        ));
+
+        HTML::set_success($msg);
         Log::write('game update success', $msg);
 
         return $game;
@@ -195,9 +209,9 @@ class Game extends Profile
     //----------------------------------------------------------------------------------
     // GETTER
 
-    public function get_developer_name()
+    public function get_actual_developer_name()
     {
-        if ($this->developer_id == 0) return $this->developer_name;
+        if ($this->developer_id == 0) return $this->get_attribute('developer_name');
         else return $this->dev->name;
     }
 }

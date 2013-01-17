@@ -58,7 +58,7 @@ else $accordion_default_state = 'in';
             {{ lang('search.profiles_found', array('num'=>$count)) }}
         </p>
 
-        @include('partials.profile_list')
+        @include('partials.profile_list_tiles')
     @endif
 @endif 
 {{-- if (isset($profiles)) --}}

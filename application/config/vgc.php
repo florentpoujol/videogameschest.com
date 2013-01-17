@@ -273,8 +273,9 @@ return array(
 
 
     'icons' => array(
-        'facebook_' => 'img/icons/facebook.png',
-        'twitter_' => 'img/icons/twitter.png',
+        'facebook' => 'img/icons/facebook.png',
+        'twitter' => 'img/icons/twitter.png',
+        'rss' => 'img/icons/rss.png',
     ),
 
     'glyphicons' => array( 
@@ -420,8 +421,20 @@ return array(
         'fullscreen',
 
         // font-awesome :
-        'twitter',
-        'twitter-sign',
+        // 'twitter',
+        // 'twitter-sign',
+        // 'facebook',
         'cogs',
+        'globe',
+        'envelope-alt',
+        'group',
+        'flag',
+        'caret-down',
+        'folder-open',
+        'briefcase',
+        'wrench',
+        'music',
+        'money',
+
     ),
 );

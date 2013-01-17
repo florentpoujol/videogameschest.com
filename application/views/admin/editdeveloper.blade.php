@@ -28,6 +28,15 @@ if ( ! empty($old)) Former::populate($old);
             {{ Form::token() }}
             {{ Form::hidden('id', $profile_id) }}
 
+            <div class="row">
+                <div class="span10">
+                    {{ Former::primary_submit(lang('developer.edit.submit')) }} 
+                    <a href="{{ route('get_developer', array(name_to_url($dev->name))) }}">{{ lang('common.view_profile_link') }}</a>
+                </div>
+            </div>
+
+            <hr>
+
             <div class="span5">
                 {{ Former::text('name', lang('common.name'))->help(lang('developer.name_help')) }}
                 {{ Former::text('email', lang('common.email')) }}
@@ -98,7 +107,7 @@ if ( ! empty($old)) Former::populate($old);
 
                 <hr>
 
-                <input type="submit" value="{{ lang('developer.edit.submit') }}" class="btn btn-primary">
+                {{ Former::primary_submit(lang('developer.edit.submit')) }}
             </div> <!-- /.span -->
         </form>
     </div> <!-- /.row -->

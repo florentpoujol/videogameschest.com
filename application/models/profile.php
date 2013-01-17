@@ -107,6 +107,6 @@ class Profile extends ExtendedEloquent
 
     public function get_parsed_pitch() 
     {
-        return nl2br(parse_bbcode($this->pitch));
+        return nl2br(parse_bbcode(xssSecure($this->pitch)));
     }
 }

@@ -35,7 +35,7 @@ HTML::macro('get_errors', function($view_errors = null)
 
     if ($session_errors != "" || (is_object($view_errors) && count($view_errors->all()) > 0) ) 
     {
-        $errors .= '<div class="alert alert-error">
+        $errors .= '<div class="alert alert-error"><a class="close" data-dismiss="alert" href="#">&times;</a>
         ';
 
         if ($session_errors != "") 
@@ -120,7 +120,7 @@ HTML::macro('get_success', function()
 
     if (trim($json_success) != "") 
     {
-        $html_success .= '<div class="alert alert-success">
+        $html_success .= '<div class="alert alert-success"><a class="close" data-dismiss="alert" href="#">&times;</a>
         ';
         
         $array_success = json_decode($json_success, true);
@@ -175,7 +175,7 @@ HTML::macro('get_infos', function()
     
     if ($json_success != "") 
     {
-        $html_success .= '<div class="alert alert-infos">
+        $html_success .= '<div class="alert alert-infos"><a class="close" data-dismiss="infos" href="#">&times;</a>
         ';
 
         $array_success = json_decode($json_success, true);

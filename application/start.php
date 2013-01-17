@@ -183,8 +183,8 @@ Asset::container('smoothDivScroll')->add('kinetic', 'js/jquery.kinetic.js');
 Asset::container('smoothDivScroll')->add('smoothdivscroll', 'js/jquery.smoothdivscroll-1.3-min.js');*/
 
 Asset::container('nivo-slider')->add('main-css', 'css/nivo-slider/nivo-slider.css');
-Asset::container('nivo-slider')->add('bar-theme', 'css/nivo-slider/themes/bar/bar.css');
+/*Asset::container('nivo-slider')->add('bar-theme', 'css/nivo-slider/themes/bar/bar.css');
 Asset::container('nivo-slider')->add('dark-theme', 'css/nivo-slider/themes/dark/dark.css');
-Asset::container('nivo-slider')->add('light-theme', 'css/nivo-slider/themes/light/light.css');
+Asset::container('nivo-slider')->add('light-theme', 'css/nivo-slider/themes/light/light.css');*/
 Asset::container('nivo-slider')->add('default-theme', 'css/nivo-slider/themes/default/default.css');
-Asset::container('nivo-slider')->add('js-pack', 'js/jquery.nivo.slider.pack.js');
+Asset::container('nivo-slider')->add('js-pack', 'js/jquery.nivo.slider.js');

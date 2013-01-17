@@ -36,19 +36,30 @@ class Developer extends Profile
 	{
         $input = clean_form_input($input);
 
-        if ( ! isset($input['privacy'])) $input['privacy'] = 'private';
+        if ( ! isset($input['privacy'])) $input['privacy'] = 'publishing';
         
         $input['approved_by'] = array();
         $input['pitch'] = $input['pitch'];
 
         $dev = parent::create($input);
         
+
         $msg = lang('developer.msg.adddev_success', array(
             'name'=>$dev->name,
             'id' => $dev->id
         ));
         HTML::set_success($msg);
         Log::write('developer create success', $msg);
+
+
+        $text = lang('emails.profile_created', array(
+            'user_name' => $this->user->name,
+            'profile_type' => 'developer',
+            'profile_name' => $dev->name,
+        ));
+
+        sendMail($this->user->email, lang('emails.profile_created_subject'), $text);
+
 
         return $dev;
     }

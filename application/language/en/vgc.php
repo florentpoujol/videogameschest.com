@@ -40,6 +40,7 @@ return array(
         'pitch' => 'Pitch',
         'presskit' => 'Press Kit',
         'profile' => 'Profile',
+        'profile_blogfeed' => 'Latest articles',
         'publisher' => 'Publisher',
 
         'report_profile_link' => 'Report this profile',
@@ -51,6 +52,7 @@ return array(
         //'site_slogan' => 'The participative and searchable video games database',
         'site_slogan' => 'The place to hunt down for the treasures of video games',
         'socialnetworks' => 'Social networks',
+        'soundtrack' => 'Soundtrack',
         'stores' => 'Stores',
         'subscription' => 'Subscription',
 
@@ -67,6 +69,7 @@ return array(
 
         'videos' => 'Videos',
         'viewpoints' => 'Point of view',
+        'view_profile_link' => 'View this profile',
 
         'website' => 'Website',
 
@@ -293,10 +296,11 @@ return array(
         'profile' => array(
             'title' => 'Developer',
             'website' => 'Go to the developer\'s website',
+            'no_game' => 'This developer has no game yet',
         ),
 
         'msg' => array(
-            'adddev_success' => 'The developer profile with name \":name\" (id : :id) has successfully been created.',
+            'adddev_success' => 'The developer profile with name \":name\" (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.',
             'editdev_success' => 'The developer profile with name \":name\" (id : :id) has successfully been updated.',
 
             'select_editdev_id_not_found' => 'No developer with id ":id" was found.',
@@ -320,9 +324,9 @@ return array(
         'pitch' => 'Game story, features...',
 
         'publishername' => 'Publisher name',
-        'publisherurl' => 'Publisher\'s website URL',
+        'publisherurl' => 'Publisher\'s website',
 
-        'soundtrackurl' => 'Soundtrack URL',
+        'soundtrackurl' => 'Soundtrack',
         
         'releasedate' => 'Release date',
 
@@ -357,11 +361,12 @@ return array(
             'website' => 'Go to the game\'s website',
             'blogfeed' => 'Lastest articles from the blog',
             'soundtrack' => 'Get the soudtrack',
+
         ),
 
 
         'msg' => array(
-            'addgame_success' => 'The game profile with name \":name\" (id : :id) has successfully been created.',
+            'addgame_success' => 'The game profile with name \":name\" (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.',
             'editgame_success' => 'The game profile with name \":name\" (id : :id) has successfully been updated.',
 
             'select_editgame_id_not_found' => 'No game profile with id ":id" was found.',
@@ -423,7 +428,7 @@ return array(
         ),
     ),
 
-// REVIEW
+// REVIEWS
 
     'reviews' => array(
         'title' => 'Peer Reviews',
@@ -487,7 +492,7 @@ return array(
 
         'how_it_works_title' => 'How does it works ?',
         'how_it_works' => 
-        'Once you activated to the service, you will have acces to a new section on your games profile\'s where you can select profiles to promote. <br>
+        'You can select profiles to promote for each of your games under the tab "Cross-promotion" in your game profile edit page. <br>
         Then from within your game, you just have to query an URL to get the list of the profiles you selected in the first step. <br>
         Once you properly setted up the system in your game you can just update the promoted games from your game profile on VGC without the need to update/patch your actual game.',
 

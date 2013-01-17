@@ -17,7 +17,7 @@
         <li><a href="{{ route('get_adddeveloper') }}">{{ lang('admin.menu.add_developer') }}</a></li>
         @if ( ! empty(user()->devs) || is_admin())
             <li>
-                <a data-toggle="collapse" href="#collapse3">{{ lang('admin.menu.edit_developer') }}</a>
+                <a data-toggle="collapse" href="#collapse3">{{ lang('admin.menu.edit_developer') }} {{ icon('caret-down') }}</a>
                 
                 <div id="collapse3" class="collapse">
                     <blockquote>
@@ -31,7 +31,7 @@
         <li><a href="{{ route('get_addgame') }}">{{ lang('admin.menu.add_game') }}</a></li>
         @if ( ! empty(user()->devs) || is_admin())
             <li>
-                <a data-toggle="collapse" href="#collapse2">{{ lang('admin.menu.edit_game') }}</a>
+                <a data-toggle="collapse" href="#collapse2">{{ lang('admin.menu.edit_game') }} {{ icon('caret-down') }}</a>
                 
                 <div id="collapse2" class="collapse">
                     <blockquote>

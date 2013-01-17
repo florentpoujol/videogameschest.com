@@ -276,15 +276,15 @@ $layout = View::of('layout');
 
     Route::group(array('before' => 'auth|csrf'), function()
     {
-        Route::post('edituser', array('as' => 'post_edituser', 'uses' => 'admin@edituser'));
+        Route::post('user/edit', array('as' => 'post_edituser', 'uses' => 'admin@edituser'));
 
         Route::post('selecteditdeveloper', array('as' => 'post_selecteditdeveloper', 'uses' => 'admin@selecteditdeveloper'));
         Route::post('developer/add', array('as' => 'post_adddeveloper', 'uses' => 'admin@adddeveloper'));
-        Route::post('editdeveloper', array('as' => 'post_editdeveloper', 'uses' => 'admin@editdeveloper'));
+        Route::post('developer/edit', array('as' => 'post_editdeveloper', 'uses' => 'admin@editdeveloper'));
 
         Route::post('selecteditgame', array('as' => 'post_selecteditgame', 'uses' => 'admin@selecteditgame'));
         Route::post('game/add', array('as' => 'post_addgame', 'uses' => 'admin@addgame'));
-        Route::post('editgame', array('as' => 'post_editgame', 'uses' => 'admin@editgame'));
+        Route::post('game/edit', array('as' => 'post_editgame', 'uses' => 'admin@editgame'));
 
         
         Route::post('reports/edit', array('as' => 'post_editreports', 'uses' => 'admin@editreports'));
