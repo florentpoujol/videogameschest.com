@@ -188,7 +188,9 @@
             
     <div id="collapse-report" class="collapse">
         <div class="accordion-inner">
-            @include('report_form')
+            
+                @include('report_form')
+            
         </div>
     </div>
 </div>

@@ -56,8 +56,8 @@ class Search extends ExtendedEloquent
         isset($input['arrayitems']) ? $array_items = $input['arrayitems'] : $array_items = array();
 
 
-        $profiles = $class::
-        where(function($query) use ($words, $input, $array_items, $words_where, $class)
+        $profiles = $class::where_privacy('public')
+        ->where(function($query) use ($words, $input, $array_items, $words_where, $class)
         {
             // words
             foreach ($words as $field => $values) {

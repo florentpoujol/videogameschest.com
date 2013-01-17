@@ -176,6 +176,20 @@ class User extends ExtendedEloquent
         }
     }
 
+    public function update_crosspromotion($new_state)
+    {
+        $this->crosspromotion_active = $new_state;
+        $this->save();
+
+        if ($new_state == 1) {
+            HTML::set_success(lang('crosspromotion.msg.activation_success'));
+            Log::write('crosspromotion activation success', 'User "'.$this->name.' (id : '.$this->id.') activated the cross-promotion.');
+        } elseif($new_state == 0) {
+            HTML::set_success(lang('crosspromotion.msg.deactivation_success'));
+            Log::write('crosspromotion deactivation success', 'User "'.$this->name.' (id : '.$this->id.') DEactivated the cross-promotion.');
+        }
+    }
+
 
     //----------------------------------------------------------------------------------
     // GETTERS

@@ -118,12 +118,13 @@ HTML::macro('get_success', function()
     $json_success = Session::get('vgc_success');
     $html_success = "";
 
-    if ($json_success != "") 
+    if (trim($json_success) != "") 
     {
         $html_success .= '<div class="alert alert-success">
         ';
-
+        
         $array_success = json_decode($json_success, true);
+        
         foreach ($array_success as $success) 
         {
             $html_success .= $success.' <br>

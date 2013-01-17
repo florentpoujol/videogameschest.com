@@ -217,9 +217,10 @@ function to_json($data)
 function json_escape($string) 
 {   
     $search = array("\n", "\r", "\u", "\t", "\f", "\b", "/", '"');
-    $replace = array("\\n", "\\r", "\\u", "\\t", "\\f", "\\b", "\/", "\"");
+    $replace = array("\\n", "\\r", "\\u", "\\t", "\\f", "\\b", "\/", '\"');
     $string = str_replace($search, $replace, $string);
     return $string;
+    // does not work at all for double gillemets "
 }
 
 
@@ -349,16 +350,18 @@ function array_set_values_as_keys($array)
  * @param  bool $icon_white   Use the white version of the glyphicons
  * @return string             The html
  */
-function icon($icon, $icon_white = false)
+function icon($icon, $icon_white = false, $size = null)
 {
     $icon = strtolower($icon);
+
+    if (is_null($size)) $size = '14';
 
     $vgc_icons = Config::get('vgc.icons');
 
     $glyhpicons = Config::get('vgc.glyphicons');
 
     if (array_key_exists($icon, $vgc_icons)) {
-        $html = '<img src="'.URL::to($vgc_icons[$icon]).'" alt="$icon icon" width="14px" height="14px"> ';
+        $html = '<img src="'.URL::to($vgc_icons[$icon]).'" alt="$icon icon" width="'.$size.'px" height="'.$size.'px"> ';
     } elseif (in_array($icon, $glyhpicons)) {
         if ($icon_white === true) $icon_white = ' icon-white';
         $html = '<i class="icon-'.$icon.$icon_white.'"></i> ';

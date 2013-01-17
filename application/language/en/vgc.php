@@ -39,6 +39,7 @@ return array(
 
         'pitch' => 'Pitch',
         'presskit' => 'Press Kit',
+        'profile' => 'Profile',
         'publisher' => 'Publisher',
 
         'report_profile_link' => 'Report this profile',
@@ -73,8 +74,8 @@ return array(
 
 
         'msg' => array( 
-            'edit_other_users_profile_not_allowed' => 'You are not allowed to edit other user\'s profiles',
-
+            'edit_other_users_profile_not_allowed' => 'You are not allowed to edit profiles which does not belong to you.',
+            'access_not_allowed' => 'You are not allowed to access the page : :page',
         ),
     ),
 
@@ -82,6 +83,12 @@ return array(
 
     'home' => array(
         'title' => 'Home',
+
+        'herounit_text' => '
+        Video Games Chest tackle the problem of the discoverability of games by providing inovatives and effectives ways for the player to find games they are really interested to play
+         as well as for the developers to pitch their games only to the audience really interested in it.
+
+        ',
 
         'participative' => array(
             'title' => 'Participative',
@@ -107,6 +114,8 @@ return array(
             'adddev_link' => 'Add a developer',
             'addgame_link' => 'Add a game',
         ),
+
+
 
         'searchable_title' => 'Searchable',
         'searchable_text' => 'Any piece of information featured on the profiles can be used as a filter criterion.
@@ -144,7 +153,7 @@ return array(
     ),  
 
     'errors' => array(
-        'access_not_allowed' => "You are not allowed to access the page : ':page'",
+        
 
         'developer_profile_name_not_found' => "Can't find the developper profile with name ':name'.",
         'developer_profile_id_not_found' => "Can't find the developper profile with id ':id'.",
@@ -451,35 +460,59 @@ return array(
         'Select the games you want to promote from this game. <br>
         Then from the game query the following URL : :url',
 
-        'edit_game_non_subscribers_msg' => 'To easily promote other games from within this game <a href=":edituser_link">you can subscribe to the cross-promotion service</a> from your user account.',
+ 
 
-        'non_activated_text' => 'To subscribe or activate the cross-promotion service, just check the box below and click on the Update button.',
-        'activated_text' => 'To unsubscribe or deactivate the cross-promotion service, just check the box below and click on the Update button.',
+        'non_activated_text' => 'To activate the cross-promotion service, just check the box below and click on the Update button.',
+        'activated_text' => 'To deactivate the cross-promotion service, just uncheck the box below and click on the Update button.',
 
         'subsciption_checkbox_label' => 'Activate the cross promotion service for my games.',
 
         'no_game' => 'Using the cross promotion service starts by <a href=":add_game_link" title="Go the the \'Add game profile\' form">creating a game profile</a>.', 
 
 
+        'what_is_it_title' => 'What\'s cross-promotion ?',
         'what_is_it' => 
-        'Cross-promotin is a kind of advertising where a product is promoted from within another product. <br>
-        It has two main benefits : it\'s free since you don\'t have to rent advertising space inside you own game and it\'s <em>a priori</em> well targetted since we can imagine that players of one of your game might be interrested in your other games as well. <br>
+        '<a href="http://en.wikipedia.org/wiki/Cross-promotion" title="Go the Cross-promotion Wikipedia page">Cross-promotion</a> is a kind of advertising where a product is promoted from within another product. <br>
+        Its two main benefits are that it\'s free since you don\'t have to rent advertising space inside you own game and it\'s <em>a priori</em> well targetted since we can imagine that players of one of your game might be interrested in your other games as well.',
+
+        /*
         <br>
         Classic online advertising cost so much that most small to medium sized game studios just can\'t afford it. <br>
         Cross-promotion is a cheaper alternative that can prove effective if you promote not only your other games but also other developer\'s games. <br>
         Creating a network of cross-promotion
 
         if you promote a game made by another developer, tell them, they want to do the same with your game ! 
-        ',
+         */
 
+        'how_it_works_title' => 'How does it works ?',
         'how_it_works' => 
-        'Once you subscribed to the service, you will have acces to a new section on your games profile\'s where you can select profiles to promote. <br>
-        
-        From within your game, you just have to query an URL to get the list of the profiles you selected in the first step. <br>
-        And that\'it.<br>
-        
+        'Once you activated to the service, you will have acces to a new section on your games profile\'s where you can select profiles to promote. <br>
+        Then from within your game, you just have to query an URL to get the list of the profiles you selected in the first step. <br>
         Once you properly setted up the system in your game you can just update the promoted games from your game profile on VGC without the need to update/patch your actual game.',
 
+        
+
+
+        'editgame' => array(
+            'non_subscribers_msg' => 'To easily promote other profiles from within this game <a href=":link">you need to activate</a> the cross-promotion service first.',
+            
+            'select_text' => 'Select the profiles you want to promote below :',
+
+            'link_text' => 'To get the profiles you selected above from your game, you need to query the following url : <br>
+            <a href=":url">:url</a> <br>
+            <br>
+            It returns a JSON object with two top-level keys ("developers" and "games") which value is an array of objects. Each of those objects represent a profile. <br>
+            In case of errors, the object wil just contain one top-level key "errors" which contains an array of strings.
+            ',
+        ),
+
+
+
+        'msg' => array(
+            'activation_success' => 'You successfully activated the cross-promotion for your games.',
+            'deactivation_success' => 'You successfully deactivated the cross-promotion for your games.',
+            'update_profiles_success' => 'The promoted profiles for your game \":game_name\" have successfully been updated.',
+        ),
     ),
 
 // SEARCH

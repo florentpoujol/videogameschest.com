@@ -404,7 +404,7 @@ class Admin_Controller extends Base_Controller
         if (is_not_admin()) {
             // check that $input['id'] is one of the user's dev profiles
             $forged = true;
-            foreach ($user()->devs() as $dev) {
+            foreach (user()->devs() as $dev) {
                 if ($dev->id == $input['id']) $forged = false;
             }
 
@@ -538,6 +538,19 @@ class Admin_Controller extends Base_Controller
     {
         $input = Input::all();
         
+        if (is_not_admin()) {
+            // check that $input['id'] is one of the user's game profiles
+            $forged = true;
+            foreach (user()->games as $game) {
+                if ($game->id == $input['id']) $forged = false;
+            }
+
+            if ($forged) { // a user try to edit a dev profile which does not own
+                HTML::set_error(lang('common.msg.edit_other_users_proile_not_allowed'));
+                return Redirect::back();
+            }
+        }
+
         // checking form
         $rules = array(
             'name' => 'required|min:5',

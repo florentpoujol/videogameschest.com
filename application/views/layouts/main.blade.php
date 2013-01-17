@@ -19,7 +19,12 @@ $page_content .= Section::yield('page_content');
 
         <!-- CSS -->        
         {{ HTML::style('css/bootstrap.min.css') }}
-        {{ HTML::style('css/bootstrap-responsive.min.css') }}
+        {{ HTML::style('css/font-awesome.min.css') }}
+        <!--[if IE 7]>
+        {{ HTML::style('css/font-awesome-ie7.min.css') }}
+        <![endif]-->
+
+        {{-- HTML::style('css/bootstrap-responsive.min.css') }}
         {{ HTML::style('css/main.less', array('rel'=>'stylesheet/less')) }}
         @yield('cssfiles')
         <!-- /CSS -->
@@ -39,7 +44,16 @@ $page_content .= Section::yield('page_content');
 
         <footer>
             <div class="container">
-                <P class="muted">Copyright &copy; 2012-2013 VideoGamesChest.com</p>
+                <div class="row-fluid">
+                    <div class="span4">
+                        <P class="muted copyright">Copyright &copy; 2013 VideoGamesChest.com</p>
+                    </div>
+
+                    <div class="span2 offset6">
+                        <P>
+                            <a href="https://twitter.com/videogameschest" title="twitter"><i class="icon-twitter-sign icon-2x"></i></a>
+                        </p>
+                    </div>
             </div>
         </footer>
 

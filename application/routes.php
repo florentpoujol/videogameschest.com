@@ -98,9 +98,9 @@ $layout = View::of('layout');
 
 
     // FIND
-    Route::get('find', array('as' => 'get_find', 'do' => function()
+    Route::get('find', array('as' => 'get_find', 'do' => function() use ($layout)
     {
-        return 'Comming soon...';
+        return $layout->nest('page_content', 'find');
     }));
 
 
@@ -117,9 +117,15 @@ $layout = View::of('layout');
     }));
 
 
-    // When games wants their promoted profiles
-    Route::get('abvertising/crosspromoted_profiles/(:num)/(:any)', array('as' => 'get_crosspromoted_profiles', 'uses' => 'advertising@crosspromoted_profiles'));
+    
 
+
+    // ADVERTISING
+    // advertising
+    Route::get('advertising', array('as' => 'get_advertising', 'uses' => 'advertising@index'));
+    Route::get('advertising/crosspromotion', array('as' => 'get_crosspromotion', 'uses' => 'advertising@crosspromotion'));
+    // When games wants their promoted profiles
+    Route::get('advertising/crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion_from_game', 'uses' => 'advertising@crosspromotion_from_game'));
 
 
 //----------------------------------------------------------------------------------
@@ -160,11 +166,6 @@ $layout = View::of('layout');
         Route::get('reviews/(:any?)', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));    
 
         Route::get('reports/(:any?)', array('as' => 'get_reports', 'uses' => 'admin@reports'));
-
-        // abvertising
-        Route::get('abvertising', array('as' => 'get_advertising', 'uses' => 'advertising@index'));
-
-        Route::get('abvertising/crosspromotion', array('as' => 'get_crosspromotion', 'uses' => 'advertising@crosspromotion'));
     });
 
 
@@ -201,7 +202,7 @@ $layout = View::of('layout');
         ) {
             return $layout->nest('page_content', 'developerdisplay', array('profile' => $profile));
         } else {
-            HTML::set_error(lang('errors.access_not_allowed', array('page' => 'Developer profile '.$name)));
+            HTML::set_error(lang('common.msg.access_not_allowed', array('page' => 'Developer profile "'.$name.'"')));
             return Redirect::to_route('get_search');
         }
     }));
@@ -221,7 +222,7 @@ $layout = View::of('layout');
         $profile = Game::where_name(url_to_name($name))->first();
 
         if (is_null($profile)) {
-            if (is_numeric($name)) {
+            if (is_numeric($name)) { 
                 HTML::set_error(lang('errors.game_profile_id_not_found', array('id'=>$name)));
             } else HTML::set_error(lang('errors.game_profile_name_not_found', array('name'=>$name)));
 
@@ -239,7 +240,7 @@ $layout = View::of('layout');
         ) {
             return $layout->nest('page_content', 'gamedisplay', array('profile' => $profile));
         } else {
-            HTML::set_error(lang('errors.access_not_allowed', array('page' => 'Game profile '.$name)));
+            HTML::set_error(lang('common.msg.access_not_allowed', array('page' => 'Game profile \"'.$name.'\"')));
             return Redirect::to_route('get_search');
         }
     }));
@@ -287,7 +288,8 @@ $layout = View::of('layout');
 
         Route::post('reviews', array('as' => 'post_review', 'uses' => 'admin@reviews'));
 
-        Route::post('abvertising/crosspromotion', array('as' => 'post_crosspromotion', 'uses' => 'advertising@crosspromotion'));
+        Route::post('advertising/crosspromotion', array('as' => 'post_crosspromotion', 'uses' => 'advertising@crosspromotion'));
+        Route::post('game/edit/crosspromotion', array('as' => 'post_crosspromotion_editgame', 'uses' => 'advertising@crosspromotion_editgame'));
     });
 
 
@@ -412,7 +414,13 @@ Route::filter('before', function()
     }
 
 
-
+    if (is_logged_in()) {
+        // I do that here since user()->games and user()->games would return an empty array (or the equivalent)
+        // when used for the first time in a condition
+        // calling them here ensure that evry next calls will return the array properly filled
+        $games = user()->games;
+        $devs = user()->devs;
+    }
 
     // checking success of reviews
     // check number of approvals

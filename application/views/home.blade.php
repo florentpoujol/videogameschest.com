@@ -4,6 +4,19 @@
 
 <div id="home">
     <div class="row">
+        <div class="span10 offset1">
+            <div class="">
+
+                <h1 id="slogan">{{ lang('common.site_slogan') }}</h1>
+
+                <p>
+                    {{ lang('home.herounit_text') }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="span1"></div>
         <div class="span5">
             <h2>{{ lang('home.participative.title') }}</h2>

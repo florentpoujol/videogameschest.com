@@ -96,7 +96,27 @@ class Game extends Profile
         HTML::set_success(lang('game.msg.editgame_success'
             ,array('name'=>$game->name, 'id'=>$game->id))
         );
+        Log::write('game update success', $msg);
+
         return $game;
+    }
+
+
+    //----------------------------------------------------------------------------------
+
+    public static function update_crosspromotion($input)
+    {   
+        $profiles = array(
+            'developers' => isset($input['developers']) ? $input['developers'] : array(),
+            'games' => isset($input['games']) ? $input['games'] : array(),
+        );
+
+        $game = Game::find($input['id']);
+        $game->crosspromotion_profiles = $profiles;
+        $game->save();
+
+        HTML::set_success(lang('crosspromotion.msg.update_profiles_success', array('game_name'=>$game->name)));
+        Log::write('game crosspromotion update success', 'The promoted profiles for the game (name : '.$game->name.') (id : '.$game->id.') have been updated.');
     }
 
 
@@ -174,5 +194,15 @@ class Game extends Profile
     public function dev()
     {
         return $this->developer();
+    }
+
+
+    //----------------------------------------------------------------------------------
+    // GETTER
+
+    public function get_developer_name()
+    {
+        if ($this->developer_id == 0) return $this->developer_name;
+        else return $this->dev->name;
     }
 }

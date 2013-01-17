@@ -82,18 +82,25 @@ class Profile extends ExtendedEloquent
      */
     public function to_crosspromotion_array()
     {
-        $unset = array('id', 'developer_id', 'created_at', 'updated_at', 'privacy', 'approved_by', 'promoted_games');
-        
-        $game = $this->attributes;
-        
-        foreach ($unset as $field) {
-            if (isset($game[$field])) unset($game[$field]);
+        $profile = $this->attributes;
+        $allowed_fields = Config::get('vgc.crosspromotion_'.$this->class_name.'_allowed_fields');
+
+        foreach ($profile as $field => $value) {
+            if ( ! in_array($field, $allowed_fields)) unset($profile[$field]);
         }
 
-        $game['pitch_html'] = get_parsed_pitch();
-        $game['url'] = 'http://videogameschest.com/'.$this->class_name.'/'.name_to_url($this->name);
+        if ($this->class_name == 'game') $profile['developer_name'] = $this->developer_name;
+
+        $profile['pitch_html'] = $this->get_parsed_pitch();
+        $profile['url'] = route('get_'.$this->class_name, array(name_to_url($this->name)));
+
+        //
+        $class_name = $this->class_name;
+        foreach ($profile as $field => $value) {
+            if (in_array($field, $class_name::$json_fields)) $profile[$field] = json_decode($value, true);
+        }
         
-        return $game;
+        return $profile;
     }
 
 

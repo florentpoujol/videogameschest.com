@@ -54,14 +54,26 @@ return array(
     'recaptcha_private_key' => '6LcRitsSAAAAAGw_aZAy3qlnC_3lAypwaJm4SgMs',
     'recaptcha_public_key' => '6LcRitsSAAAAAKlKTf79Z6KbSIrSz2Z0WptjvXzE',
 
-    // form
+    'crosspromotion_developer_allowed_fields' => array(
+        'name', 'pitch', 'logo', 'website', 'blogfeed', 'presskit',
+        'languages', 'technologies', 'operatingsystems', 'devices',
+       'socialnetworks', 'stores',
+    ),
+
+    'crosspromotion_game_allowed_fields' => array(
+        'name', 'devstate', 'pitch', 'cover', 'website', 'blogfeed', 'presskit',
+        'publishername', 'publisherurl', 'soundtrackurl', 'languages', 'technologies', 'operatingsystems', 'devices',
+        'genres', 'themes', 'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos', 'reviews'
+    ),
+
+// form
 
     "languages" => array(
         "chinese",
         "english",
         "japonese",
         "russian",
-        'french',
+        
     ),
 
     "countries" => array(
@@ -261,8 +273,8 @@ return array(
 
 
     'icons' => array(
-        'facebook' => 'img/icons/facebook.png',
-        'twitter' => 'img/icons/twitter.png',
+        'facebook_' => 'img/icons/facebook.png',
+        'twitter_' => 'img/icons/twitter.png',
     ),
 
     'glyphicons' => array( 
@@ -406,5 +418,10 @@ return array(
         'filter',
         'briefcase',
         'fullscreen',
+
+        // font-awesome :
+        'twitter',
+        'twitter-sign',
+        'cogs',
     ),
 );

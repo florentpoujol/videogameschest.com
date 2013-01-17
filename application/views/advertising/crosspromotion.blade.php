@@ -9,48 +9,56 @@
 
     <hr>
 
-    <?php
-    $games = user()->games;
-    ?>
+    @if (is_logged_in())
+        <?php
+        $has_subscribed = (user()->crosspromotion_active == 1);
+        ?>
 
-    @if ( ! empty($games))
-        @if (user()->crosspromotion_active == 1)
+        @if ( ! empty(user()->games))
             <p>
-                {{ lang('crosspromotion.activated_text') }}
+                @if ($has_subscribed)
+                    {{ lang('crosspromotion.activated_text') }}
+                @else
+                    {{ lang('crosspromotion.non_activated_text') }}
+                @endif
             </p>
+
+            {{ Former::open_vertical(route('post_crosspromotion')) }}
+                {{ Form::token() }}
+
+                {{ Former::checkbox('crosspromotion_active', '')->text(lang('crosspromotion.subsciption_checkbox_label'))->check($has_subscribed) }}
+
+                @if ($has_subscribed)
+                    {{ Former::danger_submit(lang('common.update')) }}
+                @else
+                    {{ Former::success_submit(lang('common.update')) }}
+                @endif
+            </form>
         @else
-            <p>
-                {{ lang('crosspromotion.non_activated_text') }}
+            <p class="muted"> 
+                {{ lang('crosspromotion.no_game', array('add_game_link'=>URL::to_route('get_addgame'))) }}
             </p>
         @endif
 
-        {{ Former::open_vertical(route('post_crosspromotion')) }}
-
-            <!-- <div class="control-group">
-            <label for="crosspromotion_subscription_checkbox">
-                <input type="checkbox" name="crosspromotion_subscription" id="crosspromotion_subscription_checkbox">
-                {{ lang('crosspromotion.subsciption_checkbox_label') }}
-            </label>
-            </div> -->
-            {{ Former::checkbox('checkme', '')->text(lang('crosspromotion.subsciption_checkbox_label'))->check((user()->crosspromotion_active == 1)) }}
-
-            {{ Former::primary_submit(lang('common.update')) }}
-        </form>
-    @else
-        <p class="muted"> 
-            {{ lang('crosspromotion.no_game', array('add_game_link'=>URL::to_route('get_addgame'))) }}
-        </p>
+    <hr>
     @endif
 
-    <hr>
+    <div class="row">
+        <div class="span5">
+            <h3>{{ lang('crosspromotion.what_is_it_title') }}</h3>
 
-    <p>
-        {{ lang('crosspromotion.what_is_it') }}
-    </p>
+            <p>
+                {{ lang('crosspromotion.what_is_it') }}
+            </p>
+        </div>
 
-    <hr>
+        <div class="span5 offset1">
+            <h3>{{ lang('crosspromotion.how_it_works_title') }}</h3>
 
-    <p>
-        {{ lang('crosspromotion.how_it_works') }}
-    </p>
-</div>
+            <p>
+                {{ lang('crosspromotion.how_it_works') }}
+            </p>
+        </div>
+    </div>
+    
+</div> <!-- /#crosspromotion -->

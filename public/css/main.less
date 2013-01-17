@@ -1,11 +1,21 @@
 
+
+
+
 .border(@color: rgb(220,220,220)) {
     border: 1px solid @color;
 }
 
+
+@rouge: rgb(255,45,40);
+@jaune: rgb(255,225,35);
+
+
+
 body {
     //padding-top : 70px; // because of the main-menu, when he is fixed-top
-    margin-top: -2px;
+    
+
     height : 100%;
     
     // HELPERS 
@@ -23,12 +33,14 @@ body {
 
     .container {
         //border: 1px solid grey;
+
     }
 
     .profile_list_caption {
         max-width: 100px;
         max-height: 50px;
     }
+
 
     // COMMON
 
@@ -39,8 +51,8 @@ body {
         border: none;
     }
 
-    .inline-form-item {
-                
+
+    .inline-form-item {      
         padding-left: 10px;
         padding-right: 10px;
     }
@@ -57,12 +69,19 @@ body {
 
     // MENU
     #main-menu {
+        margin-top: 10px;
+        //border-bottom: 2px solid @jaune;
+        
+        .navbar-inner {
+            
+        }
+
         .brand small {
             margin-left: 20px;
         }
 
         ul.nav {
-            margin-top: 10px;
+            //margin-top: 10px;
         }
     }
 
@@ -70,6 +89,9 @@ body {
     // HOME
 
     #home {
+        #slogan {
+            font-size: 2em;
+        }
 
         .row > div {
             
@@ -188,12 +210,18 @@ body {
         background: rgb(249,249,249);
         text-align: center;
         padding: 20px;
+       
         margin-top: 20px;
+        margin-bottom:-20px;
 
-        border-top: 1px solid rgb(220,220,220);
+        border-top: 2px solid rgb(220,220,220);
 
         .container {
             border:0;
+
+            .copyright {
+                font-size: 0.9em;
+            }
         }
     }
 

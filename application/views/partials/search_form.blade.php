@@ -68,22 +68,14 @@
             <div id="collapse-game" class="accordion-body collapse out">
                 <div class="accordion-inner">
                     <?php
-                    $fields = array('genres', 'themes', 'tags', 'viewpoints', 'nbplayers',  );
+                    $fields = array('genres', 'themes', 'tags', 'viewpoints', 'nbplayers', 'languages', );
                     ?>
                     <div class="row">
                         
                         @include('partials.search_foreach_fields')
                     </div>
 
-                    <hr>
-
-                    <?php
-                    $fields = array( 'languages', );
-                    ?>
-                    <div class="row">
-                        
-                        @include('partials.search_foreach_fields')
-                    </div>
+                    
                 </div>
             </div> <!-- /.accordion-body -->
         </div> <!-- /.accordion-group -->

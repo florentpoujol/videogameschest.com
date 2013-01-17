@@ -14,9 +14,7 @@ $rules = array(
 
 $user = User::find($user_id);
 
-$a_user = $user->to_array();
-if ($a_user['crosspromotion_subscription'] == 0) unset($a_user['crosspromotion_subscription']);
-Former::populate($a_user);
+Former::populate($user);
 
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
