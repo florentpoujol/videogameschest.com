@@ -8,7 +8,6 @@ class Report extends ExtendedEloquent
     public static function create($form)
     {
         $form = clean_form_input($form);
-        unset($form['action']);
 
         if (isset($form['admin'])) $form['type'] = 'admin';
         else $form['type'] = 'dev';
@@ -17,6 +16,10 @@ class Report extends ExtendedEloquent
         $report = parent::create($form);
 
         HTML::set_success(lang('reports.msg.create_success'));
+
+        $type = $form['type'] == 'admin' ? $form['type'] : 'developer';
+        // Log::write('report create success '.$type, $type.' report created for  (name : '.);
+
         return $report;
     }
 

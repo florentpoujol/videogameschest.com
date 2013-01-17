@@ -29,19 +29,14 @@ class User extends ExtendedEloquent
         
         // secret key
         $input["url_key"] = Str::random(20);
-        /*$try = 0;
-        while ($try < 10000 && parent::where('secret_key', '=', $input['secret_key'])->first() != null) {
-            $input["secret_key"] = Str::random(20);
-            $try++;
-        }*/
 
         // type
         if ( ! isset($input['type'])) $input['type'] = 'user';
 
         if ($input['type'] == 'admin') $input['is_trusted'] = 1;
 
-        // temp key
-        //$input['temp_key'] = Str::random(20);
+        $input['crosspromotion_active'] = 1;
+
 
         $user = parent::create($input);
 
@@ -155,7 +150,7 @@ class User extends ExtendedEloquent
      * Check if the user is now a trusted user, then send a mail if yes
      * @param  boolean $send_mail Do send an email to the user to let him know he is now trusted ?
      */
-    public function update_trusted($send_mail = false)
+    /*public function update_trusted($send_mail = false)
     {
         $is_trusted = false;
 
@@ -174,9 +169,9 @@ class User extends ExtendedEloquent
         if ($is_trusted && $send_mail) {
             // @TODO send mail "You are now a trusted user, you have acces to the peer review !"
         }
-    }
+    }*/
 
-    public function update_crosspromotion($new_state)
+    /*public function update_crosspromotion($new_state)
     {
         $this->crosspromotion_active = $new_state;
         $this->save();
@@ -188,7 +183,7 @@ class User extends ExtendedEloquent
             HTML::set_success(lang('crosspromotion.msg.deactivation_success'));
             Log::write('crosspromotion deactivation success', 'User "'.$this->name.' (id : '.$this->id.') DEactivated the cross-promotion.');
         }
-    }
+    }*/
 
 
     //----------------------------------------------------------------------------------

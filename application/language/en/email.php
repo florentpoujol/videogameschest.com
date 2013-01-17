@@ -16,13 +16,21 @@ return array(
     Thanks,<br>
     The VideoGamesChest.com team
     ',
-        
-    'developer_passed_publishing_review' => 'developer_passed_publishing_review',
-    'developer_failed_publishing_review' => 'developer_failed_publishing_review',
-
-    'game_passed_submission_review' => 'game_passed_submission_review',
+    
+    'profile_passed_publishing_review_subject' => 'One of your profiles is now public',
+    'profile_passed_publishing_review' =>
+    'Hi :user_name <br>
+    <br>
+    The :profile_type profile you created on VideoGamesChest.com passed the publishing review ! <br>
+    It is now public for everyone to enjoin (<a href=":profile_link" title="Go to the profile">you can view it by clicking here</a>), so feel free to spread the word. <br>
+    <br>
+    --
+    Regards,<br>
+    The VideoGamesChest.com team
+    ',
+    
     'game_passed_publishing_review' => 'game_passed_publishing_review',
-    'game_failed_publishing_review' => 'game_failed_publishing_review',
+    
 
 
     'register_confirmation_subject' => 'Activate your new user account',
@@ -33,6 +41,7 @@ return array(
     To be able to log in, you need to activate your account by clicking on the link below : <br>
     <a href=":link" title="Follow the link to activate your user account">:link</a> <br>
     <br>
+    --
     Regards, <br>
     The VideoGamesChest team <br>
     ',

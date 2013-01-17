@@ -1,3 +1,5 @@
+{{-- not used anymore, see in reviews.blade.php }}
+
 @if (count($profiles) > 0)
     <table class="table table-striped table-bordered">
         <tr>

@@ -265,6 +265,7 @@ $layout = View::of('layout');
     Route::group(array('before' => 'auth|admin|csrf'), function()
     {
         Route::post('adduser', array('as' => 'post_adduser', 'uses' => 'admin@adduser'));
+        Route::post('reviews', array('as' => 'post_reviews', 'uses' => 'admin@reviews'));
     });
 
 
@@ -285,7 +286,7 @@ $layout = View::of('layout');
         Route::post('game/add', array('as' => 'post_addgame', 'uses' => 'admin@addgame'));
         Route::post('editgame', array('as' => 'post_editgame', 'uses' => 'admin@editgame'));
 
-        Route::post('reviews', array('as' => 'post_review', 'uses' => 'admin@reviews'));
+        
         Route::post('reports/edit', array('as' => 'post_editreports', 'uses' => 'admin@editreports'));
 
         Route::post('advertising/crosspromotion', array('as' => 'post_crosspromotion', 'uses' => 'advertising@crosspromotion'));
@@ -349,7 +350,10 @@ Event::listen('laravel.query', function($sql, $bindings, $time) {
 
 Event::listen('404', function()
 {
-    return Response::error('404');
+    HTML::set_error(lang('common.msg.page_not_found'));
+    return Redirect::to_route('get_home');
+    
+    //return Response::error('404');
 });
 
 Event::listen('500', function()

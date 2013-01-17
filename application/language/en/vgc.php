@@ -76,6 +76,7 @@ return array(
         'msg' => array( 
             'edit_other_users_profile_not_allowed' => 'You are not allowed to edit profiles which does not belong to you.',
             'access_not_allowed' => 'You are not allowed to access the page : :page',
+            'page_not_found' => 'Sorry, the page you were looking for was not found.'
         ),
     ),
 

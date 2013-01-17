@@ -52,14 +52,13 @@
             </thead>
 
         @foreach ($profiles as $profile)
-            
             <?php
             $reports = $profile->reports($report_type);
             ?> 
             @foreach ($reports as $report)
                 <tr>
                     <td>
-                        <a href="{{ route('get_'.$profile->class_name, array($profile->id)) }}">{{ $profile->name }}</a> ({{ $profile->class_name }})
+                        <a href="{{ route('get_'.$profile->class_name, array(name_to_url($profile->name))) }}">{{ $profile->name }}</a> ({{ $profile->class_name }})
                     </td>
 
                     <td class="span8">

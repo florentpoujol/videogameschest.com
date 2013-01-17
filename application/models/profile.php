@@ -21,43 +21,41 @@ class Profile extends ExtendedEloquent
 
     /**
      * Do stuffs when a profile passed a review
+     * Called from admin@post_reviews
      * @param  string $user The User
      */
-    public function passed_review($user)
+    public function passed_review()
     {
-        $password = '';
         $review = $this->privacy;
         $profile = $this->class_name;
         
-        if ($review == 'submission') {
-            $this->privacy = 'private';
-            $password = get_random_string(10);
-        } elseif ($review == 'publishing') {
+        if ($review == 'publishing') {
             $this->privacy = 'public';
-            
-            // is the user now a trusted user ? send a mail : do nothing ;
-            $user->update_trusted(true);
         }
 
-        $this->approved_by = array();
         $this->save();
+
+        Log::write($profile.' success review', $profile.' profile passed the '.$review.' review.');
 
         // email's text :
         // it explain that the profile has passed the review and what can they do with it
-        // if the review was 'submission'
-        $html = lang('emails.'.$profile.'_passed_'.$review.'_review', array(
-            'name' => $this->name,
-            'id' => $this->id,
-            'password' => $password,
+        $text = lang('emails.profile_passed_'.$review.'_review', array(
+            'name' => $this->user->name,
+            'profile_type' => $profile,
+            'profile_link' => route('get_'.$profile, array(name_to_url($this->name))),
         ));
 
-        $email = $user->email;
-        // @TODO : send mails 
+        sendMail($this->user->email, lang('emails.profile_passed_publishing_review_subject'), $text);
     }
 
 
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
+
+    public function user()
+    {
+        return $this->belongs_to('User');
+    }
 
     /**
      * Get all reports linked to this profile

@@ -180,11 +180,6 @@ class Developer extends Profile
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
 
-	public function user()
-    {
-        return $this->belongs_to('User');
-    }
-
     public function games()
     {
         return $this->has_many('Game');
