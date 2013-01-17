@@ -128,6 +128,7 @@ $layout = View::of('layout');
     Route::get('advertising/crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion_from_game', 'uses' => 'advertising@crosspromotion_from_game'));
 
 
+
 //----------------------------------------------------------------------------------
 //  MUST BE GUEST
 //----------------------------------------------------------------------------------
@@ -161,9 +162,7 @@ $layout = View::of('layout');
         // Route::get('(add|edit)developer', 'admin@(:1)developer');
 
         Route::get('game/add', array('as' => 'get_addgame', 'uses' => 'admin@addgame'));
-        Route::get('game/edit/(:num?)', array('as' => 'get_editgame', 'uses' => 'admin@editgame'));
-
-        Route::get('reviews/(:any?)', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));    
+        Route::get('game/edit/(:num?)', array('as' => 'get_editgame', 'uses' => 'admin@editgame'));    
 
         Route::get('reports/(:any?)', array('as' => 'get_reports', 'uses' => 'admin@reports'));
     });
@@ -254,7 +253,7 @@ $layout = View::of('layout');
     Route::group(array('before' => 'auth|admin'), function()
     {
         Route::get('user/add', array('as' => 'get_adduser', 'uses' => 'admin@adduser'));
-        
+        Route::get('reviews/(:any?)', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));
     });
 
 
@@ -287,6 +286,7 @@ $layout = View::of('layout');
         Route::post('editgame', array('as' => 'post_editgame', 'uses' => 'admin@editgame'));
 
         Route::post('reviews', array('as' => 'post_review', 'uses' => 'admin@reviews'));
+        Route::post('reports/edit', array('as' => 'post_editreports', 'uses' => 'admin@editreports'));
 
         Route::post('advertising/crosspromotion', array('as' => 'post_crosspromotion', 'uses' => 'advertising@crosspromotion'));
         Route::post('game/edit/crosspromotion', array('as' => 'post_crosspromotion_editgame', 'uses' => 'advertising@crosspromotion_editgame'));
@@ -313,7 +313,7 @@ $layout = View::of('layout');
 
     Route::group(array('before' => 'csrf'), function()
     {
-        Route::post('reports', array('as' => 'post_reports', 'uses' => 'admin@reports'));
+        Route::post('reports/add', array('as' => 'post_addreport', 'uses' => 'admin@addreport'));
 
         Route::post('/search', array('as' => 'post_search', 'before' => 'csrf', function()
         {
@@ -425,7 +425,7 @@ Route::filter('before', function()
     // checking success of reviews
     // check number of approvals
     // will also be called by a cron tab job
-    $last_check_date = new DateTime(DBConfig::get('review_check_date'));
+    /*$last_check_date = new DateTime(DBConfig::get('review_check_date'));
     $interval = new DateInterval('PT'. Config::get('vgc.review.check_interval') .'M');
     $last_check_date->add($interval);
     $now = new DateTime();
@@ -446,7 +446,7 @@ Route::filter('before', function()
                 }
             }
         }
-    }
+    }*/
 
 
 });

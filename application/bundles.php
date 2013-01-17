@@ -40,5 +40,5 @@ return array(
 	'bootstrapper' => array('auto' => true),
     'swiftmailer' => array('auto' => true),
     
-    'coolcaptcha' => array('auto' => true, 'handles' => 'coolcaptcha'),
+    //'coolcaptcha' => array('auto' => true, 'handles' => 'coolcaptcha'),
 );

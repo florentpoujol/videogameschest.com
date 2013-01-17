@@ -42,7 +42,7 @@
         @endif
 
 
-        @if (is_trusted())
+        @if (is_admin())
             <li><a href="{{ route('get_reviews') }}">{{ lang('reviews.title') }}</a></li>
         @endif
         @if ( ! empty(user()->devs) || ! empty(user()->games) || is_admin())

@@ -16,11 +16,11 @@ class Report extends ExtendedEloquent
         
         $report = parent::create($form);
 
-        HTML::set_success(lang('report.msg.create_success'));
+        HTML::set_success(lang('reports.msg.create_success'));
         return $report;
     }
 
-    public static function __delete($form)
+    /*public static function delete($form) // not delete() can't be static since it is already declared as non static
     {
         $form = clean_form_input($form);
         unset($form['action']);
@@ -31,5 +31,5 @@ class Report extends ExtendedEloquent
 
         HTML::set_success(lang('report.msg.delete_success'));
         return $report;
-    }
+    }*/
 }

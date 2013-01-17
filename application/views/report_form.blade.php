@@ -16,22 +16,24 @@ if ( ! isset($modal)) $modal = false;
     @endif
     <br>
     
-    {{ Former::open_vertical('admin/reports')->rules(array('message'=>'required|min:10')) }}
+    {{ Former::open_vertical(route('post_addreport'))->rules(array('message'=>'required|min:10')) }}
         {{ Form::token() }}
-        {{ Former::hidden('action', 'create') }}
-        {{ Former::hidden(strtolower(get_class($profile)).'_id', $profile->id) }}
+        {{ Former::hidden($profile->class_name.'_id', $profile->id) }}
 
         <p>
             {{ lang('reports.help') }}
         </p>
         
         {{ Former::textarea('message', '')->placeholder(lang('reports.message'))->rows(2)->value(Input::old('message')) }}
+        
+        {{ captcha() }} 
+        <br>
 
     @if ($modal)
         </div> <!-- /.modal-body -->
         <div class="modal-footer">
     @endif
-
+    
         <input type="submit" value="{{ lang('reports.submit_dev') }}" class="btn btn-primary left-align"> 
         <input type="submit" name="admin" value="{{ lang('reports.submit_admin') }}" class="btn btn-danger btn-small">
     </form>

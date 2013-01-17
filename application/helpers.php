@@ -152,15 +152,15 @@ function is_logged_in()
 
 function is_admin()
 {
-    return (Auth::user()->type == 'admin');
+    return ( ! Auth::guest() && Auth::user()->type == 'admin');
 }
 function is_not_admin()
 {
-    return (Auth::user()->type != 'admin');
+    return ( ! Auth::guest() && Auth::user()->type != 'admin');
 }
 function is_trusted()
 {
-    return (is_admin() || Auth::user()->is_trusted == 1);
+    return ( ! Auth::guest() && (is_admin() || Auth::user()->is_trusted == 1));
 }
 
 function user()
@@ -454,7 +454,7 @@ function videoFrame($link, $width = null, $height = null)
 
 function captcha($text_name = 'captcha')
 {
-    if (is_guest()) {
+    if (false && is_guest()) {
         //return Recaptcha\Recaptcha::recaptcha_get_html(Config::get('vgc.recaptcha_public_key'));
         // cool captcha
         

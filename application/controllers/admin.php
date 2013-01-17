@@ -31,7 +31,7 @@ class Admin_Controller extends Base_Controller
             'email' => 'required|min:5|email|unique:users',
             'password' => 'required|min:5|confirmed',
             'password_confirmation' => 'required|min:5|required_with:password',
-            'captcha' => 'required|coolcaptcha',
+            //'captcha' => 'required|coolcaptcha',
         );
 
         $validation = Validator::make($input, $rules);
@@ -79,7 +79,7 @@ class Admin_Controller extends Base_Controller
         $rules = array(
             "username" => "required|min:5",
             "password" => "required|min:5",
-            'captcha' => 'required|coolcaptcha',
+            //'captcha' => 'required|coolcaptcha',
             
         );
 
@@ -137,7 +137,7 @@ class Admin_Controller extends Base_Controller
         
         $rules = array(
             'lost_password_username' => 'required|min:5',
-            'lost_password_captcha' => 'required|coolcaptcha',
+            //'lost_password_captcha' => 'required|coolcaptcha',
         );
         
         $validation = Validator::make($input, $rules);
@@ -635,42 +635,44 @@ class Admin_Controller extends Base_Controller
     {
         $reports = array('dev', 'admin');
 
-        if ( ! in_array($report, $reports)) {
-            return Redirect::to_route('get_reports', array('dev'));
-        }
-
-        if (! is_admin() && $report != 'dev') {
+        if ( ! in_array($report, $reports) || (! is_admin() && $report != 'dev')) {
             return Redirect::to_route('get_reports', array('dev'));
         }
 
         $this->layout->nest('page_content', 'admin.reports', array('report_type' => $report));
     }
 
-    public function post_reports()
+    public function post_addreport()
     {
         $input = Input::all();
 
-        if ($input['action'] == 'create') {
-            $rules = array('message' => 'required|min:10');
+        $rules = array(
+            'message' => 'required|min:10',
+            
+        );
 
-            $validation = Validator::make($input, $rules);
+        $validation = Validator::make($input, $rules);
 
-            if ($validation->passes()) {
-                Report::create($input);
-            } else {
-                Input::flash();
-                return Redirect::back()->with_errors($validation);
-            }
+        if ($validation->passes()) {
+            Report::create($input);
+            return Redirect::back();
         }
 
-        elseif ($input['action'] == 'delete') {
-            foreach ($input['reports'] as $report_id) {
+        return Redirect::back()->with_errors($validation)->with_input();
+    }
+
+    public function post_editreports()
+    {
+        $reports = Input::get('reports', array());
+
+        if (! empty($reports)) {
+            foreach ($reports as $report_id) {
                 Report::find($report_id)->delete();
             }
-        
+            
             HTML::set_success(lang('reports.msg.delete_success'));
         }
-
         return Redirect::back();
     }
+
 } // end of Admin controller class
