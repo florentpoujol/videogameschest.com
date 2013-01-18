@@ -44,9 +44,9 @@ $developer_name = $game->actual_developer_name;
                 {{ Form::token() }}
                 {{ Form::hidden('id', $profile_id) }}
 
-                {{ Former::primary_submit(lang('game.edit.submit')) }}
+                {{ Former::primary_submit(lang('common.edit_profile')) }}
 
-                <a href="{{ route('get_game', array(name_to_url($game->name))) }}">{{ lang('common.view_profile_link') }}</a>
+                <a href="{{ route('get_game', array(name_to_url($game->name))) }}" class="btn">{{ icon('eye-open') }}{{ lang('common.view_profile_link') }}</a>
 
                 <hr>
                 
@@ -65,6 +65,7 @@ $developer_name = $game->actual_developer_name;
                         {{ Former::textarea('pitch', lang('game.pitch'))->help(lang('common.bbcode_explanation')) }}
 
                         {{ Former::url('cover', lang('game.cover'))->placeholder(lang('common.url')) }}
+                        {{ Former::url('profile_background', lang('common.profile_background'))->placeholder(lang('common.url'))->help(lang('common.profile_background_help')) }}
                         {{ Former::url('website', lang('common.website'))->placeholder(lang('common.url')) }}
                         {{ Former::url('blogfeed', lang('common.blogfeed'))->placeholder(lang('common.url')) }}
                         {{ Former::url('presskit', lang('common.presskit'))->placeholder(lang('common.url')) }}
@@ -189,7 +190,7 @@ $developer_name = $game->actual_developer_name;
 
                         <hr>
 
-                        {{ Former::primary_submit(lang('game.edit.submit')) }}
+                        {{ Former::primary_submit(lang('common.edit_profile')) }}
                     </div> <!-- /.span -->
                 </div> <!-- /.row -->
 

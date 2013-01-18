@@ -18,14 +18,12 @@ $page_content .= Section::yield('page_content');
         <!-- /Meta -->
 
         <!-- CSS -->        
-        {{ HTML::style('css/bootstrap.min.css') }}
-        {{ HTML::style('css/font-awesome.min.css') }}
+        {{ HTML::style('css/bootstrap/bootstrap.min.css') }}
+        {{ HTML::style('css/font-awesome/font-awesome.min.css') }}
         <!--[if IE 7]>
-        {{ HTML::style('css/font-awesome-ie7.min.css') }}
+        {{ HTML::style('css/font-awesome/font-awesome-ie7.min.css') }}
         <![endif]-->
-
-        {{-- HTML::style('css/bootstrap-responsive.min.css') }}
-        {{ HTML::style('css/main.less', array('rel'=>'stylesheet/less')) }}
+        {{ HTML::style('css/vgc/main.less', array('rel'=>'stylesheet/less')) }}
         @yield('cssfiles')
         <!-- /CSS -->
     </head>
@@ -60,7 +58,7 @@ $page_content .= Section::yield('page_content');
         <!-- JavaScript -->
         <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
         <script src="http://lesscss.googlecode.com/files/less-1.3.0.min.js" type="text/javascript"></script>
-        {{ HTML::script('js/bootstrap.min.js') }}
+        {{ HTML::script('js/bootstrap/bootstrap.min.js') }}
         @yield('jsfiles')
 
         <script>

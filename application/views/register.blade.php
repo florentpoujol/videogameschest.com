@@ -22,7 +22,7 @@ $rules = array(
 
 		{{ Former::password('password_confirmation', '')->placeholder(lang('register.password_confirmation')) }}
 		
-		{{ captcha() }}
+		{{ antiBot() }}
 
 		<br>
 		

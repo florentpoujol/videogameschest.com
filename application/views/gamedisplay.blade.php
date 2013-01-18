@@ -6,6 +6,16 @@ $name = xssSecure($profile->name);
 @endsection
 
 <div id="game-profile" class="profile">
+    <?php
+    $background_url = trim(xssSecure($profile->profile_background));
+    ?>
+    @if ($background_url)
+        <div id="profile-background">
+            <img src="{{ $background_url }}" alt="Profile background">
+        </div>
+        <div id="profile-background-pusher"></div>
+    @endif
+
     <div class="row">
         <div class="span5">
             <h3>{{ $name }} <small>{{ $profile->class_name }}</small></h3>
@@ -106,33 +116,24 @@ $name = xssSecure($profile->name);
 
     <div class="row-fluid">
         <div class="span6">
-            <h4>{{ lang('common.screenshots') }}</h4>
+            <h4>{{ lang('common.screenshots') }} <small>{{ lang('game.profile.screenshots_help') }}</small></h4>
             
-            <div id="screenshots-container" class="carousel slide">
-                <div class="carousel-inner">
+            <div id="screenshots-container" class="slider-wrapper theme-light">
+                <div id="nivo-slider" class="nivoSlider">
                     <?php
                     $screenshots = $profile->screenshots;
                     for ($i = 0; $i < count($screenshots['names']); $i++):
                         $url = xssSecure($screenshots['urls'][$i]);
                         $title = xssSecure($screenshots['names'][$i]);
                     ?>
-                        <div class="item">
-                            <a href="{{ $url }}" title="{{ $title }}" class="colorbox-group1">
-                                <img src="{{ $url }}" alt="{{ $title }}" id="utyhg_{{ $i }}" title="{{ $title }}" >
-                            </a>
-
-                            <div class="carousel-caption">
-                                {{ $title }}
-                            </div>
-                        </div>
+                        <a href="{{ $url }}" title="{{ $title }}" class="colorbox-group1">
+                            <img src="{{ $url }}" alt="{{ $title }}" id="utyhg_{{ $i }}" title="{{ $title }}">
+                        </a>
                     @endfor
-
-                    <a class="left carousel-control" href="#screenshots-container" data-slide="prev">&lsaquo;</a>
-                    <a class="right carousel-control" href="#screenshots-container" data-slide="next">&rsaquo;</a>
                 </div> <!-- /.carousel-inner -->
             </div> <!-- /#screenshots-container .carousel .slide -->
         </div> <!-- /.span6 -->
-    
+
         <div class="span6">
             <h4>{{ lang('common.videos') }}</h4>
         
@@ -235,19 +236,17 @@ $name = xssSecure($profile->name);
 </div>
 
 @section('cssfiles')
-    {{ HTML::style('css/colorbox.css') }}
-    
-    {{-- Asset::container('nivo-slider')->styles() }}
+    {{ Asset::container('colorbox')->styles() }}
+    {{ Asset::container('nivo-slider')->styles() }}
 @endsection
 
 @section('jsfiles')
-    {{ HTML::script('js/jquery.colorbox-min.js') }}
-    {{-- Asset::container('nivo-slider')->scripts() }}
+    {{ Asset::container('colorbox')->scripts() }}
+    {{ Asset::container('nivo-slider')->scripts() }}
 @endsection
 
 @section('jQuery')
     $(".colorbox-group1").colorbox({rel:"group1"});
-    $('#screenshots-container').carousel('cycle')
-
+    $('#nivo-slider').nivoSlider();
 @endsection
 

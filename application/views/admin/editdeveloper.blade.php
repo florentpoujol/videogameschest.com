@@ -30,8 +30,8 @@ if ( ! empty($old)) Former::populate($old);
 
             <div class="row">
                 <div class="span10">
-                    {{ Former::primary_submit(lang('developer.edit.submit')) }} 
-                    <a href="{{ route('get_developer', array(name_to_url($dev->name))) }}">{{ lang('common.view_profile_link') }}</a>
+                    {{ Former::primary_submit(lang('common.edit_profile')) }} 
+                     <a href="{{ route('get_developer', array(name_to_url($dev->name))) }}" class="btn">{{ icon('eye-open') }} {{ lang('common.view_profile_link') }}</a>
                 </div>
             </div>
 
@@ -107,7 +107,7 @@ if ( ! empty($old)) Former::populate($old);
 
                 <hr>
 
-                {{ Former::primary_submit(lang('developer.edit.submit')) }}
+                {{ Former::primary_submit(lang('common.edit_profile')) }}
             </div> <!-- /.span -->
         </form>
     </div> <!-- /.row -->

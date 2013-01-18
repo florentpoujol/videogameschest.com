@@ -56,6 +56,7 @@ class Search extends ExtendedEloquent
         isset($input['arrayitems']) ? $array_items = $input['arrayitems'] : $array_items = array();
 
 
+        // proceed...
         $profiles = $class::where_privacy('public')
         ->where(function($query) use ($words, $input, $array_items, $words_where, $class)
         {
@@ -90,8 +91,8 @@ class Search extends ExtendedEloquent
 
     /**
      * Check if a search exists
-     * @param  mixed  $search The search id, or search data, as array or json
-     * @return mixed     False if the search does not exists, or the Search model
+     * @param  mixed  $search The search id, or search data as array or json
+     * @return mixed     null if the search does not exists, or the Search model
      */
     public static function get($search) 
     {   

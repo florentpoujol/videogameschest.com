@@ -6,6 +6,7 @@ $rules = array(
     'name' => 'required|min:5',
     'developer_name' => 'required|min:5',
     'cover' => 'url',
+    'profile_background' => 'url',
     'website' => 'url',
     'blogfeed' => 'url',
     'soundtrackurl' => 'url',
@@ -53,6 +54,7 @@ foreach ($old_devs as $dev) {
                 {{ Former::textarea('pitch', lang('game.pitch'))->placeholder(lang('common.bbcode_explanation')) }}
 
                 {{ Former::url('cover', lang('game.cover'))->placeholder(lang('common.url')) }}
+                {{ Former::url('profile_background', lang('common.profile_background'))->placeholder(lang('common.url'))->help(lang('common.profile_background_help')) }}
                 {{ Former::url('website', lang('common.website'))->placeholder(lang('common.url')) }}
                 {{ Former::url('blogfeed', lang('common.blogfeed'))->placeholder(lang('common.url')) }}
                 {{ Former::url('presskit', lang('common.presskit'))->placeholder(lang('common.url')) }}

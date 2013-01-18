@@ -452,23 +452,32 @@ function videoFrame($link, $width = null, $height = null)
 }
 
 
-function captcha($text_name = 'captcha')
+
+function antiBot($text_name = 'captcha')
 {
-    if (false && is_guest()) {
+    if (is_guest()) {
+        // Recaptcha
         //return Recaptcha\Recaptcha::recaptcha_get_html(Config::get('vgc.recaptcha_public_key'));
-        // cool captcha
         
-        $html = Form::text($text_name, '', array(
+        // cool captcha
+        /*$html = Form::text($text_name, '', array(
             'class' => 'captchainput',
             'placeholder' => lang('common.insert_captcha'),
             'required' => true
         ));
-        $html .= Form::image(CoolCaptcha\Captcha::img(), 'captcha', array('class' => 'captchaimg'));
+        $html .= Form::image(CoolCaptcha\Captcha::img(), 'captchaimg', array('class' => 'captchaimg'));
         $html .= '';
-        return $html;
+        return $html;*/
+
+        // honeyPot field
+        return Former::text('city', '')->placeholder('The city where do you lives')->id('city_form');
     }
 
     return '';
+}
+function captcha($text = null)
+{
+    return antiBot();
 }
 
 function shortenUrl($url)

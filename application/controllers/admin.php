@@ -32,6 +32,7 @@ class Admin_Controller extends Base_Controller
             'password' => 'required|min:5|confirmed',
             'password_confirmation' => 'required|min:5|required_with:password',
             //'captcha' => 'required|coolcaptcha',
+            'city' => 'max:0',
         );
 
         $validation = Validator::make($input, $rules);
@@ -80,7 +81,7 @@ class Admin_Controller extends Base_Controller
             "username" => "required|min:5",
             "password" => "required|min:5",
             //'captcha' => 'required|coolcaptcha',
-            
+            'city' => 'max:0',
         );
 
         $validation = Validator::make(Input::all(), $rules);
@@ -137,6 +138,7 @@ class Admin_Controller extends Base_Controller
         
         $rules = array(
             'lost_password_username' => 'required|min:5',
+            'city' => 'max:0',
             //'lost_password_captcha' => 'required|coolcaptcha',
         );
         
@@ -453,6 +455,7 @@ class Admin_Controller extends Base_Controller
             'name' => 'required|min:5|unique:games',
             'developer_name' => 'required|min:5',
             'cover' => 'url',
+            'profile_background' => 'url',
             'website' => 'url',
             'blogfeed' => 'url',
             'soundtrackurl' => 'url',
@@ -555,6 +558,7 @@ class Admin_Controller extends Base_Controller
         $rules = array(
             'name' => 'required|min:5',
             'cover' => 'url',
+            'profile_background' => 'url',
             'website' => 'url',
             'blogfeed' => 'url',
             'presskit' => 'url',

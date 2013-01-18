@@ -12,7 +12,7 @@ $rules = array(
 
     <hr>
 
-    {{ Former::open_vertical(route('post_login'))->rules($rules) }}
+    {{ Former::open_inline(route('post_login'))->rules($rules) }}
         {{ Form::token() }}
         
         {{ Former::text('username', '')->placeholder(lang('login.name_label')) }}
@@ -21,9 +21,7 @@ $rules = array(
 
         {{ Former::checkbox('keep_logged_in', '')->text(lang('login.keep_logged_in_label'))->check() }}
         
-        {{ captcha() }}
-
-        <br>
+        {{ antiBot() }}
 
         {{ Former::primary_submit(lang('login.submit')) }}
     </form>
@@ -47,7 +45,7 @@ $rules = array(
 
             {{ Former::text('lost_password_username', '')->placeholder(lang('login.name_label')) }} 
 
-            {{ captcha('lost_password_captcha') }}
+            {{ antiBot() }}
 
             {{ Former::info_submit(lang('login.lost_password')) }}
         </form>

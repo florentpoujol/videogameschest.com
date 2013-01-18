@@ -22,6 +22,7 @@ return array(
         'devices' => 'Devices',
 
         'email' => 'Email',
+        'edit_profile' => 'Edit this profile',
 
         'game' => 'Game',
         'games' => 'Games',
@@ -40,6 +41,8 @@ return array(
         'pitch' => 'Pitch',
         'presskit' => 'Press Kit',
         'profile' => 'Profile',
+        'profile_background' => 'Background image',
+        'profile_background_help' => 'Header background image. Max-height : 250px. Ideal min-width : 1000px.',
         'profile_blogfeed' => 'Latest articles',
         'publisher' => 'Publisher',
 
@@ -318,7 +321,7 @@ return array(
         'developer_name_help' => 'OR if the developer profile does not yet exist on VGC, you can just',
         'dev_not_in_list_link' => 'enter its name and website URL below :',
 
-        'cover' => 'Box cover',
+        'cover' => 'Box cover or icon',
         'devstate' => 'Developement state',
 
         'pitch' => 'Game story, features...',
@@ -360,8 +363,8 @@ return array(
             'title' => 'Game',
             'website' => 'Go to the game\'s website',
             'blogfeed' => 'Lastest articles from the blog',
-            'soundtrack' => 'Get the soudtrack',
-
+            'soundtrack' => 'Get the soundtrack',
+            'screenshots_help' => 'Click on them to view in full size'
         ),
 
 
