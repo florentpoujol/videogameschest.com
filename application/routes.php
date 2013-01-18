@@ -139,7 +139,7 @@ $layout = View::of('layout');
         Route::get('login', array('as' => 'get_login', 'uses' => 'admin@login'));
         Route::get('register', array('as' => 'get_register', 'uses' => 'admin@register'));
         Route::get('register/confirmation/(:num)/(:any)', array('as' => 'get_register_confirmation', 'uses' => 'admin@register_confirmation'));
-        Route::get('lostpassword/(:num)/(:any)', array('as' => 'get_lostpassword_confirmation', 'uses' => 'admin@lostpassword_confirmation'));
+        Route::get('user/lostpassword/(:num)/(:any)', array('as' => 'get_lostpassword_confirmation', 'uses' => 'admin@lostpassword_confirmation'));
     });
 
 

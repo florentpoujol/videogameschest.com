@@ -6,7 +6,7 @@ return array(
         "french"
     ),
 
-    'lang_files' => array('vgc', 'email'),
+    'lang_files' => array('vgc', 'emails'),
     
 
     "date_formats" => array(

@@ -70,7 +70,7 @@ return array(
 		'mysql' => array(
 			'driver'   => 'mysql',
 			'host'     => 'localhost',
-			'database' => 'videogameschest',
+			'database' => '',
 			'username' => 'root',
 			'password' => '',
 			'charset'  => 'utf8',

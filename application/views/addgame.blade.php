@@ -20,15 +20,11 @@ if ( ! empty($old)) Former::populate($old);
 
 if (is_admin()) {
     $devs = Dev::get(array('id', 'name'));
+    $users = User::get(array('id', 'username'));
     $privacy = array_set_values_as_keys(Config::get('vgc.privacy_and_reviews'));
 }
 else $devs = Dev::get(array('id', 'name'));
 
-/*$old_devs = $devs;
-$devs = array(lang('common.select_first_option'));
-foreach ($old_devs as $dev) {
-    $devs[$dev->id] = $dev;
-}*/
 ?>
 <div id="addgame">
     <h1>{{ lang('game.add.title') }}</h1>

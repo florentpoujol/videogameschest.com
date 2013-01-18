@@ -24,7 +24,7 @@
 $environments = array(
 
 	'local' => array('http://localhost*', '*.dev'),
-    'prod' => array('http://videogameschest.com*'),
+    'alpha' => array('http://alpha.videogameschest.com*'),
 
 );
 

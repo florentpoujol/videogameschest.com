@@ -15,6 +15,7 @@ return array(
     Once you are satisfied with the informations it contains, you may send your profile in the Publishing review. <br>
     <br>
     <br>
+    -- <br>
     Thanks,<br>
     The VideoGamesChest.com team
     ',
@@ -23,10 +24,10 @@ return array(
     'profile_passed_publishing_review' =>
     'Hi :user_name <br>
     <br>
-    The :profile_type profile you created on VideoGamesChest.com passed the publishing review ! <br>
+    The :profile_type profile (name : ":profile_name") you created on VideoGamesChest.com passed the publishing review ! <br>
     It is now public for everyone to enjoin (<a href=":profile_link" title="Go to the profile">you can view it by clicking here</a>), so feel free to spread the word. <br>
     <br>
-    --
+    -- <br>
     Regards,<br>
     The VideoGamesChest.com team
     ',
@@ -34,6 +35,7 @@ return array(
     'game_passed_publishing_review' => 'game_passed_publishing_review',
     
 
+// REGISTER
 
     'register_confirmation_subject' => 'Activate your new user account',
     'register_confirmation' =>
@@ -55,11 +57,12 @@ return array(
     'Hello :username <br>
     <br>
     It seems you losted your password and asked to get a new one. If it\'s not the case, just ignore this email. <br>
-    To generated a new password, click the link below : <br>
+    To generate a new password, click the link below : <br>
     <a href=":link" title="Follow the link to generate a new password">:link</a> <br>
     <br>
     You will receive the new password in another email. <br>
     <br>
+    -- <br>
     Regards, <br>
     The VideoGamesChest team <br>
     ',
@@ -73,7 +76,7 @@ return array(
     <br>
     You can now <a href=":login_link" title="Go to the login form">log in</a>. <br>
     <br>
-    --
+    -- <br>
     Regards, <br>
     The VideoGamesChest team <br>
     ',
