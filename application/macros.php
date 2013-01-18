@@ -124,7 +124,7 @@ HTML::macro('get_success', function()
         ';
         
         $array_success = json_decode($json_success, true);
-        
+        if (is_null($array_success)) $array_success = array();
         foreach ($array_success as $success) 
         {
             $html_success .= $success.' <br>

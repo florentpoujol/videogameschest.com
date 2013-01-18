@@ -26,8 +26,8 @@ if ( ! isset($modal)) $modal = false;
         
         {{ Former::textarea('message', '')->placeholder(lang('reports.message'))->rows(2)->value(Input::old('message')) }}
         
-        {{ captcha() }} 
-        <br>
+        {{ antiBot() }} 
+        
 
     @if ($modal)
         </div> <!-- /.modal-body -->

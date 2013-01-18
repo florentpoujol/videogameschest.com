@@ -29,7 +29,7 @@
 
 
         <li><a href="{{ route('get_addgame') }}">{{ lang('admin.menu.add_game') }}</a></li>
-        @if ( ! empty(user()->devs) || is_admin())
+        @if ( ! empty(user()->games) || is_admin())
             <li>
                 <a data-toggle="collapse" href="#collapse2">{{ lang('admin.menu.edit_game') }} {{ icon('caret-down') }}</a>
                 

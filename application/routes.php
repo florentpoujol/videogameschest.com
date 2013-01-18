@@ -48,12 +48,12 @@ $layout = View::of('layout');
 // NO FILTERS
 //----------------------------------------------------------------------------------
 
-    Route::get('test', function() use ($layout)
+    Route::get('xyz', function() use ($layout)
     {
         return $layout->nest('page_content', 'test');
     });
 
-    Route::post('test', array('as' => 'post_test', function() use ($layout)
+    Route::post('xyz', array('as' => 'post_test', function() use ($layout)
     {
         Input::flash();
 
@@ -66,13 +66,14 @@ $layout = View::of('layout');
 
     Route::get('/', function() use ($layout)
     {
-        return $layout->nest('page_content', 'home');
+        return Redirect::to_route('get_home');
+        //return $layout->nest('page_content', 'home');
     });
 
 
     Route::get('home', array('as' => 'get_home', 'do' => function() use ($layout)
     {
-        return $layout->nest('page_content', 'home');
+        return $layout->nest('page_content', 'home_later');
     }));
 
 
@@ -194,14 +195,10 @@ $layout = View::of('layout');
         // profile is public
         // user is admin
         // user is dev and profile is user's or in review   
-        if ($profile->privacy == 'public' || is_admin() ||
-            is_trusted() && 
-                ($profile->user_id == user_id() ||
-                in_array($profile->privacy, Config::get('vgc.review.types')))
-        ) {
+        if ($profile->privacy == 'public' || is_admin() || $profile->user_id == user_id()) {
             return $layout->nest('page_content', 'developerdisplay', array('profile' => $profile));
         } else {
-            HTML::set_error(lang('common.msg.access_not_allowed', array('page' => 'Developer profile "'.$name.'"')));
+            HTML::set_error(lang('common.msg.access_not_allowed', array('page' => 'Developer profile '.$name)));
             return Redirect::to_route('get_search');
         }
     }));
@@ -232,14 +229,10 @@ $layout = View::of('layout');
         // profile is public
         // user is admin
         // user is dev and profile is user's or in review
-        if ($profile->privacy == 'public' || is_admin() ||
-            is_trusted() && 
-                ($profile->user_id == user_id() ||
-                in_array($profile->privacy, Config::get('vgc.review.types')))
-        ) {
+        if ($profile->privacy == 'public' || is_admin() || $profile->user_id == user_id()) {
             return $layout->nest('page_content', 'gamedisplay', array('profile' => $profile));
         } else {
-            HTML::set_error(lang('common.msg.access_not_allowed', array('page' => 'Game profile \"'.$name.'\"')));
+            HTML::set_error(lang('common.msg.access_not_allowed', array('page' => 'Game profile '.$name)));
             return Redirect::to_route('get_search');
         }
     }));
@@ -277,6 +270,7 @@ $layout = View::of('layout');
     Route::group(array('before' => 'auth|csrf'), function()
     {
         Route::post('user/edit', array('as' => 'post_edituser', 'uses' => 'admin@edituser'));
+        Route::post('user/editpassword', array('as' => 'post_editpassword', 'uses' => 'admin@editpassword'));
 
         Route::post('selecteditdeveloper', array('as' => 'post_selecteditdeveloper', 'uses' => 'admin@selecteditdeveloper'));
         Route::post('developer/add', array('as' => 'post_adddeveloper', 'uses' => 'admin@adddeveloper'));

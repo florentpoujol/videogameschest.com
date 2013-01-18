@@ -118,7 +118,8 @@ class Admin_Controller extends Base_Controller
                     }
                 } else {
                     HTML::set_error(lang('login.msg.not_activated', array(
-                      'username' => $username
+                        'field' => $field,
+                        'username' => $username
                     )));
                 }
             } else {
@@ -253,7 +254,6 @@ class Admin_Controller extends Base_Controller
     public function post_edituser()
     {
         $input = Input::all();
-        $input['password'] = trim($input['password']);
 
         if ( ! is_admin()) $input['id'] = user_id();
 
@@ -263,39 +263,53 @@ class Admin_Controller extends Base_Controller
         $rules = array(
             'username' => 'required|min:5',
             'email' => 'required|min:5|email',
-            'url_key' => 'min:10|alpha_num',
+            //'url_key' => 'min:10|alpha_num',
         );
         
         $validation = Validator::make($input, $rules);
         
-        if ($validation->passes()) {
-            if ($input['password'] != '') {
-                $old_password_ok = true;
-                if ( ! Hash::check($input['old_password'], $user->password)) {
-                    $old_password_ok = false;
-                    HTML::set_error(lang('user.wrong_old_password'));
-                }
-
-                $rules = array(
-                    'password' => 'required|min:5|confirmed',
-                    'password_confirmation' => 'required|min:5',
-                    'old_password' => 'required|min:5',
-                );
-
-                $pass_validation = Validator::make($input, $rules);
-            
-                if ($pass_validation->fails() || $old_password_ok == false) {
-                    return Redirect::to_route('get_edituser', array($user->id))
-                    ->with_errors($pass_validation)
-                    ->with_input('except', array('password', 'password_confirmation', 'old_password'));
-                }
-            }
-
-            User::update($input['id'], $input);
-        } else {
+        if ($validation->fails() || ! User::update($input['id'], $input)) {
             return Redirect::to_route('get_edituser', array($user->id))
             ->with_errors($validation)
             ->with_input('except', array('password', 'password_confirmation', 'old_password'));
+        }
+
+        return Redirect::to_route('get_edituser', array($user->id));
+    }
+
+    public function post_editpassword()
+    {
+        $input = Input::all();
+        $input['password'] = trim($input['password']);
+
+        if ( ! is_admin()) $input['id'] = user_id();
+
+        $user = User::find($input['id']);
+        
+        // checking form
+        if ($input['password'] != '') {
+            $old_password_ok = true;
+            if ( ! is_admin() && ! Hash::check($input['old_password'], $user->password)) {
+                $old_password_ok = false;
+                HTML::set_error(lang('user.msg.wrong_old_password'));
+            }
+
+            $rules = array(
+                'password' => 'required|min:5|confirmed',
+                'password_confirmation' => 'required|min:5',
+                'oldpassword' => 'required|min:5',
+            );
+            if (is_admin()) unset($rules['oldpassword']);
+
+            $validation = Validator::make($input, $rules);
+        
+            if ($validation->fails() || $old_password_ok == false) {
+                return Redirect::to_route('get_edituser', array($user->id))
+                ->with_errors($validation)
+                ->with_input('except', array('password', 'password_confirmation', 'old_password'));
+            }
+
+            User::update($input['id'], $input);
         }
 
         return Redirect::to_route('get_edituser', array($user->id));
@@ -406,7 +420,7 @@ class Admin_Controller extends Base_Controller
         if (is_not_admin()) {
             // check that $input['id'] is one of the user's dev profiles
             $forged = true;
-            foreach (user()->devs() as $dev) {
+            foreach (user()->devs as $dev) {
                 if ($dev->id == $input['id']) $forged = false;
             }
 

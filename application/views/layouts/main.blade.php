@@ -47,9 +47,10 @@ $page_content .= Section::yield('page_content');
                         <P class="muted copyright">Copyright &copy; 2013 VideoGamesChest.com</p>
                     </div>
 
-                    <div class="span2 offset6">
-                        <P>
-                            <a href="https://twitter.com/videogameschest" title="twitter"><i class="icon-twitter-sign icon-2x"></i></a>
+                    <div class="span3 offset5">
+                        <ul class="unstyled">
+                            <li><a href="https://twitter.com/videogameschest" title="twitter"><i class="icon-twitter-sign icon-2x"></i></a><li>
+                            <li class="muted">contact at videogameschest.com</li>
                         </p>
                     </div>
             </div>

@@ -36,16 +36,17 @@ class Developer extends Profile
 	{
         $input = clean_form_input($input);
 
+        if ( ! isset($input['user_id'])) $input['user_id'] = user_id();
         if ( ! isset($input['privacy'])) $input['privacy'] = 'publishing';
-        
+
         $input['approved_by'] = array();
-        $input['pitch'] = $input['pitch'];
+
 
         $dev = parent::create($input);
-        
+
 
         $msg = lang('developer.msg.adddev_success', array(
-            'name'=>$dev->name,
+            'name' => $dev->name,
             'id' => $dev->id
         ));
         HTML::set_success($msg);
@@ -53,12 +54,12 @@ class Developer extends Profile
 
 
         $text = lang('emails.profile_created', array(
-            'user_name' => $this->user->name,
+            'user_name' => $dev->user->name,
             'profile_type' => 'developer',
             'profile_name' => $dev->name,
         ));
 
-        sendMail($this->user->email, lang('emails.profile_created_subject'), $text);
+        sendMail($dev->user->email, lang('emails.profile_created_subject'), $text);
 
 
         return $dev;
@@ -112,20 +113,20 @@ class Developer extends Profile
      * @param  string $review  Review type
      * @param  string $profile The profile type
      */
-    public function passed_review($user = null)
+    /*public function passed_review($user = null)
     {
         parent::passed_review($this->user);
-    }
+    }*/
 
     /**
      * Do stuffs when the profile failed a review
      * @param  string $review   Review type
      * @param  string $profile The profile type
      */
-    public function failed_review($review, $profile = 'developer', $user = null)
+    /*public function failed_review($review, $profile = 'developer', $user = null)
     {
         parent::failed_review($review, $profile, $this->user);
-    }
+    }*/
 
 
 

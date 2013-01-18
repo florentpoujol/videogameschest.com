@@ -29,6 +29,9 @@ class Game extends Profile
 	{
         $input = clean_form_input($input);
 
+
+        if ( ! isset($input['user_id'])) $input['user_id'] = user_id();
+
         $dev = Dev::where_name($input['developer_name'])->first();
         if ( ! is_null($dev)) {
             $input['developer_name'] = '';
@@ -36,7 +39,7 @@ class Game extends Profile
         }
         else $input['developer_id'] = 0;
 
-        if ( ! isset($game['privacy'])) $game['privacy'] = 'publishing';
+        if ( ! isset($input['privacy'])) $input['privacy'] = 'publishing';
 
         $input['approved_by'] = array();
 
@@ -47,7 +50,7 @@ class Game extends Profile
         
 
         $msg = lang('game.msg.addgame_success', array(
-            'name'=>$game->name,
+            'name' => $game->name,
             'id' => $game->id
         ));
         HTML::set_success($msg);
@@ -55,12 +58,12 @@ class Game extends Profile
 
 
         $text = lang('emails.profile_created', array(
-            'user_name' => $this->user->name,
+            'user_name' => $game->user->name,
             'profile_type' => 'game',
-            'profile_name' => $dev->name,
+            'profile_name' => $game->name,
         ));
 
-        sendMail($this->user->email, lang('emails.profile_created_subject'), $text);
+        sendMail($game->user->email, lang('emails.profile_created_subject'), $text);
 
 
         return $game;
@@ -142,10 +145,10 @@ class Game extends Profile
      * @param  string $review  Review type
      * @param  string $profile The profile type (this arg is useless here but overriding passed_review() with less params than in the parent did cause issue (Class 'Log' not found))
      */
-    public function passed_review($user = null)
+    /*public function passed_review($user = null)
     {
         parent::passed_review($this->dev->user);
-    }
+    }*/
 
     
     //----------------------------------------------------------------------------------

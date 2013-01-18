@@ -37,42 +37,44 @@
         $profiles = array_merge($profiles, user()->devs);
         $profiles = array_merge($profiles, user()->games);
     }
+
+    $reports = array();
+    foreach ($profiles as $profile) {
+        $reports = array_merge($reports, $profile->reports($report_type));
+    }
     ?>
 
-    {{ Former::open(route('post_editreports')) }}
-        {{ Form::token() }}
+    @if ( ! empty($reports))
+        {{ Former::open(route('post_editreports')) }}
+            {{ Form::token() }}
 
-        <table class="table table-striped table-bordered">
-            <thead>
-                <tr>
-                    <th>{{ lang('reports.table.profile') }}</th>
-                    <th>{{ lang('reports.table.message') }}</th>
-                    <th>{{ Former::warning_submit(lang('reports.table.delete')) }}</th>
-                </tr>
-            </thead>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>{{ lang('reports.table.profile') }}</th>
+                        <th>{{ lang('reports.table.message') }}</th>
+                        <th>{{ Former::warning_submit(lang('reports.table.delete')) }}</th>
+                    </tr>
+                </thead>
 
-        @foreach ($profiles as $profile)
-            <?php
-            $reports = $profile->reports($report_type);
-            ?> 
-            @foreach ($reports as $report)
-                <tr>
-                    <td>
-                        <a href="{{ route('get_'.$profile->class_name, array(name_to_url($profile->name))) }}">{{ $profile->name }}</a> ({{ $profile->class_name }})
-                    </td>
+                @foreach ($reports as $report)
+                    <tr>
+                        <td>
+                            <a href="{{ route('get_'.$profile->class_name, array(name_to_url($profile->name))) }}">{{ $profile->name }}</a> ({{ $profile->class_name }})
+                        </td>
 
-                    <td class="span8">
-                        {{ $report->message }}
-                    </td>
-                    
-                    <td>
-                        <input type="checkbox" name="reports[]" value="{{ $report->id }}">
-                    </td>
-                </tr>
-            @endforeach
-
-        @endforeach
-        </table>
-
-    </form>
+                        <td class="span8">
+                            {{ $report->message }}
+                        </td>
+                        
+                        <td>
+                            <input type="checkbox" name="reports[]" value="{{ $report->id }}">
+                        </td>
+                    </tr>
+                @endforeach
+            </table>
+        </form>
+    @else
+        {{ lang('reports.no_report') }}
+    @endif
 </div> <!-- /#reports -->

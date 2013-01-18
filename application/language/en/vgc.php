@@ -81,7 +81,7 @@ return array(
 
         'msg' => array( 
             'edit_other_users_profile_not_allowed' => 'You are not allowed to edit profiles which does not belong to you.',
-            'access_not_allowed' => 'You are not allowed to access the page : :page',
+            'access_not_allowed' => "You are not allowed to access the page ':page'",
             'page_not_found' => 'Sorry, the page you were looking for was not found.'
         ),
     ),
@@ -211,7 +211,7 @@ return array(
         An email has been sent to your email adress with a link to activate your account. 
         You will be able to login as soon as to activated your account.',
 
-        'msg_confirmation_error' => 'Unable to activate the user account because none with id ":id" and url key ":url_key" has been found, or the user account is already activated.',
+        'msg_confirmation_error' => "Unable to activate the user account because none with id ':id' and url key ':url_key' has been found, or the user account is already activated.",
         'msg_confirmation_success' => 'Thank you :username, you have successfully activated your user account, you may now log in.',
 
     ),
@@ -229,9 +229,9 @@ return array(
     
 
         'msg' => array(
-            'wrong_password' => 'The password provided for user :field ":username" is incorrect.',
-            'not_activated' => 'The user account with the :field ":username" is not activated yet. You will be able to login once you will have clicked the activation link that can be found in the email sent to you upon registration.',
-            'user_not_found' => 'No user with the :field ":username" has been found.',
+            'wrong_password' => "The password provided for user :field ':username' is incorrect.",
+            'not_activated' => "The user account with the :field ':username' is not activated yet. You will be able to login once you will have clicked the activation link that can be found in the email sent to you upon registration.",
+            'user_not_found' => "No user with the :field ':username' has been found.",
 
             'login_success' => 'Welcome :username, you successfully logged in.',
             'logout_success' => 'You successfully logged out. See you soon !',
@@ -261,8 +261,12 @@ return array(
         'url_key_help' => 'This random string is used to access various things related to your user account via URL. You may update it but keep it secret.',
         'old_password_help' => 'In order to update your password, enter your old password here.',
 
-        'msg_wrong_old_password' => 'The old password does not match your current password.',
-        'msg_update_success' => 'Your user account has successfully been updated.'
+        'msg' => array(
+            'wrong_old_password' => 'The old password does not match your current password.',
+            'update_success' => 'Your user account has successfully been updated.',
+            'edituser_nametaken' => "Can't rename the user ':username' (id : :id) because the name ':newname' is already taken.",
+        ),
+
     ),
 
 // DEVELOPER 
@@ -303,15 +307,15 @@ return array(
         ),
 
         'msg' => array(
-            'adddev_success' => 'The developer profile with name \":name\" (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.',
-            'editdev_success' => 'The developer profile with name \":name\" (id : :id) has successfully been updated.',
+            'adddev_success' => "The developer profile with name ':name' (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
+            'editdev_success' => "The developer profile with name ':name' (id : :id) has successfully been updated.",
 
-            'select_editdev_id_not_found' => 'No developer with id ":id" was found.',
-            'select_editdev_name_not_found' => 'No developer with name ":name" was found.',
+            'select_editdev_id_not_found' => "No developer with id ':id' was found.",
+            'select_editdev_name_not_found' => "No developer with name ':name' was found.",
 
-            'profile_not_found' => 'No developer profile with id ":id" was found.',
+            'profile_not_found' => "No developer profile with id ':id' was found.",
 
-            'editdev_nametaken' => 'Can\'t rename the developer profile with name \":name\" (id : :id) because the name \":newname\" is already taken.',
+            'editdev_nametaken' => "Can't rename the developer profile with name ':name' (id : :id) because the name ':newname' is already taken.",
         ),
 
     ),
@@ -369,15 +373,15 @@ return array(
 
 
         'msg' => array(
-            'addgame_success' => 'The game profile with name \":name\" (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.',
-            'editgame_success' => 'The game profile with name \":name\" (id : :id) has successfully been updated.',
+            'addgame_success' => "The game profile with name ':name' (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
+            'editgame_success' => "The game profile with name ':name' (id : :id) has successfully been updated.",
 
-            'select_editgame_id_not_found' => 'No game profile with id ":id" was found.',
-            'select_editgame_name_not_found' => 'No game profile with name ":name" was found.',
+            'select_editgame_id_not_found' => "No game profile with id ':id' was found.",
+            'select_editgame_name_not_found' => "No game profile with name ':name' was found.",
 
-            'profile_not_found' => 'No game profile with id ":id" was found.',
+            'profile_not_found' => "No game profile with id ':id' was found.",
 
-            'editgame_nametaken' => 'Can\'t rename the game profile with name \":name\" (id : :id) because the name \":newname\" is already taken.',
+            'editgame_nametaken' => "Can't rename the game profile with name ':name' (id : :id) because the name ':newname' is already taken.",
         ),
 
     ), // end of game
@@ -418,6 +422,8 @@ return array(
 
         'dev_title' => 'Developer reports',
         'admin_title' => 'Admin reports',
+
+        'no_report' => 'No report to display',
 
         'table' => array(
             'profile' => 'Profile',
@@ -520,7 +526,7 @@ return array(
         'msg' => array(
             'activation_success' => 'You successfully activated the cross-promotion for your games.',
             'deactivation_success' => 'You successfully deactivated the cross-promotion for your games.',
-            'update_profiles_success' => 'The promoted profiles for your game \":game_name\" have successfully been updated.',
+            'update_profiles_success' => "The promoted profiles for your game ':game_name' have successfully been updated.",
         ),
     ),
 

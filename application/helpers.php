@@ -169,6 +169,7 @@ function user()
 }
 function user_id()
 {
+    if (Auth::guest()) return 0;
     return Auth::user()->id;
 }
 

@@ -33,7 +33,7 @@ return array(
 
     'privacy_and_reviews' => array('private', 'public', 'publishing'),
 
-    'form_attributes_to_clean' => array('csrf_token', 'password_confirmation', 'old_password', 'controller', 'captcha'),
+    'form_attributes_to_clean' => array('csrf_token', 'password_confirmation', 'old_password', 'controller', 'captcha', 'city'),
 
     'dummie_password' => 'testtest', //r!&5éT[79m},D?4â+5w% temp password while user is in submission review
 

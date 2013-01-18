@@ -153,11 +153,15 @@ $name = xssSecure($profile->name);
     <div class="row-fluid json-field-row">
         
         <?php 
-        $items = array('socialnetworks', 'stores', 'reviews', 'devices', );
+        $items = array('stores', 'reviews', 'socialnetworks',  'devices', );
         foreach ($items as $item):
         ?>
             <div class="span3 json-field-div">
-                <h4>{{ lang($item.'.title') }}</h4>
+                @if ($item == 'reviews')
+                    <h4>{{ lang('common.reviews') }}</h4>
+                @else
+                    <h4>{{ lang($item.'.title') }}</h4>
+                @endif
 
                 <ul class="unstyled">
                     @if ($item == 'socialnetworks' || $item == 'stores' || $item == 'reviews')
@@ -167,9 +171,11 @@ $name = xssSecure($profile->name);
                             <li><a href="{{ xssSecure($array['urls'][$i]) }}">{{ lang($item.'.'.$array['names'][$i]) }}</a></li>
                         @endfor
                     @else
-                        @foreach ($profile->$item as $name)
-                            <li>{{ lang($item.'.'.$name) }}</li>
-                        @endforeach
+                        @if (is_array($profile->$item))
+                            @foreach ($profile->$item as $name)
+                                <li>{{ lang($item.'.'.$name) }}</li>
+                            @endforeach
+                        @endif
                     @endif
                 </ul>
             </div>

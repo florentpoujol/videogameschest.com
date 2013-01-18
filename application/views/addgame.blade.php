@@ -12,7 +12,6 @@ $rules = array(
     'soundtrackurl' => 'url',
     'publishername' => 'min:2|alpa',
     'publisherurl' => 'url',
-
 );
 
 $old = Input::old();
@@ -23,7 +22,7 @@ if (is_admin()) {
     $devs = Dev::get(array('id', 'name'));
     $privacy = array_set_values_as_keys(Config::get('vgc.privacy_and_reviews'));
 }
-else $devs = Dev::where_privacy('public')->get(array('id', 'name'));
+else $devs = Dev::get(array('id', 'name'));
 
 /*$old_devs = $devs;
 $devs = array(lang('common.select_first_option'));
@@ -46,6 +45,8 @@ foreach ($old_devs as $dev) {
                 {{ Former::text('developer_name', lang('common.developer'))->useDatalist($devs, 'name') }}
                 
                 @if (is_admin())
+                    {{ Former::select('user_id', 'User')->fromQuery($users)  }}
+
                     {{ Former::select('privacy')->options($privacy) }}
                 @endif
 

@@ -56,7 +56,7 @@
 
                             <li class="divider"></li>
                             <li><a href="{{ route('get_addgame') }}">{{ icon('plus') }} {{ lang('admin.menu.add_game') }}</a></li>
-                            @if ( ! empty(user()->devs) || is_admin())
+                            @if ( ! empty(user()->games) || is_admin())
                                 <li><a href="{{ route('get_editgame') }}">{{ icon('edit') }} {{ lang('admin.menu.edit_game') }}</a></li>
                             @endif
 

@@ -6,10 +6,7 @@
 $rules = array(
     'username' => 'required|min:5',
     'email' => 'required|min:5|email',
-    'url_key' => 'min:10|alpha_num',
-    'password' => 'min:5|confirmed',
-    'password_confirmation' => 'min:5|required_with:password',
-    'oldpassword' => 'min:5|required_with:password',
+    //'url_key' => 'min:10|alpha_num',
 );
 
 $user = User::find($user_id);
@@ -45,14 +42,33 @@ if ( ! empty($old)) Former::populate($old);
             {{ Former::text('type', 'Account type')->help('"user," "dev" or "admin"') }}
         @endif
 
+        {{ Former::primary_submit(lang('user.edit_title')) }} 
+    {{ Former::close() }} 
+
+    <hr>
+
+    <?php
+    $rules = array(
+        'password' => 'min:5|confirmed',
+        'password_confirmation' => 'min:5|required_with:password',
+        'oldpassword' => 'min:5|required_with:password',
+    );
+
+    if (is_admin()) unset($rules['oldpassword']);
+    ?>
+    {{ Former::open_vertical(route('post_editpassword'))->rules($rules) }}    
+        {{ Form::token() }}
+
+        @if (is_admin())
+            {{ Former::hidden('id', $user->id) }}
+        @endif
+
         {{ Former::password('password') }}
 
         {{ Former::password('password_confirmation', 'Password Confirmation') }}
 
         {{ Former::password('old_password', 'Old password')->help(lang('user.old_password_help')) }}
 
-        <hr>
-
         {{ Former::primary_submit(lang('user.edit_title')) }}     
-    </form>
+    {{ Former::close() }}
 </div> <!-- /#edituser --> 

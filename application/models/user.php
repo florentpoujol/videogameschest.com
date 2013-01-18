@@ -70,21 +70,34 @@ class User extends ExtendedEloquent
     {
         $input = clean_form_input($input);
 
-        if ($input['password'] != '') $input['password'] = Hash::make($input['password']);
+        $user = parent::find($id);
+        // checking name change
+        if (isset($input['username']) && $user->username != $input['username']) { // the user want to change the dev name, must check is the name is not taken
+            if (parent::where_username($input['username'])->first() != null) {
+                HTML::set_error(
+                    lang('user.msg.edituser_nametaken', array(
+                        'username' => $user->username,
+                        'id' => $user->id,
+                        'newname' => $input['username'])
+                    )
+                );
+
+                return false;
+            }
+        }
+
+        if (isset($input['password']) && trim($input['password']) != '') $input['password'] = Hash::make($input['password']);
         else unset($input['password']);
 
-        if ( ! isset($input['crosspromotion_subscription'])) $input['crosspromotion_subscription'] = 0;
-        else $input['crosspromotion_subscription'] = 1;
-
-        $input['url_key'] = str_replace('/', '', $input['url_key']);
+        //$input['url_key'] = str_replace('/', '', $input['url_key']);
 
         parent::update($id, $input);
         $user = User::find($id);
 
-        if ($user->id != user_id()) $msg = 'The user \"'.$user->username.'\" (id='.$user->id.') has successfully been updated.';
-        else $msg = lang('user.msg_update_success');
+        if ($user->id != user_id()) $msg = 'The user \"'.$user->username.'\" (id : '.$user->id.') has successfully been updated.';
+        else $msg = lang('user.msg.update_success');
         HTML::set_success($msg);
-        Log::write('user update success', 'The user \"'.$user->username.'\" (id='.$user->id.') has successfully been updated.');
+        Log::write('user update success', 'The user \"'.$user->username.'\" (id : '.$user->id.') has successfully been updated.');
 
         return $user;
     }
