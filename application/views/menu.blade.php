@@ -1,4 +1,4 @@
-<header id="main-menu" class="navbar container">
+<div id="main-menu" class="navbar container">
     <div class="navbar-inner">
         <!-- <div class="container"> -->
 
@@ -16,26 +16,29 @@
                 }
 
                 if (CONTROLLER == '') $home = ' class="active"';
+
+                $admin = 'active';
+                foreach ($menu_items as $item) {
+                    if (${$item} != '') $admin = '';
+                }
                 ?>
-                <!-- @foreach ($menu_items as $menu_item)
-                    <li><a href="{{ route('get_'.$menu_item) }}">{{ lang('menu.'.$menu_item) }}</a></li>
-                @endforeach -->
+                
 
-                <li{{ $home }}><a href="{{ route('get_home') }}">{{ icon('home') }} {{ lang('menu.home') }}</a></li>
-                <li{{ $search }}><a href="{{ route('get_search') }}">{{ icon('search') }} {{ lang('menu.search') }}</a></li>
+                <li{{ $home }}><a href="{{ route('get_home') }}">{{ icon('homez') }} {{ lang('menu.home') }}</a></li>
+                <li{{ $search }}><a href="{{ route('get_search') }}">{{ lang('menu.search') }}</a></li>
 
-                <li{{ $find }}><a href="{{ route('get_find') }}">{{ icon('eye-open') }} {{ lang('menu.find') }}</a></li>
+                <li{{ $find }}><a href="{{ route('get_find') }}">{{ icon('eye-openz') }} {{ lang('menu.find') }}</a></li>
 
                 @if (is_logged_in())
-                    <li{{ $advertising }}><a href="{{ route('get_advertising') }}">{{ icon('bullhorn') }} {{ lang('menu.advertising') }}</a></li>
+                    <li{{ $advertising }}><a href="{{ route('get_advertising') }}">{{ icon('bullhornz') }} {{ lang('menu.advertising') }}</a></li>
                 @endif
                 <!-- /general menu --> 
 
                 @if (is_logged_in())
                     <!-- Admin menu -->
-                    <li class="dropdown">
+                    <li class="dropdown {{ $admin }}">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            {{ icon('cog') }} Admin
+                            Admin
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">

@@ -5,7 +5,6 @@ You may not have dots inside the keys
 
 */
 return array(
-'language_key_not_found' => '[language key \':key\' not found in language \':language\']',
 
 // COMMON
 
@@ -13,11 +12,14 @@ return array(
         'bbcode_explanation' => 'You may use the following BBCode tags : h1, h2, b and i.',
         // 'You may use HTML in the textarea above (only when editing a profile).'
 
-        'blogfeed' => 'Blog RSS/Atom feed',
+        'blogfeed' => 'Blog RSS feed',
+        'blogfeed_help' => 'No Atom feed, only RSS.',
 
         'country' => 'Country',
 
         'developer' => 'Developer',
+        'developer_name' => 'Developer name',
+        'developer_url' => 'Developer\'s website',
         'developers' => 'Developers',
         'devices' => 'Devices',
 
@@ -26,12 +28,15 @@ return array(
 
         'game' => 'Game',
         'games' => 'Games',
+        'general' => 'General',
         'genres' => 'Genres',
 
         'insert_captcha' => 'Insert captcha',
 
         'languages' => 'Languages',
         'logo' => 'Logo',
+
+        'medias' => 'Medias',
 
         'name' => 'Name',
         'nbplayers' => 'Number of players',
@@ -42,7 +47,7 @@ return array(
         'presskit' => 'Press Kit',
         'profile' => 'Profile',
         'profile_background' => 'Background image',
-        'profile_background_help' => 'Header background image. Max-height : 250px. Ideal min-width : 1000px.',
+        'profile_background_help' => 'Background image for the profile\'s header. Max-height : 250px. Ideal min-width : 1000px.',
         'profile_blogfeed' => 'Latest articles',
         'publisher' => 'Publisher',
 
@@ -328,7 +333,7 @@ return array(
         'cover' => 'Box cover or icon',
         'devstate' => 'Developement state',
 
-        'pitch' => 'Game story, features...',
+        'pitch' => 'Game pitch, story, features...',
 
         'publishername' => 'Publisher name',
         'publisherurl' => 'Publisher\'s website',
@@ -337,19 +342,8 @@ return array(
         
         'releasedate' => 'Release date',
 
+        'developer_name_help' => 'If the developer has a profile on VGC, its name should appear below the field has you type it. Also, a link to the profile will be done on the game\'s instead of using the URL below.',
 
-        'languages_help' => 'The languages the game is playable in :',
-        'technologies_help' => 'The technologies the game is made with :',
-        'operatingsystems_help' => 'The operating systems the game runs on (not applicable for most console games) :',
-        'devices_help' => 'The devices the game is playable on :',
-        'nbplayers_help' => 'How many players can play the game at the same time. <br>
-        Co-op is usually 1 to 4 humans vs the computer. <br>
-        Multiplayer is human(s) vs human(s), often limited to 64 (sometime a couple hundreds) players on the same server.',
-        'themes_help' => 'Futuristic = up until a hundred year or so from now. After that, Sci-fi is more appropriate.',
-        'genres_help' => '',
-        'tags_help' => '',
-        'viewpoints_help' => 'Isometric = 2.5D = most management/strategy game, whether they are in 2D or actual 3D. <a href="http://en.wikipedia.org/wiki/Category:Video_games_with_isometric_graphics" title="Go to the Wikipedia page \'Video games with isometric graphics\'">Example of isometric games</a>.',
-        'stores_help' => 'The stores the game is purchasable from :',
 
         'add' => array(
             'title' => 'Add a game profile',
@@ -511,7 +505,7 @@ return array(
         'editgame' => array(
             'non_subscribers_msg' => 'To easily promote other profiles from within this game <a href=":link">you need to activate</a> the cross-promotion service first.',
             
-            'select_text' => 'Select the profiles you want to promote below :',
+            'select_text' => 'Select below the profiles you want to promote from this game :',
 
             'link_text' => 'To get the profiles you selected above from your game, you need to query the following url : <br>
             <a href=":url">:url</a> <br>
@@ -601,6 +595,7 @@ return array(
 
     'languages' => array(
         'title' => 'Languages',
+        'help' => 'The languages the game is playable in.',
 
         'french' => 'French',
         'english' => 'English',
@@ -638,6 +633,7 @@ return array(
 
     'operatingsystems' => array(
         'title' => 'OS',
+        'help' => 'The operating systems the game runs on (not applicable for most console games).',
 
         'android' => 'Android',
         'blackberry' => 'BlackBerry',
@@ -653,6 +649,7 @@ return array(
 
     'devices' => array(
         'title' => 'Devices',
+        'help' => 'The devices the game is playable on.',
 
         '3ds' => '3DS',
         '3dsxl' => '3DS XL',
@@ -683,6 +680,7 @@ return array(
 
     'technologies' => array(
         'title' => 'Technologies',
+        'help' => 'The technologies the game is made with.',
 
         'blender' => 'Blender Game Engine',
         'flash' => 'Flash',
@@ -713,6 +711,7 @@ return array(
 
     'stores' => array(
         'title' => 'Stores',
+        'help' => 'The stores the game is purchasable from.',
 
         'desura' => 'Desura',
         'gameolith' => 'Gameolith',
@@ -757,11 +756,15 @@ return array(
 
     'nbplayers' => array(
         'title' => 'Players',
+        'help' => 'How many players can play the game at the same time.',
 
         'singleplayer' => 'Single player',
         'coop' => 'Co-op',
+        'coop_help' => 'Usually 1 to 4 humans vs the computer.',
         'multiplayer' => 'Multiplayer',
-        'mmo' => 'MMO (Massively Multiplayer Online)',
+        'multiplayer_help' => 'Human(s) vs human(s), often limited to 64 (sometime a couple hundreds) players on the same server.',
+        'mmo' => 'MMO',
+        'mmo_help' => 'Massively Multiplayer Online',
     ),
 
 // DEVELOPEMENT STATES
@@ -782,11 +785,13 @@ return array(
 
     'themes' => array(
         'title' => 'Themes',
+        'help' => '',
 
         'fantasy' => 'Fantasy',
         'medieval' => 'Medieval',
         'cartoon' => 'Cartoon',
         'futuristic' => 'Futuristic',
+        'futuristic_help' => 'Up until a hundred year or so from now. After that, Sci-fi is more appropriate.',
         'horror' => 'Horror',
         'mafia' => 'Mafia',
         'modern' => 'Modern',
@@ -826,10 +831,12 @@ return array(
 
     'viewpoints' => array(
         'title' => 'Point of view',
+        'help' => '',
 
         '2d' => '2D',
         'firstperson' => 'First Person',
         'isometric' => 'Isometric',
+        'isometric_help' => 'Isometric = 2.5D = most management/strategy game, whether they are in 2D or actual 3D.',
         'thirdperson' => 'Third Person',
         'topdown' => 'Top-Down',
     ),

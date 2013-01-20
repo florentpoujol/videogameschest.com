@@ -10,6 +10,11 @@
  */
 function lang($key, $replacements = array(), $language = null)
 {
+    if (is_string($replacements)) {
+        $default_string = $replacements;
+        $replacements = array();
+    }
+
     $default_language = Config::get('application.language', 'en');
     // if the language is not set, look in the session first
     // then look in the config, or in last resort default to 'en'
@@ -26,7 +31,8 @@ function lang($key, $replacements = array(), $language = null)
 
         if ($string == $key) {
             // then if it is still not found, look for the 'language_key_not_found' key in the current language,
-            $string = "[language key '$key' not found]";
+            if (isset($default_string)) $string = $default_string;
+            else $string = "[language key '$key' not found]";
         }
     }
     

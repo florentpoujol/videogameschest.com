@@ -29,7 +29,9 @@ $page_content .= Section::yield('page_content');
     </head>
     
     <body>
-        @include('main_menu')
+        <header>
+            @include('menu')
+        </header>
 
         <div class="container" id="page_content">
             <div id="message-box">
