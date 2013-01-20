@@ -16,7 +16,7 @@ function lang($key, $replacements = array(), $language = null)
     if (is_null($language)) $language = Session::get('language', $default_language);
     
     $key_parts = explode('.', $key);
-    if ( ! in_array($key_parts[0], Config::get('vgc.lang_files'))) $key = 'vgc.'.$key;
+    if ( ! in_array($key_parts[0], Config::get('vgc.language_files'))) $key = 'vgc.'.$key;
 
     $string = Lang::line($key, $replacements, $language)->get();
 

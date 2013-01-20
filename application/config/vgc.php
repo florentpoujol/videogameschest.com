@@ -3,10 +3,10 @@ return array(
     
     "site_languages" => array(
         "english",
-        "french"
+        
     ),
 
-    'lang_files' => array('vgc', 'emails'),
+    'language_files' => array('vgc', 'emails'),
     
 
     "date_formats" => array(

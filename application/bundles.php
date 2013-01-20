@@ -40,5 +40,12 @@ return array(
 	'bootstrapper' => array('auto' => true),
     'swiftmailer' => array('auto' => true),
     
+    'logreader' => array('auto' => true),
+
+    'logviewer' => array(
+        'auto' => true,
+        'location' => 'logviewer',
+        'handles' => 'logviewer'
+    ),
     //'coolcaptcha' => array('auto' => true, 'handles' => 'coolcaptcha'),
 );

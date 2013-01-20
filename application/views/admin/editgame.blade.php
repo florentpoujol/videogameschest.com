@@ -29,7 +29,7 @@ $developer_name = $game->actual_developer_name;
 ?>
 
 <div id="editgame">
-    <h1>{{ lang('game.edit.title') }}</h1>
+    <h1>{{ lang('game.edit.title') }} <small>{{ xssSecure($game->name) }}</small></h1>
 
     <hr>
 

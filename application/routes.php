@@ -131,6 +131,24 @@ $layout = View::of('layout');
 
 
 //----------------------------------------------------------------------------------
+//  MUST BE LEGIT POST
+//----------------------------------------------------------------------------------
+
+    Route::group(array('before' => 'csrf'), function()
+    {
+        Route::post('reports/add', array('as' => 'post_addreport', 'uses' => 'admin@addreport'));
+
+        Route::post('/search', array('as' => 'post_search', 'before' => 'csrf', function()
+        {
+            $input = Input::all();
+            $search = Search::create($input);
+            return Redirect::to_route('get_search', array($search->id));
+        }));
+    });
+
+
+
+//----------------------------------------------------------------------------------
 //  MUST BE GUEST
 //----------------------------------------------------------------------------------
 
@@ -140,6 +158,19 @@ $layout = View::of('layout');
         Route::get('register', array('as' => 'get_register', 'uses' => 'admin@register'));
         Route::get('register/confirmation/(:num)/(:any)', array('as' => 'get_register_confirmation', 'uses' => 'admin@register_confirmation'));
         Route::get('user/lostpassword/(:num)/(:any)', array('as' => 'get_lostpassword_confirmation', 'uses' => 'admin@lostpassword_confirmation'));
+    });
+
+
+
+//----------------------------------------------------------------------------------
+//  MUST BE GUEST AND LEGIT POST
+//----------------------------------------------------------------------------------
+
+    Route::group(array('before' => 'is_guest|csrf'), function()
+    {
+        Route::post('register', array('as' => 'post_register', 'uses' => 'admin@register'));
+        Route::post('login', array('as' => 'post_login', 'uses' => 'admin@login'));
+        Route::post('lostpassword', array('as' => 'post_lostpassword', 'uses' => 'admin@lostpassword'));
     });
 
 
@@ -240,30 +271,6 @@ $layout = View::of('layout');
 
 
 //----------------------------------------------------------------------------------
-//  MUST BE ADMIN
-//----------------------------------------------------------------------------------
-
-    Route::group(array('before' => 'auth|admin'), function()
-    {
-        Route::get('user/add', array('as' => 'get_adduser', 'uses' => 'admin@adduser'));
-        Route::get('reviews/(:any?)', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));
-    });
-
-
-
-//----------------------------------------------------------------------------------
-//  MUST BE ADMIN AND LEGIT POST
-//----------------------------------------------------------------------------------
-
-    Route::group(array('before' => 'auth|admin|csrf'), function()
-    {
-        Route::post('adduser', array('as' => 'post_adduser', 'uses' => 'admin@adduser'));
-        Route::post('reviews', array('as' => 'post_reviews', 'uses' => 'admin@reviews'));
-    });
-
-
-
-//----------------------------------------------------------------------------------
 //  MUST BE LOGGED IN AND LEGIT POST
 //----------------------------------------------------------------------------------
 
@@ -290,32 +297,25 @@ $layout = View::of('layout');
 
 
 //----------------------------------------------------------------------------------
-//  MUST BE GUEST AND LEGIT POST
+//  MUST BE ADMIN
 //----------------------------------------------------------------------------------
 
-    Route::group(array('before' => 'is_guest|csrf'), function()
+    Route::group(array('before' => 'auth|admin'), function()
     {
-        Route::post('register', array('as' => 'post_register', 'uses' => 'admin@register'));
-        Route::post('login', array('as' => 'post_login', 'uses' => 'admin@login'));
-        Route::post('lostpassword', array('as' => 'post_lostpassword', 'uses' => 'admin@lostpassword'));
+        Route::get('user/add', array('as' => 'get_adduser', 'uses' => 'admin@adduser'));
+        Route::get('reviews/(:any?)', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));
     });
 
 
 
 //----------------------------------------------------------------------------------
-//  MUST BE LEGIT POST
+//  MUST BE ADMIN AND LEGIT POST
 //----------------------------------------------------------------------------------
 
-    Route::group(array('before' => 'csrf'), function()
+    Route::group(array('before' => 'auth|admin|csrf'), function()
     {
-        Route::post('reports/add', array('as' => 'post_addreport', 'uses' => 'admin@addreport'));
-
-        Route::post('/search', array('as' => 'post_search', 'before' => 'csrf', function()
-        {
-            $input = Input::all();
-            $search = Search::create($input);
-            return Redirect::to_route('get_search', array($search->id));
-        }));
+        Route::post('adduser', array('as' => 'post_adduser', 'uses' => 'admin@adduser'));
+        Route::post('reviews', array('as' => 'post_reviews', 'uses' => 'admin@reviews'));
     });
 
 
@@ -345,9 +345,8 @@ Event::listen('laravel.query', function($sql, $bindings, $time) {
 Event::listen('404', function()
 {
     HTML::set_error(lang('common.msg.page_not_found'));
+    Log::write('error 404', 'Page not found : '.URL::current());
     return Redirect::to_route('get_home');
-    
-    //return Response::error('404');
 });
 
 Event::listen('500', function()
