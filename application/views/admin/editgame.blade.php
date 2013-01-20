@@ -2,17 +2,6 @@
     {{ lang('game.edit.title') }}
 @endsection
 <?php
-$rules = array(
-    'name' => 'required|min:5',
-    'cover' => 'url',
-    'website' => 'url',
-    'blogfeed' => 'url',
-    'presskit' => 'url',
-    'soundtrackurl' => 'url',
-    'publishername' => 'min:2|aplha',
-    'publisherurl' => 'url',
-);
-
 $game = Game::find($profile_id);
 Former::populate($game);
 

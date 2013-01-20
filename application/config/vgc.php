@@ -267,6 +267,8 @@ return array(
         "turnbased",
         "topdown",
         'pixelart',
+        'crowdfunded',
+        
     ),
 
     // ICONS

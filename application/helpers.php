@@ -417,7 +417,11 @@ function xssSecure($string)
 }
 
 
-
+/**
+ * Set the embed code for the videos
+ * @param  string $link 
+ * @return string       The HTML code of the embeded player
+ */
 function videoFrame($link, $width = null, $height = null)
 {
     // ration wdith/height : 1.77
@@ -455,7 +459,7 @@ function videoFrame($link, $width = null, $height = null)
     if ( ! is_null($embed_link)) {
         return '<iframe width="'.$width.'" height="'.$height.'" src="'.$embed_link.'" frameborder="0"
         allowfullscreen></iframe>';
-    } else return '';
+    } else return '<a href="'.$link.'">'.$link.'</a>';
 }
 
 
@@ -482,13 +486,42 @@ function antiBot($text_name = 'captcha')
 
     return '';
 }
-function captcha($text = null)
-{
-    return antiBot();
-}
+
+
 
 function shortenUrl($url)
 {
     return preg_replace("#(https?://[^/]+/)(.*)#i", "$1...", $url);
 }
+
+
+/**
+ * Set the embed code for the soundtrack
+ * @param  string $link 
+ * @return string       The HTML code of the embeded player
+ */
+function soundtrackFrame($link)
+{
+    // soundcloud
+    // standard urls : soundcloud.com/{band}/{track} or api.soundcloud.com/tracks/{track_id}
+    // embed url : https://w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/{track_id}
+    // https://w.soundcloud.com/player/?url=https://soundcloud.com/{band}/{track}
+    if (strpos($link, 'soundcloud.com')) {
+        return '<iframe width="100%" height="166" scrolling="no" frameborder="no" 
+        src="https://w.soundcloud.com/player/?url='.$link.'"></iframe>';
+        
+    }
+
+    // bandcamp
+    // standard url is no good for embeding, need the album id
+    // embed url : http://bandcamp.com/EmbeddedPlayer/v=2/album=4077462542/size=grande3/bgcol=FFFFFF/linkcol=4285BB/
+    if (strpos($link, 'bandcamp.com')) {
+        return '<iframe width="300" height="410" style="position: relative; display: block; width: 300px; height: 410px;" 
+        src="'.$link.'" allowtransparency="true" frameborder="0"></iframe>';
+    } 
+
+    return '<a href="'.$link.'">'.$link.'</a>';
+}
+
+
 
