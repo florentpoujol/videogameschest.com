@@ -174,6 +174,7 @@ if ( ! Request::cli() and Config::get('session.driver') !== '')
 
 
 /* below this point the file has been edited for VideoGamesChest.com */
+
 include_once('helpers.php');
 include_once('macros.php');
 
@@ -188,8 +189,11 @@ Asset::container('nivo-slider')->add('light-theme', 'css/nivo-slider/themes/ligh
 Asset::container('colorbox')->add('colorbox-css', 'css/colorbox/colorbox.css');
 Asset::container('colorbox')->add('colorbox-js', 'js/colorbox/jquery.colorbox-min.js');
 
+
+
 // new validation rule
-Laravel\Validator::register('dsfgsdfgdfsg', function($attribute, $value, $parameters)
+Laravel\Validator::register('no_slashes', function($attribute, $value, $parameters)
 {
-    return true;
+    if (strpos($value, '/') === false && strpos($value, "\\") === false) return true;
+    else return false;
 });

@@ -438,21 +438,21 @@ function videoFrame($link, $width = null, $height = null)
     // youtube
     // standard urls : youtube.com/watch?v=B0ewUjc3wbs youtu.be/B0ewUjc3wbs  
     // embed : http://www.youtube.com/embed/B0ewUjc3wbs http://youtube.googleapis.com/v/0l9oOGCie4w
-    if (strpos($link, 'youtu') && ! strpos($link, 'youtube.googleapis.com') && ! strpos($link, '/embed/')) {
+    if (strpos($link, 'youtu') !== false && strpos($link, 'youtube.googleapis.com') === false && strpos($link, '/embed/') === false) {
         $embed_link = preg_replace("#(.*)(/watch\?v=|\.be/|/v/)([a-zA-Z0-9]+)((&|/)?.*)#", 'http://www.youtube.com/embed/$3', $link);
     }
 
     // vimeo
     // stadard : http://vimeo.com/57183688
     // embed : http://player.vimeo.com/video/57183688
-    elseif (strpos($link, 'vimeo.com')) {
+    elseif (strpos($link, 'vimeo.com') !== false) {
         $embed_link = preg_replace("#(.*)(vimeo\.com/)([0-9]{8})(.*)#", 'http://player.vimeo.com/video/$3?title=0&amp;byline=0&amp;portrait=0', $link);
     }
 
     // dailymotion
     // standard : http://www.dailymotion.com/video/{id}_{long text}
     // embed : http://www.dailymotion.com/embed/video/{id}
-    elseif (strpos($link, 'dailymotion.com')) {
+    elseif (strpos($link, 'dailymotion.com') !== false) {
         $embed_link = preg_replace("#(.*)(video/)([a-zA-Z0-9]+)(_.*)#", 'http://www.dailymotion.com/embed/video/$3', $link);
     }
 
@@ -461,7 +461,6 @@ function videoFrame($link, $width = null, $height = null)
         allowfullscreen></iframe>';
     } else return '<a href="'.$link.'">'.$link.'</a>';
 }
-
 
 
 function antiBot($text_name = 'captcha')
@@ -488,7 +487,6 @@ function antiBot($text_name = 'captcha')
 }
 
 
-
 function shortenUrl($url)
 {
     return preg_replace("#(https?://[^/]+/)(.*)#i", "$1...", $url);
@@ -506,7 +504,7 @@ function soundtrackFrame($link)
     // standard urls : soundcloud.com/{band}/{track} or api.soundcloud.com/tracks/{track_id}
     // embed url : https://w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/{track_id}
     // https://w.soundcloud.com/player/?url=https://soundcloud.com/{band}/{track}
-    if (strpos($link, 'soundcloud.com')) {
+    if (strpos($link, 'soundcloud.com') !== false) {
         return '<iframe width="100%" height="166" scrolling="no" frameborder="no" 
         src="https://w.soundcloud.com/player/?url='.$link.'"></iframe>';
         
@@ -515,7 +513,7 @@ function soundtrackFrame($link)
     // bandcamp
     // standard url is no good for embeding, need the album id
     // embed url : http://bandcamp.com/EmbeddedPlayer/v=2/album=4077462542/size=grande3/bgcol=FFFFFF/linkcol=4285BB/
-    if (strpos($link, 'bandcamp.com')) {
+    if (strpos($link, 'bandcamp.com') !== false) {
         return '<iframe width="300" height="410" style="position: relative; display: block; width: 300px; height: 410px;" 
         src="'.$link.'" allowtransparency="true" frameborder="0"></iframe>';
     } 

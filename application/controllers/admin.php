@@ -466,16 +466,18 @@ class Admin_Controller extends Base_Controller
 
         // checking form
         $rules = array(
-            'name' => 'required|min:5|unique:games',
-            'developer_name' => 'required|min:5',
-            'cover' => 'url',
-            'profile_background' => 'url',
+            'name' => 'required|no_slashes|min:2|unique:games',
+            'developer_name' => 'required|no_slashes|min:2',
+            'developer_url' => 'url',
+            'publisher_name' => 'min:2',
+            'publisher_url' => 'url',
             'website' => 'url',
             'blogfeed' => 'url',
-            'soundtrackurl' => 'url',
-            'publishername' => 'min:2|alpha',
-            'publisherurl' => 'url',
+            'presskit' => 'url',
 
+            'profile_background' => 'url',
+            'cover' => 'url',
+            'soundtrack' => 'url',
         );
 
         $validation = Validator::make($input, $rules);
@@ -569,17 +571,24 @@ class Admin_Controller extends Base_Controller
         }
 
         // checking form
-        $rules = array(
-            'name' => 'required|min:5',
-            'cover' => 'url',
-            'profile_background' => 'url',
-            'website' => 'url',
-            'blogfeed' => 'url',
-            'presskit' => 'url',
-            'soundtrackurl' => 'url',
-            'publishername' => 'min:2',
-            'publisherurl' => 'url',
-        );
+        if (isset($input['name'])) { // general pane
+            $rules = array(
+                'name' => 'required|no_slashes|min:2',
+                'developer_name' => 'required|no_slashes|min:2',
+                'developer_url' => 'url',
+                'publisher_name' => 'min:2',
+                'publisher_url' => 'url',
+                'website' => 'url',
+                'blogfeed' => 'url',
+                'presskit' => 'url',
+            );
+        } else {
+            $rules = array(
+                'profile_background' => 'url',
+                'cover' => 'url',
+                'soundtrack' => 'url',
+            );
+        }
         
         $validation = Validator::make($input, $rules);
         

@@ -34,6 +34,18 @@ $developer_name = $game->actual_developer_name;
 
     <div class="tab-content">
         <div class="tab-pane" id="general-pane">
+            <?php
+            $rules = array(
+                'name' => 'required|no_slashes|min:5',
+                'developer_name' => 'required|no_slashes|min:5',
+                'developer_url' => 'url',
+                'publisher_name' => 'min:2',
+                'publisher_url' => 'url',
+                'website' => 'url',
+                'blogfeed' => 'url',
+                'presskit' => 'url',
+            );
+            ?>
             {{ Former::open_vertical(route('post_editgame'))->rules($rules) }} 
                 {{ Form::token() }}
                 {{ Form::hidden('id', $profile_id) }}
@@ -60,9 +72,9 @@ $developer_name = $game->actual_developer_name;
                     </div>
 
                     <div class="span4">
-                        {{ Former::text('publishername', lang('game.publishername')) }}
+                        {{ Former::text('publisher_name', lang('common.publisher_name')) }}
                         
-                        {{ Former::url('publisherurl', lang('game.publisherurl'))->placeholder(lang('common.url')) }}
+                        {{ Former::url('publisher_url', lang('common.publisher_url'))->placeholder(lang('common.url')) }}
                     </div>
                 </div> <!-- /.row -->
 
@@ -201,6 +213,13 @@ $developer_name = $game->actual_developer_name;
         </div> <!-- /#general-pane .tab-pane -->
 
         <div class="tab-pane" id="medias-pane">
+            <?php
+            $rules = array(
+                'profile_background' => 'url',
+                'cover' => 'url',
+                'soundtrack' => 'url',
+            );
+            ?>
             {{ Former::open_vertical(route('post_editgame'))->rules($rules) }} 
                 {{ Form::token() }}
                 {{ Form::hidden('id', $profile_id) }}
@@ -212,21 +231,13 @@ $developer_name = $game->actual_developer_name;
                 <div class="row">
                     <div class="span4">
                         {{ Former::url('profile_background', lang('common.profile_background'))->placeholder(lang('common.url'))->help(lang('common.profile_background_help')) }}
-                    </div>
-
-                    <div class="span4">
+                    
                         {{ Former::url('cover', lang('game.cover'))->placeholder(lang('common.url')) }}
+                    
+                        {{ Former::url('soundtrack', lang('game.soundtrackurl'))->placeholder(lang('common.url')) }}
                     </div>
-
-                    <div class="span4">
-                        {{ Former::url('soundtrackurl', lang('game.soundtrackurl'))->placeholder(lang('common.url')) }}
-                    </div>
-                </div>
-
-                <hr>
-
-                <div class="row">
-                    <div class="span12">
+                
+                    <div class="span8">
                         <!-- names urls items -->
                         <ul class="nav nav-tabs" id="medias-tabs">
                             <li><a href="#screenshots" data-toggle="tab">{{ lang('common.screenshots') }}</a></li>
@@ -240,7 +251,7 @@ $developer_name = $game->actual_developer_name;
                             ?>
                                 <div class="tab-pane" id="{{ $fields }}">
                                     <p>
-                                        {{ lang('common.text-url-delete-help') }}
+                                        {{ lang('common.text_url_delete_help') }}
                                     </p>
 
                                     <?php

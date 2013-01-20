@@ -2,28 +2,15 @@
     {{ lang('game.add.title') }}
 @endsection
 <?php
-$rules = array(
-    'name' => 'required|min:5',
-    'developer_name' => 'required|min:5',
-    'cover' => 'url',
-    'profile_background' => 'url',
-    'website' => 'url',
-    'blogfeed' => 'url',
-    'soundtrackurl' => 'url',
-    'publishername' => 'min:2|alpa',
-    'publisherurl' => 'url',
-);
-
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
 
-
 if (is_admin()) {
-    $devs = Dev::get(array('id', 'name'));
     $users = User::get(array('id', 'username'));
     $privacy = array_set_values_as_keys(Config::get('vgc.privacy_and_reviews'));
-}
-else $devs = Dev::get(array('id', 'name'));
+} 
+
+$devs = Dev::get(array('id', 'name'));
 
 ?>
 <div id="addgame">
@@ -31,131 +18,222 @@ else $devs = Dev::get(array('id', 'name'));
 
     <hr>
 
+    <?php
+    $rules = array(
+        'name' => 'required|no_slashes|min:2',
+        'developer_name' => 'required|no_slashes|min:2',
+        'developer_url' => 'url',
+        'publisher_name' => 'min:2',
+        'publisher_url' => 'url',
+        'website' => 'url',
+        'blogfeed' => 'url',
+        'presskit' => 'url',
+
+        'profile_background' => 'url',
+        'cover' => 'url',
+        'soundtrack' => 'url',
+    );
+    ?>
     {{ Former::open_vertical(route('post_addgame'))->rules($rules) }} 
         {{ Form::token() }}
 
+        {{ Former::primary_submit(lang('common.add_profile')) }}
+
+        <hr>
+
+        @if (is_admin())
+            <div class="row">
+                <div class="span12">
+
+                </div>
+            </div>
+
+        @endif
+
         <div class="row">
-            <div class="span5">
+            <div class="span4">
                 {{ Former::text('name', lang('common.name')) }}
-
-                {{ Former::text('developer_name', lang('common.developer'))->useDatalist($devs, 'name') }}
-                
-                @if (is_admin())
-                    {{ Former::select('user_id', 'User')->fromQuery($users)  }}
-
-                    {{ Former::select('privacy')->options($privacy) }}
-                @endif
 
                 {{ Former::select('devstate', lang('game.devstate'))->options(get_array_lang(Config::get('vgc.developmentstates'), 'developmentstates.'))->value('released') }}
 
-                {{ Former::textarea('pitch', lang('game.pitch'))->placeholder(lang('common.bbcode_explanation')) }}
+                @if (is_admin())
+                    {{ Former::select('privacy')->options($privacy) }}
+                @endif
+            </div>
 
-                {{ Former::url('cover', lang('game.cover'))->placeholder(lang('common.url')) }}
-                {{ Former::url('profile_background', lang('common.profile_background'))->placeholder(lang('common.url'))->help(lang('common.profile_background_help')) }}
+            <div class="span4">
+                {{ Former::text('developer_name', lang('common.developer_name'))->useDatalist($devs, 'name')->help(lang('game.developer_name_help')) }}
+
+                {{ Former::url('developer_url', lang('common.developer_url'))->placeholder(lang('common.url')) }}
+            </div>
+
+            <div class="span4">
+                {{ Former::text('publisher_name', lang('common.publisher_name')) }}
+                
+                {{ Former::url('publisher_url', lang('common.publisher_url'))->placeholder(lang('common.url')) }}
+            </div>
+        </div> <!-- /.row -->
+
+        <hr>
+
+        <div class="row">
+            <div class="span4">
                 {{ Former::url('website', lang('common.website'))->placeholder(lang('common.url')) }}
-                {{ Former::url('blogfeed', lang('common.blogfeed'))->placeholder(lang('common.url')) }}
+                {{ Former::url('blogfeed', lang('common.blogfeed'))->placeholder(lang('common.url'))->help(lang('common.blogfeed_help')) }}
                 {{ Former::url('presskit', lang('common.presskit'))->placeholder(lang('common.url')) }}
-                {{ Former::url('soundtrackurl', lang('game.soundtrackurl'))->placeholder(lang('common.url')) }}
+            </div>
 
-                <div class="control-group-inline">
-                    {{ Former::text('publishername', lang('game.publishername')) }}
-                    {{ Former::url('publisherurl', lang('game.publisherurl'))->placeholder(lang('common.url')) }}
-                </div>  
-            </div> <!-- /.span5 -->
+            <div class="span8">
+                {{ Former::textarea('pitch', lang('game.pitch'))->help(lang('common.bbcode_explanation'))->class('span8') }}
+            </div>
+        </div> <!-- /.row -->
 
-            <div class="span7">
+        <hr>
+
+        <div class="row">
+            <div class="span6">
                 <!-- array items -->
                 <div class="tabbable tabs-left">
-                    <ul class="nav nav-tabs nav-stacked" id="array_items_tabs">
-                        @foreach (Game::$array_fields as $item)
-                        <li><a href="#{{ $item }}" data-toggle="tab">{{ lang($item.'.title') }}</a></li>
+                    <ul class="nav nav-tabs nav-stacked" id="array-fields-tabs">
+                        @foreach (Game::$array_fields as $field)
+                            <li><a href="#{{ $field }}" data-toggle="tab">{{ lang($field.'.title') }}</a></li>
                         @endforeach
                     </ul>
 
                     <div class="tab-content">
-                        @foreach (Game::$array_fields as $item)
-                            <?php
-                             $values = array();
-                            if (isset($old[$item])) $values = $old[$item];
-                            ?>
-                            <div class="tab-pane" id="{{ $item }}">
-                                <p>{{ lang('game.'.$item.'_help') }}</p>
+                        <?php
+                        foreach (Game::$array_fields as $field):
+                            if (isset($old[$field])) $values = $old[$field];
+                            else $values = array();
+                        ?>
+                            <div class="tab-pane" id="{{ $field }}">
+                                <p>{{ lang($field.'.help', '') }}</p>
 
-                                {{ array_to_checkboxes($item, $values) }}
+                                {{ array_to_checkboxes($field, $values) }}
                             </div>
                         @endforeach
                     </div>
                 </div> <!-- /.tabbable -->
                 <!-- /array items -->
+            </div>
 
-                <hr>
-
+            <div class="span6">
                 <!-- names urls items -->
-                <ul class="nav nav-tabs" id="nu_items_tabs">
-                    @foreach (Game::$names_urls_fields as $item)
-                    <li><a href="#{{ $item }}" data-toggle="tab">{{ lang('common.'.$item) }}</a></li>
-                    @endforeach
+                <ul class="nav nav-tabs" id="general-nu-text-tabs">
+                    <li><a href="#stores" data-toggle="tab">{{ lang('common.stores') }}</a></li>
+                    <li><a href="#socialnetworks" data-toggle="tab">{{ lang('common.socialnetworks') }}</a></li>
+                    <li><a href="#reviews" data-toggle="tab">{{ lang('common.reviews') }}</a></li>
                 </ul>
 
                 <div class="tab-content">
                     <?php
-                    $nu_select = array('socialnetworks', 'stores'); // name url select
-                    foreach ($nu_select as $item):
-                        $options = get_array_lang(Config::get('vgc.'.$item), $item.'.');
-                        $options = array_merge(array('' => lang('common.select_first_option')), $options);
+                    // name url select
+                    $nu_select = array('socialnetworks', 'stores'); 
+                    foreach ($nu_select as $fields):
+                        $options = get_array_lang(Config::get('vgc.'.$fields), $fields.'.');
+                        $options = array_merge(array('' => lang('common.select_arrayitem_first_option')), $options);
 
-                        $values = array();
-                        if (isset($old[$item])) $values = clean_names_urls_array($old[$item]);
+                        if (isset($old[$fields])) $values = clean_names_urls_array($old[$fields]);
+                        else $values = array();
                     ?>
-                        <div class="tab-pane" id="{{ $item }}">
+                        <div class="tab-pane" id="{{ $fields }}">
                             @for ($i = 0; $i < 4; $i++)
-                                <?php
-                                $name = isset($values['names'][$i]) ? $values['names'][$i] : '';
-                                $url = isset($values['urls'][$i]) ? $values['urls'][$i] : '';
-                                ?>
                                 <div class="control-group-inline">
-                                    {{ Former::select($item.'[names][]', '')->options($options)->value($name) }} 
-                                    {{ Former::url($item.'[urls][]', '')->value($url)->placeholder(lang('common.url'))  }}
+                                    <?php
+                                    $name = isset($values['names'][$i]) ? $values['names'][$i] : '';
+                                    $url = isset($values['urls'][$i]) ? $values['urls'][$i] : '';
+                                    ?>
+                                    {{ Former::select($fields.'[names][]', '')->options($options)->value($name) }} 
+                                    {{ Former::url($fields.'[urls][]', '')->placeholder(lang('common.url'))->value($url) }}
                                 </div>
                             @endfor
                         </div>
                     @endforeach
 
                     <?php
-                    $nu_text = array('screenshots', 'videos', 'reviews');
-                    foreach ($nu_text as $item):
-                        $values = array();
-                        if (isset($old[$item])) $values = clean_names_urls_array($old[$item]);
+                    $nu_text = array('reviews');
+                    foreach ($nu_text as $fields):
+                        if (isset($old[$fields])) $values = clean_names_urls_array($old[$fields]);
+                        else $values = array();
                     ?>
-                        <div class="tab-pane" id="{{ $item }}">
+                        <div class="tab-pane" id="{{ $fields }}">
+                            <p>
+                                {{ lang('common.text_url_delete_help') }}
+                            </p>
+
                             @for ($i = 0; $i < 4; $i++)
-                                <?php
-                                $name = isset($values['names'][$i]) ? $values['names'][$i] : '';
-                                $url = isset($values['urls'][$i]) ? $values['urls'][$i] : '';
-                                ?>
                                 <div class="control-group-inline">
-                                    {{ Former::text($item.'[names][]', '')->value($name)->placeholder(lang('common.title')) }} 
-                                    {{ Former::url($item.'[urls][]', '')->value($url)->placeholder(lang('common.url')) }}
+                                    <?php
+                                    $name = isset($values['names'][$i]) ? $values['names'][$i] : '';
+                                    $url = isset($values['urls'][$i]) ? $values['urls'][$i] : '';
+                                    ?>
+
+                                    {{ Former::text($fields.'[names][]', '')->placeholder(lang('common.title')) }} 
+                                    {{ Former::url($fields.'[urls][]', '')->placeholder(lang('common.url')) }}
                                 </div>
                             @endfor
                         </div>
                     @endforeach
                 </div> <!-- /.tab-content -->
-                <!-- /names url items -->
-                <hr>
-
-                <input type="submit" value="{{ lang('game.add.submit') }}" class="btn btn-primary">
-            </div> <!-- /.span -->
+            </div> <!-- /.span7 -->
         </div> <!-- /.row -->
-    </form>
+
+        <hr>
+
+        <div class="row">
+            <div class="span4">
+                {{ Former::url('profile_background', lang('common.profile_background'))->placeholder(lang('common.url'))->help(lang('common.profile_background_help')) }}
+            
+                {{ Former::url('cover', lang('game.cover'))->placeholder(lang('common.url')) }}
+            
+                {{ Former::url('soundtrack', lang('game.soundtrackurl'))->placeholder(lang('common.url')) }}
+            </div>
+        
+            <div class="span8">
+                <!-- names urls items -->
+                <ul class="nav nav-tabs" id="medias-tabs">
+                    <li><a href="#screenshots" data-toggle="tab">{{ lang('common.screenshots') }}</a></li>
+                    <li><a href="#videos" data-toggle="tab">{{ lang('common.videos') }}</a></li>
+                </ul>
+
+                <div class="tab-content">
+                    <?php
+                    $nu_text = array('screenshots', 'videos');
+                    foreach ($nu_text as $fields):
+                        if (isset($old[$fields])) $values = clean_names_urls_array($old[$fields]);
+                        else $values = array();
+                    ?>
+                        <div class="tab-pane" id="{{ $fields }}">
+                            <p>
+                                {{ lang('common.text_url_delete_help') }}
+                            </p>
+
+                            @for ($i = 0; $i < 4; $i++)
+                                <div class="control-group-inline">
+                                    <?php
+                                    $name = isset($values['names'][$i]) ? $values['names'][$i] : '';
+                                    $url = isset($values['urls'][$i]) ? $values['urls'][$i] : '';
+                                    ?>
+                                    {{ Former::text($fields.'[names][]', '')->value($name)->placeholder(lang('common.title')) }} 
+                                    {{ Former::url($fields.'[urls][]', '')->value($url)->placeholder(lang('common.url')) }}
+                                </div>
+                            @endfor
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div> <!-- /.row -->
+
+        <hr>
+
+        {{ Former::primary_submit(lang('common.add_profile')) }}
+
+    {{ Former::close() }}
 </div> <!-- /#addgame --> 
 
 @section('jQuery')
 // from addgame
-
-$('#array_items_tabs a:first').tab('show');
-
-
-$('#nu_items_tabs a:first').tab('show');
-// from addgame
+$('#array-fields-tabs a:first').tab('show');
+$('#general-nu-text-tabs a:first').tab('show');
+$('#medias-tabs a:first').tab('show');
 @endsection

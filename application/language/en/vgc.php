@@ -9,6 +9,8 @@ return array(
 // COMMON
 
     'common' => array(
+        'add_profile' => 'Submit this profile',
+
         'bbcode_explanation' => 'You may use the following BBCode tags : h1, h2, b and i.',
         // 'You may use HTML in the textarea above (only when editing a profile).'
 
@@ -18,7 +20,7 @@ return array(
         'country' => 'Country',
 
         'developer' => 'Developer',
-        'developer_name' => 'Developer name',
+        'developer_name' => 'Developer\'s name',
         'developer_url' => 'Developer\'s website',
         'developers' => 'Developers',
         'devices' => 'Devices',
@@ -50,6 +52,8 @@ return array(
         'profile_background_help' => 'Background image for the profile\'s header. Max-height : 250px. Ideal min-width : 1000px.',
         'profile_blogfeed' => 'Latest articles',
         'publisher' => 'Publisher',
+        'publisher_name' => 'Publisher\'s name',
+        'publisher_url' => 'Publisher\'s website',
 
         'report_profile_link' => 'Report this profile',
         'reviews' => 'Reviews',
@@ -67,7 +71,7 @@ return array(
         'tags' => 'Tags',
         'teamsize' => 'Teamsize',
         'technologies' => 'Technologies',
-        'text-url-delete-help' => 'Leave a title blanck to delete an item.',
+        'text_url_delete_help' => 'Leave a title blanck to delete an item.',
         'themes' => 'Themes',
         'title' => 'Title',
 
@@ -342,7 +346,8 @@ return array(
         
         'releasedate' => 'Release date',
 
-        'developer_name_help' => 'If the developer has a profile on VGC, its name should appear below the field has you type it. Also, a link to the profile will be done on the game\'s instead of using the URL below.',
+        'developer_name_help' => 'If the developer has a profile on VGC, its name should appear below the field as you type it. 
+        If that\'s the case, a link to the developer\'s profile will be done from the game\'s profile instead of using the URL below.',
 
 
         'add' => array(
