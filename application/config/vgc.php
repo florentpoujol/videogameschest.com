@@ -66,6 +66,17 @@ return array(
         'genres', 'themes', 'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos', 'reviews'
     ),
 
+
+    'profile_types' => array('developers', 'games'),
+    'profile_types_singular' => array('developer', 'game'),
+
+
+
+
+
+
+
+
 // form
 
     "languages" => array(

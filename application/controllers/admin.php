@@ -27,12 +27,12 @@ class Admin_Controller extends Base_Controller
         $input = Input::all();
 
         $rules = array(
-            'username' => 'required|min:5|unique:users',
+            'username' => 'required|alpha_dash|min:2|unique:users',
             'email' => 'required|min:5|email|unique:users',
             'password' => 'required|min:5|confirmed',
             'password_confirmation' => 'required|min:5|required_with:password',
             //'captcha' => 'required|coolcaptcha',
-            'city' => 'max:0',
+            'city' => 'honeypot',
         );
 
         $validation = Validator::make($input, $rules);
@@ -78,10 +78,10 @@ class Admin_Controller extends Base_Controller
     public function post_login() 
     {
         $rules = array(
-            "username" => "required|min:5",
+            "username" => "required|alpha_dash|min:2",
             "password" => "required|min:5",
             //'captcha' => 'required|coolcaptcha',
-            'city' => 'max:0',
+            'city' => 'honeypot',
         );
 
         $validation = Validator::make(Input::all(), $rules);
@@ -139,7 +139,7 @@ class Admin_Controller extends Base_Controller
         
         $rules = array(
             'lost_password_username' => 'required|min:5',
-            'city' => 'max:0',
+            'city' => 'honeypot',
             //'lost_password_captcha' => 'required|coolcaptcha',
         );
         
@@ -166,6 +166,23 @@ class Admin_Controller extends Base_Controller
         }
             
         return Redirect::to_route('get_login')->with_errors($validation)->with_input();
+    }
+
+    public function post_editblacklist()
+    {
+        $input = Input::all();
+
+        if ( ! is_admin()) $input['id'] = user_id();
+
+        $rules = array('name' => 'required');
+
+        $validation = Validator::make($input, $rules);
+        
+        if ($validation->passes()) {
+            User::updateBlacklist($input);
+        }
+
+        return Redirect::to_route('get_edituser')->with_errors($validation)->with_input();
     }
 
     public function get_lostpassword_confirmation($user_id, $url_key)
@@ -261,7 +278,7 @@ class Admin_Controller extends Base_Controller
         
         // checking form
         $rules = array(
-            'username' => 'required|min:5',
+            'username' => 'required|alpha_dash|min:2',
             'email' => 'required|min:5|email',
             //'url_key' => 'min:10|alpha_num',
         );

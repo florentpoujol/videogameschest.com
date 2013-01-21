@@ -9,7 +9,8 @@ return array(
 // COMMON
 
     'common' => array(
-        'add_profile' => 'Submit this profile',
+        'add_names_help' => 'One or several (comma separated) profile\'s names or ids.',
+        'add_profile' => 'Add this profile',
 
         'bbcode_explanation' => 'You may use the following BBCode tags : h1, h2, b and i.',
         // 'You may use HTML in the textarea above (only when editing a profile).'
@@ -19,6 +20,7 @@ return array(
 
         'country' => 'Country',
 
+        'delete' => 'Delete',
         'developer' => 'Developer',
         'developer_name' => 'Developer\'s name',
         'developer_url' => 'Developer\'s website',
@@ -51,6 +53,7 @@ return array(
         'profile_background' => 'Background image',
         'profile_background_help' => 'Background image for the profile\'s header. Max-height : 250px. Ideal min-width : 1000px.',
         'profile_blogfeed' => 'Latest articles',
+        'profile_list_empty' => 'No profile to display',
         'publisher' => 'Publisher',
         'publisher_name' => 'Publisher\'s name',
         'publisher_url' => 'Publisher\'s website',
@@ -66,6 +69,7 @@ return array(
         'socialnetworks' => 'Social networks',
         'soundtrack' => 'Soundtrack',
         'stores' => 'Stores',
+        'submit_profile' => 'Submit this profile',
         'subscription' => 'Subscription',
 
         'tags' => 'Tags',
@@ -262,6 +266,7 @@ return array(
 
     'user' => array(
         'edit_title' => 'Edit your user account',
+        'edit_password' => 'Edit your password',
         
         'id' => 'User Id',
 
@@ -274,6 +279,7 @@ return array(
             'wrong_old_password' => 'The old password does not match your current password.',
             'update_success' => 'Your user account has successfully been updated.',
             'edituser_nametaken' => "Can't rename the user ':username' (id : :id) because the name ':newname' is already taken.",
+            'user_not_found' => "Sorry the user with id ':id' has not been found."
         ),
 
     ),
@@ -595,6 +601,18 @@ return array(
 
         
     ),
+
+// BLACKLIST
+
+    'blacklist' => array(
+        'title' => 'Blacklist',
+
+        'msg' => array(
+            'delete_success' => ':num :type profiles have successfully been deleted from your blacklist.',
+            'add_success' => ':num :type profiles have successfully been added to your blacklist.',
+        ),
+    ),
+
 
 // LANGUAGES
 

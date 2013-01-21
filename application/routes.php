@@ -278,6 +278,7 @@ $layout = View::of('layout');
     {
         Route::post('user/edit', array('as' => 'post_edituser', 'uses' => 'admin@edituser'));
         Route::post('user/editpassword', array('as' => 'post_editpassword', 'uses' => 'admin@editpassword'));
+        Route::post('user/editblacklist', array('as' => 'post_editblacklist', 'uses' => 'admin@editblacklist'));
 
         Route::post('selecteditdeveloper', array('as' => 'post_selecteditdeveloper', 'uses' => 'admin@selecteditdeveloper'));
         Route::post('developer/add', array('as' => 'post_adddeveloper', 'uses' => 'admin@adddeveloper'));

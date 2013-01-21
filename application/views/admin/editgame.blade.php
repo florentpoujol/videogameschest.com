@@ -314,7 +314,4 @@ $developer_name = $game->actual_developer_name;
 $('#main-tabs a:first').tab('show');
 $('#array-fields-tabs a:first').tab('show');
 $('#general-nu-text-tabs a:first').tab('show');
-
-
-
 @endsection
