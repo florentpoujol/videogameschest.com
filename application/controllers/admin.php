@@ -174,15 +174,9 @@ class Admin_Controller extends Base_Controller
 
         if ( ! is_admin()) $input['id'] = user_id();
 
-        $rules = array('name' => 'required');
-
-        $validation = Validator::make($input, $rules);
+        User::updateBlacklist($input);
         
-        if ($validation->passes()) {
-            User::updateBlacklist($input);
-        }
-
-        return Redirect::to_route('get_edituser')->with_errors($validation)->with_input();
+        return Redirect::to_route('get_edituser');
     }
 
     public function get_lostpassword_confirmation($user_id, $url_key)

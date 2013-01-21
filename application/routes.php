@@ -184,6 +184,11 @@ $layout = View::of('layout');
         //admin routes
         Route::get('admin', array('as' => 'get_admin_home', 'uses' => 'admin@index'));
 
+        Route::get('user', function()
+        {
+            return Redirect::to_route('get_edituser');
+        });
+
         Route::get('logout', array('as' => 'get_logout', 'uses' => 'admin@logout'));
 
         Route::get('user/edit/(:num?)', array('as' => 'get_edituser', 'uses' => 'admin@edituser'));

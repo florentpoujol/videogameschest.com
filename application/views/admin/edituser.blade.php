@@ -99,7 +99,7 @@ if ( ! empty($old)) Former::populate($old);
                                 @endif
 
                                 <?php
-                                $profile_list = $user->blacklist[$profile_type.'s'];
+                                $profile_list = $user->blacklist[$profile_type];
                                 ?>
                                 @include('profile_list_form')
                             {{ Former::close() }}
