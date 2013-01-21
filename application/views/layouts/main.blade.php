@@ -66,6 +66,11 @@ $page_content .= Section::yield('page_content');
 
         <script>
           $(function () {
+            // common jquery
+            $('i[rel=tooltip]').tooltip();
+            $('i[rel=popover]').popover();
+
+            // per page jquery
             @yield('jQuery')
           })
 

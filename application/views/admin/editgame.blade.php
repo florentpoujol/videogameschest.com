@@ -110,22 +110,12 @@ $developer_name = $game->actual_developer_name;
                             <div class="tab-content">
                                 <?php
                                 foreach (Game::$array_fields as $field):
-                                    /*$fields = Config::get('vgc.'.$field);
-                                    $options = get_array_lang($fields, $field.'.');
-
-                                    if (isset($old[$field])) $values = $old[$field];
-                                    else $values = $game->$field;
-                                    // why do I need this ?
-                                    // using populate will not work because it doesn't work with multiselect
-
-                                    $size = count($fields);
-                                    if ($size > 10 ) $size = 10;*/
                                     if (isset($old[$field])) $values = $old[$field];
                                     else $values = $game->$field;
                                 ?>
                                 <div class="tab-pane" id="{{ $field }}">
                                     <p>{{ lang($field.'.help', '') }}</p>
-                                    {{-- Former::multiselect($field, '')->options($options)->forceValue($values)->size($size)}}
+                                    
                                     {{ array_to_checkboxes($field, $values) }}
                                 </div>
                                 @endforeach
@@ -324,5 +314,7 @@ $developer_name = $game->actual_developer_name;
 $('#main-tabs a:first').tab('show');
 $('#array-fields-tabs a:first').tab('show');
 $('#general-nu-text-tabs a:first').tab('show');
-$('#medias-tabs a:first').tab('show');
+
+
+
 @endsection

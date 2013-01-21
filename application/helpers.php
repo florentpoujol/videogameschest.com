@@ -399,6 +399,9 @@ function array_to_checkboxes($field_name, $values = null, $name = null)
     for ($i = 0; $i < count($temp_items); $i++) {
         $item = $temp_items[$i];
         $lang = lang($field_name.'.'.$item);
+        $help = lang($field_name.'.'.$item.'_help', '');
+        
+        if ($help != '') $lang .= ' '.tooltip($help);
 
         $checkboxes[$lang] = array('value' => $item);
 
@@ -525,4 +528,12 @@ function soundtrackFrame($link)
 }
 
 
+function tooltip($text, $data_placement = 'top')
+{
+    return '<i class="icon-question-sign tooltipicon" rel="tooltip" data-placement="'.$data_placement.'" title="'.$text.'"></i>';
+}
 
+function popover($text, $data_placement = 'top')
+{
+    return '<i class="icon-question-sign" rel="popover" data-placement="'.$data_placement.'" title="'.$text.'"></i>';
+}
