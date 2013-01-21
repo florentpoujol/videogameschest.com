@@ -28,7 +28,6 @@ $developer_name = $game->actual_developer_name;
 
     <ul class="nav nav-tabs" id="main-tabs">
         <li><a href="#general-pane" data-toggle="tab">{{ lang('common.general') }}</a></li>
-        <li><a href="#medias-pane" data-toggle="tab">{{ lang('common.medias') }}</a></li>
         <li><a href="#crosspromotion-pane" data-toggle="tab">{{ lang('crosspromotion.title') }}</a></li>
     </ul>
 
@@ -36,14 +35,18 @@ $developer_name = $game->actual_developer_name;
         <div class="tab-pane" id="general-pane">
             <?php
             $rules = array(
-                'name' => 'required|no_slashes|min:5',
-                'developer_name' => 'required|no_slashes|min:5',
+                'name' => 'required|no_slashes|min:2',
+                'developer_name' => 'required|no_slashes|min:2',
                 'developer_url' => 'url',
                 'publisher_name' => 'min:2',
                 'publisher_url' => 'url',
                 'website' => 'url',
                 'blogfeed' => 'url',
                 'presskit' => 'url',
+
+                'profile_background' => 'url',
+                'cover' => 'url',
+                'soundtrack' => 'url',
             );
             ?>
             {{ Former::open_vertical(route('post_editgame'))->rules($rules) }} 
@@ -177,7 +180,7 @@ $developer_name = $game->actual_developer_name;
                             ?>
                                 <div class="tab-pane" id="{{ $fields }}">
                                     <p>
-                                        {{ lang('common.text-url-delete-help') }}
+                                        {{ lang('common.text_url_delete_help') }}
                                     </p>
 
                                     <?php
@@ -204,27 +207,6 @@ $developer_name = $game->actual_developer_name;
                         </div> <!-- /.tab-content -->
                     </div> <!-- /.span7 -->
                 </div> <!-- /.row -->
-
-                <hr>
-
-                {{ Former::primary_submit(lang('common.edit_profile')) }}
-
-            {{ Former::close() }}
-        </div> <!-- /#general-pane .tab-pane -->
-
-        <div class="tab-pane" id="medias-pane">
-            <?php
-            $rules = array(
-                'profile_background' => 'url',
-                'cover' => 'url',
-                'soundtrack' => 'url',
-            );
-            ?>
-            {{ Former::open_vertical(route('post_editgame'))->rules($rules) }} 
-                {{ Form::token() }}
-                {{ Form::hidden('id', $profile_id) }}
-
-                {{ Former::primary_submit(lang('common.edit_profile')) }}
 
                 <hr>
 

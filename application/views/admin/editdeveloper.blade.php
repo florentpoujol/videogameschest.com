@@ -4,12 +4,13 @@
 
 <?php
 $rules = array(
-    'name' => 'required|min:5',
+    'name' => 'required|no_slashes|min:2',
+    'email' => 'email',
     'logo' => 'url',
     'website' => 'url',
     'blogfeed' => 'url',
     'presskit' => 'url',
-    'teamsize' => 'min:1'
+    'teamsize' => 'integer|min:1'
 );
 
 $dev = Dev::find($profile_id);
@@ -17,44 +18,76 @@ Former::populate($dev);
 
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
+
+if (is_admin()) {
+    $users = User::get(array('id', 'username'));
+    $privacy = array_set_values_as_keys(Config::get('vgc.privacy_and_reviews'));
+}
 ?>
 <div id="editdeveloper">
-    <h1>{{ lang('developer.edit.title') }}</h1>
+    <h1>{{ lang('developer.edit.title') }} <small>{{ $dev->name }}</small></h1>
     
     <hr>
 
-    <div class="row">
-        {{ Former::open_vertical(route('post_editdeveloper'))->rules($rules) }} 
-            {{ Form::token() }}
-            {{ Form::hidden('id', $profile_id) }}
+    <p class="pull-right">
+        <a href="{{ route('get_developer', array(name_to_url($dev->name))) }}">{{ icon('eye-open') }} {{ lang('common.view_profile_link') }}</a>
+    </p>
 
-            <div class="row">
-                <div class="span10">
-                    {{ Former::primary_submit(lang('common.edit_profile')) }} 
-                     <a href="{{ route('get_developer', array(name_to_url($dev->name))) }}" class="btn">{{ icon('eye-open') }} {{ lang('common.view_profile_link') }}</a>
-                </div>
-            </div>
+
+    {{ Former::open_vertical(route('post_editdeveloper'))->rules($rules) }} 
+        {{ Form::token() }}
+        {{ Form::hidden('id', $profile_id) }}
+
+        {{ Former::primary_submit(lang('common.edit_profile')) }} 
+
+        <hr>
+
+        @if (is_admin())
+            {{ Former::select('user_id', 'User')->fromQuery($users)  }}
+
+            {{ Former::select('privacy')->options($privacy) }}
 
             <hr>
+        @endif
 
-            <div class="span5">
+        <div class="row">
+            <div class="span4">
                 {{ Former::text('name', lang('common.name'))->help(lang('developer.name_help')) }}
-                {{ Former::text('email', lang('common.email')) }}
-
-                {{ Former::textarea('pitch', lang('developer.pitch'))->help(lang('common.bbcode_explanation')) }}
 
                 {{ Former::url('logo', lang('common.logo'))->placeholder(lang('common.url')) }}
+            </div>
+
+            <div class="span8">
+                {{ Former::textarea('pitch', lang('developer.pitch'))->help(lang('common.bbcode_explanation'))->class('span8') }}
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="span4">
                 {{ Former::url('website', lang('common.website'))->placeholder(lang('common.url')) }}
-                {{ Former::url('blogfeed', lang('common.blogfeed'))->placeholder(lang('common.url')) }}
-                {{ Former::url('presskit', lang('common.presskit'))->placeholder(lang('common.url')) }}
+
+                {{ Former::url('blogfeed', lang('common.blogfeed'))->placeholder(lang('common.url'))->help(lang('common.blogfeed_help')) }}
+            </div>
+
+            <div class="span4">
+                {{ Former::email('email', lang('common.email')) }}
 
                 {{ Former::number('teamsize', lang('common.teamsize')) }}
+            </div>
+
+            <div class="span4">
+                {{ Former::url('presskit', lang('common.presskit'))->placeholder(lang('common.url')) }}
 
                 {{ Former::select('country')->options(get_array_lang(Config::get('vgc.countries'), 'countries.')) }}
+            </div>
+        </div>
 
-            </div> <!-- /.span -->
+        <hr>
 
-            <div class="span7">
+        <div class="row">
+            <div class="span12">
                 <!-- arrayitems + socialnetworks -->
                 <div class="tabbable tabs-left">
                     <ul class="nav nav-tabs nav-stacked" id="array_items_tabs">
@@ -104,13 +137,14 @@ if ( ! empty($old)) Former::populate($old);
                     </div>
                 </div>    <!-- /.tabable -->
                 <!-- array items + socialnetworks -->
-
-                <hr>
-
-                {{ Former::primary_submit(lang('common.edit_profile')) }}
             </div> <!-- /.span -->
-        </form>
-    </div> <!-- /.row -->
+        </div> <!-- /.row -->
+
+        <hr>
+
+        {{ Former::primary_submit(lang('common.edit_profile')) }}
+
+    {{ Former::close() }}
 </div><!-- /#editdeveloper --> 
 
 @section('jQuery')

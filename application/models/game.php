@@ -95,13 +95,14 @@ class Game extends Profile
             }
         }
 
-
-        $dev = Dev::where_name($input['developer_name'])->first();
-        if ( ! is_null($dev)) {
-            $input['developer_name'] = '';
-            $input['developer_id'] = $dev->id;
-        } 
-        else $input['developer_id'] = 0;
+        if (isset($input['developer_name'])) {
+            $dev = Dev::where_name($input['developer_name'])->first();
+            if ( ! is_null($dev)) {
+                $input['developer_name'] = '';
+                $input['developer_id'] = $dev->id;
+            } 
+            else $input['developer_id'] = 0;
+        }
         
         $game = parent::update($id, $input); // 
         $game = Game::find($id);

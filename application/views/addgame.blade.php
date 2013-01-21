@@ -42,12 +42,7 @@ $devs = Dev::get(array('id', 'name'));
         <hr>
 
         @if (is_admin())
-            <div class="row">
-                <div class="span12">
-
-                </div>
-            </div>
-
+            {{ Former::select('privacy')->options($privacy) }}
         @endif
 
         <div class="row">
@@ -55,10 +50,6 @@ $devs = Dev::get(array('id', 'name'));
                 {{ Former::text('name', lang('common.name')) }}
 
                 {{ Former::select('devstate', lang('game.devstate'))->options(get_array_lang(Config::get('vgc.developmentstates'), 'developmentstates.'))->value('released') }}
-
-                @if (is_admin())
-                    {{ Former::select('privacy')->options($privacy) }}
-                @endif
             </div>
 
             <div class="span4">
@@ -167,9 +158,8 @@ $devs = Dev::get(array('id', 'name'));
                                     $name = isset($values['names'][$i]) ? $values['names'][$i] : '';
                                     $url = isset($values['urls'][$i]) ? $values['urls'][$i] : '';
                                     ?>
-
-                                    {{ Former::text($fields.'[names][]', '')->placeholder(lang('common.title')) }} 
-                                    {{ Former::url($fields.'[urls][]', '')->placeholder(lang('common.url')) }}
+                                    {{ Former::text($fields.'[names][]', '')->value($name)->placeholder(lang('common.title')) }} 
+                                    {{ Former::url($fields.'[urls][]', '')->value($url)->placeholder(lang('common.url')) }}
                                 </div>
                             @endfor
                         </div>

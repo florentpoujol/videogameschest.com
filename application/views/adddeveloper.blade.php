@@ -4,13 +4,13 @@
 
 <?php
 $rules = array(
-    'name' => 'required|min:5',
+    'name' => 'required|no_slashes|min:2',
     'email' => 'min:5|email',
     'logo' => 'url',
     'website' => 'url',
     'blogfeed' => 'url',
     'presskit' => 'url',
-    'teamsize' => 'min:1'
+    'teamsize' => 'integer|min:1'
 );
 
 $old = Input::old();
@@ -22,39 +22,63 @@ if (is_admin()) {
 }
 ?>
 <div id="adddeveloper">
-    <h2>{{ lang('developer.add.title') }}</h2>
+    <h1>{{ lang('developer.add.title') }}</h1>
 
     <hr>
 
-    <div class="row">
-        {{ Former::open_vertical(route('post_adddeveloper'))->rules($rules) }}
-            {{ Form::token() }}
+    {{ Former::open_vertical(route('post_adddeveloper'))->rules($rules) }}
+        {{ Form::token() }}
 
-            <div class="span5">
+        {{ Former::primary_submit(lang('common.add_profile')) }}
+
+        <hr>
+
+        @if (is_admin())
+            {{ Former::select('user_id', 'User')->fromQuery($users)  }}
+
+            {{ Former::select('privacy')->options($privacy) }}
+
+            <hr>
+        @endif
+
+        <div class="row">
+            <div class="span4">
                 {{ Former::text('name', lang('common.name'))->help(lang('developer.name_help')) }}
 
+                {{ Former::url('logo', lang('common.logo'))->placeholder(lang('common.url')) }}
+            </div>
+            
+            <div class="span8">
+                {{ Former::textarea('pitch', lang('developer.pitch'))->class('span8')->help(lang('common.bbcode_explanation')) }}
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="span4">
+                {{ Former::url('website', lang('common.website'))->placeholder(lang('common.url')) }}
+
+                {{ Former::url('blogfeed', lang('common.blogfeed'))->placeholder(lang('common.url'))->help(lang('common.blogfeed_help')) }}
+            </div>
+
+            <div class="span4">
                 {{ Former::email('email', lang('developer.email')) }}
 
-                @if (is_admin())
-                    {{ Former::select('user_id', 'User')->fromQuery($users)  }}
+                {{ Former::number('teamsize', lang('common.teamsize'))->value(1) }}
+            </div>
 
-                    {{ Former::select('privacy')->options($privacy) }}
-                @endif
-                
-                {{ Former::textarea('pitch', lang('developer.pitch'))->placeholder(lang('common.bbcode_explanation')) }}
-
-                {{ Former::url('logo', lang('common.logo'))->placeholder(lang('common.url')) }}
-                {{ Former::url('website', lang('common.website'))->placeholder(lang('common.url')) }}
-                {{ Former::url('blogfeed', lang('common.blogfeed'))->placeholder(lang('common.url')) }}
+            <div class="span4">
                 {{ Former::url('presskit', lang('common.presskit'))->placeholder(lang('common.url')) }}
 
-                {{ Former::number('teamsize', lang('common.teamsize'))->value(1) }}
-
                 {{ Former::select('country', lang('common.country'))->options(get_array_lang(Config::get('vgc.countries'), 'countries.')) }}
+            </div>
+        </div>
 
-            </div> <!-- /.span -->
+        <hr>
 
-            <div class="span7">
+        <div class="row">
+            <div class="span12">
                 <!-- array items + socialnetworks -->
                 <div class="tabbable tabs-left">
                     <ul class="nav nav-tabs nav-stacked" id="array_items_tabs">
@@ -100,13 +124,14 @@ if (is_admin()) {
                     </div>
                 </div><!-- /.tabable -->
                 <!-- array items + socialnetworks -->
-                
-                <hr>
-
-                <input type="submit" value="{{ lang('developer.add.submit') }}" class="btn btn-primary clearfix">
             </div> <!-- /.span -->
-        </form>
-    </div> <!-- /.row -->
+        </div> <!-- /.row -->
+
+        <hr>
+
+        {{ Former::primary_submit(lang('common.add_profile')) }}
+
+    {{ Former::close() }}
 </div><!-- /#adddeveloper --> 
 
 @section('jQuery')

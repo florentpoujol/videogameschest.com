@@ -330,13 +330,13 @@ class Admin_Controller extends Base_Controller
 
         // checking form
         $rules = array(
-            'name' => 'required|min:5|unique:developers',
+            'name' => 'required|no_slashes|min:2|unique:developers',
             'email' => 'min:5|email',
             'logo' => 'url',
             'website' => 'url',
             'blogfeed' => 'url',
             'presskit' => 'url',
-            'teamsize' => 'min:1',
+            'teamsize' => 'integer|min:1'
         );
 
         $validation = Validator::make($input, $rules);
@@ -433,12 +433,13 @@ class Admin_Controller extends Base_Controller
         
         // checking form
         $rules = array(
-            'name' => 'required|min:5',
+            'name' => 'required|no_slashes|min:2',
+            'email' => 'email',
             'logo' => 'url',
             'website' => 'url',
             'blogfeed' => 'url',
             'presskit' => 'url',
-            'teamsize' => 'min:1'
+            'teamsize' => 'integer|min:1'
         );
         
         $validation = Validator::make($input, $rules);
