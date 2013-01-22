@@ -30,11 +30,11 @@ class User extends ExtendedEloquent
         
         $input["url_key"] = Str::random(20);
 
-        // type
         if ( ! isset($input['type'])) $input['type'] = 'user';
         if ($input['type'] == 'admin') $input['is_trusted'] = 1;
+
         $input['crosspromotion_active'] = 1;
-        $input['blacklist'] = array('developer' => array(), 'game' => array());
+        $input['blacklist'] = array('developers' => array(), 'games' => array());
 
 
         $user = parent::create($input);
@@ -114,6 +114,7 @@ class User extends ExtendedEloquent
         Log::write('user activation confirmation success', $msg);
     }
 
+
     public function setNewPassword($step = 2) 
     {
         // step 1 : send conf email to user
@@ -159,7 +160,8 @@ class User extends ExtendedEloquent
     public static function updateBlacklist($input)
     {
         $user = User::find($input['id']);
-        $profile_type = $input['profile_type'];
+        $class_name = $input['profile_type'];
+        $profile_type = $class_name.'s';
 
         // adding profiles in the blacklist
         if (isset($input['add'])) {
@@ -170,10 +172,10 @@ class User extends ExtendedEloquent
             foreach ($names as $name) {
                 
                 if (is_numeric($name)) {
-                    $profile = $profile_type::where_id($name)->first('id');
+                    $profile = $class_name::where_id($name)->first('id');
                 }
                 elseif (is_string($name)) {
-                    $profile = $profile_type::where_name($name)->first('id');
+                    $profile = $class_name::where_name($name)->first('id');
                 } 
 
                 if ( ! is_null($profile)) {
@@ -199,10 +201,10 @@ class User extends ExtendedEloquent
 
             HTML::set_success(lang('blacklist.msg.add_success', array(
                 'num' => $diff,
-                'type' => $profile_type,
+                'type' => $class_name,
             )));
 
-            Log::write('user blacklist add success', 'User (name : '.user()->name.') (id : '.user_id().') added '.$diff.' '.$profile_type.' to the blacklist of user (name : '.$user->username.') (id : '.$user->id.').');
+            Log::write('user blacklist add success', 'User (name : '.user()->name.') (id : '.user_id().') added '.$diff.' '.$class_name.' to the blacklist of user (name : '.$user->username.') (id : '.$user->id.').');
         }
 
         if (isset($input['delete']) && isset($input['ids_to_delete'])) {
@@ -228,10 +230,10 @@ class User extends ExtendedEloquent
 
             HTML::set_success(lang('blacklist.msg.delete_success', array(
                 'num' => $diff,
-                'type' => $profile_type,
+                'type' => $class_name,
             )));
 
-            Log::write('user blacklist delete success', 'User (name : '.user()->name.') (id : '.user_id().') deleted '.$diff.' '.$profile_type.' from the blacklist of user (name : '.$user->username.') (id : '.$user->id.').');
+            Log::write('user blacklist delete success', 'User (name : '.user()->name.') (id : '.user_id().') deleted '.$diff.' '.$class_name.' from the blacklist of user (name : '.$user->username.') (id : '.$user->id.').');
         }
     }
 
@@ -298,7 +300,7 @@ class User extends ExtendedEloquent
             return $list;
         }
 
-        return array('developer' => array(), 'game' => array());
+        return array('developers' => array(), 'games' => array());
     }
 
     public function set_blacklist($list)

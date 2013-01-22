@@ -4,11 +4,11 @@ class Game extends Profile
 {
     // fields which data is stored as json
     public static $json_fields = array('approved_by', 'crosspromotion_profiles',
-        'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'themes',
+        'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'looks', 'periods',
         'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos', 'reviews');
     
     // text fields which data is stored as json array
-    public static $array_fields = array('devices', 'operatingsystems', 'genres', 'themes',
+    public static $array_fields = array('devices', 'operatingsystems', 'genres', 'looks', 'periods',
      'viewpoints', 'nbplayers', 'tags', 'languages', 'technologies',  );
 
     // text fields which data is stored as json object with a 'names' and 'urls' keys containing an array ot items

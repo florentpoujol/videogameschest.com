@@ -221,17 +221,24 @@ return array(
         "canceled"
     ),
 
-    "themes" => array(
+
+    'looks' => array(
+        "cartoon",
+        'pixelart',
+        'realist',
+        'minimalist',
+        'celshading',
+    ),
+
+    'periods' => array( 
+        "mythology",
         "fantasy",
         "medieval",
-        "cartoon",
         "futuristic",
-        "horror",
-        "mafia",
         "modern",
         "scifi",
-        "steampunk",
-        "western"
+        "western",
+        "twentycentury"
     ),
 
     "genres" => array(
@@ -265,11 +272,8 @@ return array(
     ),
 
     "tags" => array(
-        "2d",
-        "25d",
         "3d",
         "casual",
-        "celshading",
         "fun",
         "hardcore",
         "leveleditor",
@@ -277,9 +281,14 @@ return array(
         "sidescrolling",
         "turnbased",
         "topdown",
-        'pixelart',
-        'crowdfunded',
         
+        "onegameamonth",
+        'ludumdare',
+        'globalgamejam',
+        'fuckthisjam',
+        "horror",
+        "mafia",
+        "steampunk",
     ),
 
     // ICONS

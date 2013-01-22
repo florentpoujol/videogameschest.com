@@ -571,7 +571,8 @@ return array(
         'languages_help' => 'and languages is,',
         'technologies_help' => 'and are made with,',
         'stores_help' => 'and are sold on,',
-        
+        'looks_help' => 'and looks,',
+        'periods_help' => 'and take place during,',
         
         
 
@@ -664,6 +665,7 @@ return array(
         'linux' => 'Linux',
         'mac' => 'Mac OS',
         'windowsdesktop' => 'Windows desktop',
+        'windowsdesktop_help' => 'Any Windows but Windows 8 Metro and Windows Phone',
         'windows8metro' => 'Windows 8 Metro',
         'windowsphone' => 'Windows Phone',
     ),
@@ -804,23 +806,36 @@ return array(
         'canceled' => 'Canceled',
     ),
 
-// THEMES
+// LOOKS
 
-    'themes' => array(
-        'title' => 'Themes',
-        'help' => '',
+    'looks' => array(
+        'title' => 'Look',
+        'help' => 'How the game looks',
 
+        'cartoon' => 'Cartoon',
+        'pixelart' => 'Pixel Art',
+        'realist' => 'Realist',
+        'minimalist' => 'Minimalist',
+        'celshading' => 'Cel Shading',
+    ),
+
+// PERIODS
+
+    'periods' => array(
+        'title' => 'Period',
+        'help' => 'When is the action supposed to take palce. No need to check any boxes if the game is timeless.',
+
+        'mythology' => 'Mythology',
         'fantasy' => 'Fantasy',
         'medieval' => 'Medieval',
         'cartoon' => 'Cartoon',
         'futuristic' => 'Futuristic',
         'futuristic_help' => 'Up until a hundred year or so from now. After that, Sci-fi is more appropriate.',
-        'horror' => 'Horror',
-        'mafia' => 'Mafia',
         'modern' => 'Modern',
         'scifi' => 'Sci-fi',
-        'steampunk' => 'Steampunk',
         'western' => 'Western',
+        'twentycentury' => '20th century',
+        'twentycentury_help' => 'Include the Wold War I and WWII',
     ),
 
 // GENRES
@@ -869,11 +884,8 @@ return array(
     'tags' => array(
         'title' => 'Tags',
 
-        '25d' => '2.5D',
-        '2d' => '2D',
         '3d' => '3D',
         'casual' => 'Casual',
-        'celshading' => 'Cel Shading',
         'fun' => 'Fun',
         'hardcore' => 'Hardcore',
         'leveleditor' => 'Level Editor',
@@ -881,6 +893,13 @@ return array(
         'sidescrolling' => 'Side-Scrolling',
         'turnbased' => 'Turn-Based',
         'topdown' => 'Top-Down',
-        'pixelart' => 'Pixel Art'
+        'crowdfunded' => 'Crowdfunded',
+        "onegameamonth" => 'One Game A Month',
+        'ludumdare' => 'Ludum Dare',
+        'globalgamejam' => 'Global Game Jam',
+        'fuckthisjam' => 'Fuck this Jam',
+        'horror' => 'Horror',
+        'mafia' => 'Mafia',
+        'steampunk' => 'Steampunk',
     ),
 );

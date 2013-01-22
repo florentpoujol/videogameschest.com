@@ -68,7 +68,7 @@
             <div id="collapse-game" class="accordion-body collapse out">
                 <div class="accordion-inner">
                     <?php
-                    $fields = array('genres', 'themes', 'tags', 'viewpoints', 'nbplayers', 'languages', );
+                    $fields = array('genres', 'looks', 'periods', 'tags', 'viewpoints', 'nbplayers', 'languages', );
                     ?>
                     <div class="row">
                         
