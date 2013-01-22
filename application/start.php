@@ -198,6 +198,20 @@ Laravel\Validator::register('no_slashes', function($attribute, $value, $paramete
     else return false;
 });
 
+Laravel\Validator::register('alpha_dash_extended', function($attribute, $value, $parameters)
+{
+    $alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_- ";
+
+    for ($i = 0; $i < strlen($value); $i++) {
+        if (strpos($alphabet, $value[$i]) === false) { // current carac not found in aphabet
+            return false;
+        }
+    }
+
+    return true;
+});
+
+
 Laravel\Validator::register('honeypot', function($attribute, $value, $parameters)
 {
     if (strlen($value) > 0) {

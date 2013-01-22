@@ -27,7 +27,7 @@ class Admin_Controller extends Base_Controller
         $input = Input::all();
 
         $rules = array(
-            'username' => 'required|alpha_dash|min:2|unique:users',
+            'username' => 'required|alpha_dash_extended|min:2|unique:users',
             'email' => 'required|min:5|email|unique:users',
             'password' => 'required|min:5|confirmed',
             'password_confirmation' => 'required|min:5|required_with:password',
@@ -78,7 +78,7 @@ class Admin_Controller extends Base_Controller
     public function post_login() 
     {
         $rules = array(
-            "username" => "required|alpha_dash|min:2",
+            "username" => "required|alpha_dash_extended|min:2",
             "password" => "required|min:5",
             //'captcha' => 'required|coolcaptcha',
             'city' => 'honeypot',
@@ -272,7 +272,7 @@ class Admin_Controller extends Base_Controller
         
         // checking form
         $rules = array(
-            'username' => 'required|alpha_dash|min:2',
+            'username' => 'required|alpha_dash_extended|min:2',
             'email' => 'required|min:5|email',
             //'url_key' => 'min:10|alpha_num',
         );
@@ -341,7 +341,7 @@ class Admin_Controller extends Base_Controller
 
         // checking form
         $rules = array(
-            'name' => 'required|no_slashes|min:2|unique:developers',
+            'name' => 'required|alpha_dash_extended|min:2|unique:developers',
             'email' => 'min:5|email',
             'logo' => 'url',
             'website' => 'url',
@@ -444,7 +444,7 @@ class Admin_Controller extends Base_Controller
         
         // checking form
         $rules = array(
-            'name' => 'required|no_slashes|min:2',
+            'name' => 'required|alpha_dash_extended|min:2',
             'email' => 'email',
             'logo' => 'url',
             'website' => 'url',
@@ -478,8 +478,8 @@ class Admin_Controller extends Base_Controller
 
         // checking form
         $rules = array(
-            'name' => 'required|no_slashes|min:2|unique:games',
-            'developer_name' => 'required|no_slashes|min:2',
+            'name' => 'required|alpha_dash_extended|min:2|unique:games',
+            'developer_name' => 'required|alpha_dash_extended|min:2',
             'developer_url' => 'url',
             'publisher_name' => 'min:2',
             'publisher_url' => 'url',
@@ -585,8 +585,8 @@ class Admin_Controller extends Base_Controller
         // checking form
         if (isset($input['name'])) { // general pane
             $rules = array(
-                'name' => 'required|no_slashes|min:2',
-                'developer_name' => 'required|no_slashes|min:2',
+                'name' => 'required|alpha_dash_extended|min:2',
+                'developer_name' => 'required|alpha_dash_extended|min:2',
                 'developer_url' => 'url',
                 'publisher_name' => 'min:2',
                 'publisher_url' => 'url',

@@ -20,8 +20,8 @@ $devs = Dev::get(array('id', 'name'));
 
     <?php
     $rules = array(
-        'name' => 'required|no_slashes|min:2',
-        'developer_name' => 'required|no_slashes|min:2',
+        'name' => 'required|alpha_dash_extended|min:2',
+        'developer_name' => 'required|alpha_dash_extended|min:2',
         'developer_url' => 'url',
         'publisher_name' => 'min:2',
         'publisher_url' => 'url',

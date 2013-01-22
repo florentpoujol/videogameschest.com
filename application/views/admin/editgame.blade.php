@@ -35,8 +35,8 @@ $developer_name = $game->actual_developer_name;
         <div class="tab-pane" id="general-pane">
             <?php
             $rules = array(
-                'name' => 'required|no_slashes|min:2',
-                'developer_name' => 'required|no_slashes|min:2',
+                'name' => 'required|alpha_dash_extended|min:2',
+                'developer_name' => 'required|alpha_dash_extended|min:2',
                 'developer_url' => 'url',
                 'publisher_name' => 'min:2',
                 'publisher_url' => 'url',

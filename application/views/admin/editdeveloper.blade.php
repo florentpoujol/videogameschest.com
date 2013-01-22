@@ -4,7 +4,7 @@
 
 <?php
 $rules = array(
-    'name' => 'required|no_slashes|min:2',
+    'name' => 'required|alpha_dash_extended|min:2',
     'email' => 'email',
     'logo' => 'url',
     'website' => 'url',
