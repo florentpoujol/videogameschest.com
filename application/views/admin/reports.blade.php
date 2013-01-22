@@ -7,6 +7,10 @@
 
     <hr>
 
+        
+
+    <hr>
+
     <?php
     $tabs = array(array(
         'url' => route('get_reports', array('dev')),
@@ -23,10 +27,14 @@
 
     {{ Navigation::tabs($tabs) }}
 
-    <?php
-    $reports = Report::where_type($report_type)->get();
+    <p>
+        <a href="{{ route('get_reports_feed', array($report_type, user_id(), user()->url_key)) }}" title="{{ lang('reports.rss_feed') }}">{{ icon('rss') }} {{ lang('reports.rss_feed') }}</a>
+    </p>
 
-    $profiles = array();
+    <?php
+    //$reports = Report::where_type($report_type)->get();
+
+    /*$profiles = array();
     if (is_admin()) {
         $users = User::where_type('user')->get();
         foreach ($users as $user) {
@@ -41,6 +49,17 @@
     $reports = array();
     foreach ($profiles as $profile) {
         $reports = array_merge($reports, $profile->reports($report_type));
+    }*/
+    
+    $reports = array();
+    
+    if (is_admin()) {
+        $users = User::all();
+        foreach ($users as $user) {
+            $reports = array_merge($profiles, $user->reports($report_type));
+        }
+    } else {
+        $reports = user()->reports('developer');
     }
     ?>
 

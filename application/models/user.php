@@ -325,11 +325,32 @@ class User extends ExtendedEloquent
 
     public function devs() 
     {
-        return $this->has_many('Developer');
+        return $this->developers();
     }
 
     public function games()
     {
         return $this->has_many('Game');
+    }
+
+    /**
+     * Get all reports of the specified type for all profiles linked to this user
+     * The reports are not ordered at all !
+     * @param  string $type The report type
+     * @return array       The array of Report model
+     */
+    public function reports($type = null)
+    {
+        $profiles = array();
+
+        $profiles = array_merge($profiles, $this->devs);
+        $profiles = array_merge($profiles, $this->games);
+
+        $reports = array();
+        foreach ($profiles as $profile) {
+            $reports = array_merge($reports, $profile->reports($type));              
+        }
+
+        return $reports;
     }
 }   

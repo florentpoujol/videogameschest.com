@@ -59,7 +59,7 @@ class Profile extends ExtendedEloquent
     }
 
     /**
-     * Get all reports linked to this profile
+     * Get all reports of the specified type linked to this user
      * @param  string $type The report type
      * @return array       An array of reports
      */

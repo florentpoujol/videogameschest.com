@@ -382,7 +382,6 @@ function icon($icon, $title = null, $size = null)
 }
 
 
-
 /**
  * return a list of checkboxes
  * @param  string $field_name The array field name
@@ -537,3 +536,6 @@ function popover($text, $data_placement = 'top')
 {
     return '<i class="icon-question-sign" rel="popover" data-placement="'.$data_placement.'" title="'.$text.'"></i>';
 }
+
+
+

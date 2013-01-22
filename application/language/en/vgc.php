@@ -430,6 +430,8 @@ return array(
 
         'no_report' => 'No report to display',
 
+        'rss_feed' => 'RSS feed for your reports.',
+
         'table' => array(
             'profile' => 'Profile',
             'message' => 'Message',

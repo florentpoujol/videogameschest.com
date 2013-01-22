@@ -118,7 +118,41 @@ $layout = View::of('layout');
     }));
 
 
+    // RSS FEEDS
+
+    Route::get('feed/reports/(:any)/(:num)/(:any)', array('as' => 'get_reports_feed', 'do' => function($report_type, $user_id, $url_key)
+    {
+        $user = User::where_id($user_id)->where_url_key($url_key)->first();
+        $reports = array();
+        
+        if ( ! is_null($user)) {
+            if ($report_type == 'admin') {
+                if ($user->type != 'admin') return 'Non-admin users can\'t acces admin reports';
+
+                $reports = Report::where_type('admin')->order_by('updated_at', 'asc')->take(20)->get();
+            } else {
+                $reports = $user->reports($report_type);
+
+                $reports = Report::where_type('developer')->order_by('updated_at', 'asc')->take(20)->get();
+            }
+            
+        }
+
+        return 'Unknow user or user id and url key do not match.';
+    }));
+
     
+
+    Route::get('feed/search/(:num)', array('as' => 'get_search_feed', 'do' => function($search_id)
+    {
+        
+        
+        if ( ! is_null($user)) {
+            
+        }
+
+        return 'Unknow user or user id and url key do not match.';
+    }));
 
 
     // ADVERTISING
@@ -202,6 +236,8 @@ $layout = View::of('layout');
         Route::get('game/edit/(:num?)', array('as' => 'get_editgame', 'uses' => 'admin@editgame'));    
 
         Route::get('reports/(:any?)', array('as' => 'get_reports', 'uses' => 'admin@reports'));
+
+
     });
 
 

@@ -191,6 +191,12 @@ class Developer extends Profile
 
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
+    // user and reports relationships are in Profile model
+
+    public function user()
+    {
+        return $this->belongs_to('User');
+    }
 
     public function games()
     {
