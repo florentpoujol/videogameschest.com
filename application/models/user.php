@@ -335,22 +335,52 @@ class User extends ExtendedEloquent
 
     /**
      * Get all reports of the specified type for all profiles linked to this user
-     * The reports are not ordered at all !
+     * 
+     * NOTE : This method does not return a relationships, it's a regular method
+     * So it can't be called without the parenthesis 
+     * and the get() or first() methods are not needed when called with parameters
+     * 
      * @param  string $type The report type
      * @return array       The array of Report model
      */
-    public function reports($type = null)
+    public function reports($type = null, $order = 'asc')
     {
-        $profiles = array();
+        if ($type == 'asc' || $type == 'desc') {
+            $order = $type;
+            $type = null;
+        }
 
-        $profiles = array_merge($profiles, $this->devs);
+        $profiles = $this->devs;
         $profiles = array_merge($profiles, $this->games);
 
         $reports = array();
         foreach ($profiles as $profile) {
-            $reports = array_merge($reports, $profile->reports($type));              
+            $reports = array_merge($reports, $profile->reports($type)->get());
         }
 
-        return $reports;
+        // $reports are ordered by dev_id and game_id then report_id
+        
+        // now we are ordering them by created_at
+        $date_report = array();
+
+        foreach ($reports as $report) {
+            if ( ! array_key_exists($report->created_at, $date_report)) {
+                $date_report[$report->created_at] = array(); // this allow to have several reports with the exact same creation date (higtly unlikely)
+            }
+
+            $date_report[$report->created_at][] = $report;
+        }
+
+        // asort() put the first at the begining, that means older dates are put first
+        if ($order == 'asc') asort($date_report);
+        else arsort($date_report);
+
+        $ordered_reports = array();
+
+        foreach ($date_report as $reports) {
+            $ordered_reports = array_merge($ordered_reports, $reports);
+        }
+
+        return $ordered_reports;
     }
 }   

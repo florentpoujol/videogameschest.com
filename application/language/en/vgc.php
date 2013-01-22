@@ -20,6 +20,7 @@ return array(
 
         'country' => 'Country',
 
+        'date' => 'Date',
         'delete' => 'Delete',
         'developer' => 'Developer',
         'developer_name' => 'Developer\'s name',

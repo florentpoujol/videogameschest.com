@@ -120,22 +120,23 @@ $layout = View::of('layout');
 
     // RSS FEEDS
 
-    Route::get('feed/reports/(:any)/(:num)/(:any)', array('as' => 'get_reports_feed', 'do' => function($report_type, $user_id, $url_key)
+    Route::get('feed/reports/(:num)/(:any)/(:any?)', array('as' => 'get_reports_feed', 'do' => function($user_id, $url_key, $report_type = null)
     {
         $user = User::where_id($user_id)->where_url_key($url_key)->first();
         $reports = array();
         
         if ( ! is_null($user)) {
-            if ($report_type == 'admin') {
-                if ($user->type != 'admin') return 'Non-admin users can\'t acces admin reports';
-
-                $reports = Report::where_type('admin')->order_by('updated_at', 'asc')->take(20)->get();
+            if ($user->type == 'admin') {
+                if ( ! is_null($report_type)) {
+                    $reports = Report::where_type($report_type)->order_by('created_at', 'desc')->get();
+                } else {
+                    $reports = Report::order_by('created_at', 'desc')->get();
+                }
             } else {
-                $reports = $user->reports($report_type);
-
-                $reports = Report::where_type('developer')->order_by('updated_at', 'asc')->take(20)->get();
+                $reports = $user->reports('developer');
             }
-            
+
+            dd($reports);
         }
 
         return 'Unknow user or user id and url key do not match.';

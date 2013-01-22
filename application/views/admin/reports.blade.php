@@ -13,7 +13,7 @@
 
     <?php
     $tabs = array(array(
-        'url' => route('get_reports', array('dev')),
+        'url' => route('get_reports', array('developer')),
         'label' => lang('reports.dev_title'),
     ));
 
@@ -28,36 +28,18 @@
     {{ Navigation::tabs($tabs) }}
 
     <p>
-        <a href="{{ route('get_reports_feed', array($report_type, user_id(), user()->url_key)) }}" title="{{ lang('reports.rss_feed') }}">{{ icon('rss') }} {{ lang('reports.rss_feed') }}</a>
+        @if (is_admin())
+            <a href="{{ route('get_reports_feed', array(user_id(), user()->url_key, $report_type)) }}" title="{{ lang('reports.rss_feed') }}">{{ icon('rss') }} {{ lang('reports.rss_feed') }}</a>
+        @else
+            <a href="{{ route('get_reports_feed', array(user_id(), user()->url_key)) }}" title="{{ lang('reports.rss_feed') }}">{{ icon('rss') }} {{ lang('reports.rss_feed') }}</a>
+        @endif
     </p>
 
-    <?php
-    //$reports = Report::where_type($report_type)->get();
-
-    /*$profiles = array();
-    if (is_admin()) {
-        $users = User::where_type('user')->get();
-        foreach ($users as $user) {
-            $profiles = array_merge($profiles, $user->devs);
-            $profiles = array_merge($profiles, $user->games);
-        }
-    } else {
-        $profiles = array_merge($profiles, user()->devs);
-        $profiles = array_merge($profiles, user()->games);
-    }
-
-    $reports = array();
-    foreach ($profiles as $profile) {
-        $reports = array_merge($reports, $profile->reports($report_type));
-    }*/
-    
+    <?php  
     $reports = array();
     
     if (is_admin()) {
-        $users = User::all();
-        foreach ($users as $user) {
-            $reports = array_merge($profiles, $user->reports($report_type));
-        }
+        $reports = Report::where_type($report_type)->order_by('created_at', 'desc')->get();
     } else {
         $reports = user()->reports('developer');
     }
@@ -70,6 +52,7 @@
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
+                        <th>{{ lang('common.date') }}</th>
                         <th>{{ lang('reports.table.profile') }}</th>
                         <th>{{ lang('reports.table.message') }}</th>
                         <th>{{ Former::warning_submit(lang('reports.table.delete')) }}</th>
@@ -77,16 +60,24 @@
                 </thead>
 
                 @foreach ($reports as $report)
+                    <?php
+                    $class_name = $report->profile->class_name;
+                    $profile_name = $report->profile->name;
+                    ?>
                     <tr>
                         <td>
-                            <a href="{{ route('get_'.$profile->class_name, array(name_to_url($profile->name))) }}">{{ $profile->name }}</a> ({{ $profile->class_name }})
+                            {{ $report->created_at }}
                         </td>
 
-                        <td class="span8">
+                        <td>
+                            <a href="{{ route('get_'.$class_name, array(name_to_url($profile_name))) }}">{{ $profile_name }}</a> ({{ $class_name }})
+                        </td>
+
+                        <td class="span5">
                             {{ $report->message }}
                         </td>
                         
-                        <td>
+                        <td >
                             <input type="checkbox" name="reports[]" value="{{ $report->id }}">
                         </td>
                     </tr>

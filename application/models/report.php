@@ -35,4 +35,19 @@ class Report extends ExtendedEloquent
         HTML::set_success(lang('report.msg.delete_success'));
         return $report;
     }*/
+
+    //----------------------------------------------------------------------------------
+    // RELATIONSHIPS
+
+    public function profile()
+    {
+        if ($this->developer_id != 0) return $this->belongs_to('Developer', 'developer_id');
+        elseif ($this->game_id != 0) return $this->belongs_to('Game', 'game_id');
+        /*
+        Why do I need to set the foreign key here ?
+        => it seems that the name of the method has an impact on the returned value
+        and the foreign is not needed when the method name match the model name
+         */
+    }
+
 }

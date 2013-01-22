@@ -687,10 +687,10 @@ class Admin_Controller extends Base_Controller
 
     public function get_reports($report = null)
     {
-        $reports = array('dev', 'admin');
+        $reports = array('developer', 'admin');
 
-        if ( ! in_array($report, $reports) || (! is_admin() && $report != 'dev')) {
-            return Redirect::to_route('get_reports', array('dev'));
+        if ( ! in_array($report, $reports) || (! is_admin() && $report != 'developer')) {
+            return Redirect::to_route('get_reports', array('developer'));
         }
 
         $this->layout->nest('page_content', 'admin.reports', array('report_type' => $report));
