@@ -29,9 +29,9 @@
 
     <p>
         @if (is_admin())
-            <a href="{{ route('get_reports_feed', array(user_id(), user()->url_key, $report_type)) }}" title="{{ lang('reports.rss_feed') }}">{{ icon('rss') }} {{ lang('reports.rss_feed') }}</a>
+            <a href="{{ route('get_reports_feed', array('rss', $report_type, user_id(), user()->url_key)) }}" title="{{ lang('reports.rss_feed') }}">{{ icon('rss') }} {{ lang('reports.rss_feed') }}</a>
         @else
-            <a href="{{ route('get_reports_feed', array(user_id(), user()->url_key)) }}" title="{{ lang('reports.rss_feed') }}">{{ icon('rss') }} {{ lang('reports.rss_feed') }}</a>
+            <a href="{{ route('get_reports_feed', array('rss', 'developer', user_id(), user()->url_key)) }}" title="{{ lang('reports.rss_feed') }}">{{ icon('rss') }} {{ lang('reports.rss_feed') }}</a>
         @endif
     </p>
 

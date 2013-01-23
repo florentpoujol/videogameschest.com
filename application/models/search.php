@@ -16,9 +16,9 @@ class Search extends ExtendedEloquent
     public static function get_profiles($input)
     {   
         if (is_numeric($input)) {
-            $search = static::has($input);
+            $search = static::find($input);
 
-            if ($search !== false) $input = $search->data;
+            if ( ! is_null($search)) $input = $search->data;
             else {
                 HTML::set_error(lang('search.msg.id_not_found', array('id'=>$input)));
                 $input = array();

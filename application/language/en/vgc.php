@@ -455,6 +455,7 @@ return array(
         'developer_title' => 'Developers',
 
         'no_review' => 'No profile in :review review.',
+        'rss_feed' => 'RSS feed for new profiles in :review review.',
 
         'table' => array(
             'approve' => 'Approve',
@@ -577,7 +578,7 @@ return array(
         'looks_help' => 'and looks,',
         'periods_help' => 'and take place during,',
         
-        
+        'rss_feed' => 'RSS feed for the new profiles that matches this search.',
 
 
         'dev' => array(

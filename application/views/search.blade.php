@@ -20,6 +20,12 @@ if (isset($search_data['class'])) $default_tab = $search_data['class'];
     <h1>{{ lang('search.title') }}</h1>
     
     <hr>
+    
+    <p>
+        <a href="{{ route('get_search_feed', array('rss', $search_id)) }}" title="{{ lang('search.rss_feed') }}">{{ icon('rss') }} {{ lang('search.rss_feed') }}</a>
+    </p>
+
+    <br>
         
     <div class="accordion" id="search-form-accordion">
         <div class="accordion-group">

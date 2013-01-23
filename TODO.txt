@@ -1,6 +1,4 @@
 22/01/2013
 
 
-integrer les flux rss (reports pour user, nouveau profils publiés journaliers pour chaque search, nouveau profils en review)
-
 refléchir dev newsletter pub

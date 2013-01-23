@@ -46,8 +46,8 @@ class Report extends ExtendedEloquent
         /*
         Why do I need to set the foreign key here ?
         => it seems that the name of the method has an impact on the returned value
-        and the foreign is not needed when the method name match the model name
-         */
+        and the foreign key is not needed when the method name match the model name
+        */
     }
 
 }

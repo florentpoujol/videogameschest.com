@@ -7,6 +7,8 @@
 
     <hr>
 
+
+
     <?php
     echo 
     Navigation::tabs(array(
@@ -20,6 +22,12 @@
     	),
     ));
     ?>
+
+    <p>
+        {{var_dump($review)}}
+        <a href="{{ route('get_reviews_feed', array('rss', $review, user_id(), user()->url_key)) }}" title="{{ lang('reviews.rss_feed', array('review'=>$review)) }}">{{ icon('rss') }} {{ lang('reviews.rss_feed', array('review'=>$review)) }}</a>
+    </p>
+    <br>
 
     <?php 
     $profiles = Game::where_privacy($review)->order_by('created_at', 'asc')->get();

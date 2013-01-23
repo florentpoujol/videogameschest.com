@@ -40,6 +40,7 @@
 |
 */
 
+
 View::name('layouts.main', 'layout');
 $layout = View::of('layout');
 
@@ -85,7 +86,11 @@ $layout = View::of('layout');
             $search = Search::get($search_id);
             if ( ! is_null($search)) {
                 $profiles = Search::get_profiles($search->data);
-                return $layout->nest('page_content', 'search', array('profiles'=>$profiles, 'search_data'=>$search->array_data));
+                return $layout->nest('page_content', 'search', array(
+                    'profiles' => $profiles, 
+                    'search_data' => $search->array_data,
+                    'search_id' => $search->id,
+                ));
             } else {
                 HTML::set_error(lang('search.msg.id_not_found', array('id'=>$search_id)));
                 return Redirect::to_route('get_search');
@@ -120,40 +125,10 @@ $layout = View::of('layout');
 
     // RSS FEEDS
 
-    Route::get('feed/reports/(:num)/(:any)/(:any?)', array('as' => 'get_reports_feed', 'do' => function($user_id, $url_key, $report_type = null)
-    {
-        $user = User::where_id($user_id)->where_url_key($url_key)->first();
-        $reports = array();
-        
-        if ( ! is_null($user)) {
-            if ($user->type == 'admin') {
-                if ( ! is_null($report_type)) {
-                    $reports = Report::where_type($report_type)->order_by('created_at', 'desc')->get();
-                } else {
-                    $reports = Report::order_by('created_at', 'desc')->get();
-                }
-            } else {
-                $reports = $user->reports('developer');
-            }
+    Route::get('feed/(rss|atom)/reports/(developer|admin)/(:num)/(:any)', array('as' => 'get_reports_feed', 'uses' => 'feed@reports_feed'));
+    Route::get('feed/(rss|atom)/search/(:num)', array('as' => 'get_search_feed', 'uses' => 'feed@search_feed'));
 
-            dd($reports);
-        }
-
-        return 'Unknow user or user id and url key do not match.';
-    }));
-
-    
-
-    Route::get('feed/search/(:num)', array('as' => 'get_search_feed', 'do' => function($search_id)
-    {
-        
-        
-        if ( ! is_null($user)) {
-            
-        }
-
-        return 'Unknow user or user id and url key do not match.';
-    }));
+    Route::get('feed/(rss|atom)/reviews/('.implode('|', Config::get('vgc.review.types')).')/(:num)/(:any)', array('as' => 'get_reviews_feed', 'uses' => 'feed@reviews_feed'));
 
 
     // ADVERTISING
