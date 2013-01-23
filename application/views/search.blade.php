@@ -17,15 +17,17 @@ if (isset($search_data['class'])) $default_tab = $search_data['class'];
 ?> 
 
 <div id="search-profiles">
-    <h1>{{ lang('search.title') }}</h1>
+    <h1>{{ lang('search.title') }} <small>{{ lang('search.subtitle') }}</small></h1>
     
     <hr>
     
-    <p>
-        <a href="{{ route('get_search_feed', array('rss', $search_id)) }}" title="{{ lang('search.rss_feed') }}">{{ icon('rss') }} {{ lang('search.rss_feed') }}</a>
-    </p>
+    @if (isset($search_id))
+        <p>
+            <a href="{{ route('get_search_feed', array('rss', $search_id)) }}" title="{{ lang('search.rss_feed') }}">{{ icon('rss') }} {{ lang('search.rss_feed') }}</a>
+        </p>
 
-    <br>
+        <br>
+    @endif
         
     <div class="accordion" id="search-form-accordion">
         <div class="accordion-group">

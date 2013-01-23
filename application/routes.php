@@ -89,7 +89,7 @@ $layout = View::of('layout');
                 return $layout->nest('page_content', 'search', array(
                     'profiles' => $profiles, 
                     'search_data' => $search->array_data,
-                    'search_id' => $search->id,
+                    'search_id' => $search_id,
                 ));
             } else {
                 HTML::set_error(lang('search.msg.id_not_found', array('id'=>$search_id)));
@@ -137,6 +137,8 @@ $layout = View::of('layout');
     Route::get('advertising/crosspromotion', array('as' => 'get_crosspromotion', 'uses' => 'advertising@crosspromotion'));
     // When games wants their promoted profiles
     Route::get('advertising/crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion_from_game', 'uses' => 'advertising@crosspromotion_from_game'));
+    Route::get('advertising/feed', array('as' => 'get_advertising_feed', 'uses' => 'advertising@feed'));
+    Route::get('advertising/email', array('as' => 'get_advertising_email', 'uses' => 'advertising@email'));
 
 
 

@@ -124,6 +124,7 @@ return array(
         "blackberrysmartphone",
         "browser",
         "ds",
+        'gamestick',
         "ipod",
         "iphone",
         "ipad",
@@ -457,6 +458,8 @@ return array(
         'wrench',
         'music',
         'money',
+        'comments',
+        'comments-alt',
 
     ),
 );

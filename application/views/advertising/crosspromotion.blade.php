@@ -2,10 +2,9 @@
     {{ lang('crosspromotion.title') }}
 @endsection
 
-@include('partials.ad_menu')
 
 <div id="crosspromotion">
-    <h1>{{ lang('crosspromotion.title') }}</h1>
+    <h2>{{ lang('crosspromotion.title') }}</h2>
 
     <hr>
 
@@ -62,3 +61,4 @@
     </div>
     
 </div> <!-- /#crosspromotion -->
+

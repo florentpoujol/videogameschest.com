@@ -4,7 +4,8 @@ class Advertising_Controller extends Base_Controller
 {
     public function get_index()
     {
-        return Redirect::to_route('get_crosspromotion');
+        //return Redirect::to_route('get_crosspromotion');
+        $this->layout->nest('page_content', 'advertising');
     }
 
 
@@ -87,6 +88,21 @@ class Advertising_Controller extends Base_Controller
     }
 
 
+    //----------------------------------------------------------------------------------
+    // FEED
 
+    public function get_feed()
+    {
+        $this->layout->nest('page_content', 'advertising/feed');
+    }
+
+
+    //----------------------------------------------------------------------------------
+    // FEED
+
+    public function get_email()
+    {
+        $this->layout->nest('page_content', 'advertising/email');
+    }
 
 } // end of Advertising controller class

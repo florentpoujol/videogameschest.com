@@ -189,8 +189,8 @@ return array(
         'home' => 'Home',
         'featured' => 'Featured',
         'search' => 'Search',
-        'find' => 'Find',
-        'advertising' => 'Be finded',
+        'find' => 'Discover',
+        'advertising' => 'Get discovered',
         'about' => 'About',
 
 
@@ -542,7 +542,8 @@ return array(
 // SEARCH
 
     'search' => array(
-        'title' => 'Search profiles',
+        'title' => 'Search',
+        'subtitle' => 'for games you are really intered in',
 
         'hide_show_link' => 'Show/hide the search form',
         'game_accordion_link' => 'Show more criteria for games',
@@ -618,6 +619,60 @@ return array(
         ),
     ),
 
+// FIND
+
+    'find' => array(
+        'explanation' => "You can probably find dosens of games to play each week from your social media feeds or the press. But you will probably play only to a fraction of those games. Doesn't it feels like wasted time and opportunities ? <br> 
+
+        The thruth is that <strong>most of those games are just not relevant to you</strong>, because you don't have the device or you don't like the genre or how they looks. <br>
+        <br>
+        You may already know that you can be proactive and <a href=\":search_link\" class=\"\">thoroughtly search for</a> the games you like but if you prefer a more passive approach, let us suggest a couple of solutions. <br>
+        <br>
+        VGC allows you to sit at your computer and just wait for the games you are interested in to drop in your inbox or your favorite syndication fedd reader. <br>
+        You can subscribe to a particular newletter or feed whose sole purpose is to advertise you with games or any profiles on VGC. <br> It gets actually interesting when you know that you are in control of every aspect of the process. <strong>You control What, How much, When and How</strong>.
+        ",
+
+        // But you probably don't want to play to all those games.
+        // if your prefer to be passive, VGC has a couple of solution for you.
+
+        'title' => 'Discover',
+        'subtitle' => 'games you really want to play by doing nothing',
+    ),
+
+// ADVERTISING
+
+    'advertising' => array(
+        'explanation' => '
+        <p class="advertising-explanation">
+        You developed the game of your dream but you can count your followers on one hand and the press never gets back to you ? <br>
+        Maybe it\'s time to try something new. Something you even may not have tought about. <br>
+        Instead of waiting for the others to promote yourself and spread the word about your game, why don\'t you take the initiative with some advertising. <br>
+        <br>
+        <blockquote> <i class="icon-quote-left muted"></i>
+            But ads annoys everyone and it\'s way too expensive !. 
+        <i class="icon-quote-right muted"></i> </blockquote>
+        <br>
+        That\'s were we come in ! Advertising throught VGC is neither annoying for the visitors, neither expensive for you. And by <em>not expensive</em>, we actually means <strong>free</strong>. <br>
+        VGC provides you with a range of services that helps you get in contact with players .
+        </p>
+        ',
+        
+
+        'feed' => array(
+            'title' => 'RSS Feed',
+        ),
+
+
+        'email' => array(
+            'title' => 'E-mail',
+        ),
+
+
+        'title' => 'Get discovered',
+        'subtitle' => 'by advertising with our help',
+
+    ),
+
 
 // LANGUAGES
 
@@ -687,6 +742,7 @@ return array(
         'blackberrysmartphone' => 'BlackBerry Smartphone',
         'browser' => 'Browser',
         'ds' => 'DS',
+        'gamestick' => 'Gamestick',
         'ipod' => 'iPod',
         'iphone' => 'iPhone',
         'ipad' => 'iPad',
