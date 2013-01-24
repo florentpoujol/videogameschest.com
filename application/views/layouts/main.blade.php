@@ -33,7 +33,7 @@ $page_content .= Section::yield('page_content');
             @include('menu')
         </header>
 
-        <div class="container" id="page_content">
+        <div class="container" id="page_content" role="main"->
             <div id="message-box">
                 {{ HTML::get_messages($errors) }}
             </div>

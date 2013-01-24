@@ -70,6 +70,7 @@ return array(
         'socialnetworks' => 'Social networks',
         'soundtrack' => 'Soundtrack',
         'stores' => 'Stores',
+        'submit' => 'Submit',
         'submit_profile' => 'Submit this profile',
         'subscription' => 'Subscription',
 
@@ -209,25 +210,29 @@ return array(
             'lostpassword_help' => 'If you lost your password, just fill the field below with your username, email or user id and click the button to get a new temporary password by email.',
         ),
 
-        'register' => 'Register'
+        'or' => 'or',
+
+        'register' => 'Register',
     ),
 
 // REGISTER
     
     'register' => array(
-        'title' => 'Create a user account',
-        'submit' => 'Register !',
-        'username' => 'Choose your user name',
+        'email_help' => 'An e-mail will be send to this address with a link to active your account.',
         'password' => 'Choose your password',
         'password_confirmation' => 'Verify password',
+        'submit' => 'Register !',
+        'title' => 'Create a user account',
+        'username' => 'Choose your user name',
 
-        'msg_register_success' => 'Thank you :username, your user account has been created. 
-        An email has been sent to your email adress with a link to activate your account. 
-        You will be able to login as soon as to activated your account.',
+        'msg' => array(
+            'register_success' => 'Thank you :username, your user account has been created. 
+            An email has been sent to your email adress with a link to activate your account. 
+            You will be able to login as soon as to activated your account.',
 
-        'msg_confirmation_error' => "Unable to activate the user account because none with id ':id' and url key ':url_key' has been found, or the user account is already activated.",
-        'msg_confirmation_success' => 'Thank you :username, you have successfully activated your user account, you may now log in.',
-
+            'confirmation_error' => "Unable to activate the user account because none with id ':id' and url key ':url_key' has been found, or the user account is already activated.",
+            'confirmation_success' => 'Thank you :username, you have successfully activated your user account, you may now log in.',
+        ),
     ),
 
 // LOGIN
@@ -255,6 +260,9 @@ return array(
 // LOSTPASSWORD
 
     'lostpassword' => array(
+        'help' => 'An e-mail will be sent to your address with a link to generate a new temporary password which will also be emailed to you.',
+        'title' => 'I lost my password',
+
         'msg' => array(
             'confirmation_email_sent' => 'An email with a confirmation link has been sent to your email adress. Click the link in that email to generate a new temporary password.',
             'confirmation_error' => 'Unable to generate a new password because no user account with id ":id" and url key ":url_key" has been found, or the user account is not activated.',
@@ -619,9 +627,9 @@ return array(
         ),
     ),
 
-// FIND
+// DISCOVER
 
-    'find' => array(
+    'discover' => array(
         'explanation' => "We are sure you can find dosens of games to play each week from your social media feeds or the press. But you will probably play only to a fraction of those games. <br> 
 
         The thruth is that <strong>most of those games are just not relevant to you</strong>, because you don't have the device or you don't like the genre or how they looks. Doesn't it feels like wasted time and opportunities ?<br>
@@ -639,6 +647,26 @@ return array(
 
         'title' => 'Discover',
         'subtitle' => 'games you really want to play by doing nothing',
+
+        'form' => array(
+            'help' => 'form help',
+
+            'feed_submit' => 'Obtain this feed\'s URL',
+            'feed_type' => 'Format of the syndication feed',
+            'frequency' => 'Frequency',
+            'frequency_help' => 'This is the time interval, in hours, between each posts in the feed.',
+
+            'profile_count' => 'Profile count',
+            'profile_count_help' => 'The number of profiles that are advertised each times. <br>
+            If the number of profile that could be displayed is superior to this number, then the advertised content will be chosen randomly amongs them.',
+
+            'search_id' => 'Search ID',
+            'search_id_help' => 'The search ID used to filter the content. <br>
+            To know which search ID to use, head over the search form, make the search and copy/paste here the search ID that is indicated.',
+
+            'use_blacklist' => 'Use my blacklist',
+        ),
+
     ),
 
 // ADVERTISING

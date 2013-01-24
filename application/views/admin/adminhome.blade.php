@@ -21,7 +21,7 @@
                 
                 <div id="collapse3" class="collapse">
                     <blockquote>
-                        @include('admin/selecteditdeveloper')
+                        @include('forms/selecteditdeveloper')
                     </blockquote>
                 </div>
             </li>
@@ -35,7 +35,7 @@
                 
                 <div id="collapse2" class="collapse">
                     <blockquote>
-                        @include('admin/selecteditgame')
+                        @include('forms/selecteditgame')
                     </blockquote>
                 </div>
             </li>

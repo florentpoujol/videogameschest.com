@@ -40,7 +40,7 @@ class User extends ExtendedEloquent
         $user = parent::create($input);
 
         // Log
-        HTML::set_success(lang('register.msg_register_success', array('username'=>$user->username)));
+        HTML::set_success(lang('register.msg.register_success', array('username'=>$user->username)));
         Log::write('user create success', 'New user created (id='.$user->id.') (username='.$user->username.') (email='.$user->email.') (temp_key='.$user->temp_key.')');
 
         // email
@@ -109,7 +109,7 @@ class User extends ExtendedEloquent
         $this->activated = 1;
         $this->save();
 
-        $msg = lang('register.msg_confirmation_success', array('username' => $this->username));
+        $msg = lang('register.msg.confirmation_success', array('username' => $this->username));
         HTML::set_success($msg);
         Log::write('user activation confirmation success', $msg);
     }

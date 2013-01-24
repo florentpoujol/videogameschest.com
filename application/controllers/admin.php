@@ -50,7 +50,7 @@ class Admin_Controller extends Base_Controller
         $user = User::where_id($user_id)->where_url_key($url_key)->where_activated(0)->first();
 
         if (is_null($user)) {
-            $msg = lang('register.msg_confirmation_error', array(
+            $msg = lang('register.msg.confirmation_error', array(
                 'id' => $user_id,
                 'url_key' => $url_key,
             ));
@@ -72,7 +72,7 @@ class Admin_Controller extends Base_Controller
 
     public function get_login() 
     {
-        $this->layout->nest('page_content', 'admin.login');
+        $this->layout->nest('page_content', 'login');
     }
 
     public function post_login() 
@@ -133,6 +133,26 @@ class Admin_Controller extends Base_Controller
         return Redirect::to_route('get_login')->with_errors($validation)->with_input();
     }
 
+    public function get_logout()
+    {
+        HTML::set_success(lang('login.msg.logout_success'));
+
+        $user = user();
+        Log::write('user logout', 'User '.$user->username.' (id='.$user->id.') has logged out.');
+
+        Cookie::forget('user_logged_in');
+        Auth::logout();
+        return Redirect::to_route('get_login');
+    }
+
+    //----------------------------------------------------------------------------------
+    // LOST PASSWORD
+
+    public function get_lostpassword() 
+    {
+        $this->layout->nest('page_content', 'lostpassword');
+    }
+
     public function post_lostpassword()
     {
         $input = Input::all();
@@ -168,16 +188,6 @@ class Admin_Controller extends Base_Controller
         return Redirect::to_route('get_login')->with_errors($validation)->with_input();
     }
 
-    public function post_editblacklist()
-    {
-        $input = Input::all();
-
-        if ( ! is_admin()) $input['id'] = user_id();
-
-        User::updateBlacklist($input);
-        
-        return Redirect::to_route('get_edituser');
-    }
 
     public function get_lostpassword_confirmation($user_id, $url_key)
     {
@@ -197,18 +207,6 @@ class Admin_Controller extends Base_Controller
         // if user is found
         $user->setNewPassword(2); // setp 2 : generate new password then send by mail
 
-        return Redirect::to_route('get_login');
-    }
-
-    public function get_logout()
-    {
-        HTML::set_success(lang('login.msg.logout_success'));
-
-        $user = user();
-        Log::write('user logout', 'User '.$user->username.' (id='.$user->id.') has logged out.');
-
-        Cookie::forget('user_logged_in');
-        Auth::logout();
         return Redirect::to_route('get_login');
     }
 
@@ -324,6 +322,17 @@ class Admin_Controller extends Base_Controller
         }
 
         return Redirect::to_route('get_edituser', array($user->id));
+    }
+
+    public function post_editblacklist()
+    {
+        $input = Input::all();
+
+        if ( ! is_admin()) $input['id'] = user_id();
+
+        User::updateBlacklist($input);
+        
+        return Redirect::to_route('get_edituser');
     }
 
 

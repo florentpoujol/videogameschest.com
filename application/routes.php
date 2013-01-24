@@ -106,7 +106,7 @@ $layout = View::of('layout');
     // FIND
     Route::get('discover', array('as' => 'get_find', 'do' => function() use ($layout)
     {
-        return $layout->nest('page_content', 'find');
+        return $layout->nest('page_content', 'discover');
     }));
 
 
@@ -156,6 +156,8 @@ $layout = View::of('layout');
             $search = Search::create($input);
             return Redirect::to_route('get_search', array($search->id));
         }));
+
+        Route::post('advertising/feed/new', array('as' => 'post_new_advertising_feed', 'uses' => 'advertising@new_feed'));
     });
 
 
@@ -167,6 +169,7 @@ $layout = View::of('layout');
     Route::group(array('before' => 'is_guest'), function()
     {
         Route::get('login', array('as' => 'get_login', 'uses' => 'admin@login'));
+        Route::get('lostpassword', array('as' => 'get_lostpassword', 'uses' => 'admin@lostpassword'));
         Route::get('register', array('as' => 'get_register', 'uses' => 'admin@register'));
         Route::get('register/confirmation/(:num)/(:any)', array('as' => 'get_register_confirmation', 'uses' => 'admin@register_confirmation'));
         Route::get('user/lostpassword/(:num)/(:any)', array('as' => 'get_lostpassword_confirmation', 'uses' => 'admin@lostpassword_confirmation'));

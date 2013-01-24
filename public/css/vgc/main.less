@@ -32,11 +32,6 @@ body {
     }
 
 
-    .container {
-        //border: 1px solid grey;
-
-    }
-
     .profile_list_caption {
         max-width: 100px;
         max-height: 50px;
@@ -80,42 +75,44 @@ body {
 
 
     // MENU
-    #main-menu {
-        margin-top: 10px;
-        //border-bottom: 2px solid @jaune;
-        
-        .navbar-inner {
+    header {
+        margin-top: 10px;       
+    
+        #above-menu {
+            padding-right: 10px;
+        }
+
+        #main-menu {
+            margin-top: 30px;
+            //border-bottom: 2px solid @jaune;
             
-        
+            .navbar-inner {
+                .brand small {
+                    margin-left: 20px;
+                }
 
-            .brand small {
-                margin-left: 20px;
-            }
-
-            .nav {
-                //margin-top: 10px;
-                li {
-                    
-
-                    a {
+                .nav {
+                    //margin-top: 10px;
+                    li {
+                        
+                        a {
+                            
+                        }
+                    }
+                  
+                    li > a {
                         
                     }
-                }
-              
-                li > a {
-                    
-                }
 
-                li.active, li:hover {
-                    
-                    a {
+                    li.active, li:hover {
                         
-                        
+                        a {
+                            
+                            
+                        }
                     }
                 }
-  
             }
-
         }
     }
 
@@ -260,8 +257,8 @@ body {
     }
 
 
-    #find {
-        #find-icon {
+    #discover {
+        #discover-icon {
             font-size: 9em;
             margin: 10px;
         }

@@ -96,6 +96,11 @@ class Advertising_Controller extends Base_Controller
         $this->layout->nest('page_content', 'advertising/feed');
     }
 
+    public function post_new_feed()
+    {
+
+    }
+
 
     //----------------------------------------------------------------------------------
     // FEED
