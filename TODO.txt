@@ -1,4 +1,9 @@
-22/01/2013
 
+dev newsletter/feed pub
 
-refléchir dev newsletter pub
+modifer présentation screenshots et vidéos, et soudtrack dans les profils
+
+retravailler formuaire recherche
+ajouter search ID sur formulaire
+
+faire du formulaire de nouveau mot de passe un for à part entière

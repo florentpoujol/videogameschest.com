@@ -15,6 +15,7 @@
                     else ${$item} = '';
                 }
 
+                if (CONTROLLER == 'discover') $find = ' class="active"';
                 if (CONTROLLER == '') $home = ' class="active"';
 
                 $admin = 'active';

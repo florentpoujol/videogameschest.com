@@ -543,7 +543,7 @@ return array(
 
     'search' => array(
         'title' => 'Search',
-        'subtitle' => 'for games you are really intered in',
+        'subtitle' => 'for games you are really intesred in',
 
         'hide_show_link' => 'Show/hide the search form',
         'game_accordion_link' => 'Show more criteria for games',
@@ -622,14 +622,16 @@ return array(
 // FIND
 
     'find' => array(
-        'explanation' => "You can probably find dosens of games to play each week from your social media feeds or the press. But you will probably play only to a fraction of those games. Doesn't it feels like wasted time and opportunities ? <br> 
+        'explanation' => "We are sure you can find dosens of games to play each week from your social media feeds or the press. But you will probably play only to a fraction of those games. <br> 
 
-        The thruth is that <strong>most of those games are just not relevant to you</strong>, because you don't have the device or you don't like the genre or how they looks. <br>
+        The thruth is that <strong>most of those games are just not relevant to you</strong>, because you don't have the device or you don't like the genre or how they looks. Doesn't it feels like wasted time and opportunities ?<br>
         <br>
-        You may already know that you can be proactive and <a href=\":search_link\" class=\"\">thoroughtly search for</a> the games you like but if you prefer a more passive approach, let us suggest a couple of solutions. <br>
+        You may already know that you can be proactive and <a href=\":search_link\" class=\"\">thoroughtly search for</a> the games that just fit your preferences but if instead you prefer a more passive approach, let us suggest a couple of solutions. <br>
         <br>
-        VGC allows you to sit at your computer and just wait for the games you are interested in to drop in your inbox or your favorite syndication fedd reader. <br>
-        You can subscribe to a particular newletter or feed whose sole purpose is to advertise you with games or any profiles on VGC. <br> It gets actually interesting when you know that you are in control of every aspect of the process. <strong>You control What, How much, When and How</strong>.
+        <strong>VGC allows you to sit at your computer and just wait for the games you are interested in to drop in your inbox or your favorite syndication fedd reader.</strong> <br> 
+        <br>
+        You can subscribe to a newletter or a feed whose sole purpose is to advertise you with games or any profiles on VGC. <br> It gets actually interesting when you know that you are in control of every aspect of the process. <br>
+        <strong>You control What, How much, When and How</strong>.
         ",
 
         // But you probably don't want to play to all those games.
@@ -669,10 +671,10 @@ return array(
 
 
         'title' => 'Get discovered',
-        'subtitle' => 'by advertising with our help',
+        'subtitle' => 'by the players who will buy your games',
+        // 'subtitle' => 'by advertising with our help',
 
     ),
-
 
 // LANGUAGES
 

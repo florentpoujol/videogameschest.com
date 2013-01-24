@@ -11,9 +11,11 @@
         {{ icon('eye-open') }}
     </div>
 
-    <p>
-        {{ lang('find.explanation', array('search_link'=>route('get_search'))) }}
-    </p>
+    <!-- <p>
+        {{-- lang('find.explanation', array('search_link'=>route('get_search'))) }}
+    </p> -->
+
+    @include('partials/find_explanation_'.get_language())
 
     <hr>
 

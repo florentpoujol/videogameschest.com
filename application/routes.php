@@ -104,7 +104,7 @@ $layout = View::of('layout');
 
 
     // FIND
-    Route::get('find', array('as' => 'get_find', 'do' => function() use ($layout)
+    Route::get('discover', array('as' => 'get_find', 'do' => function() use ($layout)
     {
         return $layout->nest('page_content', 'find');
     }));
