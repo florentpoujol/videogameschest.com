@@ -6,7 +6,7 @@ $rules = array(
     'search_id' => 'integer|min:1',
 );
 ?>
-{{ Former::open_vertical(route('post_new_advertising_feed'))->rules($rules) }}
+{{ Former::open_vertical(route('post_new_promotion_feed'))->rules($rules) }}
         
     <div class="row">
         <div class="span4">
@@ -32,9 +32,14 @@ $rules = array(
         <div class="span4">
             @if (is_logged_in())
                 {{ Former::hidden('user_id', user_id()) }}
-            @endif
 
-            {{ Former::checkbox('use_blacklist', '')->checkboxes(lang('discover.form.use_blacklist')) }}
+                {{ Former::checkbox('use_blacklist', '')->checkboxes(lang('discover.form.use_blacklist')) }}
+                <p class="muted">
+                    {{ lang('discover.form.blacklist_help', array('blacklist_link'=>route('get_edituser'))) }}
+                </p>
+            @else
+                {{ Former::checkbox('use_blacklist', '')->checkboxes(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_guest_help', array('register_link'=>route('get_register'))))->disabled() }}
+            @endif
         </div>
 
         <div class="span4">

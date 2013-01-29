@@ -66,7 +66,8 @@ return array(
         'screenshots' => 'Screenshots',
         'select_first_option' => 'Select below',
         'select_arrayitem_first_option' => 'Select below or select this option to delete the item',
-
+        'site_name' => 'VideoGamesChest',
+        'site_url' => 'VideoGamesChest.com',
         'socialnetworks' => 'Social networks',
         'soundtrack' => 'Soundtrack',
         'stores' => 'Stores',
@@ -104,15 +105,25 @@ return array(
 // HOME
 
     'home' => array(
-        'title' => 'Home',
+        'title' => 'Video Games Chest',
+        'subtitle' => '',
+        'home_text' => 'VideoGamesChest is a <strong>participative</strong> database for everything that is video game-related : the <strong>games</strong> of course but also the <strong>developers</strong> and <strong>technologies</strong>, as well as the communities of players throught the <strong>maps</strong> and <strong>mods</strong>.<br>
+        <br>',
+        /*
+        It\'s participative because everyone can create profiles. It does not matter if the game is old
+
+
+        Jam, indie, AAA, mobile, console, social, casual, hardcore, old, old-shool, ... everyone is welcome on VideoGamesChest
+        */
 
         //'site_slogan' => 'The participative and searchable video games database',
         //'site_slogan' => 'The place to hunt down for the treasures of video games',
+        'site_slogan_full' => 'The place to discover and promote everything that was, is and will be Video Games',
+
         'site_slogan' => 'The place to <strong>discover</strong> and <strong>promote</strong>',
-        'site_slogan2' => 
-        'everything that <strong>was, is and will be</strong> Video Games',
+        'site_slogan2' => 'everything that <strong>was, is and will be</strong> Video Games',
 
-
+        /*
         'herounit_text' => '
         Video Games Chest tackle the problem of the discoverability of games by providing inovatives and effectives ways for the player to find games they are really interested to play
          as well as for the developers to pitch their games only to the audience really interested in it.
@@ -155,6 +166,7 @@ return array(
 
         'services_title' => 'Services',
         'services_text' => 'VGC also provide some cool services to game developers :',
+        */
 
     ),
 
@@ -562,7 +574,7 @@ return array(
         'subtitle' => 'for profiles you really care about',
         'home_text' => 'You can thoroughtly search for the profiles that exactly fits your needs by filtering them with dosens of relevant criteria. <br> <br>
 
-        The extensive filtering capabilities is the angular stone of VGC\'s approach to discoverability and is used for the best by the discovering and promoting services.',
+        The extensive filtering capabilities is the angular stone of VideoGamesChest\'s approach to discoverability and is used for the best by the discovering and promoting services.',
 
 
 
@@ -643,17 +655,7 @@ return array(
 // DISCOVER
 
     'discover' => array(
-        'explanation' => "We are sure you can find dosens of games to play each week from your social media feeds or the press. But you will probably play only to a fraction of those games. <br> 
-
-        The thruth is that <strong>most of those games are just not relevant to you</strong>, because you don't have the device or you don't like the genre or how they looks. Doesn't it feels like wasted time and opportunities ?<br>
-        <br>
-        You may already know that you can be proactive and <a href=\":search_link\" class=\"\">thoroughtly search for</a> the games that just fit your preferences but if instead you prefer a more passive approach, let us suggest a couple of solutions. <br>
-        <br>
-        <strong>VGC allows you to sit at your computer and just wait for the games you are interested in to drop in your inbox or your favorite syndication fedd reader.</strong> <br> 
-        <br>
-        You can subscribe to a newletter or a feed whose sole purpose is to advertise you with games or any profiles on VGC. <br> It gets actually interesting when you know that you are in control of every aspect of the process. <br>
-        <strong>You control What, How much, When and How</strong>.
-        ",
+        'explanation' => "",
 
         // But you probably don't want to play to all those games.
         // if your prefer to be passive, VGC has a couple of solution for you.
@@ -664,14 +666,14 @@ return array(
         'home_text' => 'Too busy to <a href=":search_link">search for what you like</a> ? <br>
         Then just sit at your computer and wait for the profiles you are interested in to drop in your inbox or your favorite syndication feed reader ! <br>
         <br>
-        You can subscribe to a <strong>fully customisable</strong> newletter or a feed whose sole purpose is to promote you with games or any profiles on VGC.
+        You can subscribe to a <strong>fully customisable</strong> feed or newsletter whose sole purpose is to promote you with games or any profiles on VGC.
         ',
 
 
-
-
         'form' => array(
-            'help' => 'form help',
+            'feed_help' => 'Set your preferencies then hit the button to get the URL to give to your feed reader.',
+
+            'email_help' => 'Once subscribed, you will also be able to edit your preferencies or unsubscribe via a link that you will be able to find in all emails.',
 
             'feed_submit' => 'Obtain this feed\'s URL',
             'feed_type' => 'Format of the syndication feed',
@@ -680,13 +682,16 @@ return array(
 
             'profile_count' => 'Profile count',
             'profile_count_help' => 'The number of profiles that are advertised each times. <br>
-            If the number of profile that could be displayed is superior to this number, then the advertised content will be chosen randomly amongs them.',
+            If the number of profiles that could be displayed after being filter by the search and the blacklist is superior to this number, then the promoted profiles will be chosen randomly amongs them.',
 
             'search_id' => 'Search ID',
             'search_id_help' => 'The search ID used to filter the content. <br>
             To know which search ID to use, head over the search form, make the search and copy/paste here the search ID that is indicated.',
 
             'use_blacklist' => 'Use my blacklist',
+            'blacklist_help' => 'The profiles in your blacklist will never be displayed. <a href=":blacklist_link" title="Edit your blacklist">Edit your blacklist</a>.',
+
+            'blacklist_guest_help' => 'The profiles you put in your blacklist will never be displayed. It\'s another level of filtering that <a href=":register_link" title="Create a user account">registered users only</a> can benefits from.',
         ),
 
     ),
@@ -710,11 +715,18 @@ return array(
         ',
         
 
-        'home_text' => 'promote_hometext',
         
         'title' => 'Promote',
-        'subtitle' => 'by the players who will buy your games',
+        'subtitle' => 'to the audience that cares',
         // 'subtitle' => 'by advertising with our help',
+        'home_text' => 'In addition to the full featured profiles and the comprehensive capacity given to the players to search for you, VideoGamesChest brings you innovatives ways to reach out specifiquely to the audience that cares about you.
+        ',
+        /*
+            VideoGamesChest is the perfect place to showcase your products and promote them in various ways.
+
+         You have got games to tell the world about but the traditionnal ways are are to expensive for your indie budget or not working out as planned ? <br>
+        <br>
+        */
 
 
         'email' => array(

@@ -14,8 +14,8 @@
 <!-- <h3>You choose what you get advertised for with a search ID</h3> -->
 
 <p>
-    Each searches has a unique ID that you can put in the registration forms below. <br>
-    It will make the content of the email or feed match that search so that you can be advertised only with <strong>content that match your criteria</strong>.
+    Each searches that you can perform via the search form has a unique ID that you can put in the subscription forms below. <br>
+    It will make the content of the email or feed match that search so that you can be promoted only with <strong>content that match your criteria</strong>.
 </p>
 
 <!-- <h3>Tidy up with your blacklist</h3> -->

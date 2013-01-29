@@ -1,5 +1,5 @@
 @section('page_title')
-    {{ lang('home.title') }}
+    {{ lang('common.site_url') }} - {{ lang('home.site_slogan_full') }}
 @endsection
 
 <div id="home">
@@ -20,13 +20,11 @@
 
     <div class="row">
         <div class="span6">
-            <h2>{{ lang('discover.title') }}</h2>
-
             <p>
-                {{ lang('discover.home_text') }}
+                {{ lang('home.home_text') }}
             </p>
 
-            <a href="" class="btn btn-primary">{{ lang('common.learn_more') }}</a>
+            <a href="{{ route('get_register') }}" class="btn btn-primary">{{ lang('common.learn_more') }}</a>
         </div>
 
         <div class="span6">
@@ -36,7 +34,7 @@
                 {{ lang('search.home_text') }}
             </p>
 
-            <a href="" class="btn btn-primary">{{ lang('common.learn_more') }}</a>
+            <a href="{{ route('get_search') }}" class="btn btn-primary">{{ lang('common.learn_more') }}</a>
         </div>
     </div>
 
@@ -54,7 +52,7 @@
                 ?>
             </p>
 
-            <a href="" class="btn btn-primary">{{ lang('common.learn_more') }}</a>
+            <a href="{{ route('get_discover') }}" class="btn btn-primary">{{ lang('common.learn_more') }}</a>
         </div>
 
         <div class="span6">
@@ -64,7 +62,7 @@
                 {{ lang('promote.home_text') }}
             </p>
 
-            <a href="" class="btn btn-primary btn-learn-more">{{ lang('common.learn_more') }}</a>
+            <a href="{{ route('get_promote') }}" class="btn btn-primary btn-learn-more">{{ lang('common.learn_more') }}</a>
         </div>
     </div>
 

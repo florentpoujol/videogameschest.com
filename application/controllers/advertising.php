@@ -110,4 +110,9 @@ class Advertising_Controller extends Base_Controller
         $this->layout->nest('page_content', 'advertising/email');
     }
 
+    public function post_new_email()
+    {
+
+    }
+
 } // end of Advertising controller class

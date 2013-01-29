@@ -90,7 +90,7 @@ $layout = View::of('layout');
 
 
     // FIND
-    Route::get('discover', array('as' => 'get_find', 'do' => function() use ($layout)
+    Route::get('discover', array('as' => 'get_discover', 'do' => function() use ($layout)
     {
         return $layout->nest('page_content', 'discover');
     }));
@@ -117,14 +117,13 @@ $layout = View::of('layout');
     Route::get('feed/(rss|atom)/reviews/('.implode('|', Config::get('vgc.review.types')).')/(:num)/(:any)', array('as' => 'get_reviews_feed', 'uses' => 'feed@reviews_feed'));
 
 
-    // ADVERTISING
-    // advertising
-    Route::get('advertising', array('as' => 'get_advertising', 'uses' => 'advertising@index'));
-    Route::get('advertising/crosspromotion', array('as' => 'get_crosspromotion', 'uses' => 'advertising@crosspromotion'));
+    // PROMOTE
+    Route::get('promote', array('as' => 'get_promote', 'uses' => 'advertising@index'));
+    Route::get('promote/crosspromotion', array('as' => 'get_crosspromotion', 'uses' => 'advertising@crosspromotion'));
     // When games wants their promoted profiles
-    Route::get('advertising/crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion_from_game', 'uses' => 'advertising@crosspromotion_from_game'));
-    Route::get('advertising/feed', array('as' => 'get_advertising_feed', 'uses' => 'advertising@feed'));
-    Route::get('advertising/email', array('as' => 'get_advertising_email', 'uses' => 'advertising@email'));
+    Route::get('promote/crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion_from_game', 'uses' => 'advertising@crosspromotion_from_game'));
+    Route::get('promote/feed', array('as' => 'get_advertising_feed', 'uses' => 'advertising@feed'));
+    Route::get('promote/email', array('as' => 'get_advertising_email', 'uses' => 'advertising@email'));
 
 
 
@@ -143,7 +142,8 @@ $layout = View::of('layout');
             return Redirect::to_route('get_search', array($search->id));
         }));
 
-        Route::post('advertising/feed/new', array('as' => 'post_new_advertising_feed', 'uses' => 'advertising@new_feed'));
+        Route::post('promote/feed/new', array('as' => 'post_new_promotion_feed', 'uses' => 'advertising@new_feed'));
+        Route::post('promote/email/new', array('as' => 'post_new_promotion_email', 'uses' => 'advertising@new_email'));
     });
 
 

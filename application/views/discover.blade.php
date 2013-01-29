@@ -11,19 +11,30 @@
         {{ icon('eye-open') }}
     </div>
 
-    @include('partials/discover_explanation_'.get_language())
+    <p>
+        {{ lang('discover.home_text') }} <br>
+        <br>
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapse-learn-more">
+            {{ icon('circle-arrow-down') }} {{ lang('common.learn_more') }} 
+        </a>
+    </p>
+
+    <div id="collapse-learn-more" class="collapse">
+        {{--@include('partials/discover_explanation_'.get_language()) --}}
+
+    </div>
 
     <hr>
 
     <ul class="nav nav-tabs" id="main-tabs">
-        <li><a href="#feed-pane" data-toggle="tab">{{ lang('advertising.feed.title') }}</a></li>
-        <li><a href="#email-pane" data-toggle="tab">{{ lang('advertising.email.title') }}</a></li>
+        <li><a href="#feed-pane" data-toggle="tab">{{ lang('promote.feed.title') }}</a></li>
+        <li><a href="#email-pane" data-toggle="tab">{{ lang('promote.email.title') }}</a></li>
     </ul>
 
     <div class="tab-content">
         <div class="tab-pane" id="feed-pane">
             <p>
-                {{ lang('discover.form.help')}}
+                {{ lang('discover.form.feed_help')}}
             </p>
 
             <hr>
@@ -32,7 +43,13 @@
         </div> <!-- /#feed-pane .tab-pane -->
 
         <div class="tab-pane" id="email-pane">
-            
+            <p>
+                {{ lang('discover.form.email_help')}}
+            </p>
+
+            <hr>
+
+            @include('forms/discover_email')
         </div> <!-- /#email-pane .tab-pane -->
     </div> <!-- /.tab-content -->
 </div>

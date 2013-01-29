@@ -21,13 +21,13 @@
                 <ul class="nav pull-right">
                     <!-- General menu -->
                     <?php 
-                    $menu_items = array('home', 'search', 'find', 'advertising'); 
+                    $menu_items = array('home', 'search', 'discover', 'promote'); 
                     foreach ($menu_items as $item) {
                         if (CONTROLLER == $item) ${$item} = ' class="active"';
                         else ${$item} = '';
                     }
 
-                    if (CONTROLLER == 'discover') $find = ' class="active"';
+                    
                     if (CONTROLLER == '') $home = ' class="active"';
 
                     $admin = 'active';
@@ -37,13 +37,10 @@
                     ?>
                     
 
-                    <li{{ $home }}><a href="{{ route('get_home') }}">{{ icon('homez') }} {{ lang('menu.home') }}</a></li>
-                    <li{{ $search }}><a href="{{ route('get_search') }}">{{ lang('menu.search') }}</a></li>
-
-                    <li{{ $find }}><a href="{{ route('get_find') }}">{{ icon('eye-openz') }} {{ lang('menu.find') }}</a></li>
-
-                    
-                        <li{{ $advertising }}><a href="{{ route('get_advertising') }}">{{ icon('bullhornz') }} {{ lang('menu.advertising') }}</a></li>
+                    <li{{ $home }}><a href="{{ route('get_home') }}">{{ lang('menu.home') }}</a></li>
+                    <li{{ $search }}><a href="{{ route('get_search') }}">{{ lang('search.title') }}</a></li>
+                    <li{{ $discover }}><a href="{{ route('get_discover') }}">{{ lang('discover.title') }}</a></li>
+                    <li{{ $promote }}><a href="{{ route('get_promote') }}">{{ lang('promote.title') }}</a></li>
                     
                     <!-- /general menu --> 
 
