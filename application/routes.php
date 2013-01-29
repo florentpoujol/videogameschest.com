@@ -49,20 +49,6 @@ $layout = View::of('layout');
 // NO FILTERS
 //----------------------------------------------------------------------------------
 
-    Route::get('xyz', function() use ($layout)
-    {
-        return $layout->nest('page_content', 'test');
-    });
-
-    Route::post('xyz', array('as' => 'post_test', function() use ($layout)
-    {
-        Input::flash();
-
-
-        return $layout->nest('page_content', 'test');
-    }));
-
-
     // HOME
 
     Route::get('/', function() use ($layout)
@@ -74,7 +60,7 @@ $layout = View::of('layout');
 
     Route::get('home', array('as' => 'get_home', 'do' => function() use ($layout)
     {
-        return $layout->nest('page_content', 'home_later');
+        return $layout->nest('page_content', 'home');
     }));
 
 
@@ -323,10 +309,24 @@ $layout = View::of('layout');
 //  MUST BE ADMIN
 //----------------------------------------------------------------------------------
 
-    Route::group(array('before' => 'auth|admin'), function()
+    Route::group(array('before' => 'auth|admin'), function() use ($layout)
     {
         Route::get('user/add', array('as' => 'get_adduser', 'uses' => 'admin@adduser'));
         Route::get('reviews/(:any?)', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));
+
+
+        Route::get('test', function() use ($layout)
+        {
+            return $layout->nest('page_content', 'test');
+        });
+
+        Route::post('test', array('as' => 'post_test', function() use ($layout)
+        {
+            Input::flash();
+
+
+            return $layout->nest('page_content', 'test');
+        }));
     });
 
 

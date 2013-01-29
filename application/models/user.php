@@ -28,7 +28,7 @@ class User extends ExtendedEloquent
         }
         
         
-        $input["url_key"] = Str::random(20);
+        $input["url_key"] = Str::random(40);
 
         if ( ! isset($input['type'])) $input['type'] = 'user';
         if ($input['type'] == 'admin') $input['is_trusted'] = 1;

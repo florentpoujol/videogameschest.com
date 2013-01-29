@@ -3,80 +3,68 @@
 @endsection
 
 <div id="home">
-    <div class="row">
-        <div class="span10 offset1">
-            <div class="">
 
-                <h1 id="slogan">{{ lang('common.site_slogan') }}</h1>
-
-                <p>
-                    {{ lang('home.herounit_text') }}
-                </p>
-            </div>
-        </div>
-    </div>
+    <hr>
 
     <div class="row">
-        <div class="span1"></div>
-        <div class="span5">
-            <h2>{{ lang('home.participative.title') }}</h2>
-
-            <p>
-                {{ lang('home.participative.text') }}
-            </p>
-
-            <br>
-
-            <div class="align-center">
-                <a href="{{ route('get_adddeveloper') }}" title="{{ lang('home.participative.adddev_link') }}" class="btn btn-primary btn-large align-center">{{ lang('home.participative.adddev_link') }}</a>  
-                <a href="{{ route('get_addgame') }}" title="{{ lang('home.participative.addgame_link') }}" class="btn btn-primary btn-large align-center">{{ lang('home.participative.addgame_link') }}</a>
-            </div>
-
-            <br>
- 
-            <a title="{{ lang('home.participative.submission_explanation_link') }}" class="muted accordion-toggle" data-toggle="collapse" href="#collapse1">
-                {{ lang('home.participative.submission_explanation_link') }}
-            </a>
-            
-            <div id="collapse1" class="collapse">
-                <p class="justify accordion-inner">
-                    {{ lang('home.participative.submission_explanation_text') }}
-                </p>
-            </div>
-            
-        </div>
-        <div class="span1"></div>
-
-        <div class="span5">
-            <h2>{{ lang('home.searchable_title') }}</h2>
-
-            <p>
-                {{ lang('home.searchable_text') }} <br>
-            </p>
-
-            <br>
-            <div class="align-center">
-                <a href="{{ route('get_search') }}" title="{{ lang('home.searchable_link') }}" class="btn btn-primary btn-large align-center">{{ lang('home.searchable_link') }}</a>
+        <div class="span12">
+            <div id="slogan">
+                <p id="slogan-left">{{ lang('home.site_slogan') }}</p>
+                <p id="slogan-right" class="pull-right">{{ lang('home.site_slogan2') }}</p>
+                <div class="clearfix"></div>
             </div>
         </div>
     </div>
 
     <hr>
 
-    <p>
-        {{ lang('home.services_text') }}
-    </p>
-
     <div class="row">
-        <div class="span1"></div>
-        
-        <div class="span5">
-            <h2>{{ lang('home.cross-promotion.title') }}</h2>
+        <div class="span6">
+            <h2>{{ lang('discover.title') }}</h2>
 
             <p>
-                {{ lang('home.cross-promotion.text') }}
+                {{ lang('discover.home_text') }}
             </p>
 
+            <a href="" class="btn btn-primary">{{ lang('common.learn_more') }}</a>
+        </div>
+
+        <div class="span6">
+            <h2>{{ lang('search.title') }} <small>{{ lang('search.subtitle') }}</small></h2>
+            
+            <p>
+                {{ lang('search.home_text') }}
+            </p>
+
+            <a href="" class="btn btn-primary">{{ lang('common.learn_more') }}</a>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="span6">
+            <h2>{{ lang('discover.title') }} <small>{{ lang('discover.subtitle') }}</small></h2>
+
+            <p>
+                <?php
+                echo lang('discover.home_text', array(
+                    'search_link' => route('get_search'),
+                ));
+                ?>
+            </p>
+
+            <a href="" class="btn btn-primary">{{ lang('common.learn_more') }}</a>
+        </div>
+
+        <div class="span6">
+            <h2>{{ lang('promote.title') }} <small>{{ lang('promote.subtitle') }}</small></h2>
+
+            <p>
+                {{ lang('promote.home_text') }}
+            </p>
+
+            <a href="" class="btn btn-primary btn-learn-more">{{ lang('common.learn_more') }}</a>
         </div>
     </div>
 

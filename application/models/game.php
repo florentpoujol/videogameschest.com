@@ -44,7 +44,7 @@ class Game extends Profile
         $input['approved_by'] = array();
 
         $input['crosspromotion_profiles'] = array('developers'=>array(),'games'=>array());
-        $input['crosspromotion_key'] = Str::random(20);
+        $input['crosspromotion_key'] = Str::random(40);
                 
         $game = parent::create($input);
         

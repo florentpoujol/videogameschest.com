@@ -39,6 +39,7 @@ return array(
         'insert_captcha' => 'Insert captcha',
 
         'languages' => 'Languages',
+        'learn_more' => 'Learn more',
         'logo' => 'Logo',
 
         'medias' => 'Medias',
@@ -65,8 +66,7 @@ return array(
         'screenshots' => 'Screenshots',
         'select_first_option' => 'Select below',
         'select_arrayitem_first_option' => 'Select below or select this option to delete the item',
-        //'site_slogan' => 'The participative and searchable video games database',
-        'site_slogan' => 'The place to hunt down for the treasures of video games',
+
         'socialnetworks' => 'Social networks',
         'soundtrack' => 'Soundtrack',
         'stores' => 'Stores',
@@ -105,6 +105,13 @@ return array(
 
     'home' => array(
         'title' => 'Home',
+
+        //'site_slogan' => 'The participative and searchable video games database',
+        //'site_slogan' => 'The place to hunt down for the treasures of video games',
+        'site_slogan' => 'The place to <strong>discover</strong> and <strong>promote</strong>',
+        'site_slogan2' => 
+        'everything that <strong>was, is and will be</strong> Video Games',
+
 
         'herounit_text' => '
         Video Games Chest tackle the problem of the discoverability of games by providing inovatives and effectives ways for the player to find games they are really interested to play
@@ -552,6 +559,12 @@ return array(
     'search' => array(
         'title' => 'Search',
         'subtitle' => 'for games you are really intesred in',
+        'subtitle' => 'for profiles you really care about',
+        'home_text' => 'You can thoroughtly search for the profiles that exactly fits your needs by filtering them with dosens of relevant criteria. <br> <br>
+
+        The extensive filtering capabilities is the angular stone of VGC\'s approach to discoverability and is used for the best by the discovering and promoting services.',
+
+
 
         'hide_show_link' => 'Show/hide the search form',
         'game_accordion_link' => 'Show more criteria for games',
@@ -644,9 +657,18 @@ return array(
 
         // But you probably don't want to play to all those games.
         // if your prefer to be passive, VGC has a couple of solution for you.
+        
 
         'title' => 'Discover',
-        'subtitle' => 'games you really want to play by doing nothing',
+        'subtitle' => 'profiles you are really interested about',
+        'home_text' => 'Too busy to <a href=":search_link">search for what you like</a> ? <br>
+        Then just sit at your computer and wait for the profiles you are interested in to drop in your inbox or your favorite syndication feed reader ! <br>
+        <br>
+        You can subscribe to a <strong>fully customisable</strong> newletter or a feed whose sole purpose is to promote you with games or any profiles on VGC.
+        ',
+
+
+
 
         'form' => array(
             'help' => 'form help',
@@ -669,9 +691,9 @@ return array(
 
     ),
 
-// ADVERTISING
+// PROMOTE
 
-    'advertising' => array(
+    'promote' => array(
         'explanation' => '
         <p class="advertising-explanation">
         You developed the game of your dream but you can count your followers on one hand and the press never gets back to you ? <br>
@@ -688,19 +710,20 @@ return array(
         ',
         
 
-        'feed' => array(
-            'title' => 'RSS Feed',
-        ),
+        'home_text' => 'promote_hometext',
+        
+        'title' => 'Promote',
+        'subtitle' => 'by the players who will buy your games',
+        // 'subtitle' => 'by advertising with our help',
 
 
         'email' => array(
             'title' => 'E-mail',
         ),
 
-
-        'title' => 'Get discovered',
-        'subtitle' => 'by the players who will buy your games',
-        // 'subtitle' => 'by advertising with our help',
+        'feed' => array(
+            'title' => 'RSS Feed',
+        ),
 
     ),
 

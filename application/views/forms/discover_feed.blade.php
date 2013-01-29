@@ -1,6 +1,6 @@
 <?php
 $rules = array(
-    'feed_type' => 'required|:inrss,atom',
+    'feed_type' => 'required|in:rss,atom',
     'frequency' => 'required|integer|min:1',
     'profile_count' => 'required|integer|min:1',
     'search_id' => 'integer|min:1',
