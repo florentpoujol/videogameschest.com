@@ -101,7 +101,7 @@ if ( ! empty($old)) Former::populate($old);
                                 <?php
                                 $profile_list = $user->blacklist[$profile_type];
                                 ?>
-                                @include('profile_list_form')
+                                @include('forms/profile_list')
                             {{ Former::close() }}
                         </div> <!-- /#{{ $profile_type }}-pane .tab-pane -->
                     @endforeach

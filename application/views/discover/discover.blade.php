@@ -1,3 +1,7 @@
+@section('page_title')
+    {{ lang('discover.title') }}
+@endsection
+
 <div id="discover">
     <h1>{{ lang('discover.title') }} <small>{{ lang('discover.subtitle') }}</small></h1>
 
@@ -21,21 +25,10 @@
 
     <hr>
 
-    <?php
-        $tabs = array(
-            array(
-                'url' => route('get_discover_feed_page'),
-                'label' => lang('promotion.email.title'),
-            ),
-
-            array(
-                'url' => route('get_discover_email_page'),
-                'label' => lang('promotion.feed.title'),
-            ),
-        );
-        ?>
-
-        {{ Navigation::tabs($tabs) }}
+    <ul class="nav nav-tabs" id="main-tabs">
+        <li><a href="#feed-pane" data-toggle="tab">{{ lang('promotion.feed.title') }}</a></li>
+        <li><a href="#email-pane" data-toggle="tab">{{ lang('promotion.email.title') }}</a></li>
+    </ul>
 
     <div class="tab-content">
         <div class="tab-pane" id="feed-pane"> 

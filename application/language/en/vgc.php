@@ -671,34 +671,49 @@ return array(
 
 
         'form' => array(
-            'feed_help' => 'Set your preferencies then hit the button to get the URL to give to your feed reader.',
 
-            'email_help' => 'Once subscribed, you will also be able to edit your preferencies or unsubscribe via a link that you will be able to find in all emails.',
-
-            'feed_submit' => 'Obtain this feed\'s URL',
-            'feed_type' => 'Format of the syndication feed',
             'frequency' => 'Frequency',
-            'frequency_help' => 'This is the time interval, in hours, between each posts in the feed.',
+            'frequency_help' => 'This is the time interval, in hours, between each posts in the feed or each e-mail. <br>
+            A week = 168 hours.',
 
             'profile_count' => 'Profile count',
-            'profile_count_help' => 'The number of profiles that are advertised each times. <br>
-            If the number of profiles that could be displayed after being filter by the search and the blacklist is superior to this number, then the promoted profiles will be chosen randomly amongs them.',
+            'profile_count_help' => 'The number of profiles that are displayed in each post/e-mail. <br>
+            If the number of profiles that could be displayed after being filtered by the search and the blacklist is superior to this number, the profiles that made it to the post/e-mail are chose randomly amongs them.',
 
             'search_id' => 'Search ID',
-            'search_id_help' => 'The search ID used to filter the content. <br>
-            To know which search ID to use, head over the search form, make the search and copy/paste here the search ID that is indicated.',
+            'search_id_help' => '(optionnal) The search ID used to filter the content. <br>
+            To know which search ID to use, head over the search form, fill it as you like the hit the search button and copy/paste here the search ID that is indicated.',
 
             'use_blacklist' => 'Use my blacklist',
             'blacklist_help' => 'The profiles in your blacklist will never be displayed. <a href=":blacklist_link" title="Edit your blacklist">Edit your blacklist</a>.',
 
-            'blacklist_guest_help' => 'The profiles you put in your blacklist will never be displayed. It\'s another level of filtering that <a href=":register_link" title="Create a user account">registered users only</a> can benefits from.',
+            'blacklist_guest_help' => 'The blacklist is another level of filtering that <a href=":register_link" title="Create a user account">registered users only</a> can benefits from. The profiles you put in your blacklist will never be displayed. ',
+
+
+            'feed' => array(
+                'help' => 'The feed url is always the same for registered users. <br>',
+                'help_url' => 'Your feed url is : <a href=":feed_url" title="Feed url for user :username">:feed_url</a>',
+                'submit' => 'Obtain this feed\'s URL',
+                'type' => 'Format of the syndication feed',
+            ),
+
+            'email' => array(
+                'email_help' => 'Tha\'s you user account email. You must log out if you want to use another email adress.',
+                'help' => 'Once subscribed, you will be able to edit your preferencies or unsubscribe via a link you can find in all e-mails you will get.',
+                'submit' => 'Subscribe',
+            ),
         ),
+
+    'msg' => array(
+        'feed_url' => 'Here is your feed url : :feed_url',
 
     ),
 
-// PROMOTE
+    ),
 
-    'promote' => array(
+// PROMOTION
+
+    'promotion' => array(
         'explanation' => '
         <p class="advertising-explanation">
         You developed the game of your dream but you can count your followers on one hand and the press never gets back to you ? <br>

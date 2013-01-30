@@ -1,11 +1,12 @@
 <?php
 
-class Advertising_Controller extends Base_Controller 
+class Promotion_Controller extends Base_Controller 
 {
     public function get_index()
     {
+        return Redirect::to_route('get_promotion_feed_page');
         //return Redirect::to_route('get_crosspromotion');
-        $this->layout->nest('page_content', 'advertising');
+        $this->layout->nest('page_content', 'promotion');
     }
 
 
@@ -14,7 +15,7 @@ class Advertising_Controller extends Base_Controller
 
     public function get_crosspromotion()
     {
-        $this->layout->nest('page_content', 'advertising/crosspromotion');
+        $this->layout->nest('page_content', 'promotion/crosspromotion');
     }
 
     /**
@@ -91,12 +92,46 @@ class Advertising_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // FEED
 
-    public function get_feed()
+    public function get_feed_page()
     {
-        $this->layout->nest('page_content', 'advertising/feed');
+        $this->layout->nest('page_content', 'promotion/feed');
     }
 
-    public function post_new_feed()
+    public function post_create_feed()
+    {
+        $input = Input::all();
+        if (is_logged_in()) $input['user_id'] = user_id();
+
+        $rules = array(
+            'type' => 'required|in:rss,atom',
+            'frequency' => 'required|integer|min:12|max:744',
+            'profile_count' => 'required|integer|min:1|max:500',
+            'search_id' => 'integer|min:1',
+        );
+
+        $validation = Validator::make($input, $rules);
+
+        if ($validation->passes()) {
+            $feed = PromotionFeed::make($input);
+            
+            $url = route('get_promotion_feed_data', array($feed->id));
+
+            HTML::set_info(lang('discover.msg.feed_url', array(
+                'feed_url' => $url
+            )));
+
+            return Redirect::back()->with_input();
+        } else {
+            return Redirect::back()->with_input()->with_errors($validation);
+        }
+    }
+
+
+    /**
+     * When a feed url is checked for new content
+     * route get_promotion_feed_data
+     */
+    public function get_feed_data($feed_id)
     {
 
     }
@@ -105,14 +140,38 @@ class Advertising_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // FEED
 
-    public function get_email()
+    public function get_email_page()
     {
-        $this->layout->nest('page_content', 'advertising/email');
+        $this->layout->nest('page_content', 'promotion/email');
     }
 
-    public function post_new_email()
+    public function post_create_email()
     {
+        $input = Input::all();
+        if (is_logged_in()) $input['user_id'] = user_id();
 
+        $rules = array(
+            'email' => 'required|email',
+            'frequency' => 'required|integer|min:12|max:744',
+            'profile_count' => 'required|integer|min:1|max:500',
+            'search_id' => 'integer|min:1',
+        );
+
+        $validation = Validator::make($input, $rules);
+
+        if ($validation->passes()) {
+            $email = PromotionEmail::make($input);
+            
+            $url = route('get_promotion_feed_data', array($feed->id));
+
+            HTML::set_info(lang('discover.msg.feed_url', array(
+                'feed_url' => $url
+            )));
+
+            return Redirect::back()->with_input();
+        } else {
+            return Redirect::back()->with_input()->with_errors($validation);
+        }
     }
 
-} // end of Advertising controller class
+} // end of promotion controller class

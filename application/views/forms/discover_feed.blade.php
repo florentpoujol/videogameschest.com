@@ -1,16 +1,25 @@
 <?php
 $rules = array(
-    'feed_type' => 'required|in:rss,atom',
-    'frequency' => 'required|integer|min:1',
-    'profile_count' => 'required|integer|min:1',
+    'type' => 'required|in:rss,atom',
+    'frequency' => 'required|integer|min:12|max:744',
+    'profile_count' => 'required|integer|min:1|max:500',
     'search_id' => 'integer|min:1',
 );
+
+if (is_logged_in()) {
+    $feed = user()->promotionFeed;
+
+    if ( ! is_null($feed)) {
+        Former::populate($feed);
+    }
+}
 ?>
-{{ Former::open_vertical(route('post_new_promotion_feed'))->rules($rules) }}
-        
+{{ Former::open_vertical(route('post_create_promotion_feed'))->rules($rules) }}
+    {{ Form::token() }}
+
     <div class="row">
         <div class="span4">
-            {{ Former::select('feed_type', lang('discover.form.feed_type'))->options(array('RSS', 'Atom')) }}
+            {{ Former::select('type', lang('discover.form.feed.type'))->options(array('rss'=>'RSS', 'atom'=>'Atom')) }}
         </div>
 
         <div class="span4">
@@ -31,23 +40,22 @@ $rules = array(
 
         <div class="span4">
             @if (is_logged_in())
-                {{ Former::hidden('user_id', user_id()) }}
-
-                {{ Former::checkbox('use_blacklist', '')->checkboxes(lang('discover.form.use_blacklist')) }}
-                <p class="muted">
-                    {{ lang('discover.form.blacklist_help', array('blacklist_link'=>route('get_edituser'))) }}
+                {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_help', array('blacklist_link'=>route('get_edituser')))) }}
                 </p>
             @else
-                {{ Former::checkbox('use_blacklist', '')->checkboxes(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_guest_help', array('register_link'=>route('get_register'))))->disabled() }}
+                {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_guest_help', array('register_link'=>route('get_register'))))->disabled() }}
             @endif
         </div>
 
         <div class="span4">
-            {{ Former::primary_submit(lang('discover.form.feed_submit')) }}
+            @if (isset($feed))
+                {{ Former::primary_submit(lang('common.update')) }}
+            @else
+                {{ Former::primary_submit(lang('discover.form.feed.submit')) }}
+            @endif
         </div>
     </div>
 
     <hr>
-
     
 {{ Former::close() }}

@@ -1,13 +1,13 @@
-<div id="advertising">
-    <h1>{{ lang('advertising.title') }} <small>{{ lang('advertising.subtitle') }}</small></h1>
+<div id="promotion">
+    <h1>{{ lang('promotion.title') }} <small>{{ lang('promotion.subtitle') }}</small></h1>
 
     <hr>
 
-    <div class="pull-right" id="advertising-icon">
+    <div class="pull-right" id="promotion-icon">
         {{ icon('comments-alt') }}
     </div>
 
-    {{ lang('advertising.explanation') }}
+    {{ lang('promotion.explanation') }}
 
     <hr>
 
@@ -20,13 +20,13 @@
             ),
 
             array(
-                'url' => route('get_advertising_feed'),
-                'label' => lang('advertising.feed.title'),
+                'url' => route('get_promotion_feed'),
+                'label' => lang('promotion.feed.title'),
             ),
 
             array(
-                'url' => route('get_advertising_email'),
-                'label' => lang('advertising.email.title'),
+                'url' => route('get_promotion_email'),
+                'label' => lang('promotion.email.title'),
             ),
         );
         ?>
@@ -35,14 +35,14 @@
     </div> -->
 
     <ul class="nav nav-tabs" id="main-tabs">
-        <li><a href="#feed-pane" data-toggle="tab">{{ lang('advertising.feed.title') }}</a></li>
-        <li><a href="#email-pane" data-toggle="tab">{{ lang('advertising.email.title') }}</a></li>
+        <li><a href="#feed-pane" data-toggle="tab">{{ lang('promotion.feed.title') }}</a></li>
+        <li><a href="#email-pane" data-toggle="tab">{{ lang('promotion.email.title') }}</a></li>
         <li><a href="#crosspromotion-pane" data-toggle="tab">{{ lang('crosspromotion.title') }}</a></li>
     </ul>
 
     <div class="tab-content">
         <div class="tab-pane" id="crosspromotion-pane">
-            @include('advertising/crosspromotion')
+            @include('promotion/crosspromotion')
         </div> <!-- /#crosspromotion-pane .tab-pane -->
 
         <div class="tab-pane" id="feed-pane">
@@ -56,6 +56,6 @@
 </div>
 
 @section('jQuery')
-// from advertising
+// from promotion
 $('#main-tabs a:first').tab('show');
 @endsection

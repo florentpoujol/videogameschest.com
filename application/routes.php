@@ -89,11 +89,24 @@ $layout = View::of('layout');
     // for POST search, see below in CSRF group
 
 
-    // FIND
+    // DISCOVER
     Route::get('discover', array('as' => 'get_discover', 'do' => function() use ($layout)
     {
         return $layout->nest('page_content', 'discover');
     }));
+
+    Route::get('discover/feed', array('as' => 'get_discover_feed_page', 'uses' => 'promotion@feed_page'));
+    // when visitors check promotion feeds
+    Route::get('discover/feed/(:num)', array('as' => 'get_discover_feed_data', 'uses' => 'promotion@feed_data'));
+
+    // EMAILS
+    // creation/update form for users
+    Route::get('discover/email', array('as' => 'get_discover_email_page', 'uses' => 'promotion@email_page'));
+    
+    // update subscription for guest
+    // param is the email_key
+    //Route::get('discover/email/(:any?)', array('as' => 'get_update_promotion_email_page', 'uses' => 'promotion@updateEmail'));
+
 
 
     // SET LANGUAGE
@@ -118,13 +131,13 @@ $layout = View::of('layout');
 
 
     // PROMOTE
-    Route::get('promote', array('as' => 'get_promote', 'uses' => 'advertising@index'));
-    Route::get('promote/crosspromotion', array('as' => 'get_crosspromotion', 'uses' => 'advertising@crosspromotion'));
+    Route::get('promote', array('as' => 'get_promotion', 'uses' => 'promotion@index'));
+    
+    Route::get('promote/crosspromotion', array('as' => 'get_crosspromotion', 'uses' => 'promotion@crosspromotion'));
     // When games wants their promoted profiles
-    Route::get('promote/crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion_from_game', 'uses' => 'advertising@crosspromotion_from_game'));
-    Route::get('promote/feed', array('as' => 'get_advertising_feed', 'uses' => 'advertising@feed'));
-    Route::get('promote/email', array('as' => 'get_advertising_email', 'uses' => 'advertising@email'));
+    Route::get('promote/crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion_from_game', 'uses' => 'promotion@crosspromotion_from_game'));
 
+        
 
 
 //----------------------------------------------------------------------------------
@@ -142,8 +155,11 @@ $layout = View::of('layout');
             return Redirect::to_route('get_search', array($search->id));
         }));
 
-        Route::post('promote/feed/new', array('as' => 'post_new_promotion_feed', 'uses' => 'advertising@new_feed'));
-        Route::post('promote/email/new', array('as' => 'post_new_promotion_email', 'uses' => 'advertising@new_email'));
+
+        // user subscribe to a promotion feed or email
+        Route::post('discover/feed/create', array('as' => 'post_create_promotion_feed', 'uses' => 'promotion@create_feed'));
+        Route::post('discover/email/create', array('as' => 'post_create_promotion_email', 'uses' => 'promotion@create_email'));
+        Route::get('discover/email/update', array('as' => 'get_update_promotion_email', 'uses' => 'promotion@updateEmail'));
     });
 
 
@@ -299,8 +315,8 @@ $layout = View::of('layout');
         
         Route::post('reports/edit', array('as' => 'post_editreports', 'uses' => 'admin@editreports'));
 
-        Route::post('advertising/crosspromotion', array('as' => 'post_crosspromotion', 'uses' => 'advertising@crosspromotion'));
-        Route::post('game/edit/crosspromotion', array('as' => 'post_crosspromotion_editgame', 'uses' => 'advertising@crosspromotion_editgame'));
+        Route::post('promotion/crosspromotion', array('as' => 'post_crosspromotion', 'uses' => 'promotion@crosspromotion'));
+        Route::post('game/edit/crosspromotion', array('as' => 'post_crosspromotion_editgame', 'uses' => 'promotion@crosspromotion_editgame'));
     });
 
 

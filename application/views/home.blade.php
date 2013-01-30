@@ -62,7 +62,7 @@
                 {{ lang('promote.home_text') }}
             </p>
 
-            <a href="{{ route('get_promote') }}" class="btn btn-primary btn-learn-more">{{ lang('common.learn_more') }}</a>
+            <a href="{{ route('get_promotion') }}" class="btn btn-primary btn-learn-more">{{ lang('common.learn_more') }}</a>
         </div>
     </div>
 

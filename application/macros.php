@@ -175,7 +175,7 @@ HTML::macro('get_infos', function()
     
     if ($json_success != "") 
     {
-        $html_success .= '<div class="alert alert-infos"><a class="close" data-dismiss="infos" href="#">&times;</a>
+        $html_success .= '<div class="alert alert-info"><a class="close" data-dismiss="alert" href="#">&times;</a>
         ';
 
         $array_success = json_decode($json_success, true);
