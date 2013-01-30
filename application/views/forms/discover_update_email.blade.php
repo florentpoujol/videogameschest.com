@@ -5,15 +5,18 @@ $rules = array(
     'profile_count' => 'required|integer|min:1|max:500',
     'search_id' => 'integer|min:1',
 );
+
+if (is_logged_in()) $rules['email'] =  'email';
+// disabled email field prevent the field to be sent
+
+Former::populate($email)
 ?>
-{{ Former::open_vertical(route('post_create_promotion_email'))->rules($rules) }}
+{{ Former::open_vertical(route('post_discover_update_email'))->rules($rules) }}
     {{ Form::token() }}
         
     <div class="row">
         <div class="span4">
             @if (is_logged_in())
-                {{-- user_id hidden field below --}}
-
                 {{ Former::email('email', lang('common.email'))->placeholder(lang('common.email'))->help(lang('discover.form.email.email_help'))->disabled()->value(user()->email) }}
             @else
                 {{ Former::email('email', lang('common.email'))->placeholder(lang('common.email')) }}
@@ -38,16 +41,15 @@ $rules = array(
 
         <div class="span4">
             @if (is_logged_in())
-                {{ Former::hidden('user_id', user_id()) }}
-
-                {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_help', array('blacklist_link'=>route('get_edituser')))) }}
+                {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_help', array('blacklist_link'=>route('get_edituser'))))->id('email_blacklist') }}
             @else
                 {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_guest_help', array('register_link'=>route('get_register'))))->disabled() }}
             @endif
         </div>
 
         <div class="span4">
-            {{ Former::primary_submit(lang('discover.form.email.submit')) }}
+            {{ Former::primary_submit(lang('common.update')) }}
+            {{ Former::danger_small_submit(lang('common.unsubscribe')) }}
         </div>
     </div>
 

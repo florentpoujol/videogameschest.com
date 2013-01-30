@@ -82,6 +82,7 @@ return array(
         'themes' => 'Themes',
         'title' => 'Title',
 
+        'unsubscribe' => 'Unsubscribe',
         'update' => 'Update',
         'url' => 'URL',
         'username' => 'User name',
@@ -704,10 +705,11 @@ return array(
             ),
         ),
 
-    'msg' => array(
-        'feed_url' => 'Here is your feed url : :feed_url',
-
-    ),
+        'msg' => array(
+            'feed_url' => 'Here is your feed url : :feed_url',
+            'email_not_found' => 'The provided email id and key does not match any promotion email subscription.',
+            'email_subscription_success' => 'You successfully subscribed to the promotion newsletter. You will receive a confirmation email soon.',
+        ),
 
     ),
 

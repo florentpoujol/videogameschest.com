@@ -21,21 +21,10 @@
 
     <hr>
 
-    <?php
-        $tabs = array(
-            array(
-                'url' => route('get_discover_feed_page'),
-                'label' => lang('promotion.email.title'),
-            ),
-
-            array(
-                'url' => route('get_discover_email_page'),
-                'label' => lang('promotion.feed.title'),
-            ),
-        );
-        ?>
-
-        {{ Navigation::tabs($tabs) }}
+    <ul class="nav nav-tabs" id="main-tabs">
+        <li><a href="#feed-pane" data-toggle="tab">{{ lang('promotion.feed.title') }}</a></li>
+        <li><a href="#email-pane" data-toggle="tab">{{ lang('promotion.email.title') }}</a></li>
+    </ul>
 
     <div class="tab-content">
         <div class="tab-pane" id="feed-pane"> 
@@ -46,7 +35,7 @@
 
                 @if ( ! is_null($feed))
                     <?php
-                    $url = route('get_promotion_feed_data', array($feed->id));
+                    $url = route('get_discover_feed_data', array($feed->id));
                     ?>
             
                     <p>
@@ -61,12 +50,36 @@
         </div> <!-- /#feed-pane .tab-pane -->
 
         <div class="tab-pane" id="email-pane">
-            @include('forms/discover_email')
+            <?php
+            $email = null;
+
+            if (is_logged_in()) {
+                $email = PromotionEmail::where_user_id(user_id())->first();
+            } elseif (isset($email_id) && isset($email_key)) {
+                $email = PromotionEmail::where_id($email_id)->where_email_key($email_key)->first();
+
+                if (is_null($email)) {
+                    HTML::set_error(lang('discover.msg.email_not_found'));
+                }
+            }
+            ?>
+
+            {{ HTML::get_errors() }}
+
+            @if (! is_null($email))
+                @include('forms/discover_update_email')
+            @else
+                @include('forms/discover_create_email')
+            @endif
         </div> <!-- /#email-pane .tab-pane -->
     </div> <!-- /.tab-content -->
 </div>
 
 @section('jQuery')
 // from discover
-$('#main-tabs a:first').tab('show');
+    @if ( ! isset($current_tab)) 
+        $('#main-tabs a:first').tab('show');
+    @else
+        $('#main-tabs a[href="{{ $current_tab }}"]').tab('show');
+    @endif
 @endsection

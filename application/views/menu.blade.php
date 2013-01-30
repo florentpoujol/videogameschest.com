@@ -39,7 +39,7 @@
 
                     <li{{ $home }}><a href="{{ route('get_home') }}">{{ lang('menu.home') }}</a></li>
                     <li{{ $search }}><a href="{{ route('get_search') }}">{{ lang('search.title') }}</a></li>
-                    <li{{ $discover }}><a href="{{ route('get_discover') }}">{{ lang('discover.title') }}</a></li>
+                    <li{{ $discover }}><a href="{{ route('get_discover_page') }}">{{ lang('discover.title') }}</a></li>
                     <li{{ $promotion }}><a href="{{ route('get_promotion') }}">{{ lang('promotion.title') }}</a></li>
                     
                     <!-- /general menu --> 

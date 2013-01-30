@@ -53,8 +53,8 @@ $layout = View::of('layout');
 
     Route::get('/', function() use ($layout)
     {
-        return Redirect::to_route('get_home');
-        //return $layout->nest('page_content', 'home');
+        //return Redirect::to_route('get_home');
+        return $layout->nest('page_content', 'home');
     });
 
 
@@ -90,22 +90,11 @@ $layout = View::of('layout');
 
 
     // DISCOVER
-    Route::get('discover', array('as' => 'get_discover', 'do' => function() use ($layout)
-    {
-        return $layout->nest('page_content', 'discover');
-    }));
-
-    Route::get('discover/feed', array('as' => 'get_discover_feed_page', 'uses' => 'promotion@feed_page'));
-    // when visitors check promotion feeds
-    Route::get('discover/feed/(:num)', array('as' => 'get_discover_feed_data', 'uses' => 'promotion@feed_data'));
-
-    // EMAILS
-    // creation/update form for users
-    Route::get('discover/email', array('as' => 'get_discover_email_page', 'uses' => 'promotion@email_page'));
+    Route::get('discover', array('as' => 'get_discover_page', 'uses' => 'discover@index'));
+    Route::get('discover/feed', array('as' => 'get_discover_feed_page', 'uses' => 'discover@FeedPage'));
+    Route::get('discover/feed/(:num)', array('as' => 'get_discover_feed_data', 'uses' => 'discover@FeedData'));
+    Route::get('discover/email/(:num?)/(:any?)', array('as' => 'get_discover_email_page', 'uses' => 'discover@EmailPage'));
     
-    // update subscription for guest
-    // param is the email_key
-    //Route::get('discover/email/(:any?)', array('as' => 'get_update_promotion_email_page', 'uses' => 'promotion@updateEmail'));
 
 
 
@@ -157,9 +146,9 @@ $layout = View::of('layout');
 
 
         // user subscribe to a promotion feed or email
-        Route::post('discover/feed/create', array('as' => 'post_create_promotion_feed', 'uses' => 'promotion@create_feed'));
-        Route::post('discover/email/create', array('as' => 'post_create_promotion_email', 'uses' => 'promotion@create_email'));
-        Route::get('discover/email/update', array('as' => 'get_update_promotion_email', 'uses' => 'promotion@updateEmail'));
+        Route::post('discover/feed/create', array('as' => 'post_discover_create_feed', 'uses' => 'discover@CreateFeed'));
+        Route::post('discover/email/create', array('as' => 'post_discover_create_email', 'uses' => 'discover@CreateEmail'));
+        Route::post('discover/email/update', array('as' => 'post_discover_update_email', 'uses' => 'discover@UpdateEmail'));
     });
 
 

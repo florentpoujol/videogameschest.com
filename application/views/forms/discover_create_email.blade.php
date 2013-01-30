@@ -1,25 +1,24 @@
 <?php
 $rules = array(
-    'type' => 'required|in:rss,atom',
+    'email' => 'required|email',
     'frequency' => 'required|integer|min:12|max:744',
     'profile_count' => 'required|integer|min:1|max:500',
     'search_id' => 'integer|min:1',
 );
 
-if (is_logged_in()) {
-    $feed = user()->promotionFeed;
-
-    if ( ! is_null($feed)) {
-        Former::populate($feed);
-    }
-}
+if (is_logged_in()) $rules['email'] =  'email';
+// disabled email field prevent the field to be sent
 ?>
-{{ Former::open_vertical(route('post_discover_create_feed'))->rules($rules) }}
+{{ Former::open_vertical(route('post_discover_create_email'))->rules($rules) }}
     {{ Form::token() }}
-
+        
     <div class="row">
         <div class="span4">
-            {{ Former::select('type', lang('discover.form.feed.type'))->options(array('rss'=>'RSS', 'atom'=>'Atom')) }}
+            @if (is_logged_in())
+                {{ Former::email('email', lang('common.email'))->placeholder(lang('common.email'))->help(lang('discover.form.email.email_help'))->disabled()->value(user()->email) }}
+            @else
+                {{ Former::email('email', lang('common.email'))->placeholder(lang('common.email')) }}
+            @endif
         </div>
 
         <div class="span4">
@@ -40,22 +39,17 @@ if (is_logged_in()) {
 
         <div class="span4">
             @if (is_logged_in())
-                {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_help', array('blacklist_link'=>route('get_edituser'))))->id('feed_blacklist') }}
-                </p>
+                {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_help', array('blacklist_link'=>route('get_edituser'))))->id('email_blacklist') }}
             @else
                 {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_guest_help', array('register_link'=>route('get_register'))))->disabled() }}
             @endif
         </div>
 
         <div class="span4">
-            @if (isset($feed))
-                {{ Former::primary_submit(lang('common.update')) }}
-            @else
-                {{ Former::primary_submit(lang('discover.form.feed.submit')) }}
-            @endif
+            {{ Former::primary_submit(lang('discover.form.email.submit')) }}
         </div>
     </div>
 
     <hr>
-    
+
 {{ Former::close() }}

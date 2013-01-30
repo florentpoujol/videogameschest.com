@@ -52,7 +52,7 @@
                 ?>
             </p>
 
-            <a href="{{ route('get_discover') }}" class="btn btn-primary">{{ lang('common.learn_more') }}</a>
+            <a href="{{ route('get_discover_page') }}" class="btn btn-primary">{{ lang('common.learn_more') }}</a>
         </div>
 
         <div class="span6">
