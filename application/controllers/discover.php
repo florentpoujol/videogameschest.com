@@ -98,7 +98,48 @@ class Discover_Controller extends Base_Controller
 
     public function post_UpdateEmail()
     {
-        
+        /*
+        TODO admins have accès to any promotion newsletter with just the news id   discover/email/id
+        */
+        $input = Input::all();
+        $newsletter = null;
+
+        if (is_logged_in()) $input['user_id'] = user_id();
+
+
+        // unsubscribe
+        if (isset($input['unsubscribe'])) {
+            if (PromotionEmail::unsubscribe($input)) {
+                return Redirect::to_route('get_discover_email_page');
+            } else {
+                if (is_logged_in()) {
+                    return Redirect::back();
+                } else {
+                    return Redirect::to_route('get_discover_update_email_page', array($input['newsletter_id'], $input['newsletter_url_key']));
+                }
+            }
+        }
+
+
+        // update
+        $rules = array(
+            'email' => 'required|email',
+            'frequency' => 'required|integer|min:12|max:744',
+            'profile_count' => 'required|integer|min:1|max:500',
+            'search_id' => 'integer|min:1',
+        );
+
+        $validation = Validator::make($input, $rules);
+
+        if ($validation->passes() && PromotionEmail::update($input)) {
+            if (is_logged_in()) {
+                return Redirect::back();
+            } else {
+                return Redirect::to_route('get_discover_update_email_page', array($email->id, $email->url_key));
+            }
+        } else {
+            return Redirect::back()->with_input()->with_errors($validation);
+        }
     }
 
 } // end of Discover controller class

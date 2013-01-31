@@ -97,9 +97,11 @@ return array(
 
 
         'msg' => array( 
-            'edit_other_users_profile_not_allowed' => 'You are not allowed to edit profiles which does not belong to you.',
             'access_not_allowed' => "You are not allowed to access the page ':page'",
-            'page_not_found' => 'Sorry, the page you were looking for was not found.'
+            'edit_other_users_profile_not_allowed' => 'You are not allowed to edit profiles which does not belong to you.',
+            'error' => 'Sorry there has been an error, please contact the administrators if it persists.',
+            'page_not_found' => 'Sorry, the page you were looking for was not found.',
+
         ),
     ),
 
@@ -706,12 +708,18 @@ return array(
         ),
 
         'msg' => array(
+            // feeed
             'create_feed_success' => 'You successfully created a promotion feed. The url should be displayed below.',
             'update_feed_success' => 'You successfully updated your promotion feed. The feed URL has not changed.',
             'feed_url' => 'Your feed url is : :feed_url',
 
-            'email_not_found' => 'The provided email id and url key does not match any promotion newsletter subscription.',
+            // email
+            'email_id_key_no_match' => 'The provided newsletter id and url key does not match any promotion newsletter subscription.',
+
             'email_subscription_success' => 'You successfully subscribed to the promotion newsletter. You will receive a confirmation email soon.',
+            'email_unsubscription_success' => 'You successfully unsubscribed from the promotion newsletter.',
+
+
         ),
 
     ),

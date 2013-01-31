@@ -1,4 +1,5 @@
 
+update/unsubscribe promotion newsletter
 
 built the promotion feed
 build the promotion newsletter

@@ -59,7 +59,7 @@
                 $newsletter = PromotionEmail::where_id($email_id)->where_url_key($url_key)->first();
 
                 if (is_null($newsletter)) {
-                    HTML::set_error(lang('discover.msg.email_not_found'));
+                    HTML::set_error(lang('discover.msg.email_id_key_no_match'));
                 }
             }
             ?>

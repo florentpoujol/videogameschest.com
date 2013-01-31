@@ -48,8 +48,13 @@ Former::populate($newsletter)
         </div>
 
         <div class="span4">
+            @if (is_guest())
+                {{ Former::hidden('newsletter_id', $newsletter->id) }}
+                {{ Former::hidden('newsletter_url_key', $newsletter->url_key) }}
+            @endif
+
             {{ Former::primary_submit(lang('common.update')) }}
-            {{ Former::danger_small_submit(lang('common.unsubscribe')) }}
+            <input type="submit" name="unsubscribe" value="{{ lang('common.unsubscribe') }}" class="btn btn-danger btn-mini">
         </div>
     </div>
 
