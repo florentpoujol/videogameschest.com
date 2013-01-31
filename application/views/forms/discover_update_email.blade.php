@@ -9,7 +9,7 @@ $rules = array(
 if (is_logged_in()) $rules['email'] =  'email';
 // disabled email field prevent the field to be sent
 
-Former::populate($email)
+Former::populate($newsletter)
 ?>
 {{ Former::open_vertical(route('post_discover_update_email'))->rules($rules) }}
     {{ Form::token() }}

@@ -6,7 +6,7 @@ return array(
 
     'developer_passed_submission_review' => array(
         'subject' => 'developer_passed_submission_review subject',
-        
+
         'html' => 
         'Hi :name <br>
         <br>
@@ -40,9 +40,6 @@ return array(
         ',
     ),
     
-    
-    
-
 // REGISTER
 
     'register_confirmation' => array(
@@ -114,5 +111,28 @@ return array(
         -- <br>
         Regards, <br>
         The VideoGamesChest team',
+    ),
+
+// PROMOTION
+
+    'promotion_email_subscription_success' => array(
+        'subject' => 'You subscribed to the promotion newsletter',
+
+        'html' => 'Hello :username <br>
+        <br>
+        You subscribed to the promotion newsletter on VideoGamesChest.com with the following settings :  <br>
+        - email : :email <br>
+        - frequency : :hours hours (you will receive an email every :hours hours) <br>
+        - profile count : :profile_count (:profile_count profiles are displayed in each emails) <br>
+        - search ID : :search_id (only profiles that match this dearch ID will be displayed) <br>
+        - use blacklist : :use_blacklist <br>
+        <br>
+        To edit your subscription or unsubscribe, just follow this link : <br>
+        <a href=":update_link" title="Edit your subscription, or unsubscribe">:update_link</a> <br>
+        <br>
+        -- <br>
+        Regards, <br>
+        The VideoGamesChest team
+        ',
     ),
 );

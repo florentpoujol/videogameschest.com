@@ -1,9 +1,10 @@
 
-mail subscription promotion newsletter
-log creation feed
 
-remanier user profil et routes
-ajouter tab promotion profils
+built the promotion feed
+build the promotion newsletter
+
+ajouter tab promotion game
+ajouter tab promotion developers
 
 
 
@@ -16,3 +17,7 @@ ajouter search ID sur formulaire
 DONE
 
 remanier format email array
+mail subscription promotion newsletter
+log creation feed
+
+

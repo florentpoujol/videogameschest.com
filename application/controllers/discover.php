@@ -35,12 +35,6 @@ class Discover_Controller extends Base_Controller
 
         if ($validation->passes()) {
             $feed = PromotionFeed::make($input);
-            
-            $url = route('get_discover_feed_data', array($feed->id));
-
-            HTML::set_info(lang('discover.msg.feed_url', array(
-                'feed_url' => $url
-            )));
 
             return Redirect::back()->with_input();
         } else {
@@ -62,12 +56,16 @@ class Discover_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // EMAIL
 
-    public function get_EmailPage($email_id = null, $email_key = null)
+    public function get_EmailPage($email_id = null, $url_key = null)
     {    
+        if ( ! is_null($email_id) && is_logged_in()) {
+            return Redirect::to_route('get_discover_email_page');
+        }
+
         $this->layout->nest('page_content', 'discover',  array(
             'current_tab' => '#email-pane',
             'email_id' => $email_id,
-            'email_key' => $email_key
+            'url_key' => $url_key
         ));
     }
 
@@ -91,7 +89,7 @@ class Discover_Controller extends Base_Controller
             if (is_logged_in()) {
                 return Redirect::back();
             } else {
-                return Redirect::to_route('get_discover_email_page', array($email->id, $email->email_key));
+                return Redirect::to_route('get_discover_update_email_page', array($email->id, $email->url_key));
             }
         } else {
             return Redirect::back()->with_input()->with_errors($validation);

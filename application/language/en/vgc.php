@@ -706,8 +706,11 @@ return array(
         ),
 
         'msg' => array(
-            'feed_url' => 'Here is your feed url : :feed_url',
-            'email_not_found' => 'The provided email id and key does not match any promotion email subscription.',
+            'create_feed_success' => 'You successfully created a promotion feed. The url should be displayed below.',
+            'update_feed_success' => 'You successfully updated your promotion feed. The feed URL has not changed.',
+            'feed_url' => 'Your feed url is : :feed_url',
+
+            'email_not_found' => 'The provided email id and url key does not match any promotion newsletter subscription.',
             'email_subscription_success' => 'You successfully subscribed to the promotion newsletter. You will receive a confirmation email soon.',
         ),
 

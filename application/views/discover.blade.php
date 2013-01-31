@@ -51,14 +51,14 @@
 
         <div class="tab-pane" id="email-pane">
             <?php
-            $email = null;
+            $newsletter = null;
 
             if (is_logged_in()) {
-                $email = PromotionEmail::where_user_id(user_id())->first();
-            } elseif (isset($email_id) && isset($email_key)) {
-                $email = PromotionEmail::where_id($email_id)->where_email_key($email_key)->first();
+                $newsletter = PromotionEmail::where_user_id(user_id())->first();
+            } elseif (isset($email_id) && isset($url_key)) {
+                $newsletter = PromotionEmail::where_id($email_id)->where_url_key($url_key)->first();
 
-                if (is_null($email)) {
+                if (is_null($newsletter)) {
                     HTML::set_error(lang('discover.msg.email_not_found'));
                 }
             }
@@ -66,7 +66,7 @@
 
             {{ HTML::get_errors() }}
 
-            @if (! is_null($email))
+            @if (! is_null($newsletter))
                 @include('forms/discover_update_email')
             @else
                 @include('forms/discover_create_email')

@@ -93,7 +93,8 @@ $layout = View::of('layout');
     Route::get('discover', array('as' => 'get_discover_page', 'uses' => 'discover@index'));
     Route::get('discover/feed', array('as' => 'get_discover_feed_page', 'uses' => 'discover@FeedPage'));
     Route::get('discover/feed/(:num)', array('as' => 'get_discover_feed_data', 'uses' => 'discover@FeedData'));
-    Route::get('discover/email/(:num?)/(:any?)', array('as' => 'get_discover_email_page', 'uses' => 'discover@EmailPage'));
+    Route::get('discover/email', array('as' => 'get_discover_email_page', 'uses' => 'discover@EmailPage'));
+    Route::get('discover/email/(:num)/(:any)', array('as' => 'get_discover_update_email_page', 'uses' => 'discover@EmailPage'));
     
 
 
