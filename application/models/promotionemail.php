@@ -15,11 +15,14 @@ class PromotionEmail extends ExtendedEloquent
         $input = clean_form_input($input);
         $newsletter = null;
 
-        if (isset($input['user_id'])) {
+        if (is_logged_in()) {
+            $input['user_id'] = user_id();
             // check if the subscription already exist for this user then redirect to the update
-            $newsletter = parent::where_user_id($input['user_id'])->first();
+            $newsletter = parent::where_user_id(user_id())->first();
 
-            if ( ! is_null($newsletter)) {
+            if ( ! is_null($newsletter)) { // should not happend since the create form is not displayed if newsletter already exists for this user
+                Log::write('create update promotion newsletter error', 'User name='.user()->username.' id='.user_id().' tried to create a new promotion newsletter (id='.$newsletter->id.') but it already existed. Redirecting to upadte');
+                static::update($input);
                 return;
             }
         }
@@ -37,7 +40,7 @@ class PromotionEmail extends ExtendedEloquent
             $msg = "Guest email='".$newsletter->email."'";
         }
         $msg .= " subscribed to the promotion newsletter : id='".$newsletter->id."'" ;
-        Log::write('create promotion newsletter success', $msg);
+        // Log::write('create promotion newsletter success', $msg);
 
         // send email
         $subject = lang('emails.promotion_email_subscription_success.subject');
@@ -62,30 +65,63 @@ class PromotionEmail extends ExtendedEloquent
 
         sendMail($params['email'], $subject, $html);
 
-        return $email;
+        return $newsletter;
     }
 
-    public static function update($input)
+    public static function update($input, $arg2)
     {
+        $input = clean_form_input($input);
+        if ( ! isset($input['use_blacklist'])) $input['use_blacklist'] = 0;
 
+        if (is_logged_in()) {
+            $newsletter = parent::where_user_id(user_id())->first();
+            
+            if (is_null($newsletter)) {
+                HTML::set_error(lang('common.msg.error'));
+                Log::write('update promotion newsletter error', 'Promotion newsletter for user name='.user()->username.' id='.user_id().' was not found when updating.');
+                return false;
+            }
+
+            $log_msg = 'User name='.user()->username.' id='.user_id().' successfully updated its promotion newsletter id='.$newsletter->id.'.';
+            
+        } else {
+            $newsletter = parent::where_id($input['newsletter_id'])->where_url_key($input['newsletter_url_key'])->first();
+
+            if (is_null($newsletter)) {
+                HTML::set_error(lang('discover.msg.email_id_key_no_match'));
+                Log::write('update promotion newsletter error', 'Guest tried to update promotion newsletter but newsletter id='.$input['newsletter_id'].' and url key='.$input['newsletter_url_key'].' did not match.');
+                return false;
+                // actually that should not happend since this is already checked on page load 
+                // and the update form is displayed only when id and key match
+            }
+            
+            unset($input['newsletter_id']);
+            unset($input['newsletter_url_key']);
+
+            $log_msg = 'Guest succesfully updated its promotion newsletter id='.$newsletter->id.' email='.$newsletter->email;
+        }
+
+        parent::update($newsletter->id, $input);
+
+        HTML::set_success(lang('discover.msg.email_update_success'));
+        Log::write('update promotion newsletter success', $log_msg);
     }
 
     public static function unsubscribe($input) // can't use delete as method name because already exists
     {
         if (is_logged_in()) {
-            $newsletter = PromotionEmail::where_user_id($input['user_id']);
-            //$newsletter = user()->PromotionEmail;
+            $newsletter = parent::where_user_id(user_id())->first();
             
             if (is_null($newsletter)) {
                 HTML::set_error(lang('common.msg.error'));
-                Log::write('delete promotion newsletter error', 'Promotion newsletter for user name='.user()->username.' id='.user_id().' was not found when unsubscribing with id='.$input['user_id'].'.');
+                Log::write('delete promotion newsletter error', 'Promotion newsletter for user name='.user()->username.' id='.user_id().' was not found when unsubscribing.');
                 return false;
             }
 
+            $log_msg = 'User name='.user()->username.' id='.user_id().' unsubscribed from the promotion newsletter id='.$newsletter->id.'.';
             $newsletter->delete();
-            $log_msg = 'User name='.user()->username.' id='.user_id().' unsubscribed from the promotion newsletter.';
         } else {
-            $newsletter = PromotionEmail::where_id($input['newsletter_id'])->where_url_key($input['newsletter_url_key']);
+            $newsletter = parent::where_id($input['newsletter_id'])->where_url_key($input['newsletter_url_key'])->first();
 
             if (is_null($newsletter)) {
                 HTML::set_error(lang('discover.msg.email_id_key_no_match'));
@@ -95,16 +131,16 @@ class PromotionEmail extends ExtendedEloquent
                 // and the update form is displayed only when id and key match
             }
             
-            $log_msg = 'Guest succesfully unsubscribed from the promotion newsletter id='.$newsletter->id.' email='.$newsletter->email.'.';
+            $log_msg = 'Guest succesfully unsubscribed from the promotion newsletter id='.$newsletter->id.' email='.$newsletter->email;
             $newsletter->delete();
         }
 
         // msg
         HTML::set_success(lang('discover.msg.email_unsubscription_success'));
 
-        // Log
+        // Lo
         Log::write('delete promotion newsletter success', $log_msg);
-                
+        
         return true;
-    }
+    } 
 }

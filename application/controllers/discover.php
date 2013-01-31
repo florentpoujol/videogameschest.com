@@ -22,7 +22,6 @@ class Discover_Controller extends Base_Controller
     public function post_CreateFeed()
     {
         $input = Input::all();
-        if (is_logged_in()) $input['user_id'] = user_id();
 
         $rules = array(
             'type' => 'required|in:rss,atom',
@@ -30,7 +29,7 @@ class Discover_Controller extends Base_Controller
             'profile_count' => 'required|integer|min:1|max:500',
             'search_id' => 'integer|min:1',
         );
-
+        
         $validation = Validator::make($input, $rules);
 
         if ($validation->passes()) {
@@ -41,7 +40,6 @@ class Discover_Controller extends Base_Controller
             return Redirect::back()->with_input()->with_errors($validation);
         }
     }
-
 
     /**
      * When a feed url is checked for new content
@@ -72,7 +70,6 @@ class Discover_Controller extends Base_Controller
     public function post_CreateEmail()
     {
         $input = Input::all();
-        if (is_logged_in()) $input['user_id'] = user_id();
 
         $rules = array(
             'email' => 'required|email',
@@ -81,15 +78,17 @@ class Discover_Controller extends Base_Controller
             'search_id' => 'integer|min:1',
         );
 
+        if (is_logged_in()) $rules['email'] = 'email'; // disabled email field prevent the field to be sent
+
         $validation = Validator::make($input, $rules);
 
         if ($validation->passes()) {
-            $email = PromotionEmail::create($input);
+            $newsletter = PromotionEmail::create($input);
             
-            if (is_logged_in()) {
-                return Redirect::back();
+            if (is_guest()) {
+                return Redirect::to_route('get_discover_update_email_page', array($newsletter->id, $newsletter->url_key));
             } else {
-                return Redirect::to_route('get_discover_update_email_page', array($email->id, $email->url_key));
+                return Redirect::back();
             }
         } else {
             return Redirect::back()->with_input()->with_errors($validation);
@@ -98,28 +97,20 @@ class Discover_Controller extends Base_Controller
 
     public function post_UpdateEmail()
     {
-        /*
-        TODO admins have accès to any promotion newsletter with just the news id   discover/email/id
-        */
         $input = Input::all();
-        $newsletter = null;
-
-        if (is_logged_in()) $input['user_id'] = user_id();
-
 
         // unsubscribe
         if (isset($input['unsubscribe'])) {
             if (PromotionEmail::unsubscribe($input)) {
                 return Redirect::to_route('get_discover_email_page');
-            } else {
-                if (is_logged_in()) {
-                    return Redirect::back();
-                } else {
+            } else {     
+                if (is_guest()) {
                     return Redirect::to_route('get_discover_update_email_page', array($input['newsletter_id'], $input['newsletter_url_key']));
+                } else {
+                    return Redirect::back();
                 }
             }
         }
-
 
         // update
         $rules = array(
@@ -129,15 +120,18 @@ class Discover_Controller extends Base_Controller
             'search_id' => 'integer|min:1',
         );
 
+        if (is_logged_in()) $rules['email'] =  'email'; // disabled email field prevent the field to be sent
+
+
         $validation = Validator::make($input, $rules);
 
-        if ($validation->passes() && PromotionEmail::update($input)) {
-            if (is_logged_in()) {
-                return Redirect::back();
-            } else {
+        if ($validation->passes() && PromotionEmail::update($input, null)) {
+            if (is_guest()) {
                 return Redirect::to_route('get_discover_update_email_page', array($email->id, $email->url_key));
+            } else {
+                return Redirect::back();
             }
-        } else {
+        } else {            
             return Redirect::back()->with_input()->with_errors($validation);
         }
     }

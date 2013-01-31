@@ -6,8 +6,7 @@ $rules = array(
     'search_id' => 'integer|min:1',
 );
 
-if (is_logged_in()) $rules['email'] =  'email';
-// disabled email field prevent the field to be sent
+if (is_logged_in()) $rules['email'] =  'email'; // disabled email field prevent the field to be sent
 
 Former::populate($newsletter)
 ?>

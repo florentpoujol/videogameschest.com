@@ -54,7 +54,10 @@
             $newsletter = null;
 
             if (is_logged_in()) {
-                $newsletter = PromotionEmail::where_user_id(user_id())->first();
+
+                // $newsletter = PromotionEmail::where_user_id(user_id())->first();
+                $newsletter = user()->PromotionEmail;
+
             } elseif (isset($email_id) && isset($url_key)) {
                 $newsletter = PromotionEmail::where_id($email_id)->where_url_key($url_key)->first();
 

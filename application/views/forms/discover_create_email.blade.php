@@ -6,7 +6,7 @@ $rules = array(
     'search_id' => 'integer|min:1',
 );
 
-if (is_logged_in()) $rules['email'] =  'email';
+if (is_logged_in()) $rules['email'] = 'email';
 // disabled email field prevent the field to be sent
 ?>
 {{ Former::open_vertical(route('post_discover_create_email'))->rules($rules) }}

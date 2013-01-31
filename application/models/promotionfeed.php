@@ -11,22 +11,8 @@ class PromotionFeed extends ExtendedEloquent
         $input = clean_form_input($input);
         $feed = null;
 
-        if (isset($input['user_id'])) {
-            $feed = parent::where_user_id($input['user_id'])->first();
-        } else {
-            /*$feed = parent::where(function($query) use ($input)
-            {
-                foreach ($input as $field => $value) {
-                    $query->where($field, '=', $value);
-                }
-            })->first();*/
-
-            /*$feed = parent::
-                where_type($input['type'])
-                ->where_frequency($input['frequency'])
-                ->where_profile_count($input['profile_count'])
-                ->where_search_id($input['search_id'])
-                ->first();*/
+        if (is_logged_in()) {
+            $feed = parent::where_user_id(user_id())->first();
         }
 
         // create new feed row
@@ -49,7 +35,7 @@ class PromotionFeed extends ExtendedEloquent
             }
             $msg .= " created feed id='".$feed->id."'";
 
-            Log::write('create feed promotion success', $msg);
+            Log::write('create promotion feed success', $msg);
         } 
         // update feed row
         elseif ($feed->user_id != 0) { // update feed if user_id
@@ -63,7 +49,7 @@ class PromotionFeed extends ExtendedEloquent
 
             // Log
             $msg = "User name='".user()->name."' id='".user_id()."' updated feed id='".$feed->id."'";
-            Log::write('update feed promotion success', $msg);
+            Log::write('update promotion feed success', $msg);
         }
 
         return $feed;

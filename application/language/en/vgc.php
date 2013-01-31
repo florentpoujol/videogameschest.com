@@ -714,10 +714,12 @@ return array(
             'feed_url' => 'Your feed url is : :feed_url',
 
             // email
-            'email_id_key_no_match' => 'The provided newsletter id and url key does not match any promotion newsletter subscription.',
+            'email_id_key_no_match' => 'The provided newsletter id and url key do not match any promotion newsletter subscription.',
 
             'email_subscription_success' => 'You successfully subscribed to the promotion newsletter. You will receive a confirmation email soon.',
+            'email_update_success' => 'You successfully updated your promotion newsletter',
             'email_unsubscription_success' => 'You successfully unsubscribed from the promotion newsletter.',
+
 
 
         ),
