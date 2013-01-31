@@ -40,6 +40,7 @@ class PromotionEmail extends ExtendedEloquent
         Log::write('create promotion email success', $msg);
 
         // send email
+        
 
         return $email;
     }

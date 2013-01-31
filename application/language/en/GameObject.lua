@@ -227,15 +227,13 @@ function GameObject:AddComponent(componentType, asset, g)
 
     -- get the asset if name is given
     -- it's done here because we need the asset right away if it's a script
-    if asset ~= nil then
-        if type(asset) == "string" then
-            local assetType = assetTypeFromComponentType[componentType]
-            local assetName = asset
-            asset = CraftStudio.FindAsset(assetName, assetType)
+    if asset ~= nil && if type(asset) == "string" then
+        local assetType = assetTypeFromComponentType[componentType]
+        local assetName = asset
+        asset = CraftStudio.FindAsset(assetName, assetType)
 
-            if asset == nil then
-                error(errorHead .. "Asset not found. Component type='" .. componentType .. "', asset type='" .. assetType .. "', asset name'" .. assetName .. "'")
-            end
+        if asset == nil then
+            error(errorHead .. "Asset not found. Component type='" .. componentType .. "', asset type='" .. assetType .. "', asset name'" .. assetName .. "'")
         end
     end
 
@@ -256,11 +254,10 @@ function GameObject:AddComponent(componentType, asset, g)
         end
     end
 
-
     return component
 end
 
-
+-- Script
 function GameObject:AddScript(assetNameOrAsset)
     local errorHead = "GameObject:AddScript(assetNameOrAsset) : "
 
@@ -269,9 +266,201 @@ function GameObject:AddScript(assetNameOrAsset)
     end
 
     if type(assetNameOrAsset) == nil then
-        error(errorHead .. "Argument 'assetNameOrAsset' is nil. Must be the script's name or the script asset.")
+        error(errorHead .. "Argument 'assetNameOrAsset' is nil. Must be the script name or the script asset.")
     end
 
     return self:AddComponent("Script", assetNameOrAsset)
 end
 
+function GameObject:AddScriptedBehavior(assetNameOrAsset)
+    local errorHead = "GameObject:AddScriptedBehavior(assetNameOrAsset) : "
+
+    if getmetatable(self) ~= GameObject then
+        error(errorHead .. "Not called from a gameObject. Your must use a colon ( : ) between the gameObject and the method name. Ie : self.gameObject:AddScriptedBehavior()")
+    end
+
+    if type(assetNameOrAsset) == nil then
+        error(errorHead .. "Argument 'assetNameOrAsset' is nil. Must be the script name or the script asset.")
+    end
+
+    return self:AddComponent("Script", assetNameOrAsset)
+end
+
+-- Model
+function GameObject:AddModel(assetNameOrAsset)
+    local errorHead = "GameObject:AddModel(assetNameOrAsset) : "
+
+    if getmetatable(self) ~= GameObject then
+        error(errorHead .. "Not called from a gameObject. Your must use a colon ( : ) between the gameObject and the method name. Ie : self.gameObject:AddModel()")
+    end
+
+    if type(assetNameOrAsset) == nil then
+        error(errorHead .. "Argument 'assetNameOrAsset' is nil. Must be the model name or the model asset.")
+    end
+
+    return self:AddComponent("ModelRenderer", assetNameOrAsset)
+end
+
+function GameObject:AddModelRenderer(assetNameOrAsset)
+    local errorHead = "GameObject:AddModelRenderer(assetNameOrAsset) : "
+
+    if getmetatable(self) ~= GameObject then
+        error(errorHead .. "Not called from a gameObject. Your must use a colon ( : ) between the gameObject and the method name. Ie : self.gameObject:AddModelRenderer()")
+    end
+
+    if type(assetNameOrAsset) == nil then
+        error(errorHead .. "Argument 'assetNameOrAsset' is nil. Must be the model name or the model asset.")
+    end
+
+    return self:AddComponent("ModelRenderer", assetNameOrAsset)
+end
+
+-- Map
+function GameObject:AddMap(assetNameOrAsset)
+    local errorHead = "GameObject:AddMap(assetNameOrAsset) : "
+
+    if getmetatable(self) ~= GameObject then
+        error(errorHead .. "Not called from a gameObject. Your must use a colon ( : ) between the gameObject and the method name. Ie : self.gameObject:AddMap()")
+    end
+
+    if type(assetNameOrAsset) == nil then
+        error(errorHead .. "Argument 'assetNameOrAsset' is nil. Must be the map name or the map asset.")
+    end
+
+    return self:AddComponent("MapRenderer", assetNameOrAsset)
+end
+
+function GameObject:AddMapRenderer(assetNameOrAsset)
+    local errorHead = "GameObject:AddMapRenderer() : "
+
+    if getmetatable(self) ~= GameObject then
+        error(errorHead .. "Not called from a gameObject. Your must use a colon ( : ) between the gameObject and the method name. Ie : self.gameObject:AddMapRenderer()")
+    end
+
+    if type(assetNameOrAsset) == nil then
+        error(errorHead .. "Argument 'assetNameOrAsset' is nil. Must be the map name or the map asset.")
+    end
+
+    return self:AddComponent("MapRenderer", assetNameOrAsset)
+end
+
+-- Camera
+function GameObject:AddCamera()
+    local errorHead = "GameObject:AddCamera() : "
+
+    if getmetatable(self) ~= GameObject then
+        error(errorHead .. "Not called from a gameObject. Your must use a colon ( : ) between the gameObject and the method name. Ie : self.gameObject:AddCamera()")
+    end
+
+    return self:AddComponent("MapRenderer")
+end
+
+
+-- Get the first component of the specified type
+-- function GameObject:GetComponent(componentType, g)
+--     local errorHead = "GameObject:GetComponent(componentType) : "
+
+--     if getmetatable(self) ~= GameObject then -- pas appelé depuis un gameObject
+--         error(errorHead .. "Not called from a gameObject. Your must use a colon ( : ) between the gameObject and the method name. Ie : self.gameObject:GetComponent()")
+--     end
+
+--     if componentType == nil or type(componentType) ~= "string" then
+--         error(errorHead .. "Argument 'componentType' is nil or not a string. Must be the component type.")
+--     end
+
+--     return self:GetComponent(componentType)
+-- end
+
+-- Script
+function GameObject:GetScript(script)
+    local errorHead = "GameObject:GetScript(scriptNameOrScriptAsset) : "
+
+    if getmetatable(self) ~= GameObject then -- pas appelé depuis un gameObject
+        error(errorHead .. "Not called from a gameObject. Your must use a colon ( : ) between the gameObject and the method name. Ie : self.gameObject:GetScript()")
+    end
+
+    if script == nil then
+        error(errorHead .. "Argument 'scriptNameOrScriptAsset' is nil. Must be the script name or the script asset")
+    end
+
+    if script ~= nil and if type(script) == "string" then
+        local scriptName = script
+        script = CraftStudio.FindAsset(scriptName, "Script")
+        
+        if script == nil then
+            error(errorHead .. "Script asset not found. Script name='" .. scriptName .. "'")
+        end
+    end
+
+    return self:GetScriptedBehavior(script)
+end
+
+-- Model
+function GameObject:GetModelRenderer()
+    local errorHead = "GameObject:GetModelRenderer() : "
+
+    if getmetatable(self) ~= GameObject then -- pas appelé depuis un gameObject
+        error(errorHead .. "Not called from a gameObject. Your must use a colon ( : ) between the gameObject and the method name. Ie : self.gameObject:GetModelRenderer()")
+    end
+
+    return self:GetComponent("ModelRenderer")
+end
+
+-- Map
+function GameObject:GetMapRenderer()
+    local errorHead = "GameObject:GetMapRenderer() : "
+
+    if getmetatable(self) ~= GameObject then -- pas appelé depuis un gameObject
+        error(errorHead .. "Not called from a gameObject. Your must use a colon ( : ) between the gameObject and the method name. Ie : self.gameObject:GetMapRenderer()")
+    end
+
+    return self:GetComponent("MapRenderer")
+end
+
+-- Camera
+function GameObject:GetCamera()
+    local errorHead = "GameObject:GetCamera() : "
+
+    if getmetatable(self) ~= GameObject then -- pas appelé depuis un gameObject
+        error(errorHead .. "Not called from a gameObject. Your must use a colon ( : ) between the gameObject and the method name. Ie : self.gameObject:GetCamera()")
+    end
+
+    return self:GetComponent("Camera")
+end
+
+-- Transform
+function GameObject:GetTransform()
+    local errorHead = "GameObject:GetTransform() : "
+
+    if getmetatable(self) ~= GameObject then -- pas appelé depuis un gameObject
+        error(errorHead .. "Not called from a gameObject. Your must use a colon ( : ) between the gameObject and the method name. Ie : self.gameObject:GetTransform()")
+    end
+
+    return self:GetComponent("Transform")
+end
+
+
+-- Destory Components
+
+
+
+
+-- Destroy
+function GameObject:Destroy()
+    local errorHead = "GameObject:Destroy() : "
+
+    if getmetatable(self) ~= GameObject then -- pas appelé depuis un gameObject
+        error(errorHead .. "Not called from a gameObject. Your must use a colon ( : ) between the gameObject and the method name. Ie : self.gameObject:Destroy()")
+    end
+
+    CraftSudio.Destroy(self)
+end
+
+
+
+
+
+
+function Asset.Get(assetName, assetType)
+    return CraftSudio.FindAsset(assetName, assetType)
+end

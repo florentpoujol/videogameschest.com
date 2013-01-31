@@ -39,14 +39,16 @@ class Profile extends ExtendedEloquent
 
         // email's text :
         // it explain that the profile has passed the review and what can they do with it
-        $text = lang('emails.profile_passed_'.$review.'_review', array(
+        $subject = lang('emails.profile_passed_publishing_review.subject');
+        
+        $html = lang('emails.profile_passed_'.$review.'_review.html', array(
             'user_name' => $this->user->name,
             'profile_type' => $profile,
             'profile_name' => $this->name,
             'profile_link' => route('get_'.$profile, array(name_to_url($this->name))),
         ));
 
-        sendMail($this->user->email, lang('emails.profile_passed_publishing_review_subject'), $text);
+        sendMail($this->user->email, $subject, $html);
     }
 
 

@@ -44,7 +44,7 @@ class Developer extends Profile
 
         $dev = parent::create($input);
 
-
+        // msg
         $msg = lang('developer.msg.adddev_success', array(
             'name' => $dev->name,
             'id' => $dev->id
@@ -52,15 +52,15 @@ class Developer extends Profile
         HTML::set_success($msg);
         Log::write('developer create success', $msg);
 
-
-        $text = lang('emails.profile_created', array(
+        // email
+        $subject = lang('emails.profile_created.subject');
+        $html = lang('emails.profile_created.html', array(
             'user_name' => $dev->user->name,
             'profile_type' => 'developer',
             'profile_name' => $dev->name,
         ));
 
-        sendMail($dev->user->email, lang('emails.profile_created_subject'), $text);
-
+        sendMail($dev->user->email, $subject, $html);
 
         return $dev;
     }

@@ -1,8 +1,18 @@
 
-dev newsletter/feed pub
+mail subscription promotion newsletter
+log creation feed
+
+remanier user profil et routes
+ajouter tab promotion profils
+
+
 
 modifer présentation screenshots et vidéos, et soudtrack dans les profils
 
 retravailler formuaire recherche
 ajouter search ID sur formulaire
 
+
+DONE
+
+remanier format email array

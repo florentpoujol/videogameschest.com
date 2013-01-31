@@ -14,12 +14,13 @@ class User extends ExtendedEloquent
 	public static function create($input) 
 	{
         $input = clean_form_input($input);
-        unset($input['do_not_display_success_msg']);
 
         // password
         if (isset($input["password"]) && trim($input["password"]) != "") {
             $input["password"] = Hash::make($input["password"]);
         } else {
+            // not use anymore since all users set their password when registering
+
             // dummy password
             $input['password'] = Hash::make(Config::get('dummie_password'));
             // the password will be updated by hand via th edituser page or
@@ -34,14 +35,14 @@ class User extends ExtendedEloquent
         if ($input['type'] == 'admin') $input['is_trusted'] = 1;
 
         $input['crosspromotion_active'] = 1;
-        $input['blacklist'] = array('developers' => array(), 'games' => array());
 
 
         $user = parent::create($input);
 
         // Log
         HTML::set_success(lang('register.msg.register_success', array('username'=>$user->username)));
-        Log::write('user create success', 'New user created (id='.$user->id.') (username='.$user->username.') (email='.$user->email.') (temp_key='.$user->temp_key.')');
+
+        Log::write('user create success', 'New user created (id='.$user->id.') (username='.$user->username.') (email='.$user->email.')');
 
         // email
         $link = URL::to_route('get_register_confirmation', array(
@@ -49,12 +50,14 @@ class User extends ExtendedEloquent
             'url_key' => $user->url_key
         ));
 
-        $text = lang('emails.register_confirmation', array(
+        $subject = lang('emails.register_confirmation.subject');
+
+        $html = lang('emails.register_confirmation.html', array(
             'username' => $user->username,
             'link' => $link
         ));
 
-        sendMail($user->email, lang('emails.register_confirmation_subject'), $text);
+        sendMail($user->email, $subject, $html);
 
         return $user;
     }
@@ -125,13 +128,13 @@ class User extends ExtendedEloquent
 
             // email
             $link = URL::to_route('get_lostpassword_confirmation', array($this->id, $this->url_key));
-
-            $text = lang('emails.lostpassword_confirmation', array(
+            $subject = lang('emails.lostpassword_confirmation.subject');
+            $html = lang('emails.lostpassword_confirmation.html', array(
                 'username' => $this->username,
                 'link' => $link
             ));
 
-            sendMail($this->email, lang('emails.lostpassword_confirmation_subject'), $text);
+            sendMail($this->email, $subject, $html);
         } 
         
         // setp 2 : generate new password then send by mail
@@ -146,13 +149,14 @@ class User extends ExtendedEloquent
             Log::write('user lostpassword success', 'A new password for user "'.$this->username.'" (id='.$this->id.') as successfully been generated.');
 
             // email
-            $text = lang('emails.lostpassword_success', array(
+            $subject = lang('emails.lostpassword_success.subject');
+            $html = lang('emails.lostpassword_success.html', array(
                 'username' => $this->username,
                 'password' => $password,
                 'login_link' => URL::to_route('get_login'),
             ));
 
-            sendMail($this->email, lang('emails.lostpassword_success_subject'), $text);
+            sendMail($this->email, $subject, $html);
         }
     }
 
