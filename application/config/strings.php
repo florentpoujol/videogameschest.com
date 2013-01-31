@@ -80,6 +80,12 @@ return array(
 		'person' => 'people',
 		'sex' => 'sexes',
 		'tooth' => 'teeth',
+
+		'developer' => 'developers',
+		'game' => 'games',
+		'map' => 'maps',
+		'mod' => 'mods',
+		'technologie' => 'technologies',
 	),
 
 	'uncountable' => array(

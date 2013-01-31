@@ -672,6 +672,8 @@ return array(
         You can subscribe to a <strong>fully customisable</strong> feed or newsletter whose sole purpose is to promote you with games or any profiles on VGC.
         ',
 
+        'feed_title' => 'Feed',
+        'email_title' => 'Newsletter',
 
         'form' => array(
 
@@ -684,7 +686,7 @@ return array(
             If the number of profiles that could be displayed after being filtered by the search and the blacklist is superior to this number, the profiles that made it to the post/e-mail are chose randomly amongs them.',
 
             'search_id' => 'Search ID',
-            'search_id_help' => '(optionnal) The search ID used to filter the content. <br>
+            'search_id_help' => 'The search ID used to filter the content. <br>
             To know which search ID to use, head over the search form, fill it as you like the hit the search button and copy/paste here the search ID that is indicated.',
 
             'use_blacklist' => 'Use my blacklist',
@@ -697,6 +699,7 @@ return array(
                 'help' => 'The feed url is always the same for registered users. <br>',
                 'help_url' => 'Your feed url is : <a href=":feed_url" title="Feed url for user :username">:feed_url</a>',
                 'submit' => 'Obtain this feed\'s URL',
+                'title' => 'Feed',
                 'type' => 'Format of the syndication feed',
             ),
 
@@ -704,6 +707,7 @@ return array(
                 'email_help' => 'Tha\'s you user account email. You must log out if you want to use another email adress.',
                 'help' => 'Once subscribed, you will be able to edit your preferencies or unsubscribe via a link you can find in all e-mails you will get.',
                 'submit' => 'Subscribe',
+                'title' => 'Newsletter',
             ),
         ),
 

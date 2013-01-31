@@ -335,9 +335,41 @@ function parse_bbcode($input)
 }
 
 
+function Plural($text)
+{
+    return Str::plural($text);
+}
+
+
 function popover($text, $data_placement = 'top')
 {
     return '<i class="icon-question-sign" rel="popover" data-placement="'.$data_placement.'" title="'.$text.'"></i>';
+}
+
+
+/**
+ * Removes profiles in the blacklist from the provided profiles
+ */
+function ProcessBlacklist($profiles, $user_id = null) {
+    $user = User::find($user_id);
+
+    if (is_null($user)) {
+        Log::write('blacklist error', 'Tried to process blacklist of an unknow user id='.$user_id);
+        return $profiles;
+    }
+
+    $blacklist = $user->blacklist;
+
+    for ($i = 0; $i < count($profiles); $i++) {
+        $profile = $profiles[$i];
+
+        if (in_array($profile->id, $blacklist[Str::plural($profile->class_name)])) {
+            unset($profiles[$i]);
+            $i--;
+        }
+    }
+
+    return $profiles;
 }
 
 
@@ -414,6 +446,11 @@ function shortenUrl($url)
     return preg_replace("#(https?://[^/]+/)(.*)#i", "$1...", $url);
 }
 
+
+function Singular($text)
+{
+    return Str::singular($text);
+}
 
 /**
  * Set the embed code for the soundtrack

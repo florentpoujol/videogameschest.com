@@ -22,8 +22,8 @@
     <hr>
 
     <ul class="nav nav-tabs" id="main-tabs">
-        <li><a href="#feed-pane" data-toggle="tab">{{ lang('promotion.feed.title') }}</a></li>
-        <li><a href="#email-pane" data-toggle="tab">{{ lang('promotion.email.title') }}</a></li>
+        <li><a href="#feed-pane" data-toggle="tab">{{ lang('discover.feed_title') }}</a></li>
+        <li><a href="#email-pane" data-toggle="tab">{{ lang('discover.email_title') }}</a></li>
     </ul>
 
     <div class="tab-content">

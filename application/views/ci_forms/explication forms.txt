@@ -1,6 +1,0 @@
-la BDD reourne un object, est convertit en array au début des formulaires
-
-$_POST est un array donc input->post() retourne un array 
-
-utilisation de l'array form_data dans les formulaires comme intermédiaire entre les éventuelles données entrante (venant de la BDD ou du mêm formulaire)
-

@@ -3,7 +3,7 @@ $rules = array(
     'type' => 'required|in:rss,atom',
     'frequency' => 'required|integer|min:12|max:744',
     'profile_count' => 'required|integer|min:1|max:500',
-    'search_id' => 'integer|min:1',
+    'search_id' => 'required|integer|min:1',
 );
 
 if (is_logged_in()) {

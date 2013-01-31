@@ -90,7 +90,7 @@ class Feed_Controller extends Base_Controller
     }
 
 
-    public function get_search_feed($feed_type, $search_id)
+    public function get_search_feed($search_id, $feed_type)
     {
         $search = Search::find($search_id);
         
@@ -99,7 +99,7 @@ class Feed_Controller extends Base_Controller
 
             $feed = $this->getFeed()
                 ->title('New profiles feed for search ID '.$search_id)
-                ->permalink(route('get_search_feed', array($feed_type, $search_id)));
+                ->permalink(route('get_search_feed', array($search_id, $feed_type)));
 
             foreach ($profiles as $profile) {
                 $class_name = $profile->class_name;
@@ -120,7 +120,8 @@ class Feed_Controller extends Base_Controller
                             '.$profile_link
                         )->up()
 
-                    ->content()    ->add('html', 
+                    ->content()    
+                        ->add('html', 
                             'A new '.$class_name.' profile has been published on VideoGamesChest.com. <br>
                             You can see it at this url : <a href="'.$profile_link.'" title="Go to '.$profile_name.'\'s profile">'.$profile_name.'</a>'
                         )->up()

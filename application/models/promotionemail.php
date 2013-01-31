@@ -5,11 +5,8 @@ class PromotionEmail extends ExtendedEloquent
     public static $table = 'promotion_emails';
 
     //----------------------------------------------------------------------------------
+    // CRUD
 
-    /**
-     * Create a email row
-     * @todo Check emails that are not used  :    NOW - updated_at > frequency
-     */
     public static function create($input)
     {
         $input = clean_form_input($input);

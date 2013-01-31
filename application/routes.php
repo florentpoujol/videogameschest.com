@@ -88,13 +88,15 @@ $layout = View::of('layout');
 
     // for POST search, see below in CSRF group
 
+    Route::get('search/feed/(:num)/(rss|atom)', array('as' => 'get_search_feed', 'uses' => 'feed@search_feed'));
+
 
     // DISCOVER
     Route::get('discover', array('as' => 'get_discover_page', 'uses' => 'discover@index'));
     Route::get('discover/feed', array('as' => 'get_discover_feed_page', 'uses' => 'discover@FeedPage'));
     Route::get('discover/feed/(:num)', array('as' => 'get_discover_feed_data', 'uses' => 'discover@FeedData'));
-    Route::get('discover/email', array('as' => 'get_discover_email_page', 'uses' => 'discover@EmailPage'));
-    Route::get('discover/email/(:num)/(:any)', array('as' => 'get_discover_update_email_page', 'uses' => 'discover@EmailPage'));
+    Route::get('discover/newsletter', array('as' => 'get_discover_email_page', 'uses' => 'discover@EmailPage'));
+    Route::get('discover/newsletter/(:num)/(:any)', array('as' => 'get_discover_update_email_page', 'uses' => 'discover@EmailPage'));
     
 
 
@@ -115,7 +117,7 @@ $layout = View::of('layout');
     // RSS FEEDS
 
     Route::get('feed/(rss|atom)/reports/(developer|admin)/(:num)/(:any)', array('as' => 'get_reports_feed', 'uses' => 'feed@reports_feed'));
-    Route::get('feed/(rss|atom)/search/(:num)', array('as' => 'get_search_feed', 'uses' => 'feed@search_feed'));
+    
 
     Route::get('feed/(rss|atom)/reviews/('.implode('|', Config::get('vgc.review.types')).')/(:num)/(:any)', array('as' => 'get_reviews_feed', 'uses' => 'feed@reviews_feed'));
 
@@ -128,7 +130,6 @@ $layout = View::of('layout');
     Route::get('promote/crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion_from_game', 'uses' => 'promotion@crosspromotion_from_game'));
 
         
-
 
 //----------------------------------------------------------------------------------
 //  MUST BE LEGIT POST

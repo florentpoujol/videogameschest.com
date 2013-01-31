@@ -295,7 +295,7 @@ class User extends ExtendedEloquent
         $list = json_decode($this->get_attribute('blacklist'), true);
         
         if (is_array($list)) {
-            foreach (Config::get('vgc.profile_types_singular') as $type) {
+            foreach (Config::get('vgc.profile_types') as $type) {
                 if ( ! array_key_exists($type, $list)) {
                     $list[$type] = array();
                 }
@@ -309,7 +309,7 @@ class User extends ExtendedEloquent
 
     public function set_blacklist($list)
     {
-        foreach (Config::get('vgc.profile_types_singular') as $type) {
+        foreach (Config::get('vgc.profile_types') as $type) {
             if ( ! array_key_exists($type, $list)) {
                 $list[$type] = array();
             }

@@ -56,10 +56,10 @@
         </div>
 
         <div class="span6">
-            <h2>{{ lang('promote.title') }} <small>{{ lang('promote.subtitle') }}</small></h2>
+            <h2>{{ lang('promotion.title') }} <small>{{ lang('promotion.subtitle') }}</small></h2>
 
             <p>
-                {{ lang('promote.home_text') }}
+                {{ lang('promotion.home_text') }}
             </p>
 
             <a href="{{ route('get_promotion') }}" class="btn btn-primary btn-learn-more">{{ lang('common.learn_more') }}</a>

@@ -4,6 +4,7 @@ class Profile extends ExtendedEloquent
 {
     //public $_user = null;
     public $class_name = 'profile';
+    public $class_name_plural = 'profiles';
 
 
     //----------------------------------------------------------------------------------
@@ -14,6 +15,7 @@ class Profile extends ExtendedEloquent
         parent::__construct($attributes, $exists);
 
         $this->class_name = strtolower(get_class($this)); // get the child class name
+        $this->class_name_plural = $this->class_name.'s';
     }
 
     //----------------------------------------------------------------------------------

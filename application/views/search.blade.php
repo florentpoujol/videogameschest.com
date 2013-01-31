@@ -23,7 +23,7 @@ if (isset($search_data['class'])) $default_tab = $search_data['class'];
     
     @if (isset($search_id))
         <p>
-            <a href="{{ route('get_search_feed', array('rss', $search_id)) }}" title="{{ lang('search.rss_feed') }}">{{ icon('rss') }} {{ lang('search.rss_feed') }}</a>
+            <a href="{{ route('get_search_feed', array($search_id, 'rss')) }}" title="{{ lang('search.rss_feed') }}">{{ icon('rss') }} {{ lang('search.rss_feed') }}</a>
         </p>
 
         <br>
