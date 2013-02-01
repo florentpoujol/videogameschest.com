@@ -17,7 +17,7 @@ class PromotionFeed extends ExtendedEloquent
 
         // create new feed row
         if (is_null($feed)) { 
-            //$input['last_pub_date'] = date_create();
+            $input['last_pub_date'] = New DateTime();
             $feed = parent::create($input);
 
             // msg

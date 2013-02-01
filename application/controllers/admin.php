@@ -2,15 +2,9 @@
 
 class Admin_Controller extends Base_Controller 
 {
-    public function __construct() 
-    {
-        parent::__construct();
-       
-    }
-
     public function get_index()
     {
-        $this->layout->nest('page_content', 'admin/adminhome');
+        $this->layout->nest('page_content', 'logged_in/adminhome');
     }
 
 
@@ -216,7 +210,7 @@ class Admin_Controller extends Base_Controller
 
     public function get_adduser()
     {
-        $this->layout->nest('page_content', 'admin/adduser');
+        $this->layout->nest('page_content', 'logged_in/createuser');
     }
 
     public function post_adduser()
@@ -239,7 +233,7 @@ class Admin_Controller extends Base_Controller
             return Redirect::to_route('get_edituser', array($user->id));
         } else {
             Former::withErrors($validation);
-            $this->layout->nest('page_content', 'admin/adduser');
+            $this->layout->nest('page_content', 'logged_in/createuser');
         }
     }
 
@@ -257,7 +251,7 @@ class Admin_Controller extends Base_Controller
             return Redirect::to_route('get_edituser', array(user_id()));
         }
 
-        $this->layout->nest('page_content', 'admin/edituser', array('user_id'=>$user_id));
+        $this->layout->nest('page_content', 'logged_in/updateuser', array('user_id'=>$user_id));
     }
 
     public function post_edituser()
@@ -341,7 +335,7 @@ class Admin_Controller extends Base_Controller
 
     public function get_adddeveloper()
     {
-        $this->layout->nest('page_content', 'adddeveloper');
+        $this->layout->nest('page_content', 'logged_in/createdeveloper');
     }
 
     public function post_adddeveloper()
@@ -414,7 +408,7 @@ class Admin_Controller extends Base_Controller
                 return Redirect::to_route('get_editdeveloper', array($profile_id));
             }
 
-            $this->layout->nest('page_content', 'admin/selecteditdeveloper');
+            $this->layout->nest('page_content', 'forms/selecteditdeveloper');
             return;
         }
 
@@ -430,7 +424,7 @@ class Admin_Controller extends Base_Controller
             return Redirect::to_route('get_editdeveloper');
         }
 
-        $this->layout->nest('page_content', 'admin/editdeveloper', array('profile_id'=>$profile_id));
+        $this->layout->nest('page_content', 'logged_in/updatedeveloper', array('profile_id'=>$profile_id));
     }
 
     public function post_editdeveloper() 
@@ -478,7 +472,7 @@ class Admin_Controller extends Base_Controller
 
     public function get_addgame()
     {
-        $this->layout->nest('page_content', 'addgame');
+        $this->layout->nest('page_content', 'logged_in/creategame');
     }
 
     public function post_addgame()
@@ -555,7 +549,7 @@ class Admin_Controller extends Base_Controller
                 return Redirect::to_route('get_editgame', array($profile_id));
             }
 
-            $this->layout->nest('page_content', 'admin/selecteditgame');
+            $this->layout->nest('page_content', 'forms/selecteditgame');
             return;
         }
 
@@ -571,7 +565,7 @@ class Admin_Controller extends Base_Controller
             return Redirect::to_route('get_editgame');
         }
 
-        $this->layout->nest('page_content', 'admin/editgame', array('profile_id'=>$profile_id));
+        $this->layout->nest('page_content', 'logged_in/updategame', array('profile_id'=>$profile_id));
     }
 
     public function post_editgame() 
@@ -639,7 +633,7 @@ class Admin_Controller extends Base_Controller
         }
 
         // return View::make('admin.reviews')->with();
-        $this->layout->nest('page_content', 'admin.reviews', array('review' => $review));
+        $this->layout->nest('page_content', 'logged_in/reviews', array('review' => $review));
     }
 
     public function post_reviews()
@@ -702,7 +696,7 @@ class Admin_Controller extends Base_Controller
             return Redirect::to_route('get_reports', array('developer'));
         }
 
-        $this->layout->nest('page_content', 'admin.reports', array('report_type' => $report));
+        $this->layout->nest('page_content', 'logged_in/reports', array('report_type' => $report));
     }
 
     public function post_addreport()

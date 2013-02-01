@@ -164,8 +164,8 @@ class User extends ExtendedEloquent
     public static function updateBlacklist($input)
     {
         $user = User::find($input['id']);
-        $class_name = $input['profile_type'];
-        $profile_type = $class_name.'s';
+        $profile_type = $input['profile_type'];
+        $profile_type_plural = $profile_type.'s';
 
         // adding profiles in the blacklist
         if (isset($input['add'])) {
@@ -176,10 +176,10 @@ class User extends ExtendedEloquent
             foreach ($names as $name) {
                 
                 if (is_numeric($name)) {
-                    $profile = $class_name::where_id($name)->first('id');
+                    $profile = $profile_type::where_id($name)->first('id');
                 }
                 elseif (is_string($name)) {
-                    $profile = $class_name::where_name($name)->first('id');
+                    $profile = $profile_type::where_name($name)->first('id');
                 } 
 
                 if ( ! is_null($profile)) {
@@ -190,54 +190,54 @@ class User extends ExtendedEloquent
             }
 
             $list = $user->blacklist;
-            $original_count = count($list[$profile_type]);
+            $original_count = count($list[$profile_type_plural]);
 
             for ($i = 0; $i < count($ids); $i++) { 
-                if ( ! in_array($ids[$i], $list[$profile_type])) {
-                    $list[$profile_type][] = $ids[$i];
+                if ( ! in_array($ids[$i], $list[$profile_type_plural])) {
+                    $list[$profile_type_plural][] = $ids[$i];
                 }
             }
             
-            $diff = count($list[$profile_type]) - $original_count;
+            $diff = count($list[$profile_type_plural]) - $original_count;
             
             $user->blacklist = $list;
             $user->save();
 
             HTML::set_success(lang('blacklist.msg.add_success', array(
                 'num' => $diff,
-                'type' => $class_name,
+                'type' => $profile_type,
             )));
 
-            Log::write('user blacklist add success', 'User (name : '.user()->name.') (id : '.user_id().') added '.$diff.' '.$class_name.' to the blacklist of user (name : '.$user->username.') (id : '.$user->id.').');
+            Log::write('user blacklist add success', 'User (name : '.user()->name.') (id : '.user_id().') added '.$diff.' '.$profile_type.' to the blacklist of user (name : '.$user->username.') (id : '.$user->id.').');
         }
 
         if (isset($input['delete']) && isset($input['ids_to_delete'])) {
             $ids = $input['ids_to_delete'];
 
             $list = $user->blacklist;
-            $original_count = count($list[$profile_type]);
+            $original_count = count($list[$profile_type_plural]);
 
             for ($i = 0; $i < count($ids); $i++) { 
-                $key = array_search($ids[$i], $list[$profile_type]);
+                $key = array_search($ids[$i], $list[$profile_type_plural]);
 
                 if ($key !== false) { // the value was found
-                    unset($list[$profile_type][$key]);
+                    unset($list[$profile_type_plural][$key]);
                 }
             }
 
-            $list[$profile_type] = array_values($list[$profile_type]); // rebuilt the indexes
+            $list[$profile_type_plural] = array_values($list[$profile_type_plural]); // rebuilt the indexes
 
-            $diff = $original_count - count($list[$profile_type]);
+            $diff = $original_count - count($list[$profile_type_plural]);
 
             $user->blacklist = $list;
             $user->save();
 
             HTML::set_success(lang('blacklist.msg.delete_success', array(
                 'num' => $diff,
-                'type' => $class_name,
+                'type' => $profile_type,
             )));
 
-            Log::write('user blacklist delete success', 'User (name : '.user()->name.') (id : '.user_id().') deleted '.$diff.' '.$class_name.' from the blacklist of user (name : '.$user->username.') (id : '.$user->id.').');
+            Log::write('user blacklist delete success', 'User (name : '.user()->name.') (id : '.user_id().') deleted '.$diff.' '.$profile_type.' from the blacklist of user (name : '.$user->username.') (id : '.$user->id.').');
         }
     }
 
@@ -296,6 +296,8 @@ class User extends ExtendedEloquent
         
         if (is_array($list)) {
             foreach (Config::get('vgc.profile_types') as $type) {
+                $type .= 's';
+
                 if ( ! array_key_exists($type, $list)) {
                     $list[$type] = array();
                 }
@@ -310,6 +312,8 @@ class User extends ExtendedEloquent
     public function set_blacklist($list)
     {
         foreach (Config::get('vgc.profile_types') as $type) {
+            $type .= 's';
+
             if ( ! array_key_exists($type, $list)) {
                 $list[$type] = array();
             }

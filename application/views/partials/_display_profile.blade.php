@@ -1,4 +1,4 @@
-<section id="display-profiles">
+<section id="display-profiles-list">
     @foreach ($profiles as $profile)
         <div class="media" id="profile-list">
             <?php

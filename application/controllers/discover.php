@@ -43,50 +43,62 @@ class Discover_Controller extends Base_Controller
 
     /**
      * When a feed url is checked for new content
-     * route get_discover_feed_data
+     * The promotion feed is a feed with only one entry when last_pub_date + frequency < NOW
      */
     public function get_FeedData($feed_id)
     {
         $feed = PromotionFeed::find($feed_id);
 
         if ( ! is_null($feed)) {
-            /*$last_check_date = new DateTime(DBConfig::get('review_check_date'));
-            $interval = new DateInterval('PT'. Config::get('vgc.review.check_interval') .'M');
-            $last_check_date->add($interval);
+            $created_at = new DateTime($feed->created_at);
+            $last_pub_date = new DateTime($feed->last_pub_date);
+
+            // default feed infos
+            $feed_data = array( 
+                'channel' => array(
+                    'title' => 'VideoGamesChest Promotion feed ID '.$feed->id,
+                    'link' => URL::base(),
+                    'description' => 'description',
+                    'permalink' => route('get_discover_feed_data', array($feed->id)),
+                    'pubDate' => $created_at->format('r'),
+                    'lastBuildDate' => $last_pub_date->format('r'),
+                ),
+
+                'items' => array(),
+            );
+
+            // check time
+            $interval = new DateInterval('PT'. $feed->frequency .'H');
+            $last_pub_date->add($interval);
             $now = new DateTime();
+            $now_string = $now->format('r');
             
-            if ($last_check_date < $now) {*/
+            if ($last_pub_date < $now) {
+                $feed->last_pub_date = $now;
+                $feed->save();
+
                 $profiles = Search::get_profiles($feed->search_id);
 
                 if ($feed->use_blacklist == 1) {
                     $profiles = ProcessBlacklist($profiles, $feed->user_id);
                 }
 
-                // contant of the rss flux
-                $feed_data = array( 
-                    'channel' => array(
-                        'title' => 'Promotion feed ID '.$feed->id,
-                        'description' => 'description',
-                        'permalink' => route('get_discover_feed_data', array($feed->id)),
-                        'pubDate' => $feed->created_at,
-                        'lastBuildDate' => $feed->updated_at,
-                    ),
-
-                    'items' => array(
-                        'title' => 'Promotion feed entry on '.date_create()
-                    ),
+                // content of the feed
+                $feed_data['items'][] = array(
+                    'title' => 'Promotion feed entry on '.$now->format(Config::get('vgc.date_formats.english')),
+                    'pubDate' => $now_string,
+                    //'link' => '',
+                    'guid isPermaLink="false"' => Str::random(40),
+                    'description' => 'error creating profile list',
                 );
 
-                foreach ($profiles as $profile) {
-                    $class_name = $profile->class_name;
-                    $profile_name = $profile->name;
-                    $profile_link = route('get_'.$class_name, array(name_to_url($profile_name)));
+                // build te description
+                $description = Response::view('partials/promotion_profile_list', array('profiles' => $profiles));
 
+                $feed_data['items'][0]['description'] = $description;
+            }
 
-                }
-
-                View::make('rss', array('feed_data' => $feed_data));
-            //}
+            return Response::view('rss', array('feed_data' => $feed_data));
         } else {
             return 'Unknow promotion feed id';
         }

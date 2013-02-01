@@ -1,14 +1,14 @@
 
-
-
-built the promotion feed
 build the promotion newsletter
+
+report RSS feed does not work
 
 ajouter tab promotion game
 ajouter tab promotion developers
 
-érifier formulaire blacklist si prend en compte nom des clés au pluriel
 
+
+remanier dev states
 
 modifer présentation screenshots et vidéos, et soudtrack dans les profils
 
@@ -16,7 +16,15 @@ retravailler formuaire recherche
 ajouter search ID sur formulaire
 
 
-DONE
+    DONE
+
+01/02/2013
+
+vérifier formulaire blacklist si prend en compte nom des clés au pluriel
+built the promotion feed
+
+
+31/01/2013
 
 remanier format email array
 mail subscription promotion newsletter

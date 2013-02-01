@@ -350,7 +350,8 @@ function popover($text, $data_placement = 'top')
 /**
  * Removes profiles in the blacklist from the provided profiles
  */
-function ProcessBlacklist($profiles, $user_id = null) {
+function ProcessBlacklist($profiles, $user_id = null) 
+{
     $user = User::find($user_id);
 
     if (is_null($user)) {
@@ -363,9 +364,8 @@ function ProcessBlacklist($profiles, $user_id = null) {
     for ($i = 0; $i < count($profiles); $i++) {
         $profile = $profiles[$i];
 
-        if (in_array($profile->id, $blacklist[Str::plural($profile->class_name)])) {
+        if (in_array($profile->id, $blacklist[$profile->class_name.'s'])) {
             unset($profiles[$i]);
-            $i--;
         }
     }
 

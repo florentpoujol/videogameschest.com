@@ -199,15 +199,15 @@ $layout = View::of('layout');
 
         Route::get('logout', array('as' => 'get_logout', 'uses' => 'admin@logout'));
 
-        Route::get('user/edit/(:num?)', array('as' => 'get_edituser', 'uses' => 'admin@edituser'));
+        Route::get('user/update/(:num?)', array('as' => 'get_edituser', 'uses' => 'admin@edituser'));
         
-        Route::get('developer/add', array('as' => 'get_adddeveloper', 'uses' => 'admin@adddeveloper'));
-        Route::get('developer/edit/(:num?)', array('as' => 'get_editdeveloper', 'uses' => 'admin@editdeveloper'));
+        Route::get('developer/create', array('as' => 'get_adddeveloper', 'uses' => 'admin@adddeveloper'));
+        Route::get('developer/update/(:num?)', array('as' => 'get_editdeveloper', 'uses' => 'admin@editdeveloper'));
         // I could also use
         // Route::get('(add|edit)developer', 'admin@(:1)developer');
 
-        Route::get('game/add', array('as' => 'get_addgame', 'uses' => 'admin@addgame'));
-        Route::get('game/edit/(:num?)', array('as' => 'get_editgame', 'uses' => 'admin@editgame'));    
+        Route::get('game/create', array('as' => 'get_addgame', 'uses' => 'admin@addgame'));
+        Route::get('game/update/(:num?)', array('as' => 'get_editgame', 'uses' => 'admin@editgame'));    
 
         Route::get('reports/(:any?)', array('as' => 'get_reports', 'uses' => 'admin@reports'));
 
@@ -291,23 +291,23 @@ $layout = View::of('layout');
 
     Route::group(array('before' => 'auth|csrf'), function()
     {
-        Route::post('user/edit', array('as' => 'post_edituser', 'uses' => 'admin@edituser'));
-        Route::post('user/editpassword', array('as' => 'post_editpassword', 'uses' => 'admin@editpassword'));
-        Route::post('user/editblacklist', array('as' => 'post_editblacklist', 'uses' => 'admin@editblacklist'));
+        Route::post('user/update', array('as' => 'post_edituser', 'uses' => 'admin@edituser'));
+        Route::post('user/updatepassword', array('as' => 'post_editpassword', 'uses' => 'admin@editpassword'));
+        Route::post('user/updateblacklist', array('as' => 'post_editblacklist', 'uses' => 'admin@editblacklist'));
 
         Route::post('selecteditdeveloper', array('as' => 'post_selecteditdeveloper', 'uses' => 'admin@selecteditdeveloper'));
-        Route::post('developer/add', array('as' => 'post_adddeveloper', 'uses' => 'admin@adddeveloper'));
-        Route::post('developer/edit', array('as' => 'post_editdeveloper', 'uses' => 'admin@editdeveloper'));
+        Route::post('developer/create', array('as' => 'post_adddeveloper', 'uses' => 'admin@adddeveloper'));
+        Route::post('developer/update', array('as' => 'post_editdeveloper', 'uses' => 'admin@editdeveloper'));
 
         Route::post('selecteditgame', array('as' => 'post_selecteditgame', 'uses' => 'admin@selecteditgame'));
-        Route::post('game/add', array('as' => 'post_addgame', 'uses' => 'admin@addgame'));
-        Route::post('game/edit', array('as' => 'post_editgame', 'uses' => 'admin@editgame'));
+        Route::post('game/create', array('as' => 'post_addgame', 'uses' => 'admin@addgame'));
+        Route::post('game/update', array('as' => 'post_editgame', 'uses' => 'admin@editgame'));
 
         
-        Route::post('reports/edit', array('as' => 'post_editreports', 'uses' => 'admin@editreports'));
+        Route::post('reports/update', array('as' => 'post_editreports', 'uses' => 'admin@editreports'));
 
         Route::post('promotion/crosspromotion', array('as' => 'post_crosspromotion', 'uses' => 'promotion@crosspromotion'));
-        Route::post('game/edit/crosspromotion', array('as' => 'post_crosspromotion_editgame', 'uses' => 'promotion@crosspromotion_editgame'));
+        Route::post('game/update/crosspromotion', array('as' => 'post_crosspromotion_editgame', 'uses' => 'promotion@crosspromotion_editgame'));
     });
 
 
@@ -318,16 +318,17 @@ $layout = View::of('layout');
 
     Route::group(array('before' => 'auth|admin'), function() use ($layout)
     {
-        Route::get('user/add', array('as' => 'get_adduser', 'uses' => 'admin@adduser'));
+        Route::get('user/create', array('as' => 'get_adduser', 'uses' => 'admin@adduser'));
         Route::get('reviews/(:any?)', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));
 
 
-        Route::get('test', function() use ($layout)
+        Route::get('testadmincontroller/(:num)', array('as' => 'get_testadmin_controller', 'uses' => 'discover@FeedData'));
+        Route::get('testadmin', function() use ($layout)
         {
-            return $layout->nest('page_content', 'test');
+            //return Response::view('partials/feed_profile_list');
         });
 
-        Route::post('test', array('as' => 'post_test', function() use ($layout)
+        Route::post('testadmin', array('as' => 'post_test', function() use ($layout)
         {
             Input::flash();
 
@@ -344,7 +345,7 @@ $layout = View::of('layout');
 
     Route::group(array('before' => 'auth|admin|csrf'), function()
     {
-        Route::post('adduser', array('as' => 'post_adduser', 'uses' => 'admin@adduser'));
+        Route::post('user/create', array('as' => 'post_adduser', 'uses' => 'admin@adduser'));
         Route::post('reviews', array('as' => 'post_reviews', 'uses' => 'admin@reviews'));
     });
 

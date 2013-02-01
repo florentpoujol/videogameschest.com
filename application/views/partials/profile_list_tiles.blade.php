@@ -1,7 +1,7 @@
 <?php
     $tiles_width = 4;// number of tile by the width
 ?>
-<section id="profile-list-tiles" class="">
+<section id="display-profiles-tiles" class="">
     <div class="row">
         @for ($i = 1; $i <= count($profiles); $i++)
             <?php

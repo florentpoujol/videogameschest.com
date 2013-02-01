@@ -13,7 +13,8 @@ return array(
         "date_sql" => "Y-m-d",
         "datetime_sql" => "Y-m-d H:i:s",
         "english" => "d M Y - g:ia",
-        "nonenglish" => "d M Y - G\\hi"
+        "nonenglish" => "d M Y - G\\hi",
+        'rss' => 'r', // 'D, d M Y H:i:s O',
     ),
 
     "feed" => array(
@@ -67,8 +68,8 @@ return array(
     ),
 
 
-    'profile_types' => array('developers', 'games'),
-    'profile_types_singular' => array('developer', 'game'),
+    
+    'profile_types' => array('developer', 'game'),
 
 
 

@@ -81,33 +81,33 @@ if ( ! empty($old)) Former::populate($old);
 
         <div class="tab-pane" id="blacklist-pane">
             
+            <ul class="nav nav-tabs" id="blacklist-tabs">
+                @foreach (Config::get('vgc.profile_types') as $profile_type)
+                    <li><a href="#{{ $profile_type }}-pane" data-toggle="tab">{{ lang('common.'.$profile_type) }}</a></li>
+                @endforeach
+            </ul>
 
-                <ul class="nav nav-tabs" id="blacklist-tabs">
-                    @foreach (Config::get('vgc.profile_types_singular') as $type)
-                        <li><a href="#{{ $type }}-pane" data-toggle="tab">{{ lang('common.'.$type.'s') }}</a></li>
-                    @endforeach
-                </ul>
+            <div class="tab-content">
+                <?php
+                $rules = array('')
+                ?>
+                @foreach (Config::get('vgc.profile_types') as $profile_type)
+                    <div class="tab-pane" id="{{ $profile_type }}-pane">
+                        {{ Former::open_vertical(route('post_editblacklist'))->rules($rules) }}    
+                            {{ Form::token() }}
+                            
+                            @if (is_admin())
+                                {{ Former::hidden('id', $user->id) }}
+                            @endif
 
-                <div class="tab-content">
-                    @foreach (Config::get('vgc.profile_types_singular') as $profile_type)
-                        <div class="tab-pane" id="{{ $profile_type }}-pane">
-                            {{ Former::open_vertical(route('post_editblacklist'))->rules($rules) }}    
-                                {{ Form::token() }}
-                                
-                                @if (is_admin())
-                                    {{ Former::hidden('id', $user->id) }}
-                                @endif
-
-                                <?php
-                                $profile_list = $user->blacklist[$profile_type];
-                                ?>
-                                @include('forms/profile_list')
-                            {{ Former::close() }}
-                        </div> <!-- /#{{ $profile_type }}-pane .tab-pane -->
-                    @endforeach
-                </div> <!-- /.tab-content -->
-                
-            {{ Former::close() }}
+                            <?php
+                            $profile_list = $user->blacklist[$profile_type.'s'];
+                            ?>
+                            @include('forms/profile_list')
+                        {{ Former::close() }}
+                    </div> <!-- /#{{ $profile_type }}-pane .tab-pane -->
+                @endforeach
+            </div> <!-- /.tab-content -->
         </div> <!-- /#blacklist-pane .tab-pane -->
     </div> <!-- /.tab-content -->
 </div> <!-- /#edituser --> 
