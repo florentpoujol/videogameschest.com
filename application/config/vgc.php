@@ -1,59 +1,11 @@
 <?php
 return array(
     
-    "site_languages" => array(
-        "english",
-        
-    ),
-
-    'language_files' => array('vgc', 'emails'),
     
-
-    "date_formats" => array(
-        "date_sql" => "Y-m-d",
-        "datetime_sql" => "Y-m-d H:i:s",
-        "english" => "d M Y - g:ia",
-        "nonenglish" => "d M Y - G\\hi",
-        'rss' => 'r', // 'D, d M Y H:i:s O',
-    ),
-
-    "feed" => array(
-        "pitch_extract_length" => 1000,
-        "item_count" => 20
-    ),
-
-
-    'review' => array(
-        'types' => array('publishing'),
-        'duration' => 7,
-        'approval_threshold' => 20,
-        'check_interval' => 60, // time in minutes between two review success check
-    ),
-
-    'privacy' => array('private', 'public'),
-
-    'privacy_and_reviews' => array('private', 'public', 'publishing'),
-
-    'form_attributes_to_clean' => array('csrf_token', 'password_confirmation', 'old_password', 'controller', 'captcha', 'city'),
-
-    'dummie_password' => 'testtest', //r!&5éT[79m},D?4â+5w% temp password while user is in submission review
-
-    'dev_feed_item_count' => 6,
-    'game_feed_item_count' => 6,
-
-    'automatic_email_from' => 'no-reply@videogameschest.com',
-    'automatic_email_from_name' => 'The VideoGamesChest mailer',
     'admin_email' => 'contact@videogameschest.com',
-
-    'smtp' => array(
-        'server' => 'mail.gandi.net',
-        'server_port' => 465,
-        'username' => 'contact@videogameschest.com',
-        'password' => 'r8(A/vH6r:#;f5G',
-    ),
-
-    'recaptcha_private_key' => '6LcRitsSAAAAAGw_aZAy3qlnC_3lAypwaJm4SgMs',
-    'recaptcha_public_key' => '6LcRitsSAAAAAKlKTf79Z6KbSIrSz2Z0WptjvXzE',
+    'automatic_email_from' => 'noreply@videogameschest.com',
+    'automatic_email_from_name' => 'The VideoGamesChest mailer',
+    
 
     'crosspromotion_developer_allowed_fields' => array(
         'name', 'pitch', 'logo', 'website', 'blogfeed', 'presskit',
@@ -68,14 +20,57 @@ return array(
     ),
 
 
-    
+    "date_formats" => array(
+        "date_sql" => "Y-m-d",
+        "datetime_sql" => "Y-m-d H:i:s",
+        "english" => "d M Y - g:ia",
+        "nonenglish" => "d M Y - G\\hi",
+        'rss' => 'r', // 'D, d M Y H:i:s O',
+    ),
+
+    //'dummie_password' => '', //r!&5éT[79m},D?4â+5w% temp password while user is in submission review
+
+    /*"feed" => array(
+        "pitch_extract_length" => 1000,
+        "item_count" => 20
+    ),*/
+
+
+    'form_attributes_to_clean' => array('csrf_token', 'password_confirmation',
+     'old_password', 'controller', 'captcha', 'city'),
+
+
+    'language_files' => array('vgc', 'emails'),
+
+
+    'review' => array(
+        'types' => array('publishing'),
+        // 'duration' => 7,
+        // 'approval_threshold' => 20,
+        // 'check_interval' => 60, // time in minutes between two review success check
+    ),
+
+
     'profile_types' => array('developer', 'game'),
 
 
+    'privacy' => array('private', 'public'),
+    'privacy_and_reviews' => array('publishing', 'private', 'public'),
+
+
+    'recaptcha_private_key' => '6LcRitsSAAAAAGw_aZAy3qlnC_3lAypwaJm4SgMs',
+    'recaptcha_public_key' => '6LcRitsSAAAAAKlKTf79Z6KbSIrSz2Z0WptjvXzE',
+
+
+    "site_languages" => array(
+        "english",
+    ),
+    
 
 
 
-
+    
+    
 
 
 // form
@@ -216,11 +211,10 @@ return array(
     "developmentstates" => array(
         "concept",
         "prototype",
-        "earlyproduction",
-        "firstgameplay",
-        "publicplayablebuilt",
+        "alpha",
+        "beta",
         "released",
-        "canceled"
+        // "canceled"
     ),
 
 
@@ -230,6 +224,7 @@ return array(
         'realist',
         'minimalist',
         'celshading',
+        
     ),
 
     'periods' => array( 

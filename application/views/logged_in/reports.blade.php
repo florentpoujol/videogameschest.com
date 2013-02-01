@@ -7,10 +7,6 @@
 
     <hr>
 
-        
-
-    <hr>
-
     <?php
     $tabs = array(array(
         'url' => route('get_reports', array('developer')),
@@ -29,9 +25,9 @@
 
     <p>
         @if (is_admin())
-            <a href="{{ route('get_reports_feed', array('rss', $report_type, user_id(), user()->url_key)) }}" title="{{ lang('reports.rss_feed') }}">{{ icon('rss') }} {{ lang('reports.rss_feed') }}</a>
+            <a href="{{ route('get_reports_feed', array($report_type, user_id(), user()->url_key)) }}" title="{{ lang('reports.rss_feed') }}">{{ icon('rss') }} {{ lang('reports.rss_feed') }}</a>
         @else
-            <a href="{{ route('get_reports_feed', array('rss', 'developer', user_id(), user()->url_key)) }}" title="{{ lang('reports.rss_feed') }}">{{ icon('rss') }} {{ lang('reports.rss_feed') }}</a>
+            <a href="{{ route('get_reports_feed', array('developer', user_id(), user()->url_key)) }}" title="{{ lang('reports.rss_feed') }}">{{ icon('rss') }} {{ lang('reports.rss_feed') }}</a>
         @endif
     </p>
 

@@ -86,9 +86,7 @@ $layout = View::of('layout');
         return $layout->nest('page_content', 'search');
     }));
 
-    // for POST search, see below in CSRF group
-
-    Route::get('search/feed/(:num)/(rss|atom)', array('as' => 'get_search_feed', 'uses' => 'feed@search_feed'));
+    Route::get('search/feed/(:num)', array('as' => 'get_search_feed', 'uses' => 'feed@search_feed'));
 
 
     // DISCOVER
@@ -105,21 +103,18 @@ $layout = View::of('layout');
 
     Route::get('setlanguage/(:any?)', array('as' => 'get_set_language', 'do' => function($language = null) use ($layout)
     {
-        if (is_null($language)) {
+        /*if (is_null($language)) {
             $language = Session::get('language', Config::get('language', 'en'));
         }
 
-        Session::put('language', substr($language, 0, 2));
+        Session::put('language', substr($language, 0, 2));*/
         return Redirect::back();
     }));
 
 
     // RSS FEEDS
-
-    Route::get('feed/(rss|atom)/reports/(developer|admin)/(:num)/(:any)', array('as' => 'get_reports_feed', 'uses' => 'feed@reports_feed'));
-    
-
-    Route::get('feed/(rss|atom)/reviews/('.implode('|', Config::get('vgc.review.types')).')/(:num)/(:any)', array('as' => 'get_reviews_feed', 'uses' => 'feed@reviews_feed'));
+    Route::get('reports/feed/(developer|admin)/(:num)/(:any)', array('as' => 'get_reports_feed', 'uses' => 'feed@reports_feed'));
+    Route::get('reviews/feed/('.implode('|', Config::get('vgc.review.types')).')/(:num)/(:any)', array('as' => 'get_reviews_feed', 'uses' => 'feed@reviews_feed'));
 
 
     // PROMOTE
@@ -139,7 +134,7 @@ $layout = View::of('layout');
     {
         Route::post('reports/add', array('as' => 'post_addreport', 'uses' => 'admin@addreport'));
 
-        Route::post('/search', array('as' => 'post_search', 'before' => 'csrf', function()
+        Route::post('search', array('as' => 'post_search', 'before' => 'csrf', function()
         {
             $input = Input::all();
             $search = Search::create($input);
@@ -325,6 +320,7 @@ $layout = View::of('layout');
         Route::get('testadmincontroller/(:num)', array('as' => 'get_testadmin_controller', 'uses' => 'discover@FeedData'));
         Route::get('testadmin', function() use ($layout)
         {
+            return \Laravel\CLI\Command::run(array('sendpromotionnewsletters'));
             //return Response::view('partials/feed_profile_list');
         });
 
@@ -416,8 +412,8 @@ Event::listen('500', function()
 Route::filter('before', function()
 {
     // Do stuff before every request to your application...
-    $lang = Session::get('language', Config::get('language', 'en'));
-    define("LANGUAGE", $lang);
+    // $lang = Session::get('language', Config::get('language', 'en'));
+    define("LANGUAGE", 'en');
 
     // check if user has the logged in cokkie
     $logged_in = Cookie::get('user_logged_in', '0');
@@ -425,7 +421,9 @@ Route::filter('before', function()
 
 
     $route = Request::$route;
-    
+    // 01 feb 2013
+    // ACTION does not seems to be used anywhere
+    // but CONTROLLER is sometimes
     if ($route->controller != null) { // seems to never be the case ??
         define('CONTROLLER', $route->controller);
         define('ACTION', $route->controller_action);
@@ -443,12 +441,17 @@ Route::filter('before', function()
 
 
     if (is_logged_in()) {
-        // I do that here since user()->games and user()->games would return an empty array (or the equivalent)
+        // I do that here since user()->games and user()->devs would return an empty array (or the equivalent)
         // when used for the first time in a condition
-        // calling them here ensure that evry next calls will return the array properly filled
+        // calling them here ensure that every next calls will return the array properly filled
         $games = user()->games;
         $devs = user()->devs;
     }
+
+
+    // checking if it's time to sendpromotion email
+
+
 
     // checking success of reviews
     // check number of approvals

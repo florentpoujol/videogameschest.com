@@ -99,7 +99,7 @@ return array(
         'msg' => array( 
             'access_not_allowed' => "You are not allowed to access the page ':page'",
             'edit_other_users_profile_not_allowed' => 'You are not allowed to edit profiles which does not belong to you.',
-            'error' => 'Sorry there has been an error, please contact the administrators if it persists.',
+            'error' => 'Sorry there has been an error, please contact the administrators if it happens again.',
             'page_not_found' => 'Sorry, the page you were looking for was not found.',
 
         ),
@@ -617,6 +617,8 @@ return array(
         
         'rss_feed' => 'RSS feed for the new profiles that matches this search.',
 
+        'search_id' => 'Search ID',
+        'search_id_uses' => 'The search ID is uses in various places.',
 
         'dev' => array(
             'stores_help' => 'are sold on,',
@@ -956,13 +958,15 @@ return array(
     'developmentstates' => array(
         'title' => 'Developement state',
 
-        'concept' => '1 - Concept/Design phase',
-        'prototype' => '2 - Prototype phase',
-        'earlyproduction' => '3 - Early production',
-        'firstgameplay' => '4 - First gameplay',
-        'publicplayablebuilt' => '5 - Public playable built',
-        'released' => '6 - Released',
-        'canceled' => 'Canceled',
+        'concept' => 'Concept/Design',
+        'prototype' => 'Prototype',
+        'alpha' => 'Alpha',
+        'beta' => 'Beta',
+        // 'earlyproduction' => '3 - Early production',
+        // 'firstgameplay' => '4 - First gameplay',
+        // 'publicplayablebuilt' => '5 - Public playable built',
+        'released' => 'Released',
+        // 'canceled' => 'Canceled',
     ),
 
 // LOOKS

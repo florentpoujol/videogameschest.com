@@ -7,15 +7,14 @@
 
     <hr>
 
-
-
     <?php
     echo 
     Navigation::tabs(array(
-    	/*array(
+    	array(
     		'url' => route('get_reviews', array('submission')),
     		'label' => lang('reviews.submission_title'),
-    	),*/
+            //active
+    	),
     	array(
     		'url' => route('get_reviews', array('publishing')),
     		'label' => lang('reviews.publishing_title'),
@@ -24,8 +23,7 @@
     ?>
 
     <p>
-        {{var_dump($review)}}
-        <a href="{{ route('get_reviews_feed', array('rss', $review, user_id(), user()->url_key)) }}" title="{{ lang('reviews.rss_feed', array('review'=>$review)) }}">{{ icon('rss') }} {{ lang('reviews.rss_feed', array('review'=>$review)) }}</a>
+        <a href="{{ route('get_reviews_feed', array($review, user_id(), user()->url_key)) }}" title="{{ lang('reviews.rss_feed', array('review'=>$review)) }}">{{ icon('rss') }} {{ lang('reviews.rss_feed', array('review'=>$review)) }}</a>
     </p>
     <br>
 

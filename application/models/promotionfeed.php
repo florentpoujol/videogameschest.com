@@ -2,10 +2,6 @@
 
 class PromotionFeed extends ExtendedEloquent 
 {
-    public static $table = 'promotion_feeds';
-
-    //----------------------------------------------------------------------------------
-
     public static function make($input)
     {
         $input = clean_form_input($input);
@@ -17,6 +13,7 @@ class PromotionFeed extends ExtendedEloquent
 
         // create new feed row
         if (is_null($feed)) { 
+            $input['type'] = 'rss';
             $input['last_pub_date'] = New DateTime();
             $feed = parent::create($input);
 

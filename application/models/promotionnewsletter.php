@@ -1,8 +1,8 @@
 <?php
 
-class PromotionEmail extends ExtendedEloquent 
+class PromotionNewsletter extends ExtendedEloquent 
 {
-    public static $table = 'promotion_emails';
+    //public static $table = 'promotion_emails';
 
     //----------------------------------------------------------------------------------
     // CRUD
@@ -26,6 +26,8 @@ class PromotionEmail extends ExtendedEloquent
 
         // create new email row
         $input['url_key'] = Str::random(40);
+        $input['last_pub_date'] = new DateTime();
+        
         $newsletter = parent::create($input);
             
         // msg
@@ -37,7 +39,7 @@ class PromotionEmail extends ExtendedEloquent
             $msg = "Guest email='".$newsletter->email."'";
         }
         $msg .= " subscribed to the promotion newsletter : id='".$newsletter->id."'" ;
-        // Log::write('create promotion newsletter success', $msg);
+        Log::write('create promotion newsletter success', $msg);
 
         // send email
         $subject = lang('emails.promotion_email_subscription_success.subject');

@@ -1,19 +1,14 @@
 
-build the promotion newsletter
-
-report RSS feed does not work
 
 ajouter tab promotion game
 ajouter tab promotion developers
 
 
-
-remanier dev states
-
 modifer présentation screenshots et vidéos, et soudtrack dans les profils
 
 retravailler formuaire recherche
 ajouter search ID sur formulaire
+
 
 
     DONE
@@ -22,6 +17,11 @@ ajouter search ID sur formulaire
 
 vérifier formulaire blacklist si prend en compte nom des clés au pluriel
 built the promotion feed
+build the promotion newsletter
+limiter profiles en prmotin au profile_count
+report RSS feed does not work
+remanier dev states
+
 
 
 31/01/2013

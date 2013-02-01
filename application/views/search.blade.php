@@ -23,7 +23,7 @@ if (isset($search_data['class'])) $default_tab = $search_data['class'];
     
     @if (isset($search_id))
         <p>
-            <a href="{{ route('get_search_feed', array($search_id, 'rss')) }}" title="{{ lang('search.rss_feed') }}">{{ icon('rss') }} {{ lang('search.rss_feed') }}</a>
+            <a href="{{ route('get_search_feed', array($search_id)) }}" title="{{ lang('search.rss_feed') }}">{{ icon('rss') }} {{ lang('search.rss_feed') }}</a> | {{ lang('search.search_id') }} : {{ $search_id }} {{ tooltip(lang('search.search_id_uses')) }}
         </p>
 
         <br>
@@ -43,7 +43,7 @@ else $accordion_default_state = 'in';
 
             <div id="collapse1" class="accordion-body collapse {{ $accordion_default_state }}">
                 <div class="accordion-inner">
-                    @include('partials.search_form')
+                    @include('forms.search_profiles')
                 </div>
             </div> <!-- /.accordion-body -->
         </div> <!-- /.accordion-group -->

@@ -14,16 +14,16 @@ class Feed_Controller extends Base_Controller
         //->logo(asset('logo.png'))
         //->icon(URL::home().'favicon.ico')
         ->webmaster('VideoGamesChest contact@videogameschest.com '.URL::base())
-        ->author   ('VideoGamesChest contact@videogameschest.com '.URL::base())
-        ->rating('SFW')
-        ->pubdate(time())
-        ->ttl(60)
+        //->author   ('VideoGamesChest contact@videogameschest.com '.URL::base())
+        //->rating('SFW')
+        //->pubdate(time())
+        //->ttl(60)
         
         
         ->copyright('(c) '.date('Y').' VideoGamesChest.com')
         
         //->category('PHP')
-        ->language(Session::get('language', Config::get('language', 'en')))
+        //->language(Session::get('language', Config::get('language', 'en')))
         ->baseurl(URL::home());
 
         return $feed;
@@ -38,8 +38,9 @@ class Feed_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
 
 
-    public function get_reports_feed($feed_type, $report_type, $user_id, $url_key)
+    public function get_reports_feed($report_type, $user_id, $url_key)
     {
+        $feed_type = 'rss';
         $user = User::where_id($user_id)->where_url_key($url_key)->first();
         $reports = array();
         
@@ -54,44 +55,39 @@ class Feed_Controller extends Base_Controller
                 $reports = $user->reports('developer');
             }
 
-           $feed = $this->getFeed();
+            $feed_data = array( 
+                'channel' => array(
+                    'title' => 'Report feed for user '.$user->username,
+                    'link' => URL::base(),
+                    'permalink' => route('get_reports_feed', array($feed_type, $report_type, $user_id, $url_key)),
+                    // 'lastBuildDate' => $last_pub_date->format('r'),
+                ),
 
-           $feed
-           ->title('Report feed for user '.$user->username)
-           ->permalink(route('get_reports_feed', array($feed_type, $report_type, $user_id, $url_key)));
+                'items' => array(),
+            );
 
-           foreach ($reports as $report) {
-                $feed->entry()
-                
-                ->published($report->created_at)
-                //->updated($report->updated_at)
-                ->permalink($report->id)
-                
-                ->title('New report on '.$report->profile->class_name.' profile '.$report->profile->name)
-                
-                ->content()
-                    ->add('text', '"'.$report->message.'"
-                    See all your reports on VideoGamesChest.com :
-                    '.route('get_reports'))->up()
-                    
-                    ->add('html', 
-                        $report->message.' <br> <br>
-                        <a href="'.route('get_reports').'">See all your reports on VideoGamesChest.com</a> <br>'
-                        
-                    )->up()
-
-                ;
+            foreach ($reports as $report) {
+                $feed_data['items'][] = array(
+                    'title' => 'New report on '.$report->profile->class_name.' profile "'.$report->profile->name.'"',
+                    'pubDate' => $report->created_at,
+                    // 'link' => route('get_reports'),
+                    'guid isPermalink="false"' => 'report id '.$report->id,
+                    'description' => 
+                    $report->message.' <br>
+                    <a href="'.route('get_reports').'">See all your reports on VideoGamesChest.com</a> <br>',
+                );
             }
 
-            $this->publish($feed_type, $feed);
+            return Response::view('rss', array('feed_data' => $feed_data));
         } else {
            return 'Unknow user or user id and url key do not match.';
         }
     }
 
 
-    public function get_search_feed($search_id, $feed_type)
+    public function get_search_feed($search_id)
     {
+        $feed_type = 'rss';
         $search = Search::find($search_id);
         
         if ( ! is_null($search)) {
@@ -135,8 +131,9 @@ class Feed_Controller extends Base_Controller
     }
 
 
-    public function get_reviews_feed($feed_type, $review_type, $user_id, $url_key)
+    public function get_reviews_feed($review_type, $user_id, $url_key)
     {
+        $feed_type = 'rss';
         $review_type = 'publishing';
 
         $user = User::where_id($user_id)->where_url_key($url_key)->first();
@@ -147,8 +144,8 @@ class Feed_Controller extends Base_Controller
                 $profiles = array_merge($profiles, Game::where_privacy($review_type)->get());
 
                 $feed = $this->getFeed()
-                    ->title('New profiles in '.$review_type.' feed')
-                    ->permalink(route('get_reviews_feed', array($feed_type, $review_type, $user_id, $url_key)));
+                    ->title('New profiles in '.$review_type.' review feed')
+                    ->permalink(route('get_reviews_feed', array($review_type, $user_id, $url_key)));
 
                 foreach ($profiles as $profile) {
                     $class_name = $profile->class_name;

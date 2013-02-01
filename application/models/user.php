@@ -392,13 +392,13 @@ class User extends ExtendedEloquent
         return $ordered_reports;
     }
 
-    public function promotionFeed()
+    public function PromotionFeed()
     {
         return $this->has_one('PromotionFeed');
     }
 
-    public function promotionEmail()
+    public function PromotionNewsletter()
     {
-        return $this->has_one('PromotionEmail');
+        return $this->has_one('PromotionNewsletter');
     }
 }   

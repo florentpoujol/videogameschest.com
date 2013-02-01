@@ -1,13 +1,21 @@
 <div class="container">
 
-    <div id="above-menu" class="pull-right">
-        @if (is_guest())
-            <a href="{{ route('get_register') }}">{{ lang('menu.register') }}</a> 
-            {{ lang('menu.or') }} 
-            <a href="{{ route('get_login') }}" id="login-popover">{{ lang('menu.login.title') }}</a> 
-        @else
-            {{ lang('admin.home.hello') }} {{ user()->username }}
-        @endif
+    <div id="above-menu">
+
+        <div class="pull-right">
+            @if (is_guest())
+                <a href="{{ route('get_register') }}">{{ lang('menu.register') }}</a> 
+                {{ lang('menu.or') }} 
+                <a href="{{ route('get_login') }}" id="login-popover">{{ lang('menu.login.title') }}</a> 
+            @else
+                {{ lang('admin.home.hello') }} {{ user()->username }}
+            @endif
+        </div>
+
+        <div>
+            <a href="">About</a> |
+            <a href="">Developement</a>
+        </div>
     </div>
 
     <div id="main-menu" class="navbar">

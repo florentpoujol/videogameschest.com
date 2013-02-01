@@ -1,6 +1,6 @@
 <?php
 $rules = array(
-    'type' => 'required|in:rss,atom',
+    // 'type' => 'required|in:rss,atom',
     'frequency' => 'required|integer|min:12|max:744',
     'profile_count' => 'required|integer|min:1|max:500',
     'search_id' => 'required|integer|min:1',
@@ -19,7 +19,7 @@ if (is_logged_in()) {
 
     <div class="row">
         <div class="span4">
-            {{ Former::select('type', lang('discover.form.feed.type'))->options(array('rss'=>'RSS', 'atom'=>'Atom')) }}
+            {{-- Former::select('type', lang('discover.form.feed.type'))->options(array('rss'=>'RSS', 'atom'=>'Atom')) }}
         </div>
 
         <div class="span4">

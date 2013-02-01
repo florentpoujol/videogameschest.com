@@ -15,8 +15,10 @@ class Search extends ExtendedEloquent
      */
     public static function get_profiles($input)
     {   
+        $search_id = 0;
         if (is_numeric($input)) {
-            $search = static::find($input);
+            $search_id = $input;
+            $search = parent::find($input);
 
             if ( ! is_null($search)) $input = $search->data;
             else {
@@ -30,11 +32,12 @@ class Search extends ExtendedEloquent
         //var_dump($input);
 
 
-        // class (dev or game)
+        // class (profile type)
         $class = $input['class'];
 
-        if ($class != 'developer' && $class != 'game') {
-            // problem
+        if ( ! in_array($class, Config::get('vgc.profiles_types'))) {
+            Log::write('search error', "Wrong class '$class' for search id='$search_id'");
+            HTML::set_error(lang('common.msg.error'));
             return Redirect::back();
         }
 

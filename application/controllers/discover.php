@@ -24,7 +24,7 @@ class Discover_Controller extends Base_Controller
         $input = Input::all();
 
         $rules = array(
-            'type' => 'required|in:rss,atom',
+            // 'type' => 'required|in:rss,atom',
             'frequency' => 'required|integer|min:12|max:744',
             'profile_count' => 'required|integer|min:1|max:500',
             'search_id' => 'required|integer|min:1',
@@ -58,7 +58,7 @@ class Discover_Controller extends Base_Controller
                 'channel' => array(
                     'title' => 'VideoGamesChest Promotion feed ID '.$feed->id,
                     'link' => URL::base(),
-                    'description' => 'description',
+                    // 'description' => 'description',
                     'permalink' => route('get_discover_feed_data', array($feed->id)),
                     'pubDate' => $created_at->format('r'),
                     'lastBuildDate' => $last_pub_date->format('r'),
@@ -83,17 +83,19 @@ class Discover_Controller extends Base_Controller
                     $profiles = ProcessBlacklist($profiles, $feed->user_id);
                 }
 
+                $profiles = PickAtRandomInArray($profiles, $feed->profile_count);
+
                 // content of the feed
                 $feed_data['items'][] = array(
                     'title' => 'Promotion feed entry on '.$now->format(Config::get('vgc.date_formats.english')),
                     'pubDate' => $now_string,
-                    //'link' => '',
-                    'guid isPermaLink="false"' => Str::random(40),
+                    'link' => route('get_discover_feed_page'),
+                    'guid isPermalink="false"' => Str::random(40),
                     'description' => 'error creating profile list',
                 );
 
                 // build te description
-                $description = Response::view('partials/promotion_profile_list', array('profiles' => $profiles));
+                $description = View::make('partials/promotion_profile_list', array('profiles' => $profiles))->render();
 
                 $feed_data['items'][0]['description'] = $description;
             }
@@ -137,7 +139,7 @@ class Discover_Controller extends Base_Controller
         $validation = Validator::make($input, $rules);
 
         if ($validation->passes()) {
-            $newsletter = PromotionEmail::create($input);
+            $newsletter = PromotionNewsletter::create($input);
             
             if (is_guest()) {
                 return Redirect::to_route('get_discover_update_email_page', array($newsletter->id, $newsletter->url_key));
@@ -155,7 +157,7 @@ class Discover_Controller extends Base_Controller
 
         // unsubscribe
         if (isset($input['unsubscribe'])) {
-            if (PromotionEmail::unsubscribe($input)) {
+            if (PromotionNewsletter::unsubscribe($input)) {
                 return Redirect::to_route('get_discover_email_page');
             } else {     
                 if (is_guest()) {
@@ -179,7 +181,7 @@ class Discover_Controller extends Base_Controller
 
         $validation = Validator::make($input, $rules);
 
-        if ($validation->passes() && PromotionEmail::update($input, null)) {
+        if ($validation->passes() && PromotionNewsletter::update($input, null)) {
             if (is_guest()) {
                 return Redirect::to_route('get_discover_update_email_page', array($email->id, $email->url_key));
             } else {

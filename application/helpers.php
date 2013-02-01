@@ -335,6 +335,29 @@ function parse_bbcode($input)
 }
 
 
+/**
+ * Pick random entries in array and return the new array
+ * @param [type] $array [description]
+ * @param [type] $count [description]
+ */
+function PickAtRandomInArray($array, $count)
+{
+    $new_array = array();
+    shuffle($array);
+
+    if ($count > count($array)) $count = count($array);
+
+    $keys = array_rand($array, $count);
+
+    if (is_array($keys)) {
+        foreach ($keys as $key) {
+            $new_array[] = $array[$key];
+        }
+    } else return $array[$keys];
+
+    return $new_array;
+}
+
 function Plural($text)
 {
     return Str::plural($text);
@@ -376,7 +399,7 @@ function ProcessBlacklist($profiles, $user_id = null)
 /**
  * Wrapper around the SwiftMailer bundle
  */
-function sendMail($email, $subject, $body_html, $body_text = null, $priority = null) 
+function SendMail($email, $subject, $body_html, $body_text = null, $priority = null) 
 {
     if (is_null($body_text)) $body_text = $body_html;
 
@@ -397,6 +420,7 @@ function sendMail($email, $subject, $body_html, $body_text = null, $priority = n
     } 
     catch (Exception $e) {
         var_dump($e);
+        Log::write('email error', 'transport exception :'.$e);
     }
 
     // new mailer instance
@@ -439,6 +463,11 @@ function sendMail($email, $subject, $body_html, $body_text = null, $priority = n
         sendMail(Config::get('admin_email'), 'Send mail recipient failures', $msg, $msg, 1);
     }
 }
+
+/*function sendMail($email, $subject, $body_html, $body_text = null, $priority = null) 
+{
+    SendMail($email, $subject, $body_html, $body_text, $priority);
+}*/
 
 
 function shortenUrl($url)
@@ -531,7 +560,7 @@ function user_id()
  * @param  string $link 
  * @return string       The HTML code of the embeded player
  */
-function videoFrame($link, $width = null, $height = null)
+function VideoFrame($link, $width = null, $height = null)
 {
     // ration wdith/height : 1.77
     $ratio = 1.77;
