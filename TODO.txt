@@ -1,17 +1,21 @@
 
+retravailler formuaire recherche
+
+modifer présentation screenshots et vidéos, et soudtrack dans les profils
 
 ajouter tab promotion game
 ajouter tab promotion developers
 
 
-modifer présentation screenshots et vidéos, et soudtrack dans les profils
 
-retravailler formuaire recherche
-ajouter search ID sur formulaire
 
 
 
     DONE
+
+02/02/2013
+
+rajouter lien désabo/update dans promo newsletter
 
 01/02/2013
 
@@ -21,13 +25,11 @@ build the promotion newsletter
 limiter profiles en prmotin au profile_count
 report RSS feed does not work
 remanier dev states
-
-
+ajouter search ID sur formulaire
 
 31/01/2013
 
 remanier format email array
 mail subscription promotion newsletter
 log creation feed
-
 update/unsubscribe promotion newsletter

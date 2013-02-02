@@ -35,6 +35,7 @@ class Sendpromotionnewsletters_Task
                 $profiles = PickAtRandomInArray($profiles, $newsletter->profile_count);
                 
                 $html = View::make('layouts/promotion_newsletter', array(
+                    'newsletter' => $newsletter,
                     'profiles' => $profiles,
                     'title' => $subject,
                 ))->render();
@@ -44,7 +45,7 @@ class Sendpromotionnewsletters_Task
                     $user = User::find($newsletter->user_id);
 
                     if (is_null($user)) {
-                        log::wriite('promotion newsletter error email', 'Wrong user id='.$newsletter->user_id.' for newsletter id='.$newsletter->id);
+                        log::write('promotion newsletter error email', 'Wrong user id='.$newsletter->user_id.' for newsletter id='.$newsletter->id);
                         continue;
                     }
 

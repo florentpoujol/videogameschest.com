@@ -44,6 +44,7 @@ function array_set_values_as_keys($array)
  * return a list of checkboxes
  * @param  string $field_name The array field name
  * @param  array  $values     The values to be checked comming from the DB or the old form
+ * @param  string $name     The form name of list of checkboxes
  * @return HTML             The formated checkboxes
  */
 function array_to_checkboxes($field_name, $values = null, $name = null) 
@@ -55,6 +56,7 @@ function array_to_checkboxes($field_name, $values = null, $name = null)
 
     for ($i = 0; $i < count($temp_items); $i++) {
         $item = $temp_items[$i];
+
         $lang = lang($field_name.'.'.$item);
         $help = lang($field_name.'.'.$item.'_help', '');
         
@@ -159,6 +161,12 @@ function get_assoc_array($array)
 function get_language()
 {
     return Session::get('language', Config::get('language', 'en'));
+}
+
+
+function get_profiles_types()
+{
+    return Config::get('vgc.profile_types', array());
 }
 
 

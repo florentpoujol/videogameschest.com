@@ -11,6 +11,8 @@ return array(
     'common' => array(
         'add_names_help' => 'One or several (comma separated) profile\'s names or ids.',
         'add_profile' => 'Add this profile',
+        'array_field_where_all' => 'All',
+        'array_field_where_any' => 'Any of',
 
         'bbcode_explanation' => 'You may use the following BBCode tags : h1, h2, b and i.',
         // 'You may use HTML in the textarea above (only when editing a profile).'
@@ -615,6 +617,7 @@ return array(
         'looks_help' => 'and looks,',
         'periods_help' => 'and take place during,',
         
+        'results' => 'Results',
         'rss_feed' => 'RSS feed for the new profiles that matches this search.',
 
         'search_id' => 'Search ID',

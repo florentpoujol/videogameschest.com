@@ -43,15 +43,10 @@ return array(
     'language_files' => array('vgc', 'emails'),
 
 
-    'review' => array(
-        'types' => array('publishing'),
-        // 'duration' => 7,
-        // 'approval_threshold' => 20,
-        // 'check_interval' => 60, // time in minutes between two review success check
-    ),
+    
 
 
-    'profile_types' => array('developer', 'game'),
+    'profile_types' => array('game', 'developer'),
 
 
     'privacy' => array('private', 'public'),
@@ -61,6 +56,16 @@ return array(
     'recaptcha_private_key' => '6LcRitsSAAAAAGw_aZAy3qlnC_3lAypwaJm4SgMs',
     'recaptcha_public_key' => '6LcRitsSAAAAAKlKTf79Z6KbSIrSz2Z0WptjvXzE',
 
+    'review' => array(
+        'types' => array('publishing'),
+        // 'duration' => 7,
+        // 'approval_threshold' => 20,
+        // 'check_interval' => 60, // time in minutes between two review success check
+    ),
+
+    'search' => array(
+        'default_tab' => 'game',
+    ),
 
     "site_languages" => array(
         "english",
