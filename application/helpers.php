@@ -610,6 +610,8 @@ function VideoFrame($link, $width = null, $height = null)
     } else return '<a href="'.$link.'" id="'.$id.'">'.$link.'</a>';
 }
 
+
+
 function GetVideoEmbedLink($link)
 {
     $embed_link = "original link : $link";

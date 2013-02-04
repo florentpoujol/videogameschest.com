@@ -153,12 +153,13 @@ $name = xssSecure($profile->name);
                             ?>
                             @for ($i = 0; $i < count($videos['names']); $i++)
                                 <?php
-                                $url = xssSecure($videos['urls'][$i]);
-                                $embed_link = GetVideoEmbedLink($url);
+                                // $url = xssSecure($videos['urls'][$i]);
+                                // $embed_link = GetVideoEmbedLink($url);
+                                $video = new Video($videos['urls'][$i]);
                                 $title = xssSecure($videos['names'][$i]);
                                 ?>
-                                <a href="{{ $embed_link }}" title="{{ $title }}" class="gamevideos">
-                                    <img src="{{ GetVideoThumbnailLink($embed_link) }}" alt="{{ $title }}" title="{{ $title }}" id="gamevideo{{ $i }}">
+                                <a href="{{ $video->embed_url }}" title="{{ $title }}" class="gamevideos">
+                                    <img src="{{ $video->thumbnail_url }}" alt="{{ $title }}" title="{{ $title }}" id="gamevideo{{ $i }}">
                                 </a>
 
                             @endfor

@@ -10,7 +10,8 @@ $rules = array();
 if ( ! isset($files)) echo 'file test';
 if ( ! isset($contents)) echo 'content test';
 
+
 ?>
 
-@include('logreader::logreader_view')
+
 
