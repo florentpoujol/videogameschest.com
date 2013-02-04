@@ -132,7 +132,7 @@ $name = xssSecure($profile->name);
     </a>
     
     <div id="collapse-report" class="collapse">
-        @include('report_form')
+        @include('forms/postreport')
     </div>
 </div>
 

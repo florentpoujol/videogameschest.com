@@ -6,9 +6,7 @@ modifer présentation screenshots et vidéos, et soudtrack dans les profils
 ajouter tab promotion game
 ajouter tab promotion developers
 
-
-
-
+retravailler textes home et discover
 
 
     DONE

@@ -46,7 +46,7 @@ $layout = View::of('layout');
 
 
 //----------------------------------------------------------------------------------
-// NO FILTERS
+// NO FILTERS (display profiles below 'must be logged in')
 //----------------------------------------------------------------------------------
 
     // HOME
@@ -57,10 +57,15 @@ $layout = View::of('layout');
         return $layout->nest('page_content', 'home');
     });
 
-
     Route::get('home', array('as' => 'get_home', 'do' => function() use ($layout)
     {
         return $layout->nest('page_content', 'home');
+    }));
+
+
+    Route::get('about', array('as' => 'get_about_page', 'do' => function() use ($layout)
+    {
+        return $layout->nest('page_content', 'about');
     }));
 
 
@@ -237,7 +242,7 @@ $layout = View::of('layout');
         // user is admin
         // user is dev and profile is user's or in review   
         if ($profile->privacy == 'public' || is_admin() || $profile->user_id == user_id()) {
-            return $layout->nest('page_content', 'developerdisplay', array('profile' => $profile));
+            return $layout->nest('page_content', 'developer', array('profile' => $profile));
         } else {
             HTML::set_error(lang('common.msg.access_not_allowed', array('page' => 'Developer profile '.$name)));
             return Redirect::to_route('get_search');
@@ -271,7 +276,7 @@ $layout = View::of('layout');
         // user is admin
         // user is dev and profile is user's or in review
         if ($profile->privacy == 'public' || is_admin() || $profile->user_id == user_id()) {
-            return $layout->nest('page_content', 'gamedisplay', array('profile' => $profile));
+            return $layout->nest('page_content', 'game', array('profile' => $profile));
         } else {
             HTML::set_error(lang('common.msg.access_not_allowed', array('page' => 'Game profile '.$name)));
             return Redirect::to_route('get_search');

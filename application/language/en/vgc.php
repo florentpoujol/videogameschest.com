@@ -6,6 +6,75 @@ You may not have dots inside the keys
 */
 return array(
 
+// ABOUT
+
+    'about' => array(
+        'title' => 'About',
+        'text' => 
+        'VideoGamesChest seek to improve the visibility of games and game-related content and people with innovative solutions. <br>
+        <br>
+        VideoGamesChest is a participative database where everyone can create a profile for their favorite game, developer, game creation tool and user-created map/level and mod (tool, map and mod are coming soon) with no discrimination on the platform, the price, the release date, or any criteria actually. <br>
+        Attention has been put to showcase the content in the most advantageous way with beautiful and comprehensive profiles.<br>
+        <br>
+        VideGamesChest also put emphasis on the relevance of the content showcased to its visitors. <br>
+        That\'s why they benefits from a comprehensive search capability unlike anythings else that exists to filter content and either search for, or discover with no efforts . <br>
+        That\'s why they benefits from a comprehensive capability to filter any content 
+
+        unlike anythings else that exists to filter content and either search for, or discover with no efforts . <br>
+        
+        The search form as well as the promotion feed and newsletter are the best way to find exactly what your are looking for.
+        <br>
+        But VideoGamesChest is also a great place for developers to promote their game, tool, map or mod to the audience that really cares about. 
+
+
+
+        . VGC has a new approach to advertising
+        
+
+        ',
+
+        'developement_title' => 'Developement',
+        'developement_text' => 'VideoGamesChest is currently under heavy developement, everything is in constant evolution so nothing is final especially when it comes to how things looks. <br>
+        <br>
+        If you have a feedbacks, bugs, feature request, or just want to chat feel free to contact us.',
+
+
+        'contact_title' => 'Contact'
+
+    ),
+
+// ADMIN
+
+    'admin' => array(
+        
+
+
+        'home' => array(
+            'title' => 'Admin home',
+            'hello' => 'Hello',
+        ),
+
+
+        'menu' => array(
+            'add_developer' => 'Add a developer',
+            'edit_developer' => 'Edit a developer',
+            'add_game' => 'Add a game',
+            'edit_game' => 'Edit a game',
+            'edit_user_account' => 'Edit your user account',
+        ),
+    ),
+
+// BLACKLIST
+
+    'blacklist' => array(
+        'title' => 'Blacklist',
+
+        'msg' => array(
+            'delete_success' => ':num :type profiles have successfully been deleted from your blacklist.',
+            'add_success' => ':num :type profiles have successfully been added to your blacklist.',
+        ),
+    ),
+
 // COMMON
 
     'common' => array(
@@ -107,399 +176,6 @@ return array(
         ),
     ),
 
-// HOME
-
-    'home' => array(
-        'title' => 'Video Games Chest',
-        'subtitle' => '',
-        'home_text' => 'VideoGamesChest is a <strong>participative</strong> database for everything that is video game-related : the <strong>games</strong> of course but also the <strong>developers</strong> and <strong>technologies</strong>, as well as the communities of players throught the <strong>maps</strong> and <strong>mods</strong>.<br>
-        <br>',
-        /*
-        It\'s participative because everyone can create profiles. It does not matter if the game is old
-
-
-        Jam, indie, AAA, mobile, console, social, casual, hardcore, old, old-shool, ... everyone is welcome on VideoGamesChest
-        */
-
-        //'site_slogan' => 'The participative and searchable video games database',
-        //'site_slogan' => 'The place to hunt down for the treasures of video games',
-        'site_slogan_full' => 'The place to discover and promote everything that was, is and will be Video Games',
-
-        'site_slogan' => 'The place to <strong>discover</strong> and <strong>promote</strong>',
-        'site_slogan2' => 'everything that <strong>was, is and will be</strong> Video Games',
-
-        /*
-        'herounit_text' => '
-        Video Games Chest tackle the problem of the discoverability of games by providing inovatives and effectives ways for the player to find games they are really interested to play
-         as well as for the developers to pitch their games only to the audience really interested in it.
-
-        ',
-
-        'participative' => array(
-            'title' => 'Participative',
-            'text' => 'It would be presumptuous to pretend that we can fill hundreds of thousand of extensive developers and games profiles in the database ourself. That\'s where <strong>you</strong> come in ! <br>
-            <br>
-            VGC allow anyone to submit a developer or game profile but ensure that the developer is in control and has reviewed the profile before it\'s published. <br>
-            <br>
-            You liked a game that is not on VGC yet ? <br>
-            The best way to show your support to the developer after bying their games is to add their profile yourself so that they gets to know VGC and everyone on VGC gets to know them. <br> 
-            Plus, they may be interested in the services we provide !',
-            
-            'submission_explanation_link' => 'Learn more about the public submission process',
-            'submission_explanation_text' => 'When a new profile is submitted via the public forms, it goes in a first peer review. It\'s a matter of checking if the email belongs to the developer and if there is no offensive or inappropriate content. <br>
-            <br>
-            Once the profile passed the review, an email is sent to the developer to let him know that someone created a profile for them. The profile is still private and the developer must review and update/complete it before sending it to a second peer review. <br>
-            <br>
-            The profile become public and is visible and searchable by everyone only when it has passed that second review. <br>
-            <br>
-            The "trusted" users (who have a public developer profile and at least one public game profile) have access to the peer reviews. They can consult the profile and accept it or issue a report if something is wrong. <br>
-            <br>
-            Profiles pass reviews when they have a minimum number of approval and no open reports.',
-
-            'adddev_link' => 'Add a developer',
-            'addgame_link' => 'Add a game',
-        ),
-
-
-
-        'searchable_title' => 'Searchable',
-        'searchable_text' => 'Any piece of information featured on the profiles can be used as a filter criterion.
-        <br>
-        That means that you can built complex searchs that return only <strong>the handfull of games you are really interested on</strong>.',
-        'searchable_link' => 'Search for a profile',
-
-
-        'services_title' => 'Services',
-        'services_text' => 'VGC also provide some cool services to game developers :',
-        */
-
-    ),
-
-// MESSAGES (errors, success)
-
-    'messages' => array(
-        
-        'addgame_success' => 'The game profile with name \":name\" has successfully been submitted.',
-
-        'editdev_nametaken' => 'Can\'t rename the developer profile with name \":name\" (id : :id) because the name \":newname\" is already taken.',
-        'editgame_nametaken' => 'Can\'t rename the game profile with name \":name\" (id : :id) because the name \":newname" is already taken.',
-        
-        
-        
-
-        'logged_in_only' => "You must be logged in to access this page.",
-        'admin_only' => "You must be an administrator to access this page.",
-        'admin_and_logged_in' => "You must be logged in and an administrator to access this page.",
-
-        'can_not_edit_others_games' => "You are not allowed to edit other developer's games.",
-        'game_profile_not_found' => "Can't find the game profile with id ':profile_id'.",
-
-        'user_not_trusted' => 'You can\'t acces this page because you are not a trusted user.',
-       
-    ),  
-
-    'errors' => array(
-        
-
-        'developer_profile_name_not_found' => "Can't find the developper profile with name ':name'.",
-        'developer_profile_id_not_found' => "Can't find the developper profile with id ':id'.",
-
-        'game_profile_name_not_found' => "Can't find the game profile with name ':name'.",
-        'game_profile_id_not_found' => "Can't find the game profile with id ':id'.",
-    ),
-
-// MENU
-
-    'menu' => array(
-        'home' => 'Home',
-        'featured' => 'Featured',
-        'search' => 'Search',
-        'find' => 'Discover',
-        'advertising' => 'Get discovered',
-        'about' => 'About',
-
-
-        'adddeveloper' => 'Add a developer',
-        'addgame' => 'Add a game',
-        'logout' => 'Log Out',
-        'languages' => 'Languages',
-
-        'login' => array(
-            'name_label' => 'Your user name or email',
-            'password_label' => 'Your password',
-            'keep_logged_in_label' => 'Keep me logged in',
-            'title' => 'Log In',
-            'submit' => 'Log In',
-            'lost_password' => 'I lost my password',
-            'lostpassword_help' => 'If you lost your password, just fill the field below with your username, email or user id and click the button to get a new temporary password by email.',
-        ),
-
-        'or' => 'or',
-
-        'register' => 'Register',
-    ),
-
-// REGISTER
-    
-    'register' => array(
-        'email_help' => 'An e-mail will be send to this address with a link to active your account.',
-        'password' => 'Choose your password',
-        'password_confirmation' => 'Verify password',
-        'submit' => 'Register !',
-        'title' => 'Create a user account',
-        'username' => 'Choose your user name',
-
-        'msg' => array(
-            'register_success' => 'Thank you :username, your user account has been created. 
-            An email has been sent to your email adress with a link to activate your account. 
-            You will be able to login as soon as to activated your account.',
-
-            'confirmation_error' => "Unable to activate the user account because none with id ':id' and url key ':url_key' has been found, or the user account is already activated.",
-            'confirmation_success' => 'Thank you :username, you have successfully activated your user account, you may now log in.',
-        ),
-    ),
-
-// LOGIN
-
-    'login' => array(
-        'name_label' => 'Your user name or email',
-        'password_label' => 'Your password',
-        'keep_logged_in_label' => 'Keep me logged in',
-        'title' => 'Log In',
-        'submit' => 'Log In',
-        'lost_password' => 'I lost my password',
-        'lostpassword_help' => 'If you lost your password, just fill the field below with your username, email or user id and click the button to get a new temporary password by email.',
-    
-
-        'msg' => array(
-            'wrong_password' => "The password provided for user :field ':username' is incorrect.",
-            'not_activated' => "The user account with the :field ':username' is not activated yet. You will be able to login once you will have clicked the activation link that can be found in the email sent to you upon registration.",
-            'user_not_found' => "No user with the :field ':username' has been found.",
-
-            'login_success' => 'Welcome :username, you successfully logged in.',
-            'logout_success' => 'You successfully logged out. See you soon !',
-        ),
-    ),
-
-// LOSTPASSWORD
-
-    'lostpassword' => array(
-        'help' => 'An e-mail will be sent to your address with a link to generate a new temporary password which will also be emailed to you.',
-        'title' => 'I lost my password',
-
-        'msg' => array(
-            'confirmation_email_sent' => 'An email with a confirmation link has been sent to your email adress. Click the link in that email to generate a new temporary password.',
-            'confirmation_error' => 'Unable to generate a new password because no user account with id ":id" and url key ":url_key" has been found, or the user account is not activated.',
-            'new_password_success' => 'A new password has been successfully generated and sent to your email adress.',
-
-        ),
-    ),
-
-// USER
-
-    'user' => array(
-        'edit_title' => 'Edit your user account',
-        'edit_password' => 'Edit your password',
-        
-        'id' => 'User Id',
-
-        'subscription_title' => 'Subscriptions',
-
-        'url_key_help' => 'This random string is used to access various things related to your user account via URL. You may update it but keep it secret.',
-        'old_password_help' => 'In order to update your password, enter your old password here.',
-
-        'msg' => array(
-            'wrong_old_password' => 'The old password does not match your current password.',
-            'update_success' => 'Your user account has successfully been updated.',
-            'edituser_nametaken' => "Can't rename the user ':username' (id : :id) because the name ':newname' is already taken.",
-            'user_not_found' => "Sorry the user with id ':id' has not been found."
-        ),
-
-    ),
-
-// DEVELOPER 
-
-    'developer' => array(
-        
-        'name_help' => 'Company name, if applicable.',
-        'email' => 'Contact email',
-
-        'pitch' => 'Explain about the developer\'s phylosophy, goals...',
-
-        'technologies_help' => 'The technologies the developer works with :',
-        'operatingsystems_help' => 'The operating systems the developer\'s games run on (not applicable for most consoles) :',
-        'devices_help' => 'The devices the developer\'s games are playable on :',
-        'stores_help' => 'The stores the developer sells their games on :',
-       
-        'add' => array(
-            'title' => 'Add a developer profile',
-
-            'required_field' => 'The developer\'s name and email are required fields.',
-            'submit' => 'Add this developer profile',
-
-            'success' => 'Thanks you, the developer has successfully been added, an email will be send to let them now. \n 
-          They must first check the data then make their account public before you can add one of their game.',
-        ),
-
-        'edit' => array(
-            'title' => 'Edit a developer profile',
-            'submit' => 'Edit this developer profile',
-            'select_profile_placeholder' => 'Name or id',
-            'select_profile_help' => 'Select the developer to edit',
-        ),
-
-        'profile' => array(
-            'title' => 'Developer',
-            'website' => 'Go to the developer\'s website',
-            'no_game' => 'This developer has no game yet',
-        ),
-
-        'msg' => array(
-            'adddev_success' => "The developer profile with name ':name' (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
-            'editdev_success' => "The developer profile with name ':name' (id : :id) has successfully been updated.",
-
-            'select_editdev_id_not_found' => "No developer with id ':id' was found.",
-            'select_editdev_name_not_found' => "No developer with name ':name' was found.",
-
-            'profile_not_found' => "No developer profile with id ':id' was found.",
-
-            'editdev_nametaken' => "Can't rename the developer profile with name ':name' (id : :id) because the name ':newname' is already taken.",
-        ),
-
-    ),
-
-// GAME 
-    'game' => array(
-        'developer_name_help' => 'OR if the developer profile does not yet exist on VGC, you can just',
-        'dev_not_in_list_link' => 'enter its name and website URL below :',
-
-        'cover' => 'Box cover or icon',
-        'devstate' => 'Developement state',
-
-        'pitch' => 'Game pitch, story, features...',
-
-        'publishername' => 'Publisher name',
-        'publisherurl' => 'Publisher\'s website',
-
-        'soundtrackurl' => 'Soundtrack',
-        
-        'releasedate' => 'Release date',
-
-        'developer_name_help' => 'If the developer has a profile on VGC, its name should appear below the field as you type it. 
-        If that\'s the case, a link to the developer\'s profile will be done from the game\'s profile instead of using the URL below.',
-
-
-        'add' => array(
-            'title' => 'Add a game profile',
-            'submit' => 'Submit this game profile',
-        ),
-
-        'edit' => array(
-            'title' => 'Edit a game profile',
-            'submit' => 'Edit this game profile',
-            'select_profile_placeholder' => 'Name or id',
-            'select_profile_help' => 'Select the game to edit',
-        ),
-
-        'profile' => array(
-            'title' => 'Game',
-            'website' => 'Go to the game\'s website',
-            'blogfeed' => 'Lastest articles from the blog',
-            'soundtrack' => 'Get the soundtrack',
-            'screenshots_help' => 'Click on them to view in full size'
-        ),
-
-
-        'msg' => array(
-            'addgame_success' => "The game profile with name ':name' (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
-            'editgame_success' => "The game profile with name ':name' (id : :id) has successfully been updated.",
-
-            'select_editgame_id_not_found' => "No game profile with id ':id' was found.",
-            'select_editgame_name_not_found' => "No game profile with name ':name' was found.",
-
-            'profile_not_found' => "No game profile with id ':id' was found.",
-
-            'editgame_nametaken' => "Can't rename the game profile with name ':name' (id : :id) because the name ':newname' is already taken.",
-        ),
-
-    ), // end of game
-
-// ADMIN
-
-    'admin' => array(
-        
-
-
-        'home' => array(
-            'title' => 'Admin home',
-            'hello' => 'Hello',
-        ),
-
-
-        'menu' => array(
-            'add_developer' => 'Add a developer',
-            'edit_developer' => 'Edit a developer',
-            'add_game' => 'Add a game',
-            'edit_game' => 'Edit a game',
-            'edit_user_account' => 'Edit your user account',
-        ),
-    ),
-
-// REPORTS
-
-    'reports' => array(
-        'title' => 'Reports',
-        'form_title' => 'Report this profile',
-
-        'help' => 'You may report a profile to the developer in case of typos or broken links. <br>
-        But you may only report a profile to the administrators in case of offensive/inappropriate content.',
-
-        'message' => 'Your message',
-        'submit_dev' => 'Send to the developer',
-        'submit_admin' => 'Send to the administrators',
-
-        'dev_title' => 'Developer reports',
-        'admin_title' => 'Admin reports',
-
-        'no_report' => 'No report to display',
-
-        'rss_feed' => 'RSS feed for your reports.',
-
-        'table' => array(
-            'profile' => 'Profile',
-            'message' => 'Message',
-            'delete' => 'Delete',
-        ),
-
-        'msg' => array(
-            'create_success' => 'Thank you, the report has been issued successfully.',
-            'delete_success' => 'The reports have succsessfully been deleted',
-        ),
-    ),
-
-// REVIEWS
-
-    'reviews' => array(
-        'title' => 'Peer Reviews',
-        'submission_title' => 'Submission Review',
-        'publishing_title' => 'Publishing Review',
-        'game_title' => 'Games',
-        'developer_title' => 'Developers',
-
-        'no_review' => 'No profile in :review review.',
-        'rss_feed' => 'RSS feed for new profiles in :review review.',
-
-        'table' => array(
-            'approve' => 'Approve',
-            'profile' => 'Profile',
-            'delete' => '',
-        ),
-
-        'msg' => array(
-            'profiles_approved' => 'Thanks you for approving :num profile(s).'
-        ),
-    ),
-
 // CROSS PROMOTION
 
     'crosspromotion' => array(
@@ -568,6 +244,475 @@ return array(
             'activation_success' => 'You successfully activated the cross-promotion for your games.',
             'deactivation_success' => 'You successfully deactivated the cross-promotion for your games.',
             'update_profiles_success' => "The promoted profiles for your game ':game_name' have successfully been updated.",
+        ),
+    ),
+
+// DEVELOPER 
+
+    'developer' => array(
+        
+        'name_help' => 'Company name, if applicable.',
+        'email' => 'Contact email',
+
+        'pitch' => 'Explain about the developer\'s phylosophy, goals...',
+
+        'technologies_help' => 'The technologies the developer works with :',
+        'operatingsystems_help' => 'The operating systems the developer\'s games run on (not applicable for most consoles) :',
+        'devices_help' => 'The devices the developer\'s games are playable on :',
+        'stores_help' => 'The stores the developer sells their games on :',
+       
+        'add' => array(
+            'title' => 'Add a developer profile',
+
+            'required_field' => 'The developer\'s name and email are required fields.',
+            'submit' => 'Add this developer profile',
+
+            'success' => 'Thanks you, the developer has successfully been added, an email will be send to let them now. \n 
+          They must first check the data then make their account public before you can add one of their game.',
+        ),
+
+        'edit' => array(
+            'title' => 'Edit a developer profile',
+            'submit' => 'Edit this developer profile',
+            'select_profile_placeholder' => 'Name or id',
+            'select_profile_help' => 'Select the developer to edit',
+        ),
+
+        'profile' => array(
+            'title' => 'Developer',
+            'website' => 'Go to the developer\'s website',
+            'no_game' => 'This developer has no game yet',
+        ),
+
+        'msg' => array(
+            'adddev_success' => "The developer profile with name ':name' (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
+            'editdev_success' => "The developer profile with name ':name' (id : :id) has successfully been updated.",
+
+            'select_editdev_id_not_found' => "No developer with id ':id' was found.",
+            'select_editdev_name_not_found' => "No developer with name ':name' was found.",
+
+            'profile_not_found' => "No developer profile with id ':id' was found.",
+
+            'editdev_nametaken' => "Can't rename the developer profile with name ':name' (id : :id) because the name ':newname' is already taken.",
+        ),
+
+    ),
+
+// DISCOVER
+
+    'discover' => array(
+        'explanation' => "",
+
+        // But you probably don't want to play to all those games.
+        // if your prefer to be passive, VGC has a couple of solution for you.
+        
+
+        'title' => 'Discover',
+        'subtitle' => 'profiles you are really interested about',
+        'home_text' => 'Too busy to <a href=":search_link">search for what you like</a> ? <br>
+        Then just sit at your computer and wait for the profiles you are interested in to drop in your inbox or your favorite syndication feed reader ! <br>
+        <br>
+        You can subscribe to a <strong>fully customisable</strong> feed or newsletter whose sole purpose is to promote you with games or any profiles on VGC.
+        ',
+
+        'feed_title' => 'Feed',
+        'email_title' => 'Newsletter',
+
+        'form' => array(
+
+            'frequency' => 'Frequency',
+            'frequency_help' => 'This is the time interval, in hours, between each posts in the feed or each e-mail. <br>
+            A week = 168 hours.',
+
+            'profile_count' => 'Profile count',
+            'profile_count_help' => 'The number of profiles that are displayed in each post/e-mail. <br>
+            If the number of profiles that could be displayed after being filtered by the search and the blacklist is superior to this number, the profiles that made it to the post/e-mail are chose randomly amongs them.',
+
+            'search_id' => 'Search ID',
+            'search_id_help' => 'The search ID used to filter the content. <br>
+            To know which search ID to use, head over the search form, fill it as you like the hit the search button and copy/paste here the search ID that is indicated.',
+
+            'use_blacklist' => 'Use my blacklist',
+            'blacklist_help' => 'The profiles in your blacklist will never be displayed. <a href=":blacklist_link" title="Edit your blacklist">Edit your blacklist</a>.',
+
+            'blacklist_guest_help' => 'The blacklist is another level of filtering that <a href=":register_link" title="Create a user account">registered users only</a> can benefits from. The profiles you put in your blacklist will never be displayed. ',
+
+
+            'feed' => array(
+                'help' => 'The feed url is always the same for registered users. <br>',
+                'help_url' => 'Your feed url is : <a href=":feed_url" title="Feed url for user :username">:feed_url</a>',
+                'submit' => 'Obtain this feed\'s URL',
+                'title' => 'Feed',
+                'type' => 'Format of the syndication feed',
+            ),
+
+            'email' => array(
+                'email_help' => 'Tha\'s you user account email. You must log out if you want to use another email adress.',
+                'help' => 'Once subscribed, you will be able to edit your preferencies or unsubscribe via a link you can find in all e-mails you will get.',
+                'submit' => 'Subscribe',
+                'title' => 'Newsletter',
+            ),
+        ),
+
+        'msg' => array(
+            // feeed
+            'create_feed_success' => 'You successfully created a promotion feed. The url should be displayed below.',
+            'update_feed_success' => 'You successfully updated your promotion feed. The feed URL has not changed.',
+            'feed_url' => 'Your feed url is : :feed_url',
+
+            // email
+            'email_id_key_no_match' => 'The provided newsletter id and url key do not match any promotion newsletter subscription.',
+
+            'email_subscription_success' => 'You successfully subscribed to the promotion newsletter. You will receive a confirmation email soon.',
+            'email_update_success' => 'You successfully updated your promotion newsletter',
+            'email_unsubscription_success' => 'You successfully unsubscribed from the promotion newsletter.',
+
+
+
+        ),
+
+    ),
+
+// GAME 
+
+    'game' => array(
+        'developer_name_help' => 'OR if the developer profile does not yet exist on VGC, you can just',
+        'dev_not_in_list_link' => 'enter its name and website URL below :',
+
+        'cover' => 'Box cover or icon',
+        'devstate' => 'Developement state',
+
+        'pitch' => 'Game pitch, story, features...',
+
+        'publishername' => 'Publisher name',
+        'publisherurl' => 'Publisher\'s website',
+
+        'soundtrackurl' => 'Soundtrack',
+        
+        'releasedate' => 'Release date',
+
+        'developer_name_help' => 'If the developer has a profile on VGC, its name should appear below the field as you type it. 
+        If that\'s the case, a link to the developer\'s profile will be done from the game\'s profile instead of using the URL below.',
+
+
+        'add' => array(
+            'title' => 'Add a game profile',
+            'submit' => 'Submit this game profile',
+        ),
+
+        'edit' => array(
+            'title' => 'Edit a game profile',
+            'submit' => 'Edit this game profile',
+            'select_profile_placeholder' => 'Name or id',
+            'select_profile_help' => 'Select the game to edit',
+        ),
+
+        'profile' => array(
+            'title' => 'Game',
+            'website' => 'Go to the game\'s website',
+            'blogfeed' => 'Lastest articles from the blog',
+            'soundtrack' => 'Get the soundtrack',
+            'screenshots_help' => 'Click on them to view in full size'
+        ),
+
+
+        'msg' => array(
+            'addgame_success' => "The game profile with name ':name' (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
+            'editgame_success' => "The game profile with name ':name' (id : :id) has successfully been updated.",
+
+            'select_editgame_id_not_found' => "No game profile with id ':id' was found.",
+            'select_editgame_name_not_found' => "No game profile with name ':name' was found.",
+
+            'profile_not_found' => "No game profile with id ':id' was found.",
+
+            'editgame_nametaken' => "Can't rename the game profile with name ':name' (id : :id) because the name ':newname' is already taken.",
+        ),
+
+    ), // end of game
+
+// HOME
+
+    'home' => array(
+        'title' => 'Video Games Chest',
+        'subtitle' => '',
+        'home_text' => 'VideoGamesChest is a <strong>participative</strong> database for everything that is video game-related : the <strong>games</strong> of course but also the <strong>developers</strong> and <strong>technologies</strong>, as well as the communities of players throught the <strong>maps</strong> and <strong>mods</strong>.<br>
+        <br>',
+        /*
+        It\'s participative because everyone can create profiles. It does not matter if the game is old
+
+
+        Jam, indie, AAA, mobile, console, social, casual, hardcore, old, old-shool, ... everyone is welcome on VideoGamesChest
+        */
+
+        //'site_slogan' => 'The participative and searchable video games database',
+        //'site_slogan' => 'The place to hunt down for the treasures of video games',
+        'site_slogan_full' => 'The place to discover and promote everything that was, is and will be Video Games',
+
+        'site_slogan' => 'The <strong>participative</strong> place to <strong>discover</strong> and <strong>promote</strong>',
+        'site_slogan2' => 'everything that <strong>was, is and will be</strong> Video Games',
+
+        /*
+        'herounit_text' => '
+        Video Games Chest tackle the problem of the discoverability of games by providing inovatives and effectives ways for the player to find games they are really interested to play
+         as well as for the developers to pitch their games only to the audience really interested in it.
+
+        ',
+
+        'participative' => array(
+            'title' => 'Participative',
+            'text' => 'It would be presumptuous to pretend that we can fill hundreds of thousand of extensive developers and games profiles in the database ourself. That\'s where <strong>you</strong> come in ! <br>
+            <br>
+            VGC allow anyone to submit a developer or game profile but ensure that the developer is in control and has reviewed the profile before it\'s published. <br>
+            <br>
+            You liked a game that is not on VGC yet ? <br>
+            The best way to show your support to the developer after bying their games is to add their profile yourself so that they gets to know VGC and everyone on VGC gets to know them. <br> 
+            Plus, they may be interested in the services we provide !',
+            
+            'submission_explanation_link' => 'Learn more about the public submission process',
+            'submission_explanation_text' => 'When a new profile is submitted via the public forms, it goes in a first peer review. It\'s a matter of checking if the email belongs to the developer and if there is no offensive or inappropriate content. <br>
+            <br>
+            Once the profile passed the review, an email is sent to the developer to let him know that someone created a profile for them. The profile is still private and the developer must review and update/complete it before sending it to a second peer review. <br>
+            <br>
+            The profile become public and is visible and searchable by everyone only when it has passed that second review. <br>
+            <br>
+            The "trusted" users (who have a public developer profile and at least one public game profile) have access to the peer reviews. They can consult the profile and accept it or issue a report if something is wrong. <br>
+            <br>
+            Profiles pass reviews when they have a minimum number of approval and no open reports.',
+
+            'adddev_link' => 'Add a developer',
+            'addgame_link' => 'Add a game',
+        ),
+
+
+
+        'searchable_title' => 'Searchable',
+        'searchable_text' => 'Any piece of information featured on the profiles can be used as a filter criterion.
+        <br>
+        That means that you can built complex searchs that return only <strong>the handfull of games you are really interested on</strong>.',
+        'searchable_link' => 'Search for a profile',
+
+
+        'services_title' => 'Services',
+        'services_text' => 'VGC also provide some cool services to game developers :',
+        */
+
+    ),
+
+// LOGIN
+
+    'login' => array(
+        'name_label' => 'Your user name or email',
+        'password_label' => 'Your password',
+        'keep_logged_in_label' => 'Keep me logged in',
+        'title' => 'Log In',
+        'submit' => 'Log In',
+        'lost_password' => 'I lost my password',
+        'lostpassword_help' => 'If you lost your password, just fill the field below with your username, email or user id and click the button to get a new temporary password by email.',
+    
+
+        'msg' => array(
+            'wrong_password' => "The password provided for user :field ':username' is incorrect.",
+            'not_activated' => "The user account with the :field ':username' is not activated yet. You will be able to login once you will have clicked the activation link that can be found in the email sent to you upon registration.",
+            'user_not_found' => "No user with the :field ':username' has been found.",
+
+            'login_success' => 'Welcome :username, you successfully logged in.',
+            'logout_success' => 'You successfully logged out. See you soon !',
+        ),
+    ),
+
+// LOSTPASSWORD
+
+    'lostpassword' => array(
+        'help' => 'An e-mail will be sent to your address with a link to generate a new temporary password which will also be emailed to you.',
+        'title' => 'I lost my password',
+
+        'msg' => array(
+            'confirmation_email_sent' => 'An email with a confirmation link has been sent to your email adress. Click the link in that email to generate a new temporary password.',
+            'confirmation_error' => 'Unable to generate a new password because no user account with id ":id" and url key ":url_key" has been found, or the user account is not activated.',
+            'new_password_success' => 'A new password has been successfully generated and sent to your email adress.',
+
+        ),
+    ),
+
+// MESSAGES (errors, success)
+
+    'messages' => array(
+        
+        'addgame_success' => 'The game profile with name \":name\" has successfully been submitted.',
+
+        'editdev_nametaken' => 'Can\'t rename the developer profile with name \":name\" (id : :id) because the name \":newname\" is already taken.',
+        'editgame_nametaken' => 'Can\'t rename the game profile with name \":name\" (id : :id) because the name \":newname" is already taken.',
+        
+        
+        
+
+        'logged_in_only' => "You must be logged in to access this page.",
+        'admin_only' => "You must be an administrator to access this page.",
+        'admin_and_logged_in' => "You must be logged in and an administrator to access this page.",
+
+        'can_not_edit_others_games' => "You are not allowed to edit other developer's games.",
+        'game_profile_not_found' => "Can't find the game profile with id ':profile_id'.",
+
+        'user_not_trusted' => 'You can\'t acces this page because you are not a trusted user.',
+       
+    ),  
+
+    'errors' => array(
+        
+
+        'developer_profile_name_not_found' => "Can't find the developper profile with name ':name'.",
+        'developer_profile_id_not_found' => "Can't find the developper profile with id ':id'.",
+
+        'game_profile_name_not_found' => "Can't find the game profile with name ':name'.",
+        'game_profile_id_not_found' => "Can't find the game profile with id ':id'.",
+    ),
+
+// MENU
+
+    'menu' => array(
+        'home' => 'Home',
+        'featured' => 'Featured',
+        'search' => 'Search',
+        'find' => 'Discover',
+        'advertising' => 'Get discovered',
+        'about' => 'About',
+
+
+        'adddeveloper' => 'Add a developer',
+        'addgame' => 'Add a game',
+        'logout' => 'Log Out',
+        'languages' => 'Languages',
+
+        'login' => array(
+            'name_label' => 'Your user name or email',
+            'password_label' => 'Your password',
+            'keep_logged_in_label' => 'Keep me logged in',
+            'title' => 'Log In',
+            'submit' => 'Log In',
+            'lost_password' => 'I lost my password',
+            'lostpassword_help' => 'If you lost your password, just fill the field below with your username, email or user id and click the button to get a new temporary password by email.',
+        ),
+
+        'or' => 'or',
+
+        'register' => 'Register',
+    ),
+
+// PROMOTION
+
+    'promotion' => array(
+        'explanation' => '
+        <p class="advertising-explanation">
+        You developed the game of your dream but you can count your followers on one hand and the press never gets back to you ? <br>
+        Maybe it\'s time to try something new. Something you even may not have tought about. <br>
+        Instead of waiting for the others to promote yourself and spread the word about your game, why don\'t you take the initiative with some advertising. <br>
+        <br>
+        <blockquote> <i class="icon-quote-left muted"></i>
+            But ads annoys everyone and it\'s way too expensive !. 
+        <i class="icon-quote-right muted"></i> </blockquote>
+        <br>
+        That\'s were we come in ! Advertising throught VGC is neither annoying for the visitors, neither expensive for you. And by <em>not expensive</em>, we actually means <strong>free</strong>. <br>
+        VGC provides you with a range of services that helps you get in contact with players .
+        </p>
+        ',
+        
+
+        
+        'title' => 'Promote',
+        'subtitle' => 'to the audience that cares',
+        // 'subtitle' => 'by advertising with our help',
+        'home_text' => 'In addition to the full featured profiles and the comprehensive capacity given to the players to search for you, VideoGamesChest brings you innovatives ways to reach out specifiquely to the audience that cares about you.
+        ',
+        /*
+            VideoGamesChest is the perfect place to showcase your products and promote them in various ways.
+
+         You have got games to tell the world about but the traditionnal ways are are to expensive for your indie budget or not working out as planned ? <br>
+        <br>
+        */
+
+
+        'email' => array(
+            'title' => 'E-mail',
+        ),
+
+        'feed' => array(
+            'title' => 'RSS Feed',
+        ),
+
+    ),
+
+// REGISTER
+    
+    'register' => array(
+        'email_help' => 'An e-mail will be send to this address with a link to active your account.',
+        'password' => 'Choose your password',
+        'password_confirmation' => 'Verify password',
+        'submit' => 'Register !',
+        'title' => 'Create a user account',
+        'username' => 'Choose your user name',
+
+        'msg' => array(
+            'register_success' => 'Thank you :username, your user account has been created. 
+            An email has been sent to your email adress with a link to activate your account. 
+            You will be able to login as soon as to activated your account.',
+
+            'confirmation_error' => "Unable to activate the user account because none with id ':id' and url key ':url_key' has been found, or the user account is already activated.",
+            'confirmation_success' => 'Thank you :username, you have successfully activated your user account, you may now log in.',
+        ),
+    ),
+
+// REPORTS
+
+    'reports' => array(
+        'title' => 'Reports',
+        'form_title' => 'Report this profile',
+
+        'help' => 'You may report a profile to the developer in case of typos or broken links. <br>
+        But you may only report a profile to the administrators in case of offensive/inappropriate content.',
+
+        'message' => 'Your message',
+        'submit_dev' => 'Send to the developer',
+        'submit_admin' => 'Send to the administrators',
+
+        'dev_title' => 'Developer reports',
+        'admin_title' => 'Admin reports',
+
+        'no_report' => 'No report to display',
+
+        'rss_feed' => 'RSS feed for your reports.',
+
+        'table' => array(
+            'profile' => 'Profile',
+            'message' => 'Message',
+            'delete' => 'Delete',
+        ),
+
+        'msg' => array(
+            'create_success' => 'Thank you, the report has been issued successfully.',
+            'delete_success' => 'The reports have succsessfully been deleted',
+        ),
+    ),
+
+// REVIEWS
+
+    'reviews' => array(
+        'title' => 'Peer Reviews',
+        'submission_title' => 'Submission Review',
+        'publishing_title' => 'Publishing Review',
+        'game_title' => 'Games',
+        'developer_title' => 'Developers',
+
+        'no_review' => 'No profile in :review review.',
+        'rss_feed' => 'RSS feed for new profiles in :review review.',
+
+        'table' => array(
+            'approve' => 'Approve',
+            'profile' => 'Profile',
+            'delete' => '',
+        ),
+
+        'msg' => array(
+            'profiles_approved' => 'Thanks you for approving :num profile(s).'
         ),
     ),
 
@@ -649,134 +794,29 @@ return array(
         
     ),
 
-// BLACKLIST
+// USER
 
-    'blacklist' => array(
-        'title' => 'Blacklist',
+    'user' => array(
+        'edit_title' => 'Edit your user account',
+        'edit_password' => 'Edit your password',
+        
+        'id' => 'User Id',
+
+        'subscription_title' => 'Subscriptions',
+
+        'url_key_help' => 'This random string is used to access various things related to your user account via URL. You may update it but keep it secret.',
+        'old_password_help' => 'In order to update your password, enter your old password here.',
 
         'msg' => array(
-            'delete_success' => ':num :type profiles have successfully been deleted from your blacklist.',
-            'add_success' => ':num :type profiles have successfully been added to your blacklist.',
-        ),
-    ),
-
-// DISCOVER
-
-    'discover' => array(
-        'explanation' => "",
-
-        // But you probably don't want to play to all those games.
-        // if your prefer to be passive, VGC has a couple of solution for you.
-        
-
-        'title' => 'Discover',
-        'subtitle' => 'profiles you are really interested about',
-        'home_text' => 'Too busy to <a href=":search_link">search for what you like</a> ? <br>
-        Then just sit at your computer and wait for the profiles you are interested in to drop in your inbox or your favorite syndication feed reader ! <br>
-        <br>
-        You can subscribe to a <strong>fully customisable</strong> feed or newsletter whose sole purpose is to promote you with games or any profiles on VGC.
-        ',
-
-        'feed_title' => 'Feed',
-        'email_title' => 'Newsletter',
-
-        'form' => array(
-
-            'frequency' => 'Frequency',
-            'frequency_help' => 'This is the time interval, in hours, between each posts in the feed or each e-mail. <br>
-            A week = 168 hours.',
-
-            'profile_count' => 'Profile count',
-            'profile_count_help' => 'The number of profiles that are displayed in each post/e-mail. <br>
-            If the number of profiles that could be displayed after being filtered by the search and the blacklist is superior to this number, the profiles that made it to the post/e-mail are chose randomly amongs them.',
-
-            'search_id' => 'Search ID',
-            'search_id_help' => 'The search ID used to filter the content. <br>
-            To know which search ID to use, head over the search form, fill it as you like the hit the search button and copy/paste here the search ID that is indicated.',
-
-            'use_blacklist' => 'Use my blacklist',
-            'blacklist_help' => 'The profiles in your blacklist will never be displayed. <a href=":blacklist_link" title="Edit your blacklist">Edit your blacklist</a>.',
-
-            'blacklist_guest_help' => 'The blacklist is another level of filtering that <a href=":register_link" title="Create a user account">registered users only</a> can benefits from. The profiles you put in your blacklist will never be displayed. ',
-
-
-            'feed' => array(
-                'help' => 'The feed url is always the same for registered users. <br>',
-                'help_url' => 'Your feed url is : <a href=":feed_url" title="Feed url for user :username">:feed_url</a>',
-                'submit' => 'Obtain this feed\'s URL',
-                'title' => 'Feed',
-                'type' => 'Format of the syndication feed',
-            ),
-
-            'email' => array(
-                'email_help' => 'Tha\'s you user account email. You must log out if you want to use another email adress.',
-                'help' => 'Once subscribed, you will be able to edit your preferencies or unsubscribe via a link you can find in all e-mails you will get.',
-                'submit' => 'Subscribe',
-                'title' => 'Newsletter',
-            ),
-        ),
-
-        'msg' => array(
-            // feeed
-            'create_feed_success' => 'You successfully created a promotion feed. The url should be displayed below.',
-            'update_feed_success' => 'You successfully updated your promotion feed. The feed URL has not changed.',
-            'feed_url' => 'Your feed url is : :feed_url',
-
-            // email
-            'email_id_key_no_match' => 'The provided newsletter id and url key do not match any promotion newsletter subscription.',
-
-            'email_subscription_success' => 'You successfully subscribed to the promotion newsletter. You will receive a confirmation email soon.',
-            'email_update_success' => 'You successfully updated your promotion newsletter',
-            'email_unsubscription_success' => 'You successfully unsubscribed from the promotion newsletter.',
-
-
-
+            'wrong_old_password' => 'The old password does not match your current password.',
+            'update_success' => 'Your user account has successfully been updated.',
+            'edituser_nametaken' => "Can't rename the user ':username' (id : :id) because the name ':newname' is already taken.",
+            'user_not_found' => "Sorry the user with id ':id' has not been found."
         ),
 
     ),
 
-// PROMOTION
 
-    'promotion' => array(
-        'explanation' => '
-        <p class="advertising-explanation">
-        You developed the game of your dream but you can count your followers on one hand and the press never gets back to you ? <br>
-        Maybe it\'s time to try something new. Something you even may not have tought about. <br>
-        Instead of waiting for the others to promote yourself and spread the word about your game, why don\'t you take the initiative with some advertising. <br>
-        <br>
-        <blockquote> <i class="icon-quote-left muted"></i>
-            But ads annoys everyone and it\'s way too expensive !. 
-        <i class="icon-quote-right muted"></i> </blockquote>
-        <br>
-        That\'s were we come in ! Advertising throught VGC is neither annoying for the visitors, neither expensive for you. And by <em>not expensive</em>, we actually means <strong>free</strong>. <br>
-        VGC provides you with a range of services that helps you get in contact with players .
-        </p>
-        ',
-        
-
-        
-        'title' => 'Promote',
-        'subtitle' => 'to the audience that cares',
-        // 'subtitle' => 'by advertising with our help',
-        'home_text' => 'In addition to the full featured profiles and the comprehensive capacity given to the players to search for you, VideoGamesChest brings you innovatives ways to reach out specifiquely to the audience that cares about you.
-        ',
-        /*
-            VideoGamesChest is the perfect place to showcase your products and promote them in various ways.
-
-         You have got games to tell the world about but the traditionnal ways are are to expensive for your indie budget or not working out as planned ? <br>
-        <br>
-        */
-
-
-        'email' => array(
-            'title' => 'E-mail',
-        ),
-
-        'feed' => array(
-            'title' => 'RSS Feed',
-        ),
-
-    ),
 
 // LANGUAGES
 

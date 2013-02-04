@@ -54,7 +54,7 @@ return array(
 
 
     'recaptcha_private_key' => '6LcRitsSAAAAAGw_aZAy3qlnC_3lAypwaJm4SgMs',
-    'recaptcha_public_key' => '6LcRitsSAAAAAKlKTf79Z6KbSIrSz2Z0WptjvXzE',
+    'recaptcha_public_key' =>  '6LcRitsSAAAAAKlKTf79Z6KbSIrSz2Z0WptjvXzE',
 
     'review' => array(
         'types' => array('publishing'),
@@ -69,6 +69,10 @@ return array(
 
     "site_languages" => array(
         "english",
+    ),
+
+    'video' => array(
+        'default_width' => '450',
     ),
     
 

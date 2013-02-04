@@ -573,7 +573,7 @@ function VideoFrame($link, $width = null, $height = null)
     // ration wdith/height : 1.77
     $ratio = 1.77;
     if (is_null($width) && is_null($height)) {
-        $width = 530; // w530 = h300
+        $width = Config::get('vgc.video.default_width', '400'); // w530 = h300
         $height = $width/$ratio;
     } elseif ( ! is_null($width) && is_null($height)) {
         $height = $width/$ratio;
@@ -602,10 +602,63 @@ function VideoFrame($link, $width = null, $height = null)
         $embed_link = preg_replace("#(.*)(video/)([a-zA-Z0-9]+)(_.*)#", 'http://www.dailymotion.com/embed/video/$3', $link);
     }
 
+    $id = Str::random(40);
+
     if ( ! is_null($embed_link)) {
-        return '<iframe width="'.$width.'" height="'.$height.'" src="'.$embed_link.'" frameborder="0"
+        return '<iframe width="'.$width.'" height="'.$height.'" src="'.$embed_link.'" id="'.$id.'" frameborder="0"
         allowfullscreen></iframe>';
-    } else return '<a href="'.$link.'">'.$link.'</a>';
+    } else return '<a href="'.$link.'" id="'.$id.'">'.$link.'</a>';
+}
+
+function GetVideoEmbedLink($link)
+{
+    $embed_link = "original link : $link";
+
+    if (strpos($link, 'youtu') !== false && strpos($link, 'youtube.googleapis.com') === false && strpos($link, '/embed/') === false) {
+        $embed_link = preg_replace("#(.*)(/watch\?v=|\.be/|/v/)([a-zA-Z0-9]+)((&|/)?.*)#", 'http://www.youtube.com/embed/$3', $link);
+    }
+
+    // vimeo
+    // stadard : http://vimeo.com/57183688
+    // embed : http://player.vimeo.com/video/57183688
+    elseif (strpos($link, 'vimeo.com') !== false) {
+        $embed_link = preg_replace("#(.*)(vimeo\.com/)([0-9]{8})(.*)#", 'http://player.vimeo.com/video/$3?title=0&amp;byline=0&amp;portrait=0', $link);
+    }
+
+    // dailymotion
+    // standard : http://www.dailymotion.com/video/{id}_{long text}
+    // embed : http://www.dailymotion.com/embed/video/{id}
+    elseif (strpos($link, 'dailymotion.com') !== false) {
+        $embed_link = preg_replace("#(.*)(video/)([a-zA-Z0-9]+)(_.*)#", 'http://www.dailymotion.com/embed/video/$3', $link);
+    }
+
+    return $embed_link;
+}
+
+function GetVideoThumbnailLink($link)
+{
+    $thumbnail_link = 'http://placehold.it/300x200';
+
+    /*
+    youtube thumbnail :
+    http://stackoverflow.com/questions/2068344/how-to-get-thumbnail-of-youtube-video-link-using-youtube-api
+    http://img.youtube.com/vi/<insert-youtube-video-id-here>/0.jpg
+    http://img.youtube.com/vi/<insert-youtube-video-id-here>/1.jpg
+    http://img.youtube.com/vi/<insert-youtube-video-id-here>/2.jpg
+    http://img.youtube.com/vi/<insert-youtube-video-id-here>/3.jpg
+
+    http://img.youtube.com/vi/<insert-youtube-video-id-here>/default.jpg
+    http://img.youtube.com/vi/<insert-youtube-video-id-here>/hqdefault.jpg
+    http://img.youtube.com/vi/<insert-youtube-video-id-here>/mqdefault.jpg
+    http://img.youtube.com/vi/<insert-youtube-video-id-here>/maxresdefault.jpg
+     */
+    
+    // http://www.youtube.com/embed/
+    if (strpos($link, 'youtube') !== false) {
+        $thumbnail_link = preg_replace("#^(.+)(/embed/)([^/]+)/?.*$#", 'http://img.youtube.com/vi/$3/maxresdefault.jpg', $link);
+    }
+
+    return $thumbnail_link;
 }
 
 

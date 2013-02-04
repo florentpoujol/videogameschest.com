@@ -13,8 +13,8 @@
         </div>
 
         <div>
-            <a href="">About</a> |
-            <a href="">Developement</a>
+            Blog | 
+            <a href="{{ route('get_about_page') }}">{{ lang('about.title') }}</a>
         </div>
     </div>
 
@@ -23,7 +23,8 @@
             <!-- <div class="container"> -->
 
                 <div class="brand">
-                    Video Games Chest
+                    VideoGamesChest
+                    {{-- <img src=" asset('img/logo_test.png') " height="20%" width="20%"> --}}
                 </div>
 
                 <ul class="nav pull-right">

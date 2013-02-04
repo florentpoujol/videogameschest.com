@@ -113,40 +113,67 @@ $name = xssSecure($profile->name);
     </div>
 
     <hr>
-
+    <!-- MEDIA row -->
     <div class="row-fluid">
-        <div class="span6">
-            <h4>{{ lang('common.screenshots') }} <small>{{ lang('game.profile.screenshots_help') }}</small></h4>
-            
-            <div id="screenshots-container" class="slider-wrapper theme-light">
-                <div id="nivo-slider" class="nivoSlider">
-                    <?php
-                    $screenshots = $profile->screenshots;
-                    for ($i = 0; $i < count($screenshots['names']); $i++):
-                        $url = xssSecure($screenshots['urls'][$i]);
-                        $title = xssSecure($screenshots['names'][$i]);
-                    ?>
-                        <a href="{{ $url }}" title="{{ $title }}" class="colorbox-group1">
-                            <img src="{{ $url }}" alt="{{ $title }}" id="utyhg_{{ $i }}" title="{{ $title }}">
-                        </a>
-                    @endfor
-                </div> <!-- /.carousel-inner -->
-            </div> <!-- /#screenshots-container .carousel .slide -->
-        </div> <!-- /.span6 -->
+        <div class="span12">
+            <ul class="nav nav-tabs" id="main-tabs">
+                <li><a href="#screenshots-pane" data-toggle="tab">{{ lang('common.screenshots') }}</a></li>
+                <li><a href="#videos-pane" data-toggle="tab">{{ lang('common.videos') }}</a></li>
+                <li><a href="#soundtrack-pane" data-toggle="tab">{{ lang('common.soundtrack') }}</a></li>
+            </ul>
 
-        <div class="span6">
-            <h4>{{ lang('common.videos') }}</h4>
-        
-            <div id="videos-container">
-                <?php
-                $videos = $profile->videos;
-                ?>
-                @for ($i = 0; $i < count($videos['names']); $i++)
-                    {{ videoFrame($videos['urls'][$i], 440) }}
-                @endfor
-            </div>
-        </div>
-    </div>
+            <div class="tab-content">
+                
+                <div class="tab-pane" id="screenshots-pane"> 
+                    <!-- <h4>{{ lang('common.screenshots') }} <small>{{ lang('game.profile.screenshots_help') }}</small></h4> -->
+                    
+                    <div id="screenshots-container" class="slider-wrapper theme-light">
+                        <div id="screenshots-nivo-slider" class="nivoSlider">
+                            <?php
+                            $screenshots = $profile->screenshots;
+                            for ($i = 0; $i < count($screenshots['names']); $i++):
+                                $url = xssSecure($screenshots['urls'][$i]);
+                                $title = xssSecure($screenshots['names'][$i]);
+                            ?>
+                                <a href="{{ $url }}" title="{{ $title }}" class="colorbox-group1">
+                                    <img src="{{ $url }}" alt="{{ $title }}" id="gamescreenshot{{ $i }}" title="{{ $title }}">
+                                </a>
+                            @endfor
+                        </div> <!-- /.carousel-inner -->
+                    </div> <!-- /#screenshots-container .carousel .slide -->
+                </div> <!-- /#screenshots-pane .tab-pane -->
+
+                <div class="tab-pane" id="videos-pane"> 
+                    <!-- <h4>{{ lang('common.videos') }}</h4> -->
+                
+                    <div id="videos-container" class="slider-wrapper theme-light">
+                        <div id="videos-nivo-slider" class="nivoSlider">
+                            <?php
+                            $videos = $profile->videos;
+                            ?>
+                            @for ($i = 0; $i < count($videos['names']); $i++)
+                                <?php
+                                $url = xssSecure($videos['urls'][$i]);
+                                $embed_link = GetVideoEmbedLink($url);
+                                $title = xssSecure($videos['names'][$i]);
+                                ?>
+                                <a href="{{ $embed_link }}" title="{{ $title }}" class="gamevideos">
+                                    <img src="{{ GetVideoThumbnailLink($embed_link) }}" alt="{{ $title }}" title="{{ $title }}" id="gamevideo{{ $i }}">
+                                </a>
+
+                            @endfor
+                        </div>
+                    </div>
+                </div> <!-- /#videos-pane .tab-pane -->
+
+                <div class="tab-pane" id="soundtrack-pane"> 
+                    <h4>{{ lang('common.soundtrack') }}</h4>
+                
+                    
+                </div> <!-- /#soundtrack-pane .tab-pane -->
+            </div> <!-- /.tab-content -->
+        </div> <!-- /.span12 -->
+    </div> <!-- /.row -->
 
     <hr>
 
@@ -236,7 +263,7 @@ $name = xssSecure($profile->name);
             
     <div id="collapse-report" class="collapse">
         <div class="accordion-inner">
-            @include('report_form')
+            @include('forms/postreport')
         </div>
     </div>
 </div>
@@ -253,6 +280,10 @@ $name = xssSecure($profile->name);
 
 @section('jQuery')
     $(".colorbox-group1").colorbox({rel:"group1"});
-    $('#nivo-slider').nivoSlider();
+    $('#screenshots-nivo-slider').nivoSlider();
+        
+    // videos
+    $(".gamevideos").colorbox({iframe:true, innerWidth:800, innerHeight:533});
+    $('#videos-nivo-slider').nivoSlider()
 @endsection
 
