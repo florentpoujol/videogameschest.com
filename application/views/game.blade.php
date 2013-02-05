@@ -16,6 +16,7 @@ $name = xssSecure($profile->name);
         <div id="profile-background-pusher"></div>
     @endif
 
+    <!-- name dev website -->
     <div class="row">
         <div class="span5">
             <h3>{{ $name }} <small>{{ $profile->class_name }}</small></h3>
@@ -37,7 +38,7 @@ $name = xssSecure($profile->name);
                 ?>
                 @if ($dev_name != '')
                     @if ($dev_url != '')
-                        <li>{{ icon('wrench', lang('common.developer')) }} <a href="{{ $dev_url }}" title="{{ $dev_name }}" class="">{{ $dev_name }}</a></li>
+                        <li>{{ icon('wrench', lang('common.developer')) }} <a href="{{ $dev_url }}" title="{{ lang('common.developer') }}" class="">{{ $dev_name }}</a></li>
                     @else
                         <li>{{ icon('wrench', lang('common.developer')) }} {{ $dev_name }}</li>
                     @endif
@@ -68,7 +69,7 @@ $name = xssSecure($profile->name);
                     <li>{{ icon('folder-open', lang('common.presskit')) }}<a href="{{ $presskit }}" title="{{ lang('common.presskit') }}">{{ lang('common.presskit') }}</a></li>
                 @endif
 
-                @if ($soudtrack != '')
+                @if (false && $soudtrack != '')
                     <li>{{ icon('music', lang('common.soundtrack')) }}<a href="{{ $soudtrack }}" title="{{ lang('common.soundtrack') }}">{{ shortenUrl($soudtrack) }}</a></li>
                 @endif
             </ul>
@@ -77,10 +78,11 @@ $name = xssSecure($profile->name);
 
     <hr>
 
+    <!-- blog pitch logo -->
     <div class="row-fluid">
         <div class="span12">
             <?php
-            $blogfeed = xssSecure($profile->blogfeed);
+            $blogfeed = XssSecure($profile->blogfeed);
             ?>
             @if ($blogfeed != '')
                 <div class="span4">
@@ -91,7 +93,7 @@ $name = xssSecure($profile->name);
 
                     <ul class="unstyled">
                         <?php
-                        $feed = RSSReader::read($blogfeed, Config::get('vgc.dev_feed_item_count'));
+                        $feed = RSSReader::read($blogfeed, Config::get('vgc.profile_blog_feed_item_count'));
                         ?>
 
                         @foreach ($feed['items'] as $item)
@@ -114,9 +116,9 @@ $name = xssSecure($profile->name);
 
     <hr>
     <!-- MEDIA row -->
-    <div class="row-fluid">
+    <div class="row">
         <div class="span12">
-            <ul class="nav nav-tabs" id="main-tabs">
+            <ul class="nav nav-tabs" id="medias-tabs">
                 <li><a href="#screenshots-pane" data-toggle="tab">{{ lang('common.screenshots') }}</a></li>
                 <li><a href="#videos-pane" data-toggle="tab">{{ lang('common.videos') }}</a></li>
                 <li><a href="#soundtrack-pane" data-toggle="tab">{{ lang('common.soundtrack') }}</a></li>
@@ -153,12 +155,10 @@ $name = xssSecure($profile->name);
                             ?>
                             @for ($i = 0; $i < count($videos['names']); $i++)
                                 <?php
-                                // $url = xssSecure($videos['urls'][$i]);
-                                // $embed_link = GetVideoEmbedLink($url);
                                 $video = new Video($videos['urls'][$i]);
                                 $title = xssSecure($videos['names'][$i]);
                                 ?>
-                                <a href="{{ $video->embed_url }}" title="{{ $title }}" class="gamevideos">
+                                <a href="{{ $video->embed_url }}" title="{{ $title }}" class="gamevideos colorbox-group2">
                                     <img src="{{ $video->thumbnail_url }}" alt="{{ $title }}" title="{{ $title }}" id="gamevideo{{ $i }}">
                                 </a>
 
@@ -167,10 +167,12 @@ $name = xssSecure($profile->name);
                     </div>
                 </div> <!-- /#videos-pane .tab-pane -->
 
-                <div class="tab-pane" id="soundtrack-pane"> 
-                    <h4>{{ lang('common.soundtrack') }}</h4>
-                
-                    
+                <div class="tab-pane" id="soundtrack-pane">
+                    <div id="soundtrack-container">
+                        <?php
+                        echo DisplaySoundtrack(XssSecure($profile->soundtrack));
+                        ?>
+                    </div>
                 </div> <!-- /#soundtrack-pane .tab-pane -->
             </div> <!-- /.tab-content -->
         </div> <!-- /.span12 -->
@@ -178,10 +180,26 @@ $name = xssSecure($profile->name);
 
     <hr>
 
+    <div class="row">
+        <div class="span6">
+            stores
+           
+        </div> <!-- /.span8 -->
+
+        <div class="span3">
+            press
+        </div> <!-- /.span4 -->
+
+        <div class="span3">
+            social networks
+        </div> <!-- /.span4 -->
+
+    </div> <!-- /.row -->
+
     <div class="row-fluid json-field-row">
         
         <?php 
-        $items = array('stores', 'reviews', 'socialnetworks',  'devices', );
+        $items = array( 'devices', );
         foreach ($items as $item):
         ?>
             <div class="span3 json-field-div">
@@ -280,11 +298,15 @@ $name = xssSecure($profile->name);
 @endsection
 
 @section('jQuery')
-    $(".colorbox-group1").colorbox({rel:"group1"});
+    $('#medias-tabs a:first').tab('show');
+    $('#stores-tabs a:first').tab('show');
+
     $('#screenshots-nivo-slider').nivoSlider();
-        
+    $(".colorbox-group1").colorbox({rel:"group1"});
+            
     // videos
-    $(".gamevideos").colorbox({iframe:true, innerWidth:800, innerHeight:533});
+    $(".gamevideos").colorbox({iframe:true, innerWidth:800, innerHeight:533, rel:"group_video"});
     $('#videos-nivo-slider').nivoSlider()
+
 @endsection
 

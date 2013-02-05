@@ -124,6 +124,54 @@ function clean_names_urls_array($array)
 }
 
 
+function DisplaySoundTrack($url)
+{
+    /* 
+    bandcamp 
+    http://morusque.bandcamp.com/album/blocks-that-matter
+    <iframe width="300" height="400" style="position: relative; display: block; width: 300px; height: 410px;"
+    src="http://bandcamp.com/EmbeddedPlayer/v=2/album=519219781/size=grande3/bgcol=FFFFFF/linkcol=4285BB/"
+    allowtransparency="true" frameborder="0">
+    <a href="http://morusque.bandcamp.com/album/blocks-that-matter">Blocks that matter by Morusque</a>
+    </iframe>
+
+    https://soundcloud.com/awintory/sets/journey
+    <iframe width="100%" height="400" scrolling="no" frameborder="no" 
+    src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Fplaylists%2F1738337">
+    </iframe>
+    http://api.soundcloud.com/playlists/1738337
+    */
+   
+    $html = 'Error processing soundtrack url : '.$url;
+
+    if (strpos($url, 'bandcamp.com/EmbeddedPlayer') !== false) {
+        $url = preg_replace("#^(.+/album=[0-9]+)/?.*#", '$1/size=grande3/bgcol=FFFFFF/linkcol=4285BB', $url);
+
+        
+        $html = '<iframe width="500" height="540" style="position: relative; display: block;"
+        src="'.$url.'" allowtransparency="true" frameborder="0"></iframe>';
+    }
+    elseif (strpos($url, 'bandcamp.com') !== false && strpos($url, 'bandcamp.com/EmbeddedPlayer') === false) {
+        $html = '<a href="'.$url.'">Get the soundtrack on Bandcamp</a>';
+    }
+
+
+    elseif (strpos($url, 'api.soundcloud.com/') !== false && strpos($url, 'w.soundcloud.com/player') === false) {
+        $html = '<iframe width="100%" height="400" scrolling="no" frameborder="no" 
+        src="https://w.soundcloud.com/player/?url='.$url.'"></iframe>';
+    }
+    elseif (strpos($url, 'w.soundcloud.com/player') !== false) {
+        $html = '<iframe width="100%" height="400" scrolling="no" frameborder="no" 
+        src="'.$url.'"></iframe>';
+    }
+    elseif (strpos($url, 'soundcloud.com') !== false) {
+        $html = '<a href="'.$url.'">Get the soundtrack on Soundcloud</a>';
+    }
+
+    return $html;
+}
+
+
 /**
  * Return an array whose keys are provided in the first argument and the corresponding values are the corresponding localized string
  * @param  array $array_keys Array containing localization keys
@@ -568,7 +616,7 @@ function user_id()
  * @param  string $link 
  * @return string       The HTML code of the embeded player
  */
-function VideoFrame($link, $width = null, $height = null)
+/*function VideoFrame($link, $width = null, $height = null)
 {
     // ration wdith/height : 1.77
     $ratio = 1.77;
@@ -608,11 +656,11 @@ function VideoFrame($link, $width = null, $height = null)
         return '<iframe width="'.$width.'" height="'.$height.'" src="'.$embed_link.'" id="'.$id.'" frameborder="0"
         allowfullscreen></iframe>';
     } else return '<a href="'.$link.'" id="'.$id.'">'.$link.'</a>';
-}
+}*/
 
 
 
-function GetVideoEmbedLink($link)
+/*function GetVideoEmbedLink($link)
 {
     $embed_link = "original link : $link";
 
@@ -635,33 +683,9 @@ function GetVideoEmbedLink($link)
     }
 
     return $embed_link;
-}
+}*/
 
-function GetVideoThumbnailLink($link)
-{
-    $thumbnail_link = 'http://placehold.it/300x200';
 
-    /*
-    youtube thumbnail :
-    http://stackoverflow.com/questions/2068344/how-to-get-thumbnail-of-youtube-video-link-using-youtube-api
-    http://img.youtube.com/vi/<insert-youtube-video-id-here>/0.jpg
-    http://img.youtube.com/vi/<insert-youtube-video-id-here>/1.jpg
-    http://img.youtube.com/vi/<insert-youtube-video-id-here>/2.jpg
-    http://img.youtube.com/vi/<insert-youtube-video-id-here>/3.jpg
-
-    http://img.youtube.com/vi/<insert-youtube-video-id-here>/default.jpg
-    http://img.youtube.com/vi/<insert-youtube-video-id-here>/hqdefault.jpg
-    http://img.youtube.com/vi/<insert-youtube-video-id-here>/mqdefault.jpg
-    http://img.youtube.com/vi/<insert-youtube-video-id-here>/maxresdefault.jpg
-     */
-    
-    // http://www.youtube.com/embed/
-    if (strpos($link, 'youtube') !== false) {
-        $thumbnail_link = preg_replace("#^(.+)(/embed/)([^/]+)/?.*$#", 'http://img.youtube.com/vi/$3/maxresdefault.jpg', $link);
-    }
-
-    return $thumbnail_link;
-}
 
 
 function xssSecure($string)

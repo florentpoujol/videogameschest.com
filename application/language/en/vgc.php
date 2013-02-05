@@ -309,11 +309,41 @@ return array(
 
         'title' => 'Discover',
         'subtitle' => 'profiles you are really interested about',
+
         'home_text' => 'Too busy to <a href=":search_link">search for what you like</a> ? <br>
-        Then just sit at your computer and wait for the profiles you are interested in to drop in your inbox or your favorite syndication feed reader ! <br>
+        Then just sit at your computer and wait for <strong>the profiles you are interested in</strong> to drop in your inbox or your favorite syndication feed reader. <br>
         <br>
         You can subscribe to a <strong>fully customisable</strong> feed or newsletter whose sole purpose is to promote you with games or any profiles on VGC.
         ',
+
+        'page_text' => 'You can certainly find dosens of games to play each week from your social media feeds or the press. But you will probably play only to a fraction of those. <br> 
+        The thruth is that <strong>most of those games are just not relevant to you</strong>, because you don\'t have the device or you don\'t like the genre or how they looks. Doesn\'t it feels like wasted time and opportunities ?<br>
+        <br>
+        Instead, VGC allows you to sit at your computer and just wait for <strong>the profiles you are interested in</strong> to drop in your inbox or your favorite syndication feed reader. <br>
+        <br>
+        You can subscribe below to a <strong>fully customisable</strong> feed or newsletter whose sole purpose is to promote you with the kind of games (or any profiles) <strong>you choose</strong> to be promote with. <br>
+        You control What, How much, When and How :
+        ',
+
+        'page_learn_more_text' => '<strong>Feed or E-mail</strong> <br>
+        Depending on your preferencies, you may choose if your are promoted via an RSS feed or via email. <br>
+        <br>
+        <strong>Frequency</strong> <br>
+        You get to choose the frequency at which a post in the feed or an email is issued.<br>
+        <br>
+        <strong>Profile Count</strong> <br>
+        You also get to choose how many profiles are displayed in each entries/email. <br>
+        If the number of profiles that could be displayed after being filtered by the search and the blacklist is superior to this number, the profiles that made it to the entry/email are chosen randomly amongs them. <br>
+        <br>
+        <strong>Search ID</strong> <br>
+        Each searches that you can perform via <a href=":search_url" title="Go to the search form">the search form</a> has a unique ID with which you must fill the appropriate field below. <br>
+        It will makes the content of the feed entry or email match that search so that you are promoted only with <strong>content that match your criteria</strong>. <br>
+        <br>
+        <strong>Blacklist</strong> <br>
+        Even throught some profiles matches your criteria, you might not be interested in every single one of them, or you already poccess some of them. Either case, you don\'t want to be promoted for thoses profiles. <br>
+        That\'s why registered users may filter the promoted content again with a blacklist of profiles that you can edit on your "Edit User" page. If you choose to "Use your blacklist" by checking the checkbox below, the profiles that you put in the blacklist won\'t be displayed in the promoted content, leaving room for undiscovered awesomeness. <br>
+        ',
+
 
         'feed_title' => 'Feed',
         'email_title' => 'Newsletter',
@@ -321,16 +351,14 @@ return array(
         'form' => array(
 
             'frequency' => 'Frequency',
-            'frequency_help' => 'This is the time interval, in hours, between each posts in the feed or each e-mail. <br>
+            'frequency_help' => 'This is the time interval, in hours, between each posts in the feed or each e-mail (min : 12, max : 744). <br>
             A week = 168 hours.',
 
             'profile_count' => 'Profile count',
-            'profile_count_help' => 'The number of profiles that are displayed in each post/e-mail. <br>
-            If the number of profiles that could be displayed after being filtered by the search and the blacklist is superior to this number, the profiles that made it to the post/e-mail are chose randomly amongs them.',
+            'profile_count_help' => 'The number of profiles that are displayed in each post/e-mail.',
 
             'search_id' => 'Search ID',
-            'search_id_help' => 'The search ID used to filter the content. <br>
-            To know which search ID to use, head over the search form, fill it as you like the hit the search button and copy/paste here the search ID that is indicated.',
+            'search_id_help' => 'The search ID used to filter the content.',
 
             'use_blacklist' => 'Use my blacklist',
             'blacklist_help' => 'The profiles in your blacklist will never be displayed. <a href=":blacklist_link" title="Edit your blacklist">Edit your blacklist</a>.',
@@ -384,10 +412,21 @@ return array(
 
         'pitch' => 'Game pitch, story, features...',
 
+        'press_help' => "How and wherer the press talk about the game.",
         'publishername' => 'Publisher name',
         'publisherurl' => 'Publisher\'s website',
 
         'soundtrackurl' => 'Soundtrack',
+        'soundtrack_help' => 'If the soundtrack is hosted on Bandcamp and you want the player to be displayed on the profile, you need to fill the field below with the player url instead of the standard url. <br>
+        <br>
+        When you are on the album page, click "Share/Embed" > "Embed this track" then get the content of the "src" attribute of the iframe tag. This is the player url which should looks like : <br> http://bandcamp.com/EmbeddedPlayer/v=2/album=519219781/... <br>
+        <br>
+        Same story for SoundCloud, to display the player on the profile, fill the field below with the API url. <br>
+        Click the "Share" button, the API url is the url in the Wordpress shortcode. <br>
+        It looks like : http://api.soundcloud.com/playlists/1738337 <br>
+        <br>
+        ',
+
         
         'releasedate' => 'Release date',
 
@@ -596,6 +635,22 @@ return array(
         'or' => 'or',
 
         'register' => 'Register',
+    ),
+
+// PARTICIPATE
+
+    'participate' => array(
+        'title' => 'Participate',
+
+        'home_text' => 'VideoGamesChest is a <strong>participative</strong> database where everyone can create a profile for their favorite <strong>game</strong>, <strong>developer</strong>, <strong>game creation tool</strong> and user-created <strong>map/level and mod</strong> (tool, map and mod are coming soon) with <strong>no discrimination</strong> on the platform, the price, the release date, or any criteria actually. <br>
+        <br> 
+        Attention has been put to showcase the content in the most advantageous way with beautiful and comprehensive profiles.',
+    ),
+
+// PRESS
+
+    'press' => array(
+        'title' => 'Press',
     ),
 
 // PROMOTION

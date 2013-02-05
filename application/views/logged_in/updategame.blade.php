@@ -128,8 +128,9 @@ $developer_name = $game->actual_developer_name;
                         <!-- names urls items -->
                         <ul class="nav nav-tabs" id="general-nu-text-tabs">
                             <li><a href="#stores" data-toggle="tab">{{ lang('common.stores') }}</a></li>
+                            <li><a href="#press" data-toggle="tab">{{ lang('press.title') }}</a></li>
                             <li><a href="#socialnetworks" data-toggle="tab">{{ lang('common.socialnetworks') }}</a></li>
-                            <li><a href="#reviews" data-toggle="tab">{{ lang('common.reviews') }}</a></li>
+                            
                         </ul>
 
                         <div class="tab-content">
@@ -165,11 +166,12 @@ $developer_name = $game->actual_developer_name;
                             @endforeach
 
                             <?php
-                            $nu_text = array('reviews');
+                            $nu_text = array('press');
                             foreach ($nu_text as $fields):
                             ?>
                                 <div class="tab-pane" id="{{ $fields }}">
                                     <p>
+                                        {{ lang('game.press_help') }} <br>
                                         {{ lang('common.text_url_delete_help') }}
                                     </p>
 
@@ -205,15 +207,14 @@ $developer_name = $game->actual_developer_name;
                         {{ Former::url('profile_background', lang('common.profile_background'))->placeholder(lang('common.url'))->help(lang('common.profile_background_help')) }}
                     
                         {{ Former::url('cover', lang('game.cover'))->placeholder(lang('common.url')) }}
-                    
-                        {{ Former::url('soundtrack', lang('game.soundtrackurl'))->placeholder(lang('common.url')) }}
-                    </div>
+                     </div>
                 
                     <div class="span8">
                         <!-- names urls items -->
                         <ul class="nav nav-tabs" id="medias-tabs">
                             <li><a href="#screenshots" data-toggle="tab">{{ lang('common.screenshots') }}</a></li>
                             <li><a href="#videos" data-toggle="tab">{{ lang('common.videos') }}</a></li>
+                            <li><a href="#soundtrack" data-toggle="tab">{{ lang('common.soundtrack') }}</a></li>
                         </ul>
 
                         <div class="tab-content">
@@ -247,7 +248,15 @@ $developer_name = $game->actual_developer_name;
                                     @endfor
                                 </div>
                             @endforeach
-                        </div>
+
+                            <div class="tab-pane" id="soundtrack">
+                                <p>
+                                    {{ lang('game.soundtrack_help') }}
+                                </p>
+
+                                {{ Former::xlarge_url('soundtrack', lang('game.soundtrackurl'))->placeholder(lang('common.url')) }}
+                            </div> 
+                        </div> <!-- /.tab-content -->
                     </div>
                 </div> <!-- /.row -->
 
@@ -314,4 +323,5 @@ $developer_name = $game->actual_developer_name;
 $('#main-tabs a:first').tab('show');
 $('#array-fields-tabs a:first').tab('show');
 $('#general-nu-text-tabs a:first').tab('show');
+$('#medias-tabs a:first').tab('show');
 @endsection

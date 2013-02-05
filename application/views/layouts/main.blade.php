@@ -69,7 +69,8 @@ $page_content .= Section::yield('page_content');
             // common jquery
             $('i[rel=tooltip]').tooltip();
             $('i[rel=popover]').popover();
-            $('.nav-tabs a:first').tab('show');
+
+
 
             // per page jquery
             @yield('jQuery')

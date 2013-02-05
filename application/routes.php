@@ -57,11 +57,10 @@ $layout = View::of('layout');
         return $layout->nest('page_content', 'home');
     });
 
-    Route::get('home', array('as' => 'get_home', 'do' => function() use ($layout)
+    Route::get('home', array('as' => 'get_home_page', 'do' => function() use ($layout)
     {
         return $layout->nest('page_content', 'home');
     }));
-
 
     Route::get('about', array('as' => 'get_about_page', 'do' => function() use ($layout)
     {
@@ -69,9 +68,16 @@ $layout = View::of('layout');
     }));
 
 
+    // PARTICIPATE
+    Route::get('participate', array('as' => 'get_participate_page', 'do' => function() use ($layout)
+    {
+        return $layout->nest('page_content', 'participate');
+    }));
+
+
     // SEARCH PROFILE
 
-    Route::get('search/(:num?)', array('as' => 'get_search', function($search_id = null) use ($layout)
+    Route::get('search/(:num?)', array('as' => 'get_search_page', function($search_id = null) use ($layout)
     {
         if ( ! is_null($search_id)) {
             $search = Search::get($search_id);
@@ -106,7 +112,7 @@ $layout = View::of('layout');
 
     // SET LANGUAGE
 
-    Route::get('setlanguage/(:any?)', array('as' => 'get_set_language', 'do' => function($language = null) use ($layout)
+    Route::get('setlanguage/(:any?)', array('as' => 'get_set_language_page', 'do' => function($language = null) use ($layout)
     {
         /*if (is_null($language)) {
             $language = Session::get('language', Config::get('language', 'en'));
@@ -123,13 +129,13 @@ $layout = View::of('layout');
 
 
     // PROMOTE
-    Route::get('promote', array('as' => 'get_promotion', 'uses' => 'promotion@index'));
+    Route::get('promote', array('as' => 'get_promotion_page', 'uses' => 'promotion@index'));
     
     Route::get('promote/crosspromotion', array('as' => 'get_crosspromotion', 'uses' => 'promotion@crosspromotion'));
     // When games wants their promoted profiles
     Route::get('promote/crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion_from_game', 'uses' => 'promotion@crosspromotion_from_game'));
 
-        
+
 
 //----------------------------------------------------------------------------------
 //  MUST BE LEGIT POST

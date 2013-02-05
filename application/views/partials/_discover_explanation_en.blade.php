@@ -2,13 +2,11 @@
     We are sure you can find dosens of games to play each week from your social media feeds or the press. But you will probably play only to a fraction of those games. <br> 
     The thruth is that <strong>most of those games are just not relevant to you</strong>, because you don't have the device or you don't like the genre or how they looks. Doesn't it feels like wasted time and opportunities ?<br>
     <br>
-    You may already know that you can be proactive and <a href=\":search_link\" class=\"\">thoroughtly search for</a> the games that fits your preferences but if instead you prefer a more passive approach, let us suggest a couple of solutions. <br>
+    VGC allows you to sit at your computer and just wait for <strong>the profiles you are interested in</strong> to drop in your inbox or your favorite syndication feed reader. <br>
     <br>
-    <strong>VGC allows you to sit at your computer and just wait for the games you are interested in to drop in your inbox or your favorite syndication feed reader.</strong> <br> 
+    You can subscribe below to a <strong>fully customisable</strong> feed or newsletter whose sole purpose is to promote you with the kind of games (or any profiles) <strong>you choose</strong> to be promote with. <br> 
     <br>
-    You can subscribe to a newletter or a feed whose sole purpose is to advertise you with games or any profiles on VGC. <br> It gets actually interesting when you know that you are in control of every aspect of the process. <br>
-    <br>
-    <strong>You control What, How much, When and How :</strong>.
+    <strong>You control What, How much, When and How :</strong>
 </p>
 
 <!-- <h3>You choose what you get advertised for with a search ID</h3> -->
@@ -30,7 +28,7 @@
         you 
     @endif
 
-    may filter the advertised content again with 
+    
 
     @if (is_guest())
         <strong>a blacklist of profile</strong>. 

@@ -20,21 +20,23 @@
 
     <div class="row">
         <div class="span6">
+            <h2>{{ lang('participate.title') }}</h2>
+
             <p>
-                {{ lang('home.home_text') }}
+                {{ lang('participate.home_text') }}
             </p>
 
-            <a href="{{ route('get_register') }}" class="btn btn-primary">{{ lang('common.learn_more') }}</a>
+            <a href="{{ route('get_participate_page') }}" class="btn btn-primary">{{ lang('common.learn_more') }} {{ icon('double-angle-right') }}</a>
         </div>
 
         <div class="span6">
-            <h2>{{ lang('search.title') }} <small>{{ lang('search.subtitle') }}</small></h2>
+            <h2>{{ lang('search.title') }}</h2>
             
             <p>
                 {{ lang('search.home_text') }}
             </p>
 
-            <a href="{{ route('get_search') }}" class="btn btn-primary">{{ lang('common.learn_more') }}</a>
+            <a href="{{ route('get_search_page') }}" class="btn btn-primary">{{ lang('common.learn_more') }} {{ icon('double-angle-right') }}</a>
         </div>
     </div>
 
@@ -42,27 +44,27 @@
 
     <div class="row">
         <div class="span6">
-            <h2>{{ lang('discover.title') }} <small>{{ lang('discover.subtitle') }}</small></h2>
+            <h2>{{ lang('discover.title') }}</h2>
 
             <p>
                 <?php
                 echo lang('discover.home_text', array(
-                    'search_link' => route('get_search'),
+                    'search_link' => route('get_search_page'),
                 ));
                 ?>
             </p>
 
-            <a href="{{ route('get_discover_page') }}" class="btn btn-primary">{{ lang('common.learn_more') }}</a>
+            <a href="{{ route('get_discover_page') }}" class="btn btn-primary">{{ lang('common.learn_more') }} {{ icon('double-angle-right') }}</a>
         </div>
 
         <div class="span6">
-            <h2>{{ lang('promotion.title') }} <small>{{ lang('promotion.subtitle') }}</small></h2>
+            <h2>{{ lang('promotion.title') }}</h2>
 
             <p>
                 {{ lang('promotion.home_text') }}
             </p>
 
-            <a href="{{ route('get_promotion') }}" class="btn btn-primary btn-learn-more">{{ lang('common.learn_more') }}</a>
+            <a href="{{ route('get_promotion_page') }}" class="btn btn-primary btn-learn-more">{{ lang('common.learn_more') }} {{ icon('double-angle-right') }}</a>
         </div>
     </div>
 

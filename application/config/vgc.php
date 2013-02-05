@@ -28,6 +28,8 @@ return array(
         'rss' => 'r', // 'D, d M Y H:i:s O',
     ),
 
+    'profile_blog_feed_item_count' => 5,
+
     //'dummie_password' => '', //r!&5éT[79m},D?4â+5w% temp password while user is in submission review
 
     /*"feed" => array(
@@ -465,6 +467,8 @@ return array(
         'money',
         'comments',
         'comments-alt',
+        'caret-right',
+        'double-angle-right',
 
     ),
 );

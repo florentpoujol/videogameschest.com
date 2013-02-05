@@ -5,14 +5,14 @@ class Game extends Profile
     // fields which data is stored as json
     public static $json_fields = array('approved_by', 'crosspromotion_profiles',
         'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'looks', 'periods',
-        'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos', 'reviews');
+        'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos', 'press');
     
     // text fields which data is stored as json array
     public static $array_fields = array('devices', 'operatingsystems', 'genres', 'looks', 'periods',
      'viewpoints', 'nbplayers', 'tags', 'languages', 'technologies',  );
 
     // text fields which data is stored as json object with a 'names' and 'urls' keys containing an array ot items
-    public static $names_urls_fields = array('socialnetworks', 'stores', 'screenshots', 'videos', 'reviews');
+    public static $names_urls_fields = array('socialnetworks', 'stores', 'screenshots', 'videos', 'press');
 
     // fields to secure against XSS before displaying
     public static $secured_fields = array('name', 'pitch', 'cover', 'website', 'blogfeed', 'presskit',);

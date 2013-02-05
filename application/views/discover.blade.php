@@ -1,22 +1,25 @@
 <div id="discover">
-    <h1>{{ lang('discover.title') }} <small>{{ lang('discover.subtitle') }}</small></h1>
+     <div class="pull-right" id="discover-icon">
+        {{ icon('eye-open') }}
+    </div>
+    
+    <h1>{{ lang('discover.title') }}<!--  <small>{{ lang('discover.subtitle') }}</small> --></h1>
 
     <hr>
 
-    <div class="pull-right" id="discover-icon">
-        {{ icon('eye-open') }}
-    </div>
+   
+
 
     <p>
-        {{ lang('discover.home_text') }} <br>
+        {{ lang('discover.page_text') }} <br>
         <br>
         <a class="accordion-toggle" data-toggle="collapse" href="#collapse-learn-more">
             {{ icon('circle-arrow-down') }} {{ lang('common.learn_more') }} 
         </a>
-    </p>
+    </p> 
 
     <div id="collapse-learn-more" class="collapse">
-        {{--@include('partials/discover_explanation_'.get_language()) --}}
+        {{ lang('discover.page_learn_more_text') }}
     </div>
 
     <hr>
