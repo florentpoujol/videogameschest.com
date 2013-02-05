@@ -26,7 +26,7 @@ if (is_admin()) {
 
     <hr>
 
-    {{ Former::open_vertical(route('post_adddeveloper'))->rules($rules) }}
+    {{ Former::open_vertical(route('post_developer_create'))->rules($rules) }}
         {{ Form::token() }}
 
         {{ Former::primary_submit(lang('common.add_profile')) }}

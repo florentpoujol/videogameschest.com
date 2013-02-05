@@ -22,7 +22,7 @@
                 @endif
             </p>
 
-            {{ Former::open_vertical(route('post_crosspromotion')) }}
+            {{ Former::open_vertical(route('post_crosspromotion_update')) }}
                 {{ Form::token() }}
 
                 {{ Former::checkbox('crosspromotion_active', '')->text(lang('crosspromotion.subsciption_checkbox_label'))->check($has_subscribed) }}
@@ -35,7 +35,7 @@
             </form>
         @else
             <p class="muted"> 
-                {{ lang('crosspromotion.no_game', array('add_game_link'=>URL::to_route('get_addgame'))) }}
+                {{ lang('crosspromotion.no_game', array('add_game_link'=>route('get_game_create'))) }}
             </p>
         @endif
 

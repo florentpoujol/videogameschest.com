@@ -9,7 +9,7 @@ $rules = array(
 ?>
 
 <div id="user_form">
-	{{ Former::open_vertical()->rules($rules) }} 
+	{{ Former::open_vertical(route('post_user_create'))->rules($rules) }} 
 		<legend>Add a user account</legend>
 		{{ Form::token() }}
 

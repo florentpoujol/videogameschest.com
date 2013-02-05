@@ -11,5 +11,5 @@
 
     <hr>
 
-    <a href="{{ route('get_lostpassword') }}">{{ lang('login.lost_password') }}</a>
+    <a href="{{ route('get_lostpassword_page') }}">{{ lang('login.lost_password') }}</a>
 </div> <!-- /#login -->

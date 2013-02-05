@@ -11,7 +11,7 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // REGISTER USER ACCOUNT
 
-    public function get_register() 
+    public function get_register_page() 
     {
         $this->layout->nest('page_content', 'register');
     }
@@ -33,10 +33,10 @@ class Admin_Controller extends Base_Controller
         
         if ($validation->passes()) {
             $user = User::create($input);
-            return Redirect::to_route('get_home');
+            return Redirect::to_route('get_home_page');
         }
         
-        return Redirect::to_route('get_register')->with_errors($validation)->with_input();
+        return Redirect::to_route('get_register_page')->with_errors($validation)->with_input();
     }
 
     public function get_register_confirmation($user_id, $url_key) 
@@ -52,19 +52,19 @@ class Admin_Controller extends Base_Controller
             HTML::set_error($msg);
             Log::write('user activation confirmation error', $msg);
 
-            return Redirect::to_route('get_home');
+            return Redirect::to_route('get_home_page');
         }
 
         // if user is found
         $user->activate();
 
-        return Redirect::to_route('get_login');
+        return Redirect::to_route('get_login_page');
     }
 
     //----------------------------------------------------------------------------------
     // LOGIN
 
-    public function get_login() 
+    public function get_login_page() 
     {
         $this->layout->nest('page_content', 'login');
     }
@@ -103,7 +103,7 @@ class Admin_Controller extends Base_Controller
                             'username' => $user->username
                         )));
                         Log::write('user login', 'User '.$user->username.' (id='.$user->id.') has logged in');
-                        return Redirect::to_route('get_admin_home');
+                        return Redirect::to_route('get_home_page');
                     } else {
                         HTML::set_error(lang('login.msg.wrong_password', array(
                             'field' => $field,
@@ -124,7 +124,7 @@ class Admin_Controller extends Base_Controller
             }
         }
 
-        return Redirect::to_route('get_login')->with_errors($validation)->with_input();
+        return Redirect::to_route('get_login_page')->with_errors($validation)->with_input();
     }
 
     public function get_logout()
@@ -136,13 +136,13 @@ class Admin_Controller extends Base_Controller
 
         Cookie::forget('user_logged_in');
         Auth::logout();
-        return Redirect::to_route('get_login');
+        return Redirect::to_route('get_login_page');
     }
 
     //----------------------------------------------------------------------------------
     // LOST PASSWORD
 
-    public function get_lostpassword() 
+    public function get_lostpassword_page() 
     {
         $this->layout->nest('page_content', 'lostpassword');
     }
@@ -179,7 +179,7 @@ class Admin_Controller extends Base_Controller
             }
         }
             
-        return Redirect::to_route('get_login')->with_errors($validation)->with_input();
+        return Redirect::to_route('get_login_page')->with_errors($validation)->with_input();
     }
 
 
@@ -195,25 +195,25 @@ class Admin_Controller extends Base_Controller
             HTML::set_error($msg);
             Log::write('user lostpassword confirmation error', $msg);
 
-            return Redirect::to_route('get_home');
+            return Redirect::to_route('get_home_page');
         }
 
         // if user is found
         $user->setNewPassword(2); // setp 2 : generate new password then send by mail
 
-        return Redirect::to_route('get_login');
+        return Redirect::to_route('get_login_page');
     }
 
 
     // ----------------------------------------------------------------------------------
     // ADD USER
 
-    public function get_adduser()
+    public function get_user_create()
     {
         $this->layout->nest('page_content', 'logged_in/createuser');
     }
 
-    public function post_adduser()
+    public function post_user_create()
     {
         $input = Input::all();
         
@@ -230,7 +230,7 @@ class Admin_Controller extends Base_Controller
         
         if ($validation->passes()) {
             $user = User::create($input);
-            return Redirect::to_route('get_edituser', array($user->id));
+            return Redirect::to_route('get_user_update', array($user->id));
         } else {
             Former::withErrors($validation);
             $this->layout->nest('page_content', 'logged_in/createuser');
@@ -241,20 +241,20 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // EDIT USER
 
-    public function get_edituser($user_id = null)
+    public function get_user_update($user_id = null)
     {
         if ($user_id == null || ( ! is_admin() && $user_id != user_id()))
-            return Redirect::to_route('get_edituser', array(user_id()));
+            return Redirect::to_route('get_user_update', array(user_id()));
 
         if (User::find($user_id) == null) {
             HTML::set_error("Can't find user with id '$user_id' ! Using your user id '".user_id()."'.");
-            return Redirect::to_route('get_edituser', array(user_id()));
+            return Redirect::to_route('get_user_update', array(user_id()));
         }
 
         $this->layout->nest('page_content', 'logged_in/updateuser', array('user_id'=>$user_id));
     }
 
-    public function post_edituser()
+    public function post_user_update()
     {
         $input = Input::all();
 
@@ -272,15 +272,15 @@ class Admin_Controller extends Base_Controller
         $validation = Validator::make($input, $rules);
         
         if ($validation->fails() || ! User::update($input['id'], $input)) {
-            return Redirect::to_route('get_edituser', array($user->id))
+            return Redirect::to_route('get_user_update', array($user->id))
             ->with_errors($validation)
             ->with_input('except', array('password', 'password_confirmation', 'old_password'));
         }
 
-        return Redirect::to_route('get_edituser', array($user->id));
+        return Redirect::to_route('get_user_update', array($user->id));
     }
 
-    public function post_editpassword()
+    public function post_password_update()
     {
         $input = Input::all();
         $input['password'] = trim($input['password']);
@@ -307,7 +307,7 @@ class Admin_Controller extends Base_Controller
             $validation = Validator::make($input, $rules);
         
             if ($validation->fails() || $old_password_ok == false) {
-                return Redirect::to_route('get_edituser', array($user->id))
+                return Redirect::to_route('get_user_update', array($user->id))
                 ->with_errors($validation)
                 ->with_input('except', array('password', 'password_confirmation', 'old_password'));
             }
@@ -315,10 +315,10 @@ class Admin_Controller extends Base_Controller
             User::update($input['id'], $input);
         }
 
-        return Redirect::to_route('get_edituser', array($user->id));
+        return Redirect::to_route('get_user_update', array($user->id));
     }
 
-    public function post_editblacklist()
+    public function post_blacklist_update()
     {
         $input = Input::all();
 
@@ -326,19 +326,19 @@ class Admin_Controller extends Base_Controller
 
         User::updateBlacklist($input);
         
-        return Redirect::to_route('get_edituser');
+        return Redirect::to_route('get_user_update');
     }
 
 
     //----------------------------------------------------------------------------------
     // ADD DEVELOPER
 
-    public function get_adddeveloper()
+    public function get_developer_create()
     {
         $this->layout->nest('page_content', 'logged_in/createdeveloper');
     }
 
-    public function post_adddeveloper()
+    public function post_developer_create()
     {
         $input = Input::all();
 
@@ -358,7 +358,7 @@ class Admin_Controller extends Base_Controller
         if ($validation->passes()) {
             $dev = Dev::create($input);
 
-            return Redirect::to_route('get_editdeveloper', array($dev->id));
+            return Redirect::to_route('get_developer_update', array($dev->id));
         }
 
         return Redirect::back()->with_errors($validation)->with_input();
@@ -389,23 +389,23 @@ class Admin_Controller extends Base_Controller
             }
         }
 
-        return Redirect::to_route('get_editdeveloper', array($id));
+        return Redirect::to_route('get_developer_update', array($id));
     }
 
-    public function get_editdeveloper($profile_id = null)
+    public function get_developer_update($profile_id = null)
     {
         $devs = user()->devs;
         // can't use user()->ddevs in the condition because it would always return an empty array
 
         if ( ! is_admin() && empty($devs)) {
-            return Redirect::to_route('get_adddeveloper');
+            return Redirect::to_route('get_developer_create');
         }
 
         if (is_null($profile_id)) {
             if ( ! is_admin() && count($devs) == 1) { 
                 // if user has only one profile, redirect to it, or show the select form
                 $profile_id = $devs[0]->id;
-                return Redirect::to_route('get_editdeveloper', array($profile_id));
+                return Redirect::to_route('get_developer_update', array($profile_id));
             }
 
             $this->layout->nest('page_content', 'forms/selecteditdeveloper');
@@ -416,18 +416,18 @@ class Admin_Controller extends Base_Controller
 
         if ($dev == null) {
             HTML::set_error(lang('developer.msg.profile_not_found', array('id'=>$profile_id)));
-            return Redirect::to_route('get_editdeveloper');
+            return Redirect::to_route('get_developer_update');
         }
 
         if ( ! is_admin() && $dev->user_id != user_id()) {
             HTML::set_error(lang('common.msg.edit_other_users_profile_not_allowed'));
-            return Redirect::to_route('get_editdeveloper');
+            return Redirect::to_route('get_developer_update');
         }
 
         $this->layout->nest('page_content', 'logged_in/updatedeveloper', array('profile_id'=>$profile_id));
     }
 
-    public function post_editdeveloper() 
+    public function post_developer_update() 
     {
         $input = Input::all();
 
@@ -460,22 +460,22 @@ class Admin_Controller extends Base_Controller
         
         if ( ! $validation->passes() || ! Dev::update($input['id'], $input)) {
             Input::flash();
-            return Redirect::to_route('get_editdeveloper', array($input['id']))->with_errors($validation);
+            return Redirect::to_route('get_developer_update', array($input['id']))->with_errors($validation);
         }
 
-        return Redirect::to_route('get_editdeveloper', array($input['id']));
+        return Redirect::to_route('get_developer_update', array($input['id']));
     }
 
 
     //----------------------------------------------------------------------------------
     // ADD GAME
 
-    public function get_addgame()
+    public function get_game_create()
     {
         $this->layout->nest('page_content', 'logged_in/creategame');
     }
 
-    public function post_addgame()
+    public function post_game_create()
     {
         $input = Input::all();
 
@@ -500,7 +500,7 @@ class Admin_Controller extends Base_Controller
         if ($validation->passes()) {
             $game = Game::create($input);
             
-            return Redirect::to_route('get_editgame', array($game->id));
+            return Redirect::to_route('get_game_update', array($game->id));
         }
 
         return Redirect::back()->with_errors($validation)->with_input();
@@ -531,22 +531,22 @@ class Admin_Controller extends Base_Controller
             }
         }
 
-        return Redirect::to_route('get_editgame', array($id));
+        return Redirect::to_route('get_game_update', array($id));
     }
 
-    public function get_editgame($profile_id = null)
+    public function get_game_update($profile_id = null)
     {
         $games = user()->games; 
         // can't use user()->games in the condition because it would always return an empty array
 
         if ( ! is_admin() && empty($games)) {
-            return Redirect::to_route('get_addgame');
+            return Redirect::to_route('get_game_create');
         }
 
         if (is_null($profile_id)) {
             if ( ! is_admin() && count($games) == 1) {
                 $profile_id = $games[0]->id;
-                return Redirect::to_route('get_editgame', array($profile_id));
+                return Redirect::to_route('get_game_update', array($profile_id));
             }
 
             $this->layout->nest('page_content', 'forms/selecteditgame');
@@ -557,18 +557,18 @@ class Admin_Controller extends Base_Controller
 
         if (is_null($game)) {
             HTML::set_error(lang('game.msg.profile_not_found', array('id'=>$profile_id)));
-            return Redirect::to_route('get_editgame');
+            return Redirect::to_route('get_game_update');
         }
 
         if ( ! is_admin() && $game->user_id != user_id()) {
             HTML::set_error(lang('common.msg.edit_other_users_profile_not_allowed'));
-            return Redirect::to_route('get_editgame');
+            return Redirect::to_route('get_game_update');
         }
 
         $this->layout->nest('page_content', 'logged_in/updategame', array('profile_id'=>$profile_id));
     }
 
-    public function post_editgame() 
+    public function post_game_update() 
     {
         $input = Input::all();
         
@@ -609,10 +609,10 @@ class Admin_Controller extends Base_Controller
         
         if ( ! $validation->passes() || ! Game::update($input['id'], $input)) {
             Input::flash();
-            return Redirect::to_route('get_editgame', array($input['id']))->with_errors($validation);
+            return Redirect::to_route('get_game_update', array($input['id']))->with_errors($validation);
         }
 
-        return Redirect::to_route('get_editgame', array($input['id']));
+        return Redirect::to_route('get_game_update', array($input['id']));
     }
 
 
@@ -640,7 +640,7 @@ class Admin_Controller extends Base_Controller
     {
         if ( ! is_admin()) {
             HTML::set_error(lang('messages.user_not_trusted'));
-            return Redirect::to_route('get_admin_home');
+            return Redirect::to_route('get_home_page');
         }
 
         $input = Input::all();
@@ -699,7 +699,7 @@ class Admin_Controller extends Base_Controller
         $this->layout->nest('page_content', 'logged_in/reports', array('report_type' => $report));
     }
 
-    public function post_addreport()
+    public function post_create_report()
     {
         $input = Input::all();
 
@@ -718,7 +718,7 @@ class Admin_Controller extends Base_Controller
         return Redirect::back()->with_errors($validation)->with_input();
     }
 
-    public function post_editreports()
+    public function post_update_reports()
     {
         $reports = Input::get('reports', array());
 

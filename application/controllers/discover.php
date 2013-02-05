@@ -11,7 +11,7 @@ class Discover_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // FEED
 
-    public function get_FeedPage()
+    public function get_feed_page()
     {
         $this->layout->nest('page_content', 'discover', array('current_tab' => '#feed-pane'));
     }
@@ -19,7 +19,7 @@ class Discover_Controller extends Base_Controller
     /**
      * Handle form form discover/feed page, for creation and update of feed rows
      */
-    public function post_CreateFeed()
+    public function post_feed_create()
     {
         $input = Input::all();
 
@@ -45,7 +45,7 @@ class Discover_Controller extends Base_Controller
      * When a feed url is checked for new content
      * The promotion feed is a feed with only one entry when last_pub_date + frequency < NOW
      */
-    public function get_FeedData($feed_id)
+    public function get_feed_data($feed_id)
     {
         $feed = PromotionFeed::find($feed_id);
 
@@ -110,7 +110,7 @@ class Discover_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // NEWSLETTER
 
-    public function get_EmailPage($email_id = null, $url_key = null)
+    public function get_newsletter_page($email_id = null, $url_key = null)
     {    
         if ( ! is_null($email_id) && is_logged_in()) {
             return Redirect::to_route('get_discover_email_page');
@@ -123,7 +123,7 @@ class Discover_Controller extends Base_Controller
         ));
     }
 
-    public function post_CreateEmail()
+    public function post_newsletter_create()
     {
         $input = Input::all();
 
@@ -151,7 +151,7 @@ class Discover_Controller extends Base_Controller
         }
     }
 
-    public function post_UpdateEmail()
+    public function post_newsletter_update()
     {
         $input = Input::all();
 

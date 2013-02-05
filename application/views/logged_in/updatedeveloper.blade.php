@@ -34,11 +34,11 @@ if (is_admin()) {
     </p>
 
 
-    {{ Former::open_vertical(route('post_editdeveloper'))->rules($rules) }} 
+    {{ Former::open_vertical(route('post_developer_update'))->rules($rules) }} 
         {{ Form::token() }}
         {{ Form::hidden('id', $profile_id) }}
 
-        {{ Former::primary_submit(lang('common.edit_profile')) }} 
+        {{ Former::primary_submit(lang('common.update')) }} 
 
         <hr>
 
@@ -142,7 +142,7 @@ if (is_admin()) {
 
         <hr>
 
-        {{ Former::primary_submit(lang('common.edit_profile')) }}
+        {{ Former::primary_submit(lang('common.update')) }}
 
     {{ Former::close() }}
 </div><!-- /#editdeveloper --> 

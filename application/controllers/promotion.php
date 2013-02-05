@@ -6,14 +6,14 @@ class Promotion_Controller extends Base_Controller
     {
         //return Redirect::to_route('get_promotion_feed_page');
         //return Redirect::to_route('get_crosspromotion');
-        $this->layout->nest('page_content', 'promotion');
+        $this->layout->nest('page_content', 'promote');
     }
 
 
     //----------------------------------------------------------------------------------
     // CROSS PROMOTION
 
-    public function get_crosspromotion()
+    public function get_crosspromotion_page()
     {
         $this->layout->nest('page_content', 'promotion/crosspromotion');
     }
@@ -21,7 +21,7 @@ class Promotion_Controller extends Base_Controller
     /**
      * When the user activate or deactivate the cross promotion
      */
-    public function post_crosspromotion()
+    public function post_crosspromotion_update()
     {
         $current_state = user()->crosspromotion_active;
         $new_state = Input::get('crosspromotion_active', 0);
@@ -36,7 +36,7 @@ class Promotion_Controller extends Base_Controller
     /**
      * When the user edit the promoted profiles for one of its game (from the edit game form)
      */
-    public function post_crosspromotion_editgame()
+    public function post_crosspromotion_game_update()
     {
         $input = Input::all();
 

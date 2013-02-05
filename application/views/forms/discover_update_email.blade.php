@@ -11,7 +11,7 @@ if (is_logged_in()) $rules['email'] =  'email'; // disabled email field prevent 
 // $newsletter is comming from /discover.blade.php
 Former::populate($newsletter)
 ?>
-{{ Former::open_vertical(route('post_discover_update_email'))->rules($rules) }}
+{{ Former::open_vertical(route('post_discover_newsletter_update'))->rules($rules) }}
     {{ Form::token() }}
         
     <div class="row">
@@ -41,9 +41,9 @@ Former::populate($newsletter)
 
         <div class="span4">
             @if (is_logged_in())
-                {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_help', array('blacklist_link'=>route('get_edituser'))))->id('email_blacklist') }}
+                {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_help', array('blacklist_link'=>route('get_user_update'))))->id('email_blacklist') }}
             @else
-                {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_guest_help', array('register_link'=>route('get_register'))))->disabled() }}
+                {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_guest_help', array('register_link'=>route('get_register_page'))))->disabled() }}
             @endif
         </div>
 

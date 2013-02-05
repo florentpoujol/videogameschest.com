@@ -42,7 +42,7 @@
     ?>
 
     @if ( ! empty($reports))
-        {{ Former::open(route('post_editreports')) }}
+        {{ Former::open(route('post_reports_update')) }}
             {{ Form::token() }}
 
             <table class="table table-striped table-bordered">

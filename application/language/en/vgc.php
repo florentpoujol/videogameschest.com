@@ -56,11 +56,11 @@ return array(
 
 
         'menu' => array(
-            'add_developer' => 'Add a developer',
-            'edit_developer' => 'Edit a developer',
-            'add_game' => 'Add a game',
-            'edit_game' => 'Edit a game',
-            'edit_user_account' => 'Edit your user account',
+            'add_developer' => 'Create a developer',
+            'edit_developer' => 'Update a developer',
+            'add_game' => 'Create a game',
+            'edit_game' => 'Update a game',
+            'edit_user_account' => 'Update your user account',
         ),
     ),
 
@@ -155,6 +155,7 @@ return array(
 
         'unsubscribe' => 'Unsubscribe',
         'update' => 'Update',
+        'update_profile' => 'Update this profile',
         'url' => 'URL',
         'username' => 'User name',
 
@@ -272,10 +273,10 @@ return array(
         ),
 
         'edit' => array(
-            'title' => 'Edit a developer profile',
-            'submit' => 'Edit this developer profile',
+            'title' => 'Update a developer',
+            'submit' => 'Update this developer',
             'select_profile_placeholder' => 'Name or id',
-            'select_profile_help' => 'Select the developer to edit',
+            'select_profile_help' => 'Select the developer to update',
         ),
 
         'profile' => array(
@@ -361,9 +362,9 @@ return array(
             'search_id_help' => 'The search ID used to filter the content.',
 
             'use_blacklist' => 'Use my blacklist',
-            'blacklist_help' => 'The profiles in your blacklist will never be displayed. <a href=":blacklist_link" title="Edit your blacklist">Edit your blacklist</a>.',
+            'blacklist_help' => 'The profiles in your blacklist will not be displayed. <a href=":blacklist_link" title="Edit your blacklist">Edit your blacklist</a>.',
 
-            'blacklist_guest_help' => 'The blacklist is another level of filtering that <a href=":register_link" title="Create a user account">registered users only</a> can benefits from. The profiles you put in your blacklist will never be displayed. ',
+            'blacklist_guest_help' => 'The blacklist is another level of filtering that <a href=":register_link" title="Create a user account">registered users only</a> can benefits from. The profiles you put in your blacklist will not be displayed. ',
 
 
             'feed' => array(
@@ -435,15 +436,15 @@ return array(
 
 
         'add' => array(
-            'title' => 'Add a game profile',
+            'title' => 'Create a game profile',
             'submit' => 'Submit this game profile',
         ),
 
         'edit' => array(
-            'title' => 'Edit a game profile',
-            'submit' => 'Edit this game profile',
+            'title' => 'Update a game',
+            'submit' => 'Update this game',
             'select_profile_placeholder' => 'Name or id',
-            'select_profile_help' => 'Select the game to edit',
+            'select_profile_help' => 'Select the game to update',
         ),
 
         'profile' => array(
@@ -610,15 +611,13 @@ return array(
 
     'menu' => array(
         'home' => 'Home',
-        'featured' => 'Featured',
-        'search' => 'Search',
-        'find' => 'Discover',
-        'advertising' => 'Get discovered',
+        
+        
         'about' => 'About',
 
 
         'adddeveloper' => 'Add a developer',
-        'addgame' => 'Add a game',
+        'addgame' => 'Create a game',
         'logout' => 'Log Out',
         'languages' => 'Languages',
 
@@ -653,9 +652,9 @@ return array(
         'title' => 'Press',
     ),
 
-// PROMOTION
+// PROMOTE
 
-    'promotion' => array(
+    'promote' => array(
         'explanation' => '
         <p class="advertising-explanation">
         You developed the game of your dream but you can count your followers on one hand and the press never gets back to you ? <br>

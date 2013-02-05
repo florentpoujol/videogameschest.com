@@ -14,7 +14,7 @@ if (is_logged_in()) {
     }
 }
 ?>
-{{ Former::open_vertical(route('post_discover_create_feed'))->rules($rules) }}
+{{ Former::open_vertical(route('post_discover_feed_create'))->rules($rules) }}
     {{ Form::token() }}
 
     <div class="row">
@@ -40,10 +40,10 @@ if (is_logged_in()) {
 
         <div class="span4">
             @if (is_logged_in())
-                {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_help', array('blacklist_link'=>route('get_edituser'))))->id('feed_blacklist') }}
+                {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_help', array('blacklist_link'=>route('get_user_update'))))->id('feed_blacklist') }}
                 </p>
             @else
-                {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_guest_help', array('register_link'=>route('get_register'))))->disabled() }}
+                {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_guest_help', array('register_link'=>route('get_register_page'))))->disabled() }}
             @endif
         </div>
 

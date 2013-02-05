@@ -49,11 +49,11 @@ $developer_name = $game->actual_developer_name;
                 'soundtrack' => 'url',
             );
             ?>
-            {{ Former::open_vertical(route('post_editgame'))->rules($rules) }} 
+            {{ Former::open_vertical(route('post_game_update'))->rules($rules) }} 
                 {{ Form::token() }}
                 {{ Form::hidden('id', $profile_id) }}
 
-                {{ Former::primary_submit(lang('common.edit_profile')) }}
+                {{ Former::primary_submit(lang('common.update')) }}
 
                 <hr>
 
@@ -262,13 +262,13 @@ $developer_name = $game->actual_developer_name;
 
                 <hr>
 
-                {{ Former::primary_submit(lang('common.edit_profile')) }}
+                {{ Former::primary_submit(lang('common.update')) }}
 
             {{ Former::close() }}
         </div> <!-- /#medias-pane .tab-pane -->
 
         <div class="tab-pane" id="crosspromotion-pane">
-            {{ Former::open_vertical(route('post_crosspromotion_editgame')) }}
+            {{ Former::open_vertical(route('post_crosspromotion_game_update')) }}
                 {{ Form::token() }}
                 {{ Former::hidden('id', $game->id)}}
                 

@@ -58,13 +58,13 @@
         </div>
 
         <div class="span6">
-            <h2>{{ lang('promotion.title') }}</h2>
+            <h2>{{ lang('promote.title') }}</h2>
 
             <p>
-                {{ lang('promotion.home_text') }}
+                {{ lang('promote.home_text') }}
             </p>
 
-            <a href="{{ route('get_promotion_page') }}" class="btn btn-primary btn-learn-more">{{ lang('common.learn_more') }} {{ icon('double-angle-right') }}</a>
+            <a href="{{ route('get_promote_page') }}" class="btn btn-primary btn-learn-more">{{ lang('common.learn_more') }} {{ icon('double-angle-right') }}</a>
         </div>
     </div>
 

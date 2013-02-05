@@ -27,7 +27,7 @@ if ( ! empty($old)) Former::populate($old);
 
     <div class="tab-content">
         <div class="tab-pane" id="profile-pane">
-            {{ Former::open_vertical(route('post_edituser'))->rules($rules) }}    
+            {{ Former::open_vertical(route('post_user_update'))->rules($rules) }}    
                 {{ Form::token() }}
 
                 @if (is_admin())
@@ -62,7 +62,7 @@ if ( ! empty($old)) Former::populate($old);
 
             if (is_admin()) unset($rules['oldpassword']);
             ?>
-            {{ Former::open_vertical(route('post_editpassword'))->rules($rules) }}    
+            {{ Former::open_vertical(route('post_password_update'))->rules($rules) }}    
                 {{ Form::token() }}
 
                 @if (is_admin())
@@ -93,7 +93,7 @@ if ( ! empty($old)) Former::populate($old);
                 ?>
                 @foreach (Config::get('vgc.profile_types') as $profile_type)
                     <div class="tab-pane" id="{{ $profile_type }}-pane">
-                        {{ Former::open_vertical(route('post_editblacklist'))->rules($rules) }}    
+                        {{ Former::open_vertical(route('post_blacklist_update'))->rules($rules) }}    
                             {{ Form::token() }}
                             
                             @if (is_admin())

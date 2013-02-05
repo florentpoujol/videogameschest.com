@@ -34,7 +34,7 @@ $devs = Dev::get(array('id', 'name'));
         'soundtrack' => 'url',
     );
     ?>
-    {{ Former::open_vertical(route('post_addgame'))->rules($rules) }} 
+    {{ Former::open_vertical(route('post_game_create'))->rules($rules) }} 
         {{ Form::token() }}
 
         {{ Former::primary_submit(lang('common.add_profile')) }}

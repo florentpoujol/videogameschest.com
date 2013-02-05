@@ -1,14 +1,11 @@
 <div id="discover">
-     <div class="pull-right" id="discover-icon">
+    <div class="pull-right muted" id="discover-icon">
         {{ icon('eye-open') }}
     </div>
     
     <h1>{{ lang('discover.title') }}<!--  <small>{{ lang('discover.subtitle') }}</small> --></h1>
 
     <hr>
-
-   
-
 
     <p>
         {{ lang('discover.page_text') }} <br>

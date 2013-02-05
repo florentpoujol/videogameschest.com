@@ -1,19 +1,24 @@
 
-ajouter lien edit et blacklist dans menu admin
 ajouter warning soundtrack
 refaire form add game comme update game hier
+
 retravailler formuaire recherche
 
 ajouter tab promotion game
 ajouter tab promotion developers
 
-retravailler textes home et discover
 
 
     DONE
 
-04/02/2013
 
+05/20/2013
+
+retravailler textes home et discover
+ajouter lien edit profile dans menu admin
+
+
+04/02/2013
 
 retraivailler textes home et about
 modifer présentation screenshots et vidéos, et soudtrack dans les profils
@@ -22,6 +27,7 @@ modifer présentation screenshots et vidéos, et soudtrack dans les profils
 02/02/2013
 
 rajouter lien désabo/update dans promo newsletter
+
 
 01/02/2013
 

@@ -15,7 +15,7 @@ $default_tab = Config::get('vgc.search.default_tab');
 if (isset($old['profile_type'])) $default_tab = $old['profile_type'];
 //if (isset($search_data['profile_type'])) $default_tab = $search_data['profile_type'];
 
-$results_disabled = 'disabled';
+ $results_disabled = 'disabled';
 if (isset($search_id) && isset($profiles)) {
     $results_disabled = '';
     $default_tab = 'results';
@@ -24,7 +24,11 @@ if (isset($search_id) && isset($profiles)) {
 ?> 
 
 <div id="search-profiles">
-    <h1>{{ lang('search.title') }} <small>{{ lang('search.subtitle') }}</small></h1>
+    <div class="pull-right muted" id="search-icon">
+        {{ icon('search') }}
+    </div>
+
+    <h1>{{ lang('search.title') }} <!-- <small>{{ lang('search.subtitle') }}</small> --></h1>
     
     <hr>
     
@@ -37,15 +41,21 @@ if (isset($search_id) && isset($profiles)) {
     @endif
     
     <ul class="nav nav-tabs" id="search-tabs">
-        <li class="{{ $results_disabled }}"><a href="#results-pane" data-toggle="tab">{{ lang('search.results') }}</a></li>
+        @if ($default_tab == 'result')
+            <li><a href="#results-pane" data-toggle="tab">{{ lang('search.results') }}</a></li>
+        @else
+            <li class="{{ $results_disabled }}"><a href="#results-pane">{{ lang('search.results') }}</a></li>
+        @endif
+
         @foreach (get_profiles_types() as $profile_type)
             <li><a href="#{{ $profile_type }}-pane" data-toggle="tab">{{ lang('common.'.$profile_type) }}</a></li>
         @endforeach
     </ul>
 
     <div class="tab-content">
+        @if (isset($profiles))
         <div class="tab-pane" id="results-pane">
-            @if (isset($profiles))
+            
                 <?php
                 $count = count($profiles);
                 ?>
@@ -60,9 +70,9 @@ if (isset($search_id) && isset($profiles)) {
 
                     @include('partials.profile_list_tiles')
                 @endif
-            @endif 
+             
         </div> <!-- /#results-pane .tab-pane -->
-
+        @endif
         @foreach (get_profiles_types() as $profile_type)
             <div class="tab-pane" id="{{ $profile_type }}-pane">
                 @include('forms.search_profiles_common')
