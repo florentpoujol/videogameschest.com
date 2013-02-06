@@ -50,9 +50,11 @@ $page_content .= Section::yield('page_content');
                     </div>
 
                     <div class="span3 offset5">
-                        <ul class="unstyled">
-                            <li><a href="https://twitter.com/videogameschest" title="twitter"><i class="icon-twitter-sign icon-2x"></i></a><li>
-                            <li class="muted">contact at videogameschest.com</li>
+                        <p>
+                            <a href="https://twitter.com/videogameschest" title="Follwo us on Twitter">{{ icon('twitter', null, 30) }}</a> 
+                            <a href="http://www.facebook.com/Videogameschest" title="Like us on Facebook">{{ icon('facebook', null, 30) }}</a>
+                            <br>
+                            <a href="mailto:contact@videogameschest.com" class="muted">contact@videogameschest.com</a>
                         </p>
                     </div>
             </div>

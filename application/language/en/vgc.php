@@ -170,10 +170,19 @@ return array(
 
         'msg' => array( 
             'access_not_allowed' => "You are not allowed to access the page ':page'",
+            'admin_only' => "You must be an administrator to access this page.",
+            'admin_and_logged_in' => "You must be logged in and an administrator to access this page.",
+
+            'developer_only' => 'You must be a "developer" user to access this page.',
+
             'edit_other_users_profile_not_allowed' => 'You are not allowed to edit profiles which does not belong to you.',
             'error' => 'Sorry there has been an error, please contact the administrators if it happens again.',
-            'page_not_found' => 'Sorry, the page you were looking for was not found.',
 
+            'logged_in_only' => "You must be logged in to access this page.",
+
+            'guest_only' => 'You must not be logged in to acces this page.',
+
+            'page_not_found' => 'Sorry, the page you were looking for was not found.',
         ),
     ),
 
@@ -206,6 +215,7 @@ return array(
         'what_is_it_title' => 'What\'s cross-promotion ?',
         'what_is_it' => 
         '<a href="http://en.wikipedia.org/wiki/Cross-promotion" title="Go the Cross-promotion Wikipedia page">Cross-promotion</a> is a kind of advertising where a product is promoted from within another product. <br>
+        <br>
         Its two main benefits are that it\'s free since you don\'t have to rent advertising space inside you own game and it\'s <em>a priori</em> well targetted since we can imagine that players of one of your game might be interrested in your other games as well.',
 
         /*
@@ -219,8 +229,10 @@ return array(
 
         'how_it_works_title' => 'How does it works ?',
         'how_it_works' => 
-        'You can select profiles to promote for each of your games under the tab "Cross-promotion" in your game profile edit page. <br>
+        'You can <a href=":update_game_link" title="Update your game profiles">select profiles to promote</a> for each of your games under the tab "Cross-promotion" in the game\'s update page. <br>
+        <br>
         Then from within your game, you just have to query an URL to get the list of the profiles you selected in the first step. <br>
+        <br>
         Once you properly setted up the system in your game you can just update the promoted games from your game profile on VGC without the need to update/patch your actual game.',
 
         
@@ -413,7 +425,7 @@ return array(
 
         'pitch' => 'Game pitch, story, features...',
 
-        'press_help' => "How and wherer the press talk about the game.",
+        'press_help' => "How and where the press talk about the game.",
         'publishername' => 'Publisher name',
         'publisherurl' => 'Publisher\'s website',
 
@@ -427,6 +439,10 @@ return array(
         It looks like : http://api.soundcloud.com/playlists/1738337 <br>
         <br>
         ',
+
+        'soundtrack_alert' => '<strong>DO NOT put a direct link</strong> to a soundtrack that is not meant to be downloaded or listened for free. <br>
+        IE : it\'s <strong>NOT OK</strong> to link to a rip of the soundtrack on Youtube on a random channel.',
+
 
         
         'releasedate' => 'Release date',
@@ -586,9 +602,8 @@ return array(
         
         
 
-        'logged_in_only' => "You must be logged in to access this page.",
-        'admin_only' => "You must be an administrator to access this page.",
-        'admin_and_logged_in' => "You must be logged in and an administrator to access this page.",
+        
+        
 
         'can_not_edit_others_games' => "You are not allowed to edit other developer's games.",
         'game_profile_not_found' => "Can't find the game profile with id ':profile_id'.",
@@ -691,6 +706,15 @@ return array(
 
         'feed' => array(
             'title' => 'RSS Feed',
+        ),
+
+
+        'profile_allow_promote_in_feed' => 'Allow this profile to appear in the promotion feed',
+        'profile_allow_promote_in_newsletter' => 'Allow this profile to appear in the promotion newsletter',
+
+
+        'msg' => array(
+            'success_profile_subscription_updated' => 'The promotion subscription have successfully been updated.',
         ),
 
     ),
@@ -855,6 +879,11 @@ return array(
         'edit_password' => 'Edit your password',
         
         'id' => 'User Id',
+
+        'not_a_developer' => '<strong>You need to be a "developer" user to access this section.</strong> <br>
+        <br>
+        To become a developer, you need to prove that you are the creator of the game/tool/map/mod or part of the team or the company. To do so, you just need to contact us from a "corporate" email adress (ie : whatever@companyname.com) or an official social media account. <br>
+         ',
 
         'subscription_title' => 'Subscriptions',
 

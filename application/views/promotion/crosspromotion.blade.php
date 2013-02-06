@@ -4,10 +4,6 @@
 
 
 <div id="crosspromotion">
-    <h2>{{ lang('crosspromotion.title') }}</h2>
-
-    <hr>
-
     @if (false && is_logged_in())
         <?php
         $has_subscribed = (user()->crosspromotion_active == 1);

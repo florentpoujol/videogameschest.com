@@ -28,6 +28,7 @@ $developer_name = $game->actual_developer_name;
 
     <ul class="nav nav-tabs" id="main-tabs">
         <li><a href="#general-pane" data-toggle="tab">{{ lang('common.general') }}</a></li>
+        <li><a href="#promote-pane" data-toggle="tab">{{ lang('promote.title') }}</a></li>
         <li><a href="#crosspromotion-pane" data-toggle="tab">{{ lang('crosspromotion.title') }}</a></li>
     </ul>
 
@@ -254,6 +255,10 @@ $developer_name = $game->actual_developer_name;
                                     {{ lang('game.soundtrack_help') }}
                                 </p>
 
+                                <div class="alert alert-error">
+                                    {{ lang('game.soundtrack_alert') }}
+                                </div>
+
                                 {{ Former::xlarge_url('soundtrack', lang('game.soundtrackurl'))->placeholder(lang('common.url')) }}
                             </div> 
                         </div> <!-- /.tab-content -->
@@ -265,7 +270,29 @@ $developer_name = $game->actual_developer_name;
                 {{ Former::primary_submit(lang('common.update')) }}
 
             {{ Former::close() }}
-        </div> <!-- /#medias-pane .tab-pane -->
+        </div> <!-- /#general-pane .tab-pane -->
+
+        {{--=============================================================================================================}}
+
+        <div class="tab-pane" id="promote-pane">
+            @if (is_standard_user())
+                <p class="alert alert-info">
+                    {{ lang('user.not_a_developer') }}
+                </p>
+            @elseif (is_admin() or is_developer())
+                <h3>{{ lang('discover.feed_title') }}/{{ lang('discover.email_title') }}</h3>
+
+                <?php
+                $profile = $game;
+
+                ?>
+                @include('forms/promote_update_profile_subscription')
+                
+                <hr>
+            @endif
+        </div> <!-- /#promote-pane .tab-pane  -->
+
+        {{--=============================================================================================================}}
 
         <div class="tab-pane" id="crosspromotion-pane">
             {{ Former::open_vertical(route('post_crosspromotion_game_update')) }}
@@ -319,7 +346,7 @@ $developer_name = $game->actual_developer_name;
 </div> <!-- /#editgame --> 
 
 @section('jQuery')
-// from editgame
+// from update game
 $('#main-tabs a:first').tab('show');
 $('#array-fields-tabs a:first').tab('show');
 $('#general-nu-text-tabs a:first').tab('show');

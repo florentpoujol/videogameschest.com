@@ -321,10 +321,32 @@ $layout = View::of('layout');
 
 
 //----------------------------------------------------------------------------------
+//  MUST BE DEVELOPER
+//----------------------------------------------------------------------------------
+
+    Route::group(array('before' => 'auth|is_developer'), function()
+    {
+        // nothing
+    });
+
+
+
+//----------------------------------------------------------------------------------
+//  MUST BE DEVELOPER IN AND LEGIT POST
+//----------------------------------------------------------------------------------
+
+    Route::group(array('before' => 'auth|is_developer|csrf'), function()
+    {
+        Route::post('promote/update_game_subscription', array('as' => 'post_promote_update_profile_subscription', 'uses' => 'promotion@promote_update_profile_subscription'));
+    });
+
+
+
+//----------------------------------------------------------------------------------
 //  MUST BE ADMIN
 //----------------------------------------------------------------------------------
 
-    Route::group(array('before' => 'auth|admin'), function() use ($layout)
+    Route::group(array('before' => 'auth|is_admin'), function() use ($layout)
     {
         Route::get('user/create', array('as' => 'get_user_create', 'uses' => 'admin@user_create'));
         Route::get('reviews/(:any?)', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));
@@ -353,7 +375,7 @@ $layout = View::of('layout');
 //  MUST BE ADMIN AND LEGIT POST
 //----------------------------------------------------------------------------------
 
-    Route::group(array('before' => 'auth|admin|csrf'), function()
+    Route::group(array('before' => 'auth|is_admin|csrf'), function()
     {
         Route::post('user/create', array('as' => 'post_user_create', 'uses' => 'admin@user_create'));
         Route::post('reviews', array('as' => 'post_reviews', 'uses' => 'admin@reviews'));
@@ -508,30 +530,47 @@ Route::filter('csrf', function()
     }
 });
 
-Route::filter('auth', function()
-{
-    if (Auth::guest()) {
-        HTML::set_error(lang('messages.logged_in_only'));
-        return Redirect::to_route('get_login');
-    }
-});
 
 Route::filter('is_guest', function()
 {
     if ( ! Auth::guest()) {
-        return Redirect::to_route('get_admin_home');
+        HTML::set_error(lang('common.msg.guest_only'));
+        return Redirect::to_route('get_home_page');
     }
 });
 
-Route::filter('admin', function()
+
+Route::filter('auth', function()
 {
-    if ( ! Auth::guest()) {
-        if (Auth::user()->type != 'admin') {
-            HTML::set_error(lang('messages.admin_only'));
-            return Redirect::to_route('get_admin_home');
-        }
+    if (Auth::guest()) {
+        HTML::set_error(lang('common.msg.logged_in_only'));
+        return Redirect::to_route('get_login_page');
+    }
+});
+
+
+Route::filter('is_developer', function()
+{
+    if (Auth::guest()) {
+        HTML::set_error(lang('common.msg.logged_in_only'));
+        return Redirect::to_route('get_login_page');
     } else {
-        HTML::set_error(lang('messages.admin_and_logged_in'));
-        return Redirect::to_route('get_login');
+        if (Auth::user()->type != 'admin' && Auth::user()->type != 'developer') {
+            HTML::set_error(lang('common.msg.developer_only'));
+            return Redirect::to_route('get_home_page');
+        }
+    }
+});
+
+Route::filter('is_admin', function()
+{
+    if (Auth::guest()) {
+        HTML::set_error(lang('common.msg.logged_in_only'));
+        return Redirect::to_route('get_login_page');
+    } else {
+        if (Auth::user()->type != 'admin') {
+            HTML::set_error(lang('common.msg.admin_only'));
+            return Redirect::to_route('get_home_page');
+        }
     }
 });

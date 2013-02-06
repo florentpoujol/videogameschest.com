@@ -73,6 +73,8 @@ return array(
         "english",
     ),
 
+    'user_types' => array('user', 'developer', 'admin'),
+
     'video' => array(
         'default_width' => '450',
     ),
@@ -303,9 +305,9 @@ return array(
 
 
     'icons' => array(
-        'facebook' => 'img/icons/facebook.png',
-        'twitter' => 'img/icons/twitter.png',
-        'rss' => 'img/icons/rss.png',
+        'facebook' => 'img/icons/facebook-512.png',
+        'twitter' => 'img/icons/twitter-512.png',
+        'rss' => 'img/icons/rss-128.png',
     ),
 
     'glyphicons' => array( 

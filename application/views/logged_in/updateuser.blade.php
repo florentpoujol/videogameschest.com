@@ -45,7 +45,7 @@ if ( ! empty($old)) Former::populate($old);
                 {{-- Former::text('url_key', 'Url key')->help(lang('user.url_key_help')) --}}
 
                 @if (is_admin())
-                    {{ Former::text('type', 'Account type')->help('"user," "dev" or "admin"') }}
+                    {{ Former::text('type', 'Account type')->help('"user," "developer" or "admin"') }}
                 @endif
 
                 {{ Former::primary_submit(lang('user.edit_title')) }} 

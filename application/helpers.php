@@ -255,9 +255,9 @@ function icon($icon, $title = null, $size = null)
     $glyphicons = Config::get('vgc.glyphicons');
 
     if (array_key_exists($icon, $vgc_icons)) {
-        $html = '<img src="'.URL::to($vgc_icons[$icon]).'" alt="$icon icon" width="'.$size.'px" height="'.$size.'px" '.$title.'> ';
+        $html = '<img src="'.URL::to($vgc_icons[$icon]).'" alt="$icon icon" width="'.$size.'px" height="'.$size.'px" '.$title.'>';
     } elseif (in_array($icon, $glyphicons)) {
-        $html = '<i class="icon-'.$icon.'" '.$title.'></i> ';
+        $html = '<i class="icon-'.$icon.'" '.$title.'></i>';
     } else $html = '';
 
     return $html;
@@ -269,6 +269,11 @@ function is_admin()
     return ( ! Auth::guest() && Auth::user()->type == 'admin');
 }
 
+
+function is_developer()
+{
+    return ( ! Auth::guest() && Auth::user()->type == 'developer');
+}
 
 function is_guest()
 {
@@ -288,9 +293,14 @@ function is_not_admin()
 }
 
 
-function is_trusted()
+/*function is_trusted()
 {
     return ( ! Auth::guest() && (is_admin() || Auth::user()->is_trusted == 1));
+}*/
+
+function is_standard_user()
+{
+    return ( ! Auth::guest() && Auth::user()->type == 'user');
 }
 
 
@@ -608,6 +618,13 @@ function user_id()
 {
     if (Auth::guest()) return 0;
     return Auth::user()->id;
+}
+
+
+function user_type()
+{
+    if (Auth::guest()) return '';
+    return Auth::user()->type;
 }
 
 

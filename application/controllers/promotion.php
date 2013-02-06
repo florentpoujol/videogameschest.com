@@ -89,4 +89,40 @@ class Promotion_Controller extends Base_Controller
     }
 
 
+    //----------------------------------------------------------------------------------
+    // FEED/NEWSLETTER
+
+    public function post_promote_update_profile_subscription()
+    {
+        $input = Input::all();
+
+        if (is_not_admin()) {
+            $profiles = $input['profile_type'].'s';
+
+            // check that $input['id'] is one of the user's game profiles
+            $forged = true;
+            foreach (user()->$profiles as $profile) {
+                if ($profile->id == $input['id']) $forged = false;
+            }
+
+            if ($forged) { // a user try to edit a dev profile which does not own
+                HTML::set_error(lang('common.msg.edit_other_users_proile_not_allowed'));
+                return Redirect::back();
+            }
+        }
+
+        if ( ! isset($input['in_promotion_feed'])) $input['in_promotion_feed'] = 0;
+        if ( ! isset($input['in_promotion_newsletter'])) $input['in_promotion_newsletter'] = 0;
+        
+        $profile = $input['profile_type']::find($input['profile_id']);
+        $profile->in_promotion_feed = $input['in_promotion_feed'];
+        $profile->in_promotion_newsletter = $input['in_promotion_newsletter'];
+        $profile->save();
+
+        HTML::set_success(lang('promote.msg.success_profile_subscription_updated'));
+        Log::write('promotion update success '.$input['profile_type'], user_type().' user (name : '.user()->name.') (id : '.user_id().') has successfully update the promotion subscription for the '.$input['profile_type'].' profile (name : '.$profile->name.') (id : '.$profile->id.').');
+
+        return Redirect::back();
+    }
+
 } // end of Promotion controller class

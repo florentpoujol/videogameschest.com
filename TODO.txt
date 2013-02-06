@@ -1,21 +1,35 @@
 
-ajouter warning soundtrack
-refaire form add game comme update game hier
+
+
+
+
+créer page participate
+faire texte feed/news page promote
 
 retravailler formuaire recherche
 
-ajouter tab promotion game
-ajouter tab promotion developers
+refaire form crosspromotion game comme blacklist
+
+mettre en place blog
+
+retravailler affichage dans feed et newletter
 
 
 
     DONE
+
+06/02/2013
+
+ajouter tab promotion game
+ajouter tab promotion developers
 
 
 05/20/2013
 
 retravailler textes home et discover
 ajouter lien edit profile dans menu admin
+ajouter warning soundtrack
+refaire form add game comme update game hier
 
 
 04/02/2013
