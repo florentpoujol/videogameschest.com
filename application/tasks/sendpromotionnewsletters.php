@@ -26,7 +26,10 @@ class Sendpromotionnewsletters_Task
                 $subject = 'Here is your promotion Newsletter from VideoGamesChest.com on '.$now_string;
 
                 //
-                $profiles = Search::get_profiles($newsletter->search_id);
+                $profiles = Search::make($newsletter->search_id)
+                ->where_privacy('public')
+                ->where_in_promotion_newsletter(1)
+                ->get();
 
                 if ($newsletter->use_blacklist == 1) {
                     $profiles = ProcessBlacklist($profiles, $newsletter->user_id);

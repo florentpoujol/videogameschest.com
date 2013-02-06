@@ -178,63 +178,66 @@ $name = xssSecure($profile->name);
         </div> <!-- /.span12 -->
     </div> <!-- /.row -->
 
+    <?php
+    $stores = $profile->stores;
+    $stores_span = 12;
+
+    $press = $profile->press;
+    $press_count = count($press['names']);
+    if ($press_count > 0) $stores_span -= 3;
+
+    $social = $profile->socialnetworks;
+    $social_count = count($social['names']);
+    if ($social_count > 0) $stores_span -= 2;
+    
+    ?>
     <hr>
 
     <div class="row">
-        <div class="span6">
-            stores
-           
+        <div class="span{{ $stores_span }}">
+            <h3>{{ lang('stores.title') }}</h3>
+            
+            <p>
+                @for ($i = 0; $i < count($stores['names']); $i++)
+                    <span class=""><a href="{{ xssSecure($stores['urls'][$i]) }}">{{ lang('stores.'.$stores['names'][$i]) }}</a></span> 
+                @endfor
+            </p>
+            
         </div> <!-- /.span8 -->
 
-        <div class="span3">
-            press
-        </div> <!-- /.span4 -->
-
-        <div class="span3">
-            social networks
-        </div> <!-- /.span4 -->
-
-    </div> <!-- /.row -->
-
-    <div class="row-fluid json-field-row">
-        
-        <?php 
-        $items = array( 'devices', );
-        foreach ($items as $item):
-        ?>
-            <div class="span3 json-field-div">
-                @if ($item == 'reviews')
-                    <h4>{{ lang('common.reviews') }}</h4>
-                @else
-                    <h4>{{ lang($item.'.title') }}</h4>
-                @endif
+        @if ($press_count > 0)
+            <div class="span3">
+                <h4>{{ lang('press.title') }}</h4>
 
                 <ul class="unstyled">
-                    @if ($item == 'socialnetworks' || $item == 'stores' || $item == 'reviews')
-                        <?php $array = $profile->$item; ?>
-
-                        @for ($i = 0; $i < count($array['names']); $i++)
-                            <li><a href="{{ xssSecure($array['urls'][$i]) }}">{{ lang($item.'.'.$array['names'][$i]) }}</a></li>
-                        @endfor
-                    @else
-                        @if (is_array($profile->$item))
-                            @foreach ($profile->$item as $name)
-                                <li>{{ lang($item.'.'.$name) }}</li>
-                            @endforeach
-                        @endif
-                    @endif
+                    @for ($i = 0; $i < $press_count; $i++)
+                        <li><a href="{{ xssSecure($press['urls'][$i]) }}">{{ xssSecure($press['names'][$i]) }}</a></li>
+                    @endfor
                 </ul>
-            </div>
-        @endforeach 
-    
-    </div>
+            </div> <!-- /.span4 -->
+        @endif
+
+        @if ($social_count > 0)
+            <div class="span2">
+                <h4>{{ lang('socialnetworks.short_title') }}</h4>
+
+                <ul class="unstyled">
+                    @for ($i = 0; $i < $social_count; $i++)
+                        <li><a href="{{ xssSecure($social['urls'][$i]) }}">{{ lang('socialnetworks.'.$social['names'][$i]) }}</a></li>
+                    @endfor
+                </ul>
+            </div> <!-- /.span4 -->
+        @endif
+    </div> <!-- /.row -->
 
     <hr>
 
+
+
     <div class="row-fluid json-field-row">
         
         <?php 
-        $items = array('operatingsystems', 'genres', 'themes', 'viewpoints');
+        $items = array('devices', 'operatingsystems', 'genres', 'looks', 'periods', );
         foreach ($items as $item):
         ?>
             <div class="span3 json-field-div">
@@ -256,7 +259,7 @@ $name = xssSecure($profile->name);
     <div class="row-fluid json-field-row">
         
         <?php 
-        $items = array('nbplayers', 'tags', 'languages', 'technologies');
+        $items = array('viewpoints', 'nbplayers', 'tags', 'languages', 'technologies');
         foreach ($items as $item):
         ?>
             <div class="span3 json-field-div">

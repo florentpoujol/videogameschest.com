@@ -14,17 +14,17 @@
         
         <div class="span2">
             <?php 
-            echo Former::checkboxes('', lang('search.name_or_pitch_help'))->checkboxes(array(
+            echo Former::checkboxes('search_words_in[]', lang('search.name_or_pitch_help'))->checkboxes(array(
                 lang('common.name') => array(
                     'value' => 'name',
-                    'name' => 'search_in_name',
+                    // 'name' => 'search_in[]_name',
                     'id' => $profile_type.'dev_name',
                     'checked' => 'checked'
                 ),
 
                 lang('common.pitch') => array(
                     'value' => 'pitch', 
-                    'name' => 'search_in_pitch',
+                    // 'name' => 'search_in_pitch',
                     'id' => $profile_type.'dev_pitch'
                 ),
             ));
@@ -36,13 +36,13 @@
             echo Former::radios('', lang('search.words_contains'))->radios(array(
                 lang('search.words_contains_all') => array(
                     'value' => 'all',
-                    'name' => 'words_where',
+                    'name' => 'search_words_mode',
                     'id' => $profile_type.'words_all',
                  ),
 
                 lang('search.words_contains_any') => array(
                     'value' => 'any',
-                    'name' => 'words_where',
+                    'name' => 'search_words_mode',
                     'id' => $profile_type.'words_any',
                     'checked' => 'checked'
                 ),

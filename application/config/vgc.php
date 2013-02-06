@@ -73,6 +73,12 @@ return array(
         "english",
     ),
 
+    'social' => array(
+        'twitter_url' => 'https://twitter.com/videogameschest',
+        'facebook_url' => 'http://www.facebook.com/Videogameschest',
+        'google+_url' => 'https://plus.google.com/104684794332555704876',
+    ),
+
     'user_types' => array('user', 'developer', 'admin'),
 
     'video' => array(
@@ -308,6 +314,7 @@ return array(
         'facebook' => 'img/icons/facebook-512.png',
         'twitter' => 'img/icons/twitter-512.png',
         'rss' => 'img/icons/rss-128.png',
+        'google+' => 'img/icons/google+-301.png',
     ),
 
     'glyphicons' => array( 

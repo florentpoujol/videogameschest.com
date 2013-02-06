@@ -1,8 +1,5 @@
 
 
-
-
-
 créer page participate
 faire texte feed/news page promote
 
@@ -16,12 +13,17 @@ retravailler affichage dans feed et newletter
 
 
 
+
     DONE
 
 06/02/2013
 
 ajouter tab promotion game
 ajouter tab promotion developers
+retravailler model Search
+
+BUG problème remplissage form discover après update discover 
+les deux form se remplisent des même infos
 
 
 05/20/2013

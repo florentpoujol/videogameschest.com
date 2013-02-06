@@ -17,26 +17,22 @@ return array(
         Attention has been put to showcase the content in the most advantageous way with beautiful and comprehensive profiles.<br>
         <br>
         VideGamesChest also put emphasis on the relevance of the content showcased to its visitors. <br>
-        That\'s why they benefits from a comprehensive search capability unlike anythings else that exists to filter content and either search for, or discover with no efforts . <br>
-        That\'s why they benefits from a comprehensive capability to filter any content 
-
-        unlike anythings else that exists to filter content and either search for, or discover with no efforts . <br>
-        
-        The search form as well as the promotion feed and newsletter are the best way to find exactly what your are looking for.
+        That\'s why they benefits from a comprehensive search capability unlike anythings else that exists to filter content and either search for, or discover with no efforts content they are really insterested about. <br>
         <br>
         But VideoGamesChest is also a great place for developers to promote their game, tool, map or mod to the audience that really cares about. 
 
 
 
-        . VGC has a new approach to advertising
         
 
         ',
 
         'developement_title' => 'Developement',
-        'developement_text' => 'VideoGamesChest is currently under heavy developement, everything is in constant evolution so nothing is final especially when it comes to how things looks. <br>
+        'developement_text' => 'VideoGamesChest is already open to be used by anyone but it is also under heavy developement. So everything is in constant evolution and nothing is final especially when it comes to how things looks. <br>
         <br>
-        If you have a feedbacks, bugs, feature request, or just want to chat feel free to contact us.',
+        You can follow the developement on the blog or various forums (coming soon). <br>
+        <br>
+        If you have a feedbacks, bugs, feature request, or just want to chat, feel free to contact us.',
 
 
         'contact_title' => 'Contact'
@@ -1050,6 +1046,7 @@ return array(
 
     'socialnetworks' => array(
         'title' => 'Social Networks',
+        'short_title' => 'Social',
 
         'desura' => 'Desura',
         'facebook' => 'Facebook',

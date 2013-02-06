@@ -42,21 +42,21 @@ $page_content .= Section::yield('page_content');
             
         </div> <!-- /#page_content .container -->
 
-        <footer>
-            <div class="container">
-                <div class="row-fluid">
-                    <div class="span4">
-                        <P class="muted copyright">Copyright &copy; 2013 VideoGamesChest.com</p>
-                    </div>
+        <footer class="container">
+            <div class="row-fluid">
+                <div class="span4">
+                    <P class="muted copyright">Copyright &copy; 2013 VideoGamesChest.com</p>
+                </div>
 
-                    <div class="span3 offset5">
-                        <p>
-                            <a href="https://twitter.com/videogameschest" title="Follwo us on Twitter">{{ icon('twitter', null, 30) }}</a> 
-                            <a href="http://www.facebook.com/Videogameschest" title="Like us on Facebook">{{ icon('facebook', null, 30) }}</a>
-                            <br>
-                            <a href="mailto:contact@videogameschest.com" class="muted">contact@videogameschest.com</a>
-                        </p>
-                    </div>
+                <div class="span3 offset5">
+                    <p>
+                        <a href="{{ Config::get('vgc.social.twitter_url') }}" title="Follow us on Twitter">{{ icon('twitter', null, 30) }}</a> 
+                        <a href="{{ Config::get('vgc.social.facebook_url') }}" title="Like us on Facebook">{{ icon('facebook', null, 30) }}</a>
+                        <a href="{{ Config::get('vgc.social.google+_url') }}" title="Add us on Google+">{{ icon('google+', null, 26) }}</a>
+                        <br>
+                        <a href="mailto:contact@videogameschest.com" class="muted">contact@videogameschest.com</a>
+                    </p>
+                </div>
             </div>
         </footer>
 

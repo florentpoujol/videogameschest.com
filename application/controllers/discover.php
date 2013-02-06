@@ -35,7 +35,7 @@ class Discover_Controller extends Base_Controller
         if ($validation->passes()) {
             $feed = PromotionFeed::make($input);
 
-            return Redirect::back()->with_input();
+            return Redirect::to_route('get_discover_page');
         } else {
             return Redirect::back()->with_input()->with_errors($validation);
         }
@@ -77,7 +77,10 @@ class Discover_Controller extends Base_Controller
                 $feed->last_pub_date = $now;
                 $feed->save();
 
-                $profiles = Search::get_profiles($feed->search_id);
+                $profiles = Search::make($feed->search_id)
+                ->where_privacy('public')
+                ->where_in_promotion_feed(1)
+                ->get();
 
                 if ($feed->use_blacklist == 1) {
                     $profiles = ProcessBlacklist($profiles, $feed->user_id);
@@ -144,7 +147,7 @@ class Discover_Controller extends Base_Controller
             if (is_guest()) {
                 return Redirect::to_route('get_discover_update_email_page', array($newsletter->id, $newsletter->url_key));
             } else {
-                return Redirect::back();
+                return Redirect::to_route('get_discover_page');
             }
         } else {
             return Redirect::back()->with_input()->with_errors($validation);
@@ -163,7 +166,7 @@ class Discover_Controller extends Base_Controller
                 if (is_guest()) {
                     return Redirect::to_route('get_discover_update_email_page', array($input['newsletter_id'], $input['newsletter_url_key']));
                 } else {
-                    return Redirect::back();
+                    return Redirect::to_route('get_discover_page');
                 }
             }
         }
@@ -185,7 +188,7 @@ class Discover_Controller extends Base_Controller
             if (is_guest()) {
                 return Redirect::to_route('get_discover_update_email_page', array($email->id, $email->url_key));
             } else {
-                return Redirect::back();
+                return Redirect::to_route('get_discover_page');
             }
         } else {            
             return Redirect::back()->with_input()->with_errors($validation);

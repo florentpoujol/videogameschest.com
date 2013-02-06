@@ -13,21 +13,36 @@
         {{ lang('about.text') }}
     </p>
 
-    <hr>
+    <br>
 
-    <h2>{{ lang('about.developement_title') }}</h2>
+    <ul class="nav nav-tabs" id="main-tabs">
+        <li><a href="#contact-pane" data-toggle="tab">{{ lang('about.contact_title') }}</a></li>
+        <li><a href="#developement-pane" data-toggle="tab">{{ lang('about.developement_title') }}</a></li>
+    </ul>
 
-    <p>
-        {{ lang('about.developement_text') }}
-    </p>
+    <div class="tab-content">
+        <div class="tab-pane" id="developement-pane"> 
+            <h3>{{ lang('about.developement_title') }}</h3>
 
-    <hr>
+            <p>
+                {{ lang('about.developement_text') }}
+            </p>
+        </div>
 
-    <h2>{{ lang('about.contact_title') }}</h2>
+        <div class="tab-pane" id="contact-pane"> 
+            <h3>{{ lang('about.contact_title') }}</h3>
 
-    <ul>
-        <li><a href="mailto:contact@videogameschest.com">contact@videogameschest.com</a></li>
-        <li><a href="https://twitter.com/VideoGamesChest" title="Twitter">@VideoGamesChest</a></li>
-        <li><a href="http://www.facebook.com/Videogameschest" title="Facebook">Facebook page</a></li>
-    </p>
+            <ul>
+                <li><a href="mailto:contact@videogameschest.com">contact@videogameschest.com</a></li>
+                <li><a href="{{ Config::get('vgc.social.twitter_url') }}" title="Twitter">@VideoGamesChest</a></li>
+                <li><a href="{{ Config::get('vgc.social.google+_url') }}" title="Google+">Google+ page</a></li>
+                <li><a href="{{ Config::get('vgc.social.facebook_url') }}" title="Facebook">Facebook page</a></li>
+            </ul>
+        </div>
+    </div>
 </div>
+
+@section('jQuery')
+// from about
+$('#main-tabs a:first').tab('show');
+@endsection

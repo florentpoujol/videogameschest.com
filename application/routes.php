@@ -409,7 +409,7 @@ Event::listen('404', function()
 {
     HTML::set_error(lang('common.msg.page_not_found'));
     Log::write('error 404', 'Page not found : '.URL::current());
-    return Redirect::to_route('get_home');
+    return Redirect::to_route('get_home_page');
 });
 
 Event::listen('500', function()

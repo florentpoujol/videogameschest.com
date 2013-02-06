@@ -8,13 +8,11 @@ class Search extends ExtendedEloquent
     //----------------------------------------------------------------------------------
 
     /**
-     * @param  array $input The array comming from the search form
-     * @param  boolean $register_in_db Tell wether or not checking if the search is already registered in the DB
-     * (and register it if it isn't)
-     * @return array        The finded profiles
+     * @param  array $input The search id, the array comming from the search form, or the array as json
+     * @return Laravel\Database\Eloquent\Query or SearchError
      */
-    public static function get_profiles($input)
-    {   
+    public static function make($input)
+    {
         $search_id = 0;
         if (is_numeric($input)) {
             $search_id = $input;
@@ -22,56 +20,66 @@ class Search extends ExtendedEloquent
 
             if ( ! is_null($search)) $input = $search->data;
             else {
-                HTML::set_error(lang('search.msg.id_not_found', array('id'=>$input)));
-                $input = array();
+                $msg = lang('search.msg.id_not_found', array('id'=>$input));
+                HTML::set_error($msg);
+                return new SearchError($msg);
             }
         }
 
         if (is_string($input)) $input = json_decode($input, true);
 
 
-        // 
+        // profile type
+        if ( ! isset($input['profile_type'])) $input['profile_type'] = 'game';
         $profile_type = $input['profile_type'];
 
         if ( ! in_array($profile_type, get_profiles_types())) {
             Log::write('search error', "Wrong class '$profile_type' for search id='$search_id'");
             HTML::set_error(lang('common.msg.error'));
-            return Redirect::back();
+            return new SearchError("Wrong class '$profile_type' for search id='$search_id'");
         }
 
         
         // search for words in name or pitch
-        $search_words_in = array();
+        if ( ! isset($input['search_words_mode'])) $input['search_words_mode'] = 'all';
+
+        if ($input['search_words_mode'] == 'all') $words_where_mode = 'where';
+        else $words_where_mode = 'or_where';
+
+
+        if ( ! isset($input['search_words_in'])) $input['search_words_in'] = array();
+        
+        if ( ! isset($input['words_list'])) $input['words_list'] = '';
         $input['words_list'] = trim($input['words_list']);
 
-        if ($input['words_where'] == 'all') $words_where = 'where';
-        else $words_where = 'or_where';
+        $search_words_in = array();
 
-        if ($input['words_list'] != '' && (isset($input['search_in_name']) || isset($input['search_in_pitch']))) {
+        if ($input['words_list'] != '' && ! empty($input['search_words_in'])) {
             $words_list = explode(' ', e($input['words_list']));
             
-            if (isset($input['search_in_name'])) $search_words_in['name'] = $words_list;
-            if (isset($input['search_in_pitch'])) $search_words_in['pitch'] = $words_list;
+            foreach ($input['search_words_in'] as $field) {
+                $search_words_in[$field] = $words_list;
+            }
         }
+        
 
         // array items
         isset($input['arrayitems']) ? $array_items = $input['arrayitems'] : $array_items = array();
 
 
         // proceed...
-        $profiles = $profile_type::where_privacy('public')
-        ->where(function($query) use ($search_words_in, $array_items, $words_where, $profile_type)
+        return $profile_type::
+        where(function($query) use ($words_where_mode, $search_words_in, $array_items, $profile_type)
         {
             // words
             foreach ($search_words_in as $field => $words) {
 
-                $query->or_where(function($query) use ($field, $words, $words_where)
+                $query->or_where(function($query) use ($field, $words, $words_where_mode)
                 {
                     foreach ($words as $value) {
-                        $query->$words_where($field, 'LIKE', '%'.$value.'%');
+                        $query->$words_where_mode($field, 'LIKE', '%'.$value.'%');
                     }
                 });
-
             }
             
             // array items
@@ -90,15 +98,17 @@ class Search extends ExtendedEloquent
                             }
                         }
                     });
-
                 }
-
             }
-        })
-        ->get();
-
-        return $profiles;
+        });
     }
+
+    public static function get_profiles($input)
+    {   
+        return Search::make($input)->where_privacy('public')->get();
+    }
+    
+
 
     /**
      * Check if a search exists
@@ -109,10 +119,10 @@ class Search extends ExtendedEloquent
     {   
         // if search is a search id
         if (is_numeric($search)) {
-            $search = static::find($search);
+            $search = parent::find($search);
         } else {
             if (is_array($search)) $search = json_encode($search);
-            $search = static::where_data($search)->first();
+            $search = parent::where_data($search)->first();
         }
 
         return $search;
@@ -155,3 +165,57 @@ class Search extends ExtendedEloquent
         return json_decode($this->get_attribute('data'), true);
     }
 }
+
+
+class SearchError
+{
+    public $error = '';
+
+    public function __construct($error)
+    {
+        $this->error = $error;
+    }
+
+    public function get()
+    {
+        return array($this->error);
+    }
+
+    public function first()
+    {
+        return $this->error;
+    }
+}
+
+// additionnal criteria
+// useless now that Search::make() returns the eloquent model and not the array of profiles
+/*if (is_array($additional_criteria)) {
+    if ( ! isset($additional_criteria['where']) && ! isset($additional_criteria['or_where'])) {
+        $additional_criteria = array('where' => $additional_criteria); 
+    }
+
+    foreach ($additional_criteria as $where_mode => $criteria) {
+        $query->$where_mode(function($query) use ($criteria)
+        {
+            if ( ! isset($criteria[0])) { // $criteria is an assoc array
+                $old_criteria = $criteria;
+                $criteria = array();
+
+                foreach ($old_criteria as $key => $value) {
+                    $criteria[] = array(
+                        'where_mode' => 'where',
+                        'field' => $key,
+                        'comparison' => '=',
+                        'value' => $value,
+                    );
+                }
+            }
+
+            foreach ($criteria as $criterion) {
+                if ( ! isset($criterion['where_mode'])) $criterion['where_mode'] = 'where';
+
+                $query->$criterion['where_mode']($criterion['field'], $criterion['comparison'], $criterion['value']);
+            }
+        });
+    }
+}*/
