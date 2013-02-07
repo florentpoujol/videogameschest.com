@@ -464,7 +464,9 @@ return array(
             'website' => 'Go to the game\'s website',
             'blogfeed' => 'Lastest articles from the blog',
             'soundtrack' => 'Get the soundtrack',
-            'screenshots_help' => 'Click on them to view in full size'
+            'screenshots_help' => 'Click on them to view in full size',
+
+            'get_this_game_from' => 'Get this game from :store_name',
         ),
 
 

@@ -206,6 +206,15 @@ return array(
         "xblig"
     ),
 
+    'stores_icons' => array(
+        "steam" => 'img/stores_icons/steam.jpg',
+        "desura" => 'img/stores_icons/desura.jpg',
+        "indievania" => 'img/stores_icons/indievania.jpg',
+        "gamersgate" => 'img/stores_icons/gamersgate.jpg',
+        "applestore" => 'img/stores_icons/ios_appstore.jpg',
+        "xblig" => 'img/stores_icons/xblig.jpg',
+    ),
+
     "socialnetworks" => array(
         "desura",
         "facebook",

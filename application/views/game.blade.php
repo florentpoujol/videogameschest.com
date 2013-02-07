@@ -194,20 +194,31 @@ $name = xssSecure($profile->name);
     <hr>
 
     <div class="row">
-        <div class="span{{ $stores_span }}">
-            <h3>{{ lang('stores.title') }}</h3>
+        <div class="span{{ $stores_span }}" id="stores-span">
+            <h2>{{ lang('stores.title') }}</h2>
+
+            @for ($i = 0; $i < count($stores['names']); $i++)
+                <div class="store-icon">
+                    <a href="{{ XssSecure($stores['urls'][$i]) }}">
+                    <?php
+                    $name = $stores['names'][$i];
+                    $real_name = lang('stores.'.$name);
+                    $icon_url = Config::get('vgc.stores_icons.'.$name);
+                    ?>
+                    @if ( ! is_null($icon_url))
+                        <img src="{{ asset($icon_url) }}" alt="{{ $real_name }} icon" title="{{ lang('game.profile.get_this_game_from', array('store_name' => $real_name)) }}" /></a>
+                    @else
+                        {{ $real_name }}</a>
+                    @endif
+                </div> 
+            @endfor
             
-            <p>
-                @for ($i = 0; $i < count($stores['names']); $i++)
-                    <span class=""><a href="{{ xssSecure($stores['urls'][$i]) }}">{{ lang('stores.'.$stores['names'][$i]) }}</a></span> 
-                @endfor
-            </p>
-            
+            <div class="clearfix"></div>
         </div> <!-- /.span8 -->
 
         @if ($press_count > 0)
             <div class="span3">
-                <h4>{{ lang('press.title') }}</h4>
+                <h3>{{ lang('press.title') }}</h3>
 
                 <ul class="unstyled">
                     @for ($i = 0; $i < $press_count; $i++)
@@ -232,49 +243,66 @@ $name = xssSecure($profile->name);
 
     <hr>
 
+    <?php 
+    $items = array('devices', 'operatingsystems', 'genres', 'looks', 'periods',
+    'viewpoints', 'nbplayers', 'tags', 'languages', 'technologies' );
+    $items_to_display = array();
+
+    foreach ($items as $item) {
+        $data = $profile->$item;
+        
+        if (is_array($data) && ! empty($data)) $items_to_display[] = array('name' => $item, 'data' => $data);
+    }
+    
+    ?>
 
 
     <div class="row-fluid json-field-row">
-        
-        <?php 
-        $items = array('devices', 'operatingsystems', 'genres', 'looks', 'periods', );
-        foreach ($items as $item):
+        <?php
+
+        for ($i = 0; $i <= 5; $i++):
+            if ( ! isset($items_to_display[$i])) break;
+            
+            $item = $items_to_display[$i];
+            unset($items_to_display[$i]);
         ?>
-            <div class="span3 json-field-div">
-                <h4>{{ lang($item.'.title') }}</h4>
+            <div class="span2 json-field-div">
+                <h4>{{ lang($item['name'].'.title') }}</h4>
 
                 <ul class="unstyled">
-                    @if (is_array($profile->$item))
-                        @foreach ($profile->$item as $name)
-                            <li>{{ lang($item.'.'.$name) }}</li>
-                        @endforeach
-                    @endif
+                    @foreach ($item['data'] as $name)
+                        <li>{{ lang($item['name'].'.'.$name) }}</li>
+                    @endforeach
                 </ul>
             </div>
-        @endforeach 
+        @endfor 
     </div>
 
-    <hr>
- 
-    <div class="row-fluid json-field-row">
-        
-        <?php 
-        $items = array('viewpoints', 'nbplayers', 'tags', 'languages', 'technologies');
-        foreach ($items as $item):
-        ?>
-            <div class="span3 json-field-div">
-                <h4>{{ lang($item.'.title') }}</h4>
+    @if (count($items_to_display) > 0)
+        <hr>
+     
+        <div class="row-fluid json-field-row">
+            <?php 
+            $items_to_display = array_values($items_to_display);
+            
+            for ($i = 0; $i <= 50; $i++):
+                if ( ! isset($items_to_display[$i])) break;
 
-                <ul class="unstyled">
-                    @if (is_array($profile->$item))
-                        @foreach ($profile->$item as $name)
-                            <li>{{ lang($item.'.'.$name) }}</li>
+                $item = $items_to_display[$i];
+                unset($items_to_display[$i]);
+            ?>
+                <div class="span2 json-field-div">
+                    <h4>{{ lang($item['name'].'.title') }}</h4>
+
+                    <ul class="unstyled">
+                        @foreach ($item['data'] as $name)
+                            <li>{{ lang($item['name'].'.'.$name) }}</li>
                         @endforeach
-                    @endif
-                </ul>
-            </div>
-        @endforeach 
-    </div>
+                    </ul>
+                </div>
+            @endfor
+        </div>
+    @endif
 
     <hr>
 
@@ -298,6 +326,7 @@ $name = xssSecure($profile->name);
 @section('jsfiles')
     {{ Asset::container('colorbox')->scripts() }}
     {{ Asset::container('nivo-slider')->scripts() }}
+    {{ HTML::script('slidesjs/slides.min.jquery.js') }}
 @endsection
 
 @section('jQuery')

@@ -112,7 +112,7 @@ function clean_names_urls_array($array)
         ) {
             unset($array['names'][$i]);
             unset($array['urls'][$i]);
-            $i--; // go back one index since unsetting change the size of the array and the keys of the remaining values
+            $i--; // go back one index since unsetting change the size of the array
         }
     }
 
