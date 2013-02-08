@@ -73,9 +73,6 @@
 
                                     <li class="divider"></li>
                                 @endif
-                                
-
-                                
                             @endif
 
                             @if (is_admin())
@@ -84,16 +81,15 @@
                             <li><a href="{{ route('get_user_update') }}">{{ icon('edit') }} {{ lang('admin.menu.edit_user_account') }}</a></li>
 
                             <li class="divider"></li>
-                            <li><a href="{{ route('get_developer_create') }}">{{ icon('plus') }} {{ lang('admin.menu.add_developer') }}</a></li>
-                            @if ( ! empty(user()->devs) || is_admin())
-                                <li><a href="{{ route('get_developer_update') }}">{{ icon('edit') }} {{ lang('admin.menu.edit_developer') }}</a></li>
-                            @endif
-
-
-                            <li class="divider"></li>
                             <li><a href="{{ route('get_game_create') }}">{{ icon('plus') }} {{ lang('admin.menu.add_game') }}</a></li>
                             @if ( ! empty(user()->games) || is_admin())
                                 <li><a href="{{ route('get_game_update') }}">{{ icon('edit') }} {{ lang('admin.menu.edit_game') }}</a></li>
+                            @endif
+
+                            <li class="divider"></li>
+                            <li><a href="{{ route('get_developer_create') }}">{{ icon('plus') }} {{ lang('admin.menu.add_developer') }}</a></li>
+                            @if ( ! empty(user()->devs) || is_admin())
+                                <li><a href="{{ route('get_developer_update') }}">{{ icon('edit') }} {{ lang('admin.menu.edit_developer') }}</a></li>
                             @endif
 
                             <li class="divider"></li>

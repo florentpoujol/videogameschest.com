@@ -189,6 +189,10 @@ Asset::container('nivo-slider')->add('light-theme', 'css/nivo-slider/themes/ligh
 Asset::container('colorbox')->add('colorbox-css', 'css/colorbox/colorbox.css');
 Asset::container('colorbox')->add('colorbox-js', 'js/colorbox/jquery.colorbox-min.js');
 
+Asset::container('slidesjs')->add('slidesjs-css', 'css/slidesjs/global.css');
+Asset::container('slidesjs')->add('slidesjs-js', 'js/slidesjs/slides.min.jquery.js');
+
+
 
 
 // new validation rule

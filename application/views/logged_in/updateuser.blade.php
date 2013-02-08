@@ -27,56 +27,60 @@ if ( ! empty($old)) Former::populate($old);
 
     <div class="tab-content">
         <div class="tab-pane" id="profile-pane">
-            {{ Former::open_vertical(route('post_user_update'))->rules($rules) }}    
-                {{ Form::token() }}
+            <div class="row">
+                <div class="span6">
+                    {{ Former::open_vertical(route('post_user_update'))->rules($rules) }}    
+                        {{ Form::token() }}
 
-                @if (is_admin())
-                    {{ Former::hidden('id', $user->id) }}
-                @endif
+                        @if (is_admin())
+                            {{ Former::hidden('id', $user->id) }}
+                        @endif
 
-                {{ lang('user.id') }} : {{ $user->id }} <br>
-                
-                <br>
+                        {{ lang('user.id') }} : {{ $user->id }} <br>
+                        
+                        <br>
 
-                {{ Former::text('username', lang('common.name')) }}
+                        {{ Former::text('username', lang('common.name')) }}
 
-                {{ Former::email('email', lang('common.email')) }}
+                        {{ Former::email('email', lang('common.email')) }}
 
-                {{-- Former::text('url_key', 'Url key')->help(lang('user.url_key_help')) --}}
+                        {{-- Former::text('url_key', 'Url key')->help(lang('user.url_key_help')) --}}
 
-                @if (is_admin())
-                    {{ Former::text('type', 'Account type')->help('"user," "developer" or "admin"') }}
-                @endif
+                        @if (is_admin())
+                            {{ Former::text('type', 'Account type')->help('"user," "developer" or "admin"') }}
+                        @endif
 
-                {{ Former::primary_submit(lang('user.edit_title')) }} 
-            {{ Former::close() }} 
+                        {{ Former::primary_submit(lang('user.edit_title')) }} 
+                    {{ Former::close() }} 
+                </div>
 
-            <hr>
+                <div class="span6">
+                    <?php
+                    $rules = array(
+                        'password' => 'min:5|confirmed',
+                        'password_confirmation' => 'min:5|required_with:password',
+                        'oldpassword' => 'min:5|required_with:password',
+                    );
 
-            <?php
-            $rules = array(
-                'password' => 'min:5|confirmed',
-                'password_confirmation' => 'min:5|required_with:password',
-                'oldpassword' => 'min:5|required_with:password',
-            );
+                    if (is_admin()) unset($rules['oldpassword']);
+                    ?>
+                    {{ Former::open_vertical(route('post_password_update'))->rules($rules) }}    
+                        {{ Form::token() }}
 
-            if (is_admin()) unset($rules['oldpassword']);
-            ?>
-            {{ Former::open_vertical(route('post_password_update'))->rules($rules) }}    
-                {{ Form::token() }}
+                        @if (is_admin())
+                            {{ Former::hidden('id', $user->id) }}
+                        @endif
 
-                @if (is_admin())
-                    {{ Former::hidden('id', $user->id) }}
-                @endif
+                        {{ Former::password('password') }}
 
-                {{ Former::password('password') }}
+                        {{ Former::password('password_confirmation', 'Password Confirmation') }}
 
-                {{ Former::password('password_confirmation', 'Password Confirmation') }}
+                        {{ Former::password('old_password', 'Old password')->help(lang('user.old_password_help')) }}
 
-                {{ Former::password('old_password', 'Old password')->help(lang('user.old_password_help')) }}
-
-                {{ Former::primary_submit(lang('user.edit_password')) }}     
-            {{ Former::close() }}
+                        {{ Former::primary_submit(lang('user.edit_password')) }}     
+                    {{ Former::close() }}
+                </div>
+            </div>
         </div> <!-- /#profile-pane .tab-pane -->
 
         <div class="tab-pane" id="blacklist-pane">

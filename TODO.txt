@@ -4,17 +4,21 @@ créer page participate
 faire texte feed/news page promote
 
 retravailler formuaire recherche
-
-refaire form crosspromotion game comme blacklist
-
 mettre en place blog
+
 
 retravailler affichage dans feed et newletter
 
+refaire form crosspromotion game comme blacklist
 
 
 
     DONE
+
+08/02/2013
+
+
+
 
 06/02/2013
 

@@ -42,9 +42,6 @@ return array(
 // ADMIN
 
     'admin' => array(
-        
-
-
         'home' => array(
             'title' => 'Admin home',
             'hello' => 'Hello',
@@ -52,11 +49,11 @@ return array(
 
 
         'menu' => array(
-            'add_developer' => 'Create a developer',
-            'edit_developer' => 'Update a developer',
-            'add_game' => 'Create a game',
-            'edit_game' => 'Update a game',
-            'edit_user_account' => 'Update your user account',
+            'add_developer' => 'Add a developer',
+            'edit_developer' => 'Edit a developer',
+            'add_game' => 'Add a game',
+            'edit_game' => 'Edit a game',
+            'edit_user_account' => 'Edit your user account',
         ),
     ),
 
@@ -281,10 +278,10 @@ return array(
         ),
 
         'edit' => array(
-            'title' => 'Update a developer',
-            'submit' => 'Update this developer',
+            'title' => 'Edit a developer',
+            'submit' => 'Edit this developer',
             'select_profile_placeholder' => 'Name or id',
-            'select_profile_help' => 'Select the developer to update',
+            'select_profile_help' => 'Select the developer to edit',
         ),
 
         'profile' => array(
@@ -448,15 +445,15 @@ return array(
 
 
         'add' => array(
-            'title' => 'Create a game profile',
+            'title' => 'Add a game profile',
             'submit' => 'Submit this game profile',
         ),
 
         'edit' => array(
-            'title' => 'Update a game',
-            'submit' => 'Update this game',
+            'title' => 'Edit a game',
+            'submit' => 'Edit this game',
             'select_profile_placeholder' => 'Name or id',
-            'select_profile_help' => 'Select the game to update',
+            'select_profile_help' => 'Select the game to edit',
         ),
 
         'profile' => array(
@@ -657,6 +654,34 @@ return array(
         'home_text' => 'VideoGamesChest is a <strong>participative</strong> database where everyone can create a profile for their favorite <strong>game</strong>, <strong>developer</strong>, <strong>game creation tool</strong> and user-created <strong>map/level and mod</strong> (tool, map and mod are coming soon) with <strong>no discrimination</strong> on the platform, the price, the release date, or any criteria actually. <br>
         <br> 
         Attention has been put to showcase the content in the most advantageous way with beautiful and comprehensive profiles.',
+
+        'text' => "<strong>VideoGamesChest is the place to share your love for video games.</strong> <br>
+        <br>
+        No game, no developer, no tool is too small, too old, too bizarre, or <em>too something</em> not to be worth talking about. If it's video game-related then VGC has room for it.<br>
+        You can currently create profiles for <strong>games</strong> and <strong>developers</strong> and will soon be able to so for game creation tools, user-created maps and levels as well as mods. <br>
+        <br>
+        All you need to begin spreading the love is a user account and the will to share what matters to you.",
+
+        'report_text' => "Creating profiles is not the only way to contribute to make this site a great place for video games. <br>
+        <br>
+        The accuracy and truthfulness of the information displayed by the profiles is very important. That's why you will find a form at the bottom of each profiles to issue reports. <br>
+        It's a simple ways to get in touch with the profile's creator or the VGC's team about something that needs attention. It can be anything from a simple broken link to real issues that needs immediate attention as inappropriate content. <br>
+        <br>
+        Whenever you created at least one profile, you have access to a page to consult the reports issued to any of them.
+        ",
+
+        'ownership_title' => "Ownership",
+        'ownership_text' => "Anyone can create profiles on VideoGamesChest, that means that you may create profiles for games and things that you didn't created or you are not related to. <br>
+        But in that case, be advised that you way loose control over those profiles whenever someone actually related to them ask for it. <br>
+        No drama or karma loss involved, you just loose the ability to edit the profile and see its reports. <br>
+        <br>
+        If you are a fan and can't wait to see the profile of your favorite game, tool or developer on VideoGamesChest we would suggest as a good pratice that you reach out for the developer first to let them know about VGC and basically ask permission to create their profile if they are not ready to do so themselves. <br>
+        <br>
+        If you are related to a profile (your are part of the developer/publisher team) and want to gain control over it, you just need to register a user account and contact us from a official email address (ie : whatever@companyname.com) or social media account.
+        ",
+
+
+        'register' => 'Go register now !',
     ),
 
 // PRESS
@@ -725,6 +750,7 @@ return array(
         'password_confirmation' => 'Verify password',
         'submit' => 'Register !',
         'title' => 'Create a user account',
+
         'username' => 'Choose your user name',
 
         'msg' => array(
@@ -876,12 +902,12 @@ return array(
         'edit_title' => 'Edit your user account',
         'edit_password' => 'Edit your password',
         
-        'id' => 'User Id',
+        'id' => 'User ID',
 
         'not_a_developer' => '<strong>You need to be a "developer" user to access this section.</strong> <br>
         <br>
-        To become a developer, you need to prove that you are the creator of the game/tool/map/mod or part of the team or the company. To do so, you just need to contact us from a "corporate" email adress (ie : whatever@companyname.com) or an official social media account. <br>
-         ',
+        To become a developer, you need to prove that you are the creator of the game/tool/map/mod or part of the team or the company. To do so, you just need to contact us from an "official" email adress (ie : whatever@companyname.com) or social media account. <br>
+        ',
 
         'subscription_title' => 'Subscriptions',
 

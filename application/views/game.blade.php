@@ -129,19 +129,26 @@ $name = xssSecure($profile->name);
                 <div class="tab-pane" id="screenshots-pane"> 
                     <!-- <h4>{{ lang('common.screenshots') }} <small>{{ lang('game.profile.screenshots_help') }}</small></h4> -->
                     
-                    <div id="screenshots-container" class="slider-wrapper theme-light">
-                        <div id="screenshots-nivo-slider" class="nivoSlider">
+                    <div id="screenshots-container" >
+                        <div id="screenshots-nivo-slider" class="slides_container">
                             <?php
                             $screenshots = $profile->screenshots;
                             for ($i = 0; $i < count($screenshots['names']); $i++):
                                 $url = xssSecure($screenshots['urls'][$i]);
                                 $title = xssSecure($screenshots['names'][$i]);
                             ?>
+                            
                                 <a href="{{ $url }}" title="{{ $title }}" class="colorbox-group1">
                                     <img src="{{ $url }}" alt="{{ $title }}" id="gamescreenshot{{ $i }}" title="{{ $title }}">
                                 </a>
+
+                                
                             @endfor
                         </div> <!-- /.carousel-inner -->
+
+                        <a href="#" class="prev"><i class="icon-chevron-left icon-large"></i></a>
+                        <a href="#" class="next"><i class="icon-chevron-right icon-large"></i></a>
+
                     </div> <!-- /#screenshots-container .carousel .slide -->
                 </div> <!-- /#screenshots-pane .tab-pane -->
 
@@ -320,20 +327,23 @@ $name = xssSecure($profile->name);
 
 @section('cssfiles')
     {{ Asset::container('colorbox')->styles() }}
-    {{ Asset::container('nivo-slider')->styles() }}
+    {{-- Asset::container('nivo-slider')->styles() }}
+    {{-- Asset::container('slidesjs')->styles() }}
 @endsection
 
 @section('jsfiles')
     {{ Asset::container('colorbox')->scripts() }}
-    {{ Asset::container('nivo-slider')->scripts() }}
-    {{ HTML::script('slidesjs/slides.min.jquery.js') }}
+    {{-- Asset::container('nivo-slider')->scripts() }}
+    {{ Asset::container('slidesjs')->scripts() }}
 @endsection
 
 @section('jQuery')
     $('#medias-tabs a:first').tab('show');
     $('#stores-tabs a:first').tab('show');
 
-    $('#screenshots-nivo-slider').nivoSlider();
+    
+    $('#screenshots-container').slides();
+
     $(".colorbox-group1").colorbox({rel:"group1"});
             
     // videos
