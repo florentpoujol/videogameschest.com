@@ -5,8 +5,9 @@
     </div>
 
     <?php
-    $fields = array('devices', /*'operatingsystems',*/'technologies', /*'stores'*/  );
+    $fields = array('devices', 'operatingsystems', 'technologies', 'stores'  );
+    $span_size = 3;
     ?>
-    <div class="row testtaille">
+    <div class="row">
         @include('partials.search_foreach_fields')
     </div>

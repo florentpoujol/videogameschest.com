@@ -54,25 +54,26 @@ if (isset($search_id) && isset($profiles)) {
 
     <div class="tab-content">
         @if (isset($profiles))
-        <div class="tab-pane" id="results-pane">
-            
-                <?php
-                $count = count($profiles);
-                ?>
-                <p id="profile-list">
+            <div class="tab-pane" id="results-pane">
+                
+                    <?php
+                    $count = count($profiles);
+                    ?>
+                    <p id="profile-list">
 
-                @if ($count <= 0)
-                        {{ lang('search.no_profile_found') }}
-                    </p>
-                @else
-                        {{ lang('search.profiles_found', array('num'=>$count)) }}
-                    </p>
+                    @if ($count <= 0)
+                            {{ lang('search.no_profile_found') }}
+                        </p>
+                    @else
+                            {{ lang('search.profiles_found', array('num'=>$count)) }}
+                        </p>
 
-                    @include('partials.profile_list_tiles')
-                @endif
-             
-        </div> <!-- /#results-pane .tab-pane -->
+                        @include('partials.profile_list_tiles')
+                    @endif
+                 
+            </div> <!-- /#results-pane .tab-pane -->
         @endif
+        
         @foreach (get_profiles_types() as $profile_type)
             <div class="tab-pane" id="{{ $profile_type }}-pane">
                 @include('forms.search_profiles_common')

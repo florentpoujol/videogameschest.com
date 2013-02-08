@@ -9,7 +9,9 @@
         {{ Former::hidden('profile_type', $profile_type) }}
 
         <div class="span2">
+            <i class="icon-quote-left icon-2x pull-left icon-muted"></i>
 
+            {{ lang('search.i_am_looking_for', array('profile_type' => $profile_type)) }}
         </div>
         
         <div class="span2">

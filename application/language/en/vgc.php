@@ -860,7 +860,7 @@ return array(
 
         The extensive filtering capabilities is the angular stone of VideoGamesChest\'s approach to discoverability and is used for the best by the discovering and promoting services.',
 
-
+        'i_am_looking_for' => 'I am looking for a :profile_type',
 
         'hide_show_link' => 'Show/hide the search form',
         'game_accordion_link' => 'Show more criteria for games',
