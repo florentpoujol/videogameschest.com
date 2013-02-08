@@ -11,7 +11,7 @@
         </div>
 
         <div>
-            Blog | 
+            <a href="{{ route('get_blog_page') }}">{{ lang('blog.title') }}</a> | 
             <a href="{{ route('get_about_page') }}">{{ lang('about.title') }}</a>
         </div>
     </div>
@@ -73,6 +73,12 @@
 
                                     <li class="divider"></li>
                                 @endif
+                            @endif
+
+                            @if (is_admin())
+                                
+                                <li><a href="{{ route('get_blog_post_create') }}">{{ lang('blog.write_post') }}</a></li>
+                                <li class="divider"></li>
                             @endif
 
                             @if (is_admin())

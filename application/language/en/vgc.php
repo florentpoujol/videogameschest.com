@@ -68,6 +68,15 @@ return array(
         ),
     ),
 
+// BLOG
+
+    'blog' => array(
+        'title' => 'Blog',
+        'write_post' => 'Write a blog post',
+        'update_post' => 'Edit a blog post',
+        'latest_articles' => 'Latest articles',
+    ),
+
 // COMMON
 
     'common' => array(

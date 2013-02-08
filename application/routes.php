@@ -136,6 +136,35 @@ $layout = View::of('layout');
     Route::get('promote/crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion_from_game', 'uses' => 'promotion@crosspromotion_from_game'));
 
 
+    // BLOG
+    Route::get('blog', array('as' => 'get_blog_page', function() use ($layout)
+    {
+        return $layout->nest('page_content', 'blog');
+    }));
+
+    Route::get('blog/post', function()
+    {
+        return Redirect::to_route('get_blog_page');
+    });
+
+    Route::get('blog/post/(:any)', array('as' => 'get_blog_post', function($post_title_url) use ($layout)
+    {
+        // $post_title_url may be the post id
+        $post = null;
+
+        if (is_numeric($post_title_url)) {
+            $post = BlogPost::find($post_title_url);
+        } else {
+            $post = BlogPost::where_title_url($post_title_url)->first();
+        }
+
+
+
+        return $layout->nest('page_content', 'blog', array('display_posts' => array($post)));
+    }));
+
+    Route::get('blog/feed', array('as' => 'get_blog_feed', 'uses' => 'feed@blog_feed'));
+
 
 //----------------------------------------------------------------------------------
 //  MUST BE LEGIT POST
@@ -367,6 +396,26 @@ $layout = View::of('layout');
 
             return $layout->nest('page_content', 'test');
         }));
+
+
+        // BLOG
+
+        Route::get('blog/post/create', array('as' => 'get_blog_post_create', function() use ($layout)
+        {
+            return $layout->nest('page_content', 'logged_in/createblogpost');
+        }));
+
+        Route::get('blog/post/update/(:any)', array('as' => 'get_blog_post_update', function($post_id) use ($layout)
+        {
+            $post = BlogPost::find($post_id);
+            
+            if (is_null($post)) {
+                HTML::set_error("Blog post id '$post_id' not found.");
+                return Redirect::to_route('get_blog_post_create');
+            }
+
+            return $layout->nest('page_content', 'logged_in/updateblogpost', array('post' => $post));
+        }));
     });
 
 
@@ -375,10 +424,26 @@ $layout = View::of('layout');
 //  MUST BE ADMIN AND LEGIT POST
 //----------------------------------------------------------------------------------
 
-    Route::group(array('before' => 'auth|is_admin|csrf'), function()
+    Route::group(array('before' => 'auth|is_admin|csrf'), function() use ($layout)
     {
         Route::post('user/create', array('as' => 'post_user_create', 'uses' => 'admin@user_create'));
         Route::post('reviews', array('as' => 'post_reviews', 'uses' => 'admin@reviews'));
+
+        Route::post('blog/post/create', array('as' => 'post_blog_post_create', function() use ($layout)
+        {
+            $input = clean_form_input(Input::all());
+            $post = BlogPost::create($input);
+
+            return Redirect::to_route('get_blog_post_update', array($post->id));
+        }));
+
+        Route::post('blog/post/update', array('as' => 'post_blog_post_update', function() use ($layout)
+        {
+            $input = clean_form_input(Input::all());
+            BlogPost::update($input['id'], $input);
+
+            return Redirect::to_route('get_blog_post_update', array($input['id']));
+        }));
     });
 
 

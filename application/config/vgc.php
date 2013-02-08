@@ -25,6 +25,8 @@ return array(
         "datetime_sql" => "Y-m-d H:i:s",
         "english" => "d M Y - g:ia",
         "nonenglish" => "d M Y - G\\hi",
+        "blog" => "d M Y",
+        "blog_sidebar" => "d M",
         'rss' => 'r', // 'D, d M Y H:i:s O',
     ),
 

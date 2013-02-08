@@ -178,4 +178,30 @@ class Feed_Controller extends Base_Controller
         }
     }
 
+
+    public function get_blog_feed()
+    {
+        $posts = BlogPost::order_by('created_at', 'desc')->get();
+
+        $feed = $this->getFeed()
+            ->title('VideoGamesChest blog feed')
+            ->permalink(route('get_blog_feed'));
+
+        if ( ! is_null($posts)) {
+            foreach ($posts as $post) {
+                $feed->entry()
+                    ->published($post->created_at)
+                    ->updated($post->updated_at)
+                    ->permalink($post->url)
+
+                    ->title($post->title)
+
+                    //->content()->add('text', e($post->content))->up()
+                    ->content()->add('html', $post->content)->up()
+                ;
+            }
+        } 
+
+        $this->publish('rss', $feed);
+    }
 }
