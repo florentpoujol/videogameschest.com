@@ -707,7 +707,28 @@ return array(
         VGC provides you with a range of services that helps you get in contact with players .
         </p>
         ',
+
+        'text' => "Having set up your profile is already another chance for players (and search engine bots) to find you but it's just the beginning. <br>
+        <br>
+        Don't stay passive, reach out to players, especially to <strong>those who want to hear from you</strong>.<br>
+        <br>
+        At VideoGamesChest we want to make advertising works. We want to make advertising non-intrusive, relevant and inexpensive.
+        ",
+
+        /*
+        Advertising is a completely valid way to make people know about your product.
+        Advertising is just so badly used than porly used  it lead to situation where it's at the same time intrusive and irrelevant for the advertisee as well as expensive for the advertiser (you)
+
+         */
         
+
+        'discover_text' => "Players interested in discovering new games <a href=\":discover_url\" title=\"Go to the Discover page\">can subscribe</a> to a promotion feed or newsletter whose purpose is to advertise them with the profiles from VGC they are interested in.<br>
+        <br>
+        You can give a chance to any of your profile to appear in these feed or newsletter by checking the appropriate box in your profile's edit page, under the <em>Promote</em> tab. <br>
+        <br>
+        A profile will be displayed in a feed entry or an email only if it is randomly selected among the profiles that matches the search and based on the number of profiles the user requested to display. <br>
+        That means that your profiles may not be displayed often, but every time it does, you can be pretty certain that the player will click on your link since he wanted to be advertised with your kind of profile and your link coexist only with few other.
+        ",
 
         
         'title' => 'Promote',
@@ -720,6 +741,8 @@ return array(
 
          You have got games to tell the world about but the traditionnal ways are are to expensive for your indie budget or not working out as planned ? <br>
         <br>
+
+        The point of the process is that they get to choose what they are advertised for, which means they are interested 
         */
 
 

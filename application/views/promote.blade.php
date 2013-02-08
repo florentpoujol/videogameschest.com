@@ -3,12 +3,13 @@
         {{ icon('volume-up') }}
     </div>
 
-    <h1>{{ lang('promote.title') }}<!--  <small>{{ lang('promote.subtitle') }}</small> --></h1>
+    <h1>{{ lang('promote.title') }}</h1>
 
     <hr>
 
-
-    {{ lang('promote.explanation') }}
+    <p>
+        {{ lang('promote.text') }}
+    </p>
 
     <hr>
 
@@ -19,7 +20,9 @@
 
     <div class="tab-content">
         <div class="tab-pane" id="feed-pane">
-
+            <p>
+                {{ lang('promote.discover_text') }}
+            </p>
         </div> <!-- /#feed-pane .tab-pane -->
 
         <div class="tab-pane" id="crosspromotion-pane">
