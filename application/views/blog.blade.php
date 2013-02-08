@@ -17,7 +17,12 @@
 
 
                     {{ $post->content }}
+                    <br>
 
+                    @if (is_admin())
+                        <br>
+                        <a href="{{ route('get_blog_post_update', array($post->id)) }}">Edit</a>
+                    @endif
                 </article>
 
                 <hr>

@@ -3,7 +3,6 @@
 retravailler texte promote
 
 retravailler formuaire recherche
-mettre en place blog
 
 
 retravailler affichage dans feed et newletter
@@ -19,6 +18,7 @@ refaire form crosspromotion game comme blacklist
 
 créer page participate
 faire texte feed/news page promote
+mettre en place blog
 
 
 06/02/2013

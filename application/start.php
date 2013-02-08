@@ -192,7 +192,9 @@ Asset::container('colorbox')->add('colorbox-js', 'js/colorbox/jquery.colorbox-mi
 Asset::container('slidesjs')->add('slidesjs-css', 'css/slidesjs/global.css');
 Asset::container('slidesjs')->add('slidesjs-js', 'js/slidesjs/slides.min.jquery.js');
 
-
+Asset::container('coda-slider')->add('css', 'css/coda-slider.css');
+Asset::container('coda-slider')->add('jquery-ui', 'js/jquery-ui-1.10.0.custom.min.js');
+Asset::container('coda-slider')->add('js', 'js/jquery.coda-slider-3.0.min.js');
 
 
 // new validation rule

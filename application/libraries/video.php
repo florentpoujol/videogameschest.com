@@ -6,6 +6,7 @@ class Video
     public $link = '';
     public $embed_url = '';
     public $thumbnail_url = '';
+    public $embed_html = '';
 
     public function __construct($link)
     {
@@ -31,6 +32,8 @@ class Video
             $this->id = preg_replace("#.*(/watch\?v=|\.be/|/v/|/embed/)([a-zA-Z0-9]+)(&|/)?.*#", '$2', $link);
             $this->embed_url = 'http://www.youtube.com/embed/'.$this->id;
             $this->thumbnail_url = 'http://img.youtube.com/vi/'.$this->id.'/maxresdefault.jpg';
+
+
         } 
 
 
@@ -61,4 +64,14 @@ class Video
         }
     }
 
+    public function GetEmbedHtml()
+    {
+        
+
+        $id = Str::random(40);
+
+        return '<iframe width="800" src="'.$this->embed_url.'" id="'.$id.'" frameborder="0"
+        allowfullscreen></iframe>';
+    }
 }
+/*width="'.$width.'" height="'.$height.'"*/

@@ -130,46 +130,47 @@ $name = xssSecure($profile->name);
                     <!-- <h4>{{ lang('common.screenshots') }} <small>{{ lang('game.profile.screenshots_help') }}</small></h4> -->
                     
                     <div id="screenshots-container" >
-                        <div id="screenshots-nivo-slider" class="slides_container">
-                            <?php
-                            $screenshots = $profile->screenshots;
-                            for ($i = 0; $i < count($screenshots['names']); $i++):
-                                $url = xssSecure($screenshots['urls'][$i]);
-                                $title = xssSecure($screenshots['names'][$i]);
-                            ?>
-                            
-                                <a href="{{ $url }}" title="{{ $title }}" class="colorbox-group1">
-                                    <img src="{{ $url }}" alt="{{ $title }}" id="gamescreenshot{{ $i }}" title="{{ $title }}">
-                                </a>
-
-                                
-                            @endfor
-                        </div> <!-- /.carousel-inner -->
-
-                        <a href="#" class="prev"><i class="icon-chevron-left icon-large"></i></a>
-                        <a href="#" class="next"><i class="icon-chevron-right icon-large"></i></a>
-
+                        <div id="screenshots-slider-wrapper" class="coda-slider-wrapper">
+                            <div id="screenshots-slider" class="coda-slider">
+                                <?php
+                                $screenshots = $profile->screenshots;
+                                for ($i = 0; $i < count($screenshots['names']); $i++):
+                                    $url = xssSecure($screenshots['urls'][$i]);
+                                    $title = xssSecure($screenshots['names'][$i]);
+                                ?>
+                                    <div>
+                                        <a href="{{ $url }}" title="{{ $title }}" class="screenshots-group">
+                                            <img src="{{ $url }}" alt="{{ $title }}" id="gamescreenshot{{ $i }}" title="{{ $title }}">
+                                        
+                                        </a>
+                                    </div>
+                                @endfor
+                            </div> 
+                        </div>
                     </div> <!-- /#screenshots-container .carousel .slide -->
                 </div> <!-- /#screenshots-pane .tab-pane -->
 
                 <div class="tab-pane" id="videos-pane"> 
                     <!-- <h4>{{ lang('common.videos') }}</h4> -->
                 
-                    <div id="videos-container" class="slider-wrapper theme-light">
-                        <div id="videos-nivo-slider" class="nivoSlider">
-                            <?php
-                            $videos = $profile->videos;
-                            ?>
-                            @for ($i = 0; $i < count($videos['names']); $i++)
+                    <div id="videos-container">
+                        <div id="videos-slider-wrapper" class="coda-slider-wrapper">
+                            <div id="videos-slider" class="coda-slider">
                                 <?php
-                                $video = new Video($videos['urls'][$i]);
-                                $title = xssSecure($videos['names'][$i]);
+                                $videos = $profile->videos;
                                 ?>
-                                <a href="{{ $video->embed_url }}" title="{{ $title }}" class="gamevideos colorbox-group2">
-                                    <img src="{{ $video->thumbnail_url }}" alt="{{ $title }}" title="{{ $title }}" id="gamevideo{{ $i }}">
-                                </a>
-
-                            @endfor
+                                @for ($i = 0; $i < count($videos['names']); $i++)
+                                    <?php
+                                    $video = new Video($videos['urls'][$i]);
+                                    $title = xssSecure($videos['names'][$i]);
+                                    ?>
+                                    <div>
+                                        <a href="{{ $video->embed_url }}" title="{{ $title }}" class="colorbox-videos-group">
+                                            <img src="{{ $video->thumbnail_url }}" alt="{{ $title }}" title="{{ $title }}" id="gamevideo{{ $i }}">
+                                        </a>
+                                    </div>
+                                @endfor
+                            </div>
                         </div>
                     </div>
                 </div> <!-- /#videos-pane .tab-pane -->
@@ -327,28 +328,34 @@ $name = xssSecure($profile->name);
 
 @section('cssfiles')
     {{ Asset::container('colorbox')->styles() }}
-    {{-- Asset::container('nivo-slider')->styles() }}
-    {{-- Asset::container('slidesjs')->styles() }}
+    {{ Asset::container('coda-slider')->styles() }}
 @endsection
 
 @section('jsfiles')
     {{ Asset::container('colorbox')->scripts() }}
-    {{-- Asset::container('nivo-slider')->scripts() }}
-    {{ Asset::container('slidesjs')->scripts() }}
+    {{ Asset::container('coda-slider')->scripts() }}
 @endsection
 
 @section('jQuery')
     $('#medias-tabs a:first').tab('show');
     $('#stores-tabs a:first').tab('show');
 
-    
-    $('#screenshots-container').slides();
+    $('.screenshots-group').colorbox({rel:"group1"});
+    $('#screenshots-slider').codaSlider({
+        dynamicArrowsGraphical: true,
+        dynamicTabs: false,
+        autoSlide: true,
+        autoHeightEaseDuration: 1000,
+        autoSlideInterval: 1000,
+    });
 
-    $(".colorbox-group1").colorbox({rel:"group1"});
-            
-    // videos
-    $(".gamevideos").colorbox({iframe:true, innerWidth:800, innerHeight:533, rel:"group_video"});
-    $('#videos-nivo-slider').nivoSlider()
 
+    $(".colorbox-videos-group").colorbox({iframe:true, innerWidth:800, innerHeight:533, rel:"group_video"});
+    $('#videos-slider').codaSlider({
+        dynamicArrowsGraphical: true,
+        dynamicTabs: false,
+        autoSlide: true,
+        autoHeightEaseDuration: 1000,
+        autoSlideInterval: 1000,
+    });
 @endsection
-

@@ -633,7 +633,7 @@ function user_type()
  * @param  string $link 
  * @return string       The HTML code of the embeded player
  */
-/*function VideoFrame($link, $width = null, $height = null)
+function VideoFrame($link, $width = null, $height = null)
 {
     // ration wdith/height : 1.77
     $ratio = 1.77;
@@ -673,7 +673,7 @@ function user_type()
         return '<iframe width="'.$width.'" height="'.$height.'" src="'.$embed_link.'" id="'.$id.'" frameborder="0"
         allowfullscreen></iframe>';
     } else return '<a href="'.$link.'" id="'.$id.'">'.$link.'</a>';
-}*/
+}
 
 
 
