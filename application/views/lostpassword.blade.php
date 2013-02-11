@@ -3,6 +3,10 @@
 @endsection
 
 <div id="lostpassword">
+    <h3>{{ lang('lostpassword.title') }}</h3>
+
+    <hr>
+
     <p>
         {{ lang('lostpassword.help') }}
     </p>

@@ -24,8 +24,8 @@
 $environments = array(
 
 	'local' => array('http://localhost*', '*.dev'),
-    'alpha' => array('http://alpha.videogameschest.com*'),
-
+    'staging' => array('http://vgcstaging.florent-poujol.fr*'),
+    'production' => array('http://videogameschest.com*'),
 );
 
 // --------------------------------------------------------------

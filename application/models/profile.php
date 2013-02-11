@@ -72,7 +72,7 @@ class Profile extends ExtendedEloquent
         $foreign_key = $this->class_name.'_id';
         
         if (is_null($type)) return $this->has_many('Report', $foreign_key);
-        else return $this->has_many('Report', $foreign_key)->where_type($type);
+        else return $this->has_many('Report', $foreign_key)->where_type($type)->get();
     }
 
     

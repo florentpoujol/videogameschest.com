@@ -28,11 +28,14 @@ return array(
         ',
 
         'developement_title' => 'Developement',
-        'developement_text' => 'VideoGamesChest is already open to be used by anyone but it is also under heavy developement. So everything is in constant evolution and nothing is final especially when it comes to how things looks. <br>
+        'developement_text' => 'VideoGamesChest is currently in an "aplha" stage which means that overall, the site is still in heavy developement. <br>
         <br>
-        You can follow the developement on the blog or various forums (coming soon). <br>
+        Some features already works yet it is possible that you encounter bugs. <br>
+        Everything will evolve over time, more features will be added or tweaked and the look will improve. <br>
         <br>
-        If you have a feedbacks, bugs, feature request, or just want to chat, feel free to contact us.',
+        You can <a href=":blog_url" title="Go to the blog">follow the developement</a> on the blog or various forums (coming soon). <br>
+        <br>
+        If you came accros bugs, have a feedbacks, feature request, or just want to chat, feel free to contact us (see below in the footer).',
 
 
         'contact_title' => 'Contact'
@@ -200,6 +203,9 @@ return array(
         Make sure the games you want to promote have a profile on VGC, then select them for cross-promotion in your game\'s profile. <br>
         From your game, just query VGC to get the profiles you selected for cross-promotion in that game. <br>',
 
+        'home_text' => 'VideoGamesChest provides you with an evolutive, easy to setup and easy to use cross-promotion solution for your games (or other developer\'s games).',
+
+
         'edit_game_subscribers_help' => 
         'Select the games you want to promote from this game. <br>
         Then from the game query the following URL : :url',
@@ -231,7 +237,7 @@ return array(
 
         'how_it_works_title' => 'How does it works ?',
         'how_it_works' => 
-        'You can <a href=":update_game_link" title="Update your game profiles">select profiles to promote</a> for each of your games under the tab "Cross-promotion" in the game\'s update page. <br>
+        'You can <a href=":update_game_link" title="Update your game profiles">select profiles to promote</a> for each of your games under the tab "Cross-promotion" in the game\'s edit page. <br>
         <br>
         Then from within your game, you just have to query an URL to get the list of the profiles you selected in the first step. <br>
         <br>
@@ -336,8 +342,8 @@ return array(
         <br>
         Instead, VGC allows you to sit at your computer and just wait for <strong>the profiles you are interested in</strong> to drop in your inbox or your favorite syndication feed reader. <br>
         <br>
-        You can subscribe below to a <strong>fully customisable</strong> feed or newsletter whose sole purpose is to promote you with the kind of games (or any profiles) <strong>you choose</strong> to be promote with. <br>
-        You control What, How much, When and How :
+        You can subscribe below to a <strong>fully customisable</strong> feed or newsletter whose sole purpose is to promote you with the kind of games (or any profiles) <strong>you choose</strong> to be promoted with. <br>
+        You control How, When How much, and What :
         ',
 
         'page_learn_more_text' => '<strong>Feed or E-mail</strong> <br>
@@ -390,7 +396,7 @@ return array(
             ),
 
             'email' => array(
-                'email_help' => 'Tha\'s you user account email. You must log out if you want to use another email adress.',
+                'email_help' => 'That\'s you user account email. You must log out if you want to use another email adress.',
                 'help' => 'Once subscribed, you will be able to edit your preferencies or unsubscribe via a link you can find in all e-mails you will get.',
                 'submit' => 'Subscribe',
                 'title' => 'Newsletter',
@@ -497,10 +503,15 @@ return array(
         'subtitle' => '',
         'home_text' => 'VideoGamesChest is a <strong>participative</strong> database for everything that is video game-related : the <strong>games</strong> of course but also the <strong>developers</strong> and <strong>technologies</strong>, as well as the communities of players throught the <strong>maps</strong> and <strong>mods</strong>.<br>
         <br>',
+
+
+
+
         /*
         It\'s participative because everyone can create profiles. It does not matter if the game is old
-
-
+        
+        /*
+        VideoGamesChest seek to improve the visibility of games and game-related content and people with innovative solutions.
         Jam, indie, AAA, mobile, console, social, casual, hardcore, old, old-shool, ... everyone is welcome on VideoGamesChest
         */
 
@@ -510,6 +521,8 @@ return array(
 
         'site_slogan' => 'The <strong>participative</strong> place to <strong>discover</strong> and <strong>promote</strong>',
         'site_slogan2' => 'everything that <strong>was, is and will be</strong> Video Games',
+
+        'sub_slogan' => 'VideoGamesChest seek to improve the visibility of games and game-related content and people with innovative solutions :',
 
         /*
         'herounit_text' => '
@@ -667,7 +680,7 @@ return array(
         'text' => "<strong>VideoGamesChest is the place to share your love for video games.</strong> <br>
         <br>
         No game, no developer, no tool is too small, too old, too bizarre, or <em>too something</em> not to be worth talking about. If it's video game-related then VGC has room for it.<br>
-        You can currently create profiles for <strong>games</strong> and <strong>developers</strong> and will soon be able to so for game creation tools, user-created maps and levels as well as mods. <br>
+        You can currently create profiles for <strong>games</strong> and <strong>developers</strong> and will soon be able to do so for game creation tools, user-created maps and levels as well as mods. <br>
         <br>
         All you need to begin spreading the love is a user account and the will to share what matters to you.",
 
@@ -676,7 +689,7 @@ return array(
         The accuracy and truthfulness of the information displayed by the profiles is very important. That's why you will find a form at the bottom of each profiles to issue reports. <br>
         It's a simple ways to get in touch with the profile's creator or the VGC's team about something that needs attention. It can be anything from a simple broken link to real issues that needs immediate attention as inappropriate content. <br>
         <br>
-        Whenever you created at least one profile, you have access to a page to consult the reports issued to any of them.
+        Whenever you created at least one profile, you have access to a page to consult the reports issued to any of your profiles.
         ",
 
         'ownership_title' => "Ownership",
@@ -702,7 +715,7 @@ return array(
 // PROMOTE
 
     'promote' => array(
-        'explanation' => '
+        /*'explanation' => '
         <p class="advertising-explanation">
         You developed the game of your dream but you can count your followers on one hand and the press never gets back to you ? <br>
         Maybe it\'s time to try something new. Something you even may not have tought about. <br>
@@ -715,18 +728,24 @@ return array(
         That\'s were we come in ! Advertising throught VGC is neither annoying for the visitors, neither expensive for you. And by <em>not expensive</em>, we actually means <strong>free</strong>. <br>
         VGC provides you with a range of services that helps you get in contact with players .
         </p>
-        ',
+        ',*/
 
         'text' => "Having set up your profile is already another chance for players (and search engine bots) to find you but it's just the beginning. <br>
+        But don't stay passive, reach out to players, especially to <strong>those who want to hear from you</strong>.<br>
         <br>
-        Don't stay passive, reach out to players, especially to <strong>those who want to hear from you</strong>.<br>
+        Advertising is a completely valid way to promote your product, but we concide that it's usually poorly executed as well as inefficient or just unaffordable. <br>
+        Instead, at VideoGamesChest we believe we can <strong>make advertising non-intrusive, relevant and inexpensive</strong>. <br>
         <br>
-        At VideoGamesChest we want to make advertising works. We want to make advertising non-intrusive, relevant and inexpensive.
+        That's why we offers various promotion/advertising services (more coming soon) that are build to on those tree qualities so that it really benefits both the players and the developers.
         ",
 
         /*
+        If players spend all those time reading video games news websites, that's because they want to find games worth of their time and money. <br>
+        You can help them with that, and without 
+
+        
         Advertising is a completely valid way to make people know about your product.
-        Advertising is just so badly used than porly used  it lead to situation where it's at the same time intrusive and irrelevant for the advertisee as well as expensive for the advertiser (you)
+        Advertising is just so badly used than porly used  it lead to situation where it's at the same time intrusive and irrelevant for the  as well as expensive for the advertiser (you)
 
          */
         

@@ -59,10 +59,10 @@ if ( ! empty($old)) Former::populate($old);
                     $rules = array(
                         'password' => 'min:5|confirmed',
                         'password_confirmation' => 'min:5|required_with:password',
-                        'oldpassword' => 'min:5|required_with:password',
+                        'old_password' => 'min:5|required_with:password',
                     );
 
-                    if (is_admin()) unset($rules['oldpassword']);
+                    if (is_admin()) unset($rules['old_password']);
                     ?>
                     {{ Former::open_vertical(route('post_password_update'))->rules($rules) }}    
                         {{ Form::token() }}

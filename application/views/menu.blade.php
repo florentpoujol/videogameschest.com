@@ -11,15 +11,14 @@
         </div>
 
         <div>
-            <a href="{{ route('get_blog_page') }}">{{ lang('blog.title') }}</a> | 
-            <a href="{{ route('get_about_page') }}">{{ lang('about.title') }}</a>
+            <a href="{{ route('get_blog_page') }}">{{ lang('blog.title') }}</a> 
         </div>
     </div>
 
     <div id="main-menu" class="navbar">
         <div class="navbar-inner">
             <div class="brand">
-                VideoGamesChest
+                VideoGamesChest <small class="muted">alpha</small>
                 {{-- <img src=" asset('img/logo_test.png') " height="20%" width="20%"> --}}
             </div>
 

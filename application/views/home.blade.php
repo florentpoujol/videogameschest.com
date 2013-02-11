@@ -19,6 +19,12 @@
     <hr>
 
     <div class="row">
+        <div class="span12" id="sub-slogan">
+            {{ lang('home.sub_slogan') }}
+        </div>
+    </div>
+
+    <div class="row">
         <div class="span6">
             <h2>{{ lang('participate.title') }}</h2>
 
@@ -40,7 +46,8 @@
         </div>
     </div>
 
-    <hr>
+    <br>
+    <br>
 
     <div class="row">
         <div class="span6">
@@ -65,6 +72,18 @@
             </p>
 
             <a href="{{ route('get_promote_page') }}" class="btn btn-primary btn-learn-more">{{ lang('common.learn_more') }} {{ icon('double-angle-right') }}</a>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="span12" id="">
+            <h3>{{ lang('about.developement_title') }}</h3>
+
+            <p>
+                {{ lang('about.developement_text') }}
+            </p>
         </div>
     </div>
 

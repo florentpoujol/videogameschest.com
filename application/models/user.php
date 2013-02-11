@@ -34,6 +34,7 @@ class User extends ExtendedEloquent
         if ( ! isset($input['type'])) $input['type'] = 'user';
         if ($input['type'] == 'admin') $input['is_trusted'] = 1;
 
+        // cross promotion now always active (since it's free)
         $input['crosspromotion_active'] = 1;
 
 

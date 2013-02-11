@@ -1,3 +1,17 @@
+<?php
+
+//if ( ! empty($old)) Former::populate($old);
+
+if ( ! isset($search_data)) $search_data = array();
+if ( ! empty($search_data)) {
+    if (isset($search_data['profile_type']) && $search_data['profile_type'] == $profile_type) {
+        Former::populate($search_data);
+    }
+}
+
+var_dump($search_data);
+?>
+
 {{ Former::open_vertical(route('post_search')) }}
     {{ Form::token() }}
     
@@ -16,38 +30,54 @@
         
         <div class="span2">
             <?php 
-            echo Former::checkboxes('search_words_in[]', lang('search.name_or_pitch_help'))->checkboxes(array(
-                lang('common.name') => array(
-                    'value' => 'name',
-                    // 'name' => 'search_in[]_name',
-                    'id' => $profile_type.'dev_name',
-                    'checked' => 'checked'
-                ),
+            $name = array(
+                'value' => 'name',
+                'id' => $profile_type.'_dev_name',
+            );
 
-                lang('common.pitch') => array(
-                    'value' => 'pitch', 
-                    // 'name' => 'search_in_pitch',
-                    'id' => $profile_type.'dev_pitch'
-                ),
+            if (isset($search_data['search_words_in']) && in_array('name', $search_data['search_words_in'])) {
+                $name['checked'] = 'checked';
+            }
+
+            $pitch = array(
+                'value' => 'pitch', 
+                'id' => $profile_type.'_dev_pitch'
+            );
+
+            if (isset($search_data['search_words_in']) && in_array('pitch', $search_data['search_words_in'])) {
+                $pitch['checked'] = 'checked';
+            }
+
+            if ( ! isset($name['checked']) && ! isset($pitch['checked'])) $name['checked'] = 'checked';
+
+            echo Former::checkboxes('search_words_in[]', lang('search.name_or_pitch_help'))->checkboxes(array(
+                lang('common.name') => $name,
+                lang('common.pitch') => $pitch
             ));
             ?>
         </div>
 
         <div class="span2">
             <?php 
-            echo Former::radios('', lang('search.words_contains'))->radios(array(
-                lang('search.words_contains_all') => array(
-                    'value' => 'all',
-                    'name' => 'search_words_mode',
-                    'id' => $profile_type.'words_all',
-                 ),
+            $all = array(
+                'value' => 'all',
+                'name' => 'search_words_mode',
+                'id' => $profile_type.'words_all',
+            );
 
-                lang('search.words_contains_any') => array(
-                    'value' => 'any',
-                    'name' => 'search_words_mode',
-                    'id' => $profile_type.'words_any',
-                    'checked' => 'checked'
-                ),
+            $any = array(
+                'value' => 'any',
+                'name' => 'search_words_mode',
+                'id' => $profile_type.'words_any',
+            );
+
+            if (isset($search_data['search_words_mode'])) {
+                ${$search_data['search_words_mode']}['checked'] = 'checked';
+            } else $any['checked'] = 'checked';
+
+            echo Former::radios('', lang('search.words_contains'))->radios(array(
+                lang('search.words_contains_all') => $all,
+                lang('search.words_contains_any') => $any,
             ));
             ?>
         </div>

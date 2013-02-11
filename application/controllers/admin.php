@@ -25,7 +25,9 @@ class Admin_Controller extends Base_Controller
             'email' => 'required|min:5|email|unique:users',
             'password' => 'required|min:5|confirmed',
             'password_confirmation' => 'required|min:5|required_with:password',
+
             //'captcha' => 'required|coolcaptcha',
+            'recaptcha_response_field' => 'required|recaptcha:'.Config::get('vgc.recaptcha_private_key'),
             'city' => 'honeypot',
         );
 
@@ -75,6 +77,7 @@ class Admin_Controller extends Base_Controller
             "username" => "required|alpha_dash_extended|min:2",
             "password" => "required|min:5",
             //'captcha' => 'required|coolcaptcha',
+            'recaptcha_response_field' => 'required|recaptcha:'.Config::get('vgc.recaptcha_private_key'),
             'city' => 'honeypot',
         );
 
@@ -154,6 +157,7 @@ class Admin_Controller extends Base_Controller
         $rules = array(
             'lost_password_username' => 'required|min:5',
             'city' => 'honeypot',
+            'recaptcha_response_field' => 'required|recaptcha:'.Config::get('vgc.recaptcha_private_key'),
             //'lost_password_captcha' => 'required|coolcaptcha',
         );
         
@@ -300,9 +304,9 @@ class Admin_Controller extends Base_Controller
             $rules = array(
                 'password' => 'required|min:5|confirmed',
                 'password_confirmation' => 'required|min:5',
-                'oldpassword' => 'required|min:5',
+                'old_password' => 'required|min:5',
             );
-            if (is_admin()) unset($rules['oldpassword']);
+            if (is_admin()) unset($rules['old_password']);
 
             $validation = Validator::make($input, $rules);
         
@@ -699,7 +703,7 @@ class Admin_Controller extends Base_Controller
         $this->layout->nest('page_content', 'logged_in/reports', array('report_type' => $report));
     }
 
-    public function post_create_report()
+    public function post_reports_create()
     {
         $input = Input::all();
 
@@ -707,6 +711,11 @@ class Admin_Controller extends Base_Controller
             'message' => 'required|min:10',
             
         );
+
+        if (is_guest()) {
+            $rules['recaptcha_response_field'] = 'required|recaptcha:'.Config::get('vgc.recaptcha_private_key');
+            $rules['city'] = 'honeypot';
+        }
 
         $validation = Validator::make($input, $rules);
 
@@ -718,7 +727,7 @@ class Admin_Controller extends Base_Controller
         return Redirect::back()->with_errors($validation)->with_input();
     }
 
-    public function post_update_reports()
+    public function post_reports_update()
     {
         $reports = Input::get('reports', array());
 

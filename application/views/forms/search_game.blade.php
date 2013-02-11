@@ -50,27 +50,8 @@
     <div class="tab-content">
         @foreach ($fields as $field)
             <div class="tab-pane" id="{{ $field }}-pane">
-                <?php 
-                echo Former::radios('', lang('search.'.$field.'_help'))->radios(array(
-                    lang('common.array_field_where_all') => array(
-                        'value' => 'all',
-                        'name' => $field.'_where',
-                        'id' => $profile_type.'_'.$field.'_array_field_all',
-                     ),
-
-                    lang('common.array_field_where_any') => array(
-                        'value' => 'any',
-                        'name' => $field.'_where',
-                        'id' => $profile_type.'_'.$field.'_array_field_any',
-                        'checked' => 'checked'
-                    ),
-                ));
-                ?>
-
-                {{ array_to_checkboxes($field, array(), 'arrayitems['.$field.'][]') }}
+                @include('partials/search_array_field')
             </div>
         @endforeach
     </div>
 
-
-    

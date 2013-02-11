@@ -62,7 +62,7 @@ $layout = View::of('layout');
         return $layout->nest('page_content', 'home');
     }));
 
-    Route::get('about', array('as' => 'get_about_page', 'do' => function() use ($layout)
+    Route::get('aboutjdlrotpmg', array('as' => 'get_about_page', 'do' => function() use ($layout)
     {
         return $layout->nest('page_content', 'about');
     }));
@@ -82,7 +82,7 @@ $layout = View::of('layout');
         if ( ! is_null($search_id)) {
             $search = Search::get($search_id);
             if ( ! is_null($search)) {
-                $profiles = Search::get_profiles($search->data);
+                $profiles = Search::make($search->data)->where_privacy('public')->get();
                 return $layout->nest('page_content', 'search', array(
                     'profiles' => $profiles, 
                     'search_data' => $search->array_data,
@@ -90,7 +90,7 @@ $layout = View::of('layout');
                 ));
             } else {
                 HTML::set_error(lang('search.msg.id_not_found', array('id'=>$search_id)));
-                return Redirect::to_route('get_search');
+                return Redirect::to_route('get_search_page');
             }
         }
         
@@ -172,13 +172,13 @@ $layout = View::of('layout');
 
     Route::group(array('before' => 'csrf'), function()
     {
-        Route::post('reports/add', array('as' => 'post_addreport', 'uses' => 'admin@report_create'));
+        Route::post('reports/create', array('as' => 'post_reports_create', 'uses' => 'admin@reports_create'));
 
         Route::post('search', array('as' => 'post_search', 'before' => 'csrf', function()
         {
             $input = Input::all();
             $search = Search::create($input);
-            return Redirect::to_route('get_search', array($search->id));
+            return Redirect::to_route('get_search_page', array($search->id));
         }));
 
 
@@ -253,7 +253,7 @@ $layout = View::of('layout');
 
     Route::get('developer/(:all?)', array('as' => 'get_developer', function($name = null) use ($layout)
     {
-        if (is_null($name)) return Redirect::to_route('get_search');
+        if (is_null($name)) return Redirect::to_route('get_search_page');
         
         if (is_numeric($name)) {
             $profile = Dev::find($name);
@@ -267,7 +267,7 @@ $layout = View::of('layout');
                 HTML::set_error(lang('errors.developer_profile_id_not_found', array('id'=>$name)));
             } else HTML::set_error(lang('errors.developer_profile_name_not_found', array('name'=>$name)));
 
-            return Redirect::to_route('get_search');
+            return Redirect::to_route('get_search_page');
         }
 
         // display profile if :
@@ -280,7 +280,7 @@ $layout = View::of('layout');
             ->nest('page_content', 'developer', array('profile' => $profile));
         } else {
             HTML::set_error(lang('common.msg.access_not_allowed', array('page' => 'Developer profile '.$name)));
-            return Redirect::to_route('get_search');
+            return Redirect::to_route('get_search_page');
         }
     }));
 
@@ -289,7 +289,7 @@ $layout = View::of('layout');
 
     Route::get('game/(:all?)', array('as' => 'get_game', function($name = null) use ($layout)
     {
-        if (is_null($name)) return Redirect::to_route('get_search');
+        if (is_null($name)) return Redirect::to_route('get_search_page');
         
         if (is_numeric($name)) {
             $profile = Game::find($name);
@@ -303,7 +303,7 @@ $layout = View::of('layout');
                 HTML::set_error(lang('errors.game_profile_id_not_found', array('id'=>$name)));
             } else HTML::set_error(lang('errors.game_profile_name_not_found', array('name'=>$name)));
 
-            return Redirect::to_route('get_search');
+            return Redirect::to_route('get_search_page');
         }
 
         // display profile if :
@@ -316,7 +316,7 @@ $layout = View::of('layout');
             ->nest('page_content', 'game', array('profile' => $profile));
         } else {
             HTML::set_error(lang('common.msg.access_not_allowed', array('page' => 'Game profile '.$name)));
-            return Redirect::to_route('get_search');
+            return Redirect::to_route('get_search_page');
         }
     }));
 

@@ -4,18 +4,14 @@
 
 <?php 
 $old = Input::old();
-if ( ! empty($old)) Former::populate($old);
+// form populating in search_profile_common
 
-if ( ! isset($search_data)) $search_data = array();
-if ( ! empty($search_data)) Former::populate($search_data);
-
-//var_dump($search_data);
 
 $default_tab = Config::get('vgc.search.default_tab');
-if (isset($old['profile_type'])) $default_tab = $old['profile_type'];
+// if (isset($old['profile_type'])) $default_tab = $old['profile_type'];
 //if (isset($search_data['profile_type'])) $default_tab = $search_data['profile_type'];
 
- $results_disabled = 'disabled';
+$results_disabled = 'disabled';
 if (isset($search_id) && isset($profiles)) {
     $results_disabled = '';
     $default_tab = 'results';
@@ -28,20 +24,21 @@ if (isset($search_id) && isset($profiles)) {
         {{ icon('search') }}
     </div>
 
-    <h1>{{ lang('search.title') }} <!-- <small>{{ lang('search.subtitle') }}</small> --></h1>
+    <h1>{{ lang('search.title') }}</h1>
     
     <hr>
     
     @if (isset($search_id))
         <p>
-            <a href="{{ route('get_search_feed', array($search_id)) }}" title="{{ lang('search.rss_feed') }}">{{ icon('rss') }} {{ lang('search.rss_feed') }}</a> | {{ lang('search.search_id') }} : {{ $search_id }} {{ tooltip(lang('search.search_id_uses')) }}
+            {{ lang('search.search_id') }} : {{ $search_id }} {{ tooltip(lang('search.search_id_uses')) }} <br>
+            <a href="{{ route('get_search_feed', array($search_id)) }}" title="{{ lang('search.rss_feed') }}">{{ icon('rss') }} {{ lang('search.rss_feed') }}</a>
         </p>
 
         <br>
     @endif
     
     <ul class="nav nav-tabs" id="search-tabs">
-        @if ($default_tab == 'result')
+        @if ($default_tab == 'results')
             <li><a href="#results-pane" data-toggle="tab">{{ lang('search.results') }}</a></li>
         @else
             <li class="{{ $results_disabled }}"><a href="#results-pane">{{ lang('search.results') }}</a></li>
@@ -87,5 +84,5 @@ if (isset($search_id) && isset($profiles)) {
 
 @section('jQuery')
 $('#search-tabs a[href="#{{ $default_tab }}-pane"]').tab('show');
-$('#array_items_dev_tabs a:first').tab('show');
+$('#game-tabs a:first').tab('show');
 @endsection

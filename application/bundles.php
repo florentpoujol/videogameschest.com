@@ -18,10 +18,10 @@
 | that you want to handle requests with URIs that begin with "admin",
 | simply add it to the array like this:
 |
-|		'admin' => array(
-|			'location' => 'admin',
-|			'handles'  => 'admin',
-|		),
+|       'admin' => array(
+|           'location' => 'admin',
+|           'handles'  => 'admin',
+|       ),
 |
 | Note that the "location" is relative to the "bundles" directory.
 | Now the bundle will be recognized by Laravel and will be able
@@ -35,35 +35,19 @@
 
 return array(
 
-	'docs' => array('handles' => 'docs'),
-	'former' => array('auto' => true),
-	'bootstrapper' => array('auto' => true),
+    'docs' => array('handles' => 'docs'),
+    'former' => array('auto' => true),
+    'bootstrapper' => array('auto' => true),
     'swiftmailer' => array('auto' => true),
     'feeder' => array('auto' => true),
-    /*'feeder' => array(
-      // when the bundle is started all Feeder classes are automatically loaded
-      // so you can either autostart it or have autoloader mappings (more efficient).
-      //'auto' => true,
-
-      'autoloads' => array(
-        'map' => array(
-          'Feed' => '(:bundle)/chained.php',
-
-          'FeedChannel' => '(:bundle)/feeder.php',
-          'FeedEntry' => '(:bundle)/feeder.php',
-          'Feeder' => '(:bundle)/feeder.php',
-          'TextFeeder' => '(:bundle)/feeder.php',
-          'FeedOut' => '(:bundle)/feeder.php',
-        ),
-      ),
-    ),*/
+    'recaptcha' => array('auto' => true),
     
-    'logreader' => array('auto' => true),
+    /*'logreader' => array('auto' => true),
 
     'logviewer' => array(
         'auto' => true,
         'location' => 'logviewer',
         'handles' => 'logviewer'
-    ),
+    ),*/
     //'coolcaptcha' => array('auto' => true, 'handles' => 'coolcaptcha'),
 );

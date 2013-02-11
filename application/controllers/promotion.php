@@ -23,13 +23,14 @@ class Promotion_Controller extends Base_Controller
      */
     public function post_crosspromotion_update()
     {
+        /*
         $current_state = user()->crosspromotion_active;
         $new_state = Input::get('crosspromotion_active', 0);
 
         if ($new_state != $current_state) {
             user()->update_crosspromotion($new_state);
         }
-
+        */
         return Redirect::to_route('get_crosspromotion');
     }
 

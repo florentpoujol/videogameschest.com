@@ -91,7 +91,11 @@ class Feed_Controller extends Base_Controller
         $search = Search::find($search_id);
         
         if ( ! is_null($search)) {
-            $profiles = Search::get_profiles($search->data);
+            $profiles = Search::make($search->data)
+            ->where_privacy('public')
+            ->order_by('created_at', 'desc')
+            ->take(20)
+            ->get();
 
             $feed = $this->getFeed()
                 ->title('New profiles feed for search ID '.$search_id)

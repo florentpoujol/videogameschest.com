@@ -128,7 +128,7 @@ $name = xssSecure($profile->name);
     <hr>
 
     <a class="muted accordion-toggle" data-toggle="collapse" href="#collapse-report">
-        {{ lang('common.report_profile_link') }}
+        {{ icon('flag') }} {{ lang('common.report_profile_link') }}
     </a>
     
     <div id="collapse-report" class="collapse">

@@ -2,9 +2,11 @@
 
 function antiBot($text_name = 'captcha')
 {
+    $html = '';
+
     if (is_guest()) {
         // Recaptcha
-        //return Recaptcha\Recaptcha::recaptcha_get_html(Config::get('vgc.recaptcha_public_key'));
+        $html = Recaptcha\Recaptcha::recaptcha_get_html(Config::get('vgc.recaptcha_public_key'));
         
         // cool captcha
         /*$html = Form::text($text_name, '', array(
@@ -17,10 +19,10 @@ function antiBot($text_name = 'captcha')
         return $html;*/
 
         // honeyPot field
-        return Former::text('city', '')->placeholder('The city where do you lives')->id('city_form');
+        $html .= Former::text('city', '')->placeholder('The city where do you lives')->id('city_form');
     }
 
-    return '';
+    return $html;
 }
 
 
@@ -516,7 +518,7 @@ function SendMail($email, $subject, $body_html, $body_text = null, $priority = n
     }
 
     if ( ! empty($failures)) {
-        $msg = 'The following adresses failed : '.var_dump($failures).' <br>
+        $msg = 'The following adresses failed : '.implode(',', $failures).' <br>
         <br>
         ___________ <br>
         <br>

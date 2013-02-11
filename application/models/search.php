@@ -28,6 +28,7 @@ class Search extends ExtendedEloquent
 
         if (is_string($input)) $input = json_decode($input, true);
 
+        //dd($input);
 
         // profile type
         if ( ! isset($input['profile_type'])) $input['profile_type'] = 'game';
@@ -63,13 +64,14 @@ class Search extends ExtendedEloquent
         }
         
 
-        // array items
-        isset($input['arrayitems']) ? $array_items = $input['arrayitems'] : $array_items = array();
+        // array fields
+        isset($input['array_fields']) ? $array_fields = $input['array_fields'] : $array_fields = array();
+        isset($input['array_fields_where']) ? $array_fields_where = $input['array_fields_where'] : $array_fields_where = array();
 
 
         // proceed...
         return $profile_type::
-        where(function($query) use ($words_where_mode, $search_words_in, $array_items, $profile_type)
+        where(function($query) use ($words_where_mode, $search_words_in)
         {
             // words
             foreach ($search_words_in as $field => $words) {
@@ -81,16 +83,20 @@ class Search extends ExtendedEloquent
                     }
                 });
             }
-            
-            // array items
-            foreach ($array_items as $field => $values) {
+        })
+        // AND
+        ->where(function($query) use ($array_fields, $array_fields_where, $profile_type)
+        {
+            // array fields
+            foreach ($array_fields as $field => $values) {
                 
                 if (in_array($field, $profile_type::$array_fields)) {
                     
-                    $query->where(function($query) use ($array_items, $field, $values)
+                    $query->where(function($query) use ($array_fields, $array_fields_where, $field, $values)
                     {
                         foreach ($values as $value) {
-                            if ($array_items[$field.'_where'] == 'all') {
+
+                            if ($array_fields_where[$field] == 'all') {
                                 $query->where($field, 'LIKE', '%'.$value.'%');
                             }
                             else {
@@ -145,7 +151,16 @@ class Search extends ExtendedEloquent
      */
     public static function create($data)
     {
-        if (is_array($data)) $data = json_encode(clean_form_input($data));
+        if (is_array($data)) {
+            // removes entry in array_fields_where when same key in array_field in not there
+            foreach ($data['array_fields_where'] as $field => $value) {
+                if ( ! isset($data['array_fields'][$field])) {
+                    unset($data['array_fields_where'][$field]);
+                }
+            }
+
+            $data = json_encode(clean_form_input($data));
+        }
 
         $search = static::get($data);
 

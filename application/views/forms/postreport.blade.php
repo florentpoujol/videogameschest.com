@@ -16,7 +16,7 @@ if ( ! isset($modal)) $modal = false;
     @endif
     <br>
     
-    {{ Former::open_vertical(route('post_addreport'))->rules(array('message'=>'required|min:10')) }}
+    {{ Former::open_vertical(route('post_reports_create'))->rules(array('message'=>'required|min:10')) }}
         {{ Form::token() }}
         {{ Former::hidden($profile->class_name.'_id', $profile->id) }}
 
@@ -24,7 +24,7 @@ if ( ! isset($modal)) $modal = false;
             {{ lang('reports.help') }}
         </p>
         
-        {{ Former::textarea('message', '')->placeholder(lang('reports.message'))->rows(2)->value(Input::old('message')) }}
+        {{ Former::textarea('message', '')->placeholder(lang('reports.message'))->rows(2)->value(Input::old('message'))->class('span4') }}
         
         {{ antiBot() }} 
         

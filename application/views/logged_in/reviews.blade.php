@@ -23,7 +23,7 @@
     ?>
 
     <p>
-        <a href="{{ route('get_reviews_feed', array($review, user_id(), user()->url_key)) }}" title="{{ lang('reviews.rss_feed', array('review'=>$review)) }}">{{ icon('rss') }} {{ lang('reviews.rss_feed', array('review'=>$review)) }}</a>
+        <a href="{{ route('get_reviews_feed', array($review, user_id(), user()->url_key)) }}" title="{{ lang('reviews.rss_feed', array('review' => $review)) }}">{{ icon('rss') }} {{ lang('reviews.rss_feed', array('review'=>$review)) }}</a>
     </p>
     <br>
 

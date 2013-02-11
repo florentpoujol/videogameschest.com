@@ -61,6 +61,11 @@
                 <hr>
                 @endif
 
+                <p>
+                    {{ lang('crosspromotion.home_text') }}
+                </p>
+
+
                 <div class="row">
                     <div class="span5">
                         <h3>{{ lang('crosspromotion.what_is_it_title') }}</h3>

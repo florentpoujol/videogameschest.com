@@ -16,7 +16,7 @@
     </p> 
 
     <div id="collapse-learn-more" class="collapse">
-        {{ lang('discover.page_learn_more_text') }}
+        {{ lang('discover.page_learn_more_text', array('search_url' => route('get_search_page'))) }}
     </div>
 
     <hr>

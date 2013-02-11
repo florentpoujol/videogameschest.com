@@ -1,10 +1,9 @@
 
 
-retravailler texte promote
-
-retravailler formuaire recherche
 
 Vérifier que tout fonctionne
+
+retravailler formuaire recherche
 
 
 
@@ -16,6 +15,10 @@ refaire form crosspromotion game comme blacklist
 
 
     DONE
+
+11/02/2013
+
+retravailler texte promote
 
 08/02/2013
 

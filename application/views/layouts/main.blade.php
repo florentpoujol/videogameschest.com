@@ -73,13 +73,15 @@ $page_content .= Section::yield('page_content');
             $('i[rel=tooltip]').tooltip();
             $('i[rel=popover]').popover();
 
-
-
             // per page jquery
             @yield('jQuery')
           })
 
           @yield('jscode')
         </script> <!-- /JavaScript -->
+
+        @if (Config::get('vgc.is_production_environement') === true)
+            @inclde('partials.googleanalytics')
+        @endif
     </body>
 </html>

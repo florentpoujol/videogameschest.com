@@ -41,7 +41,8 @@ return array(
 
 
     'form_attributes_to_clean' => array('csrf_token', 'password_confirmation',
-     'old_password', 'controller', 'captcha', 'city'),
+     'old_password', 'controller', 'captcha', 'recaptcha_challenge_field', 'recaptcha_response_field',
+      'city'),
 
 
     'language_files' => array('vgc', 'emails'),

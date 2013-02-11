@@ -69,6 +69,7 @@ return array(
 	"url"            => "The :attribute format is invalid.",
 
 	'coolcaptcha' => 'The captcha is wrong.',
+	'recaptcha' => 'The captcha is wrong.',
 	'no_slashes' => 'The :attribute must not contains slahes ( / or \ ).',
 
 	/*
