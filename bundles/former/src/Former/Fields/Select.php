@@ -92,7 +92,7 @@ class Select extends \Former\Field
    *
    * @param  mixed $selected Selected item
    */
-  public function select($selected)
+  public function _select($selected)
   {
     $this->value = $selected;
   }

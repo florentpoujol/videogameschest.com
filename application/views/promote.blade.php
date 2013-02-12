@@ -21,7 +21,7 @@
     <div class="tab-content">
         <div class="tab-pane" id="feed-pane">
             <p>
-                {{ lang('promote.discover_text') }}
+                {{ lang('promote.discover_text', array('discover_url' => route('get_discover_page'))) }}
             </p>
         </div> <!-- /#feed-pane .tab-pane -->
 

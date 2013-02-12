@@ -9,6 +9,7 @@ if ( ! isset($page_content)) $page_content = '';
 $page_content .= Section::yield('page_content');
 ?><!DOCTYPE html>
 <html lang="{{ LANGUAGE }}"> 
+    <!-- ENVIRONEMENT : {{ Config::get('vgc.environment') }} -->
     <head>
         <title>{{ $page_title }} - VideoGamesChest.com</title>
 
@@ -26,6 +27,8 @@ $page_content .= Section::yield('page_content');
         {{ HTML::style('css/vgc/main.less', array('rel'=>'stylesheet/less')) }}
         @yield('cssfiles')
         <!-- /CSS -->
+
+        <link rel="alternate" href="{{ route('get_blog_feed') }}" title="Blog feed" type="application/rss+xml">
     </head>
     
     <body>

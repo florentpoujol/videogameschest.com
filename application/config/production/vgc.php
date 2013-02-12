@@ -1,6 +1,9 @@
 <?php
 return array(
     
+    'environment' => 'production',
+    'is_production_environement' => true,
+
     'smtp' => array(
         'server' => 'localhost',
         'server_port' => 25,
@@ -8,4 +11,6 @@ return array(
         'password' => 'r8(A/vH6r:#;f5G',
     ),
 
+
+    
 );

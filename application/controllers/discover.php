@@ -113,15 +113,15 @@ class Discover_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // NEWSLETTER
 
-    public function get_newsletter_page($email_id = null, $url_key = null)
+    public function get_newsletter_page($newsletter_id = null, $url_key = null)
     {    
-        if ( ! is_null($email_id) && is_logged_in()) {
-            return Redirect::to_route('get_discover_email_page');
+        if ( ! is_null($newsletter_id) && is_logged_in()) {
+            return Redirect::to_route('get_discover_newsletter_page');
         }
 
         $this->layout->nest('page_content', 'discover',  array(
             'current_tab' => '#email-pane',
-            'email_id' => $email_id,
+            'newsletter_id' => $newsletter_id,
             'url_key' => $url_key
         ));
     }
@@ -145,7 +145,7 @@ class Discover_Controller extends Base_Controller
             $newsletter = PromotionNewsletter::create($input);
             
             if (is_guest()) {
-                return Redirect::to_route('get_discover_update_email_page', array($newsletter->id, $newsletter->url_key));
+                return Redirect::to_route('get_discover_newsletter_update', array($newsletter->id, $newsletter->url_key));
             } else {
                 return Redirect::to_route('get_discover_page');
             }
@@ -161,10 +161,10 @@ class Discover_Controller extends Base_Controller
         // unsubscribe
         if (isset($input['unsubscribe'])) {
             if (PromotionNewsletter::unsubscribe($input)) {
-                return Redirect::to_route('get_discover_email_page');
+                return Redirect::to_route('get_discover_newsletter_page');
             } else {     
                 if (is_guest()) {
-                    return Redirect::to_route('get_discover_update_email_page', array($input['newsletter_id'], $input['newsletter_url_key']));
+                    return Redirect::to_route('get_discover_newsletter_update', array($input['newsletter_id'], $input['newsletter_url_key']));
                 } else {
                     return Redirect::to_route('get_discover_page');
                 }
@@ -186,7 +186,8 @@ class Discover_Controller extends Base_Controller
 
         if ($validation->passes() && PromotionNewsletter::update($input, null)) {
             if (is_guest()) {
-                return Redirect::to_route('get_discover_update_email_page', array($email->id, $email->url_key));
+                $newsletter = PromotionNewsletter::find($input['newsletter_id']);
+                return Redirect::to_route('get_discover_newsletter_update', array($newsletter->id, $newsletter->url_key));
             } else {
                 return Redirect::to_route('get_discover_page');
             }

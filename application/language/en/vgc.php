@@ -35,7 +35,7 @@ return array(
         <br>
         You can <a href=":blog_url" title="Go to the blog">follow the developement</a> on the blog or various forums (coming soon). <br>
         <br>
-        If you came accros bugs, have a feedbacks, feature request, or just want to chat, feel free to contact us (see below in the footer).',
+        If you came accross bugs, have a feedbacks, feature request, or just want to chat, feel free to contact us (see below in the footer).',
 
 
         'contact_title' => 'Contact'
@@ -805,9 +805,7 @@ return array(
         'username' => 'Choose your user name',
 
         'msg' => array(
-            'register_success' => 'Thank you :username, your user account has been created. 
-            An email has been sent to your email adress with a link to activate your account. 
-            You will be able to login as soon as to activated your account.',
+            'register_success' => 'Thank you :username, your user account has been created. An email has been sent to your email adress with a link to activate your account. You will be able to login as soon as to activated your account.',
 
             'confirmation_error' => "Unable to activate the user account because none with id ':id' and url key ':url_key' has been found, or the user account is already activated.",
             'confirmation_success' => 'Thank you :username, you have successfully activated your user account, you may now log in.',
@@ -1267,4 +1265,5 @@ return array(
         'mafia' => 'Mafia',
         'steampunk' => 'Steampunk',
     ),
+
 );

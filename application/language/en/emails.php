@@ -106,7 +106,7 @@ return array(
         You just created a new :profile_type profile ":profile_name". This profile is currently private, only you can see it when you are logged in. <br>
         An administrator must review and approve it before it becomes public and visible by everyone. You will get another email when it will be approved. <br>
         <br>
-        Meanwhile, you can still edit the profiles or add another profiles. <br>
+        Meanwhile, you can still edit the profile or add another profiles. <br>
         <br>
         -- <br>
         Regards, <br>
@@ -122,7 +122,7 @@ return array(
         <br>
         You subscribed to the promotion newsletter on VideoGamesChest.com with the following settings :  <br>
         - email : :email <br>
-        - frequency : :hours hours (you will receive an email every :hours hours) <br>
+        - frequency : :frequency hours (you will receive an email every :frequency hours) <br>
         - profile count : :profile_count (:profile_count profiles are displayed in each emails) <br>
         - search ID : :search_id (only profiles that match this dearch ID will be displayed) <br>
         - use blacklist : :use_blacklist <br>

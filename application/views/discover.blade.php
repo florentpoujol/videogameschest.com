@@ -55,8 +55,8 @@
 
             if (is_logged_in()) {
                 $newsletter = user()->PromotionNewsletter;
-            } elseif (isset($email_id) && isset($url_key)) {
-                $newsletter = PromotionNewsletter::where_id($email_id)->where_url_key($url_key)->first();
+            } elseif (isset($newsletter_id) && isset($url_key)) {
+                $newsletter = PromotionNewsletter::where_id($newsletter_id)->where_url_key($url_key)->first();
 
                 if (is_null($newsletter)) {
                     HTML::set_error(lang('discover.msg.email_id_key_no_match'));
@@ -66,7 +66,7 @@
 
             {{ HTML::get_errors() }}
 
-            @if (! is_null($newsletter))
+            @if ( ! is_null($newsletter))
                 @include('forms/discover_update_email')
             @else
                 @include('forms/discover_create_email')

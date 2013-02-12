@@ -2,7 +2,7 @@
 
 return array(
 
-	'ignore' => array(E_WARNING),
+	//'ignore' => array(E_WARNING),
 
 	/*
 	|--------------------------------------------------------------------------

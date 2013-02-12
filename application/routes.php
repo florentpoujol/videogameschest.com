@@ -105,7 +105,7 @@ $layout = View::of('layout');
     Route::get('discover/feed', array('as' => 'get_discover_feed_page', 'uses' => 'discover@feed_page'));
     Route::get('discover/feed/(:num)', array('as' => 'get_discover_feed_data', 'uses' => 'discover@feed_data'));
     Route::get('discover/newsletter', array('as' => 'get_discover_newsletter_page', 'uses' => 'discover@newsletter_page'));
-    Route::get('discover/newsletter/(:num)/(:any)', array('as' => 'get_discover_newsletter_update', 'uses' => 'discover@newsletter_update'));
+    Route::get('discover/newsletter/(:num)/(:any)', array('as' => 'get_discover_newsletter_update', 'uses' => 'discover@newsletter_page'));
     
 
 
@@ -479,6 +479,7 @@ Event::listen('404', function()
 
 Event::listen('500', function()
 {
+    Log::write('error 500', 'Error 500 have been caught.');
     return Response::error('500');
 });
 

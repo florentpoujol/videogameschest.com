@@ -1,6 +1,9 @@
 <?php
 return array(
     
+    'environment' => 'staging',
+
+
     'smtp' => array(
         'server' => 'localhost',
         'server_port' => 25,

@@ -1,2 +1,0 @@
-public key : 6LcRitsSAAAAAKlKTf79Z6KbSIrSz2Z0WptjvXzE
-private key : 6LcRitsSAAAAAGw_aZAy3qlnC_3lAypwaJm4SgMs

@@ -27,7 +27,7 @@ return array(
 	|
 	*/
 
-	'key' => '8T_:z9eT-!8G&587f_R)l7u{1B3Ms,u$',
+	'key' => 't5G-w445~=,r56TA;*f0$pP_x!%1&E55',
 
 
 );

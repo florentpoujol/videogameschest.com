@@ -30,7 +30,7 @@ return array(
 			'host'     => 'localhost',
 			'database' => 'videogameschest',
 			'username' => 'vgc_db_user',
-			'password' => 't8H-I:8@x4,pmA9',
+			'password' => 'treAsures0f-Video_game5',
 			'charset'  => 'utf8',
 			'prefix'   => '',
 		),

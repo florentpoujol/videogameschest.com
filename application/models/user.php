@@ -154,7 +154,7 @@ class User extends ExtendedEloquent
             $html = lang('emails.lostpassword_success.html', array(
                 'username' => $this->username,
                 'password' => $password,
-                'login_link' => URL::to_route('get_login'),
+                'login_link' => URL::to_route('get_login_page'),
             ));
 
             sendMail($this->email, $subject, $html);
@@ -364,7 +364,7 @@ class User extends ExtendedEloquent
 
         $reports = array();
         foreach ($profiles as $profile) {
-            $reports = array_merge($reports, $profile->reports($type)->get());
+            $reports = array_merge($reports, $profile->reports($type));
         }
 
         // $reports are ordered by dev_id and game_id then report_id

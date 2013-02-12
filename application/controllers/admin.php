@@ -183,7 +183,7 @@ class Admin_Controller extends Base_Controller
             }
         }
             
-        return Redirect::to_route('get_login_page')->with_errors($validation)->with_input();
+        return Redirect::to_route('get_lostpassword_page')->with_errors($validation)->with_input();
     }
 
 

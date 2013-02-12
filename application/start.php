@@ -198,11 +198,11 @@ Asset::container('coda-slider')->add('js', 'js/jquery.coda-slider-3.0.min.js');
 
 
 // new validation rule
-Laravel\Validator::register('no_slashes', function($attribute, $value, $parameters)
+/*Laravel\Validator::register('no_slashes', function($attribute, $value, $parameters)
 {
     if (strpos($value, '/') === false && strpos($value, "\\") === false) return true;
     else return false;
-});
+});*/
 
 Laravel\Validator::register('alpha_dash_extended', function($attribute, $value, $parameters)
 {

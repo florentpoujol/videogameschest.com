@@ -1,6 +1,7 @@
 <?php
 return array(
     
+
     
     'admin_email' => 'contact@videogameschest.com',
     'automatic_email_from' => 'noreply@videogameschest.com',
@@ -30,6 +31,8 @@ return array(
         'rss' => 'r', // 'D, d M Y H:i:s O',
     ),
 
+    'environment' => 'common',
+
     'profile_blog_feed_item_count' => 5,
 
     //'dummie_password' => '', //r!&5éT[79m},D?4â+5w% temp password while user is in submission review
@@ -58,8 +61,8 @@ return array(
     'privacy_and_reviews' => array('publishing', 'private', 'public'),
 
 
-    'recaptcha_private_key' => '6LcRitsSAAAAAGw_aZAy3qlnC_3lAypwaJm4SgMs',
-    'recaptcha_public_key' =>  '6LcRitsSAAAAAKlKTf79Z6KbSIrSz2Z0WptjvXzE',
+    'recaptcha_private_key' => '6LeL59wSAAAAAPHo33Qt8iyf71Mf0U-QGET3IlhE',
+    'recaptcha_public_key' =>  '6LeL59wSAAAAAPd08fVY9Fq1loW04p0kldVFqsWS',
 
     'review' => array(
         'types' => array('publishing'),

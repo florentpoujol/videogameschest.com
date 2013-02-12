@@ -15,6 +15,7 @@ class PromotionFeed extends ExtendedEloquent
         if (is_null($feed)) { 
             $input['type'] = 'rss';
             $input['last_pub_date'] = New DateTime();
+            $input['user_id'] = user_id();
             $feed = parent::create($input);
 
             // msg

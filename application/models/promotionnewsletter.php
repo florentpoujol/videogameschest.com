@@ -48,17 +48,17 @@ class PromotionNewsletter extends ExtendedEloquent
         if ($newsletter->user_id != 0) {
             $params['email'] = user()->email;
             $params['username'] = user()->username;
-            $params['update_link'] = route('get_discover_email_page');
+            $params['update_link'] = route('get_discover_newsletter_page');
         } else { // is guest
             $params['email'] = $newsletter->email;
             $params['username'] = "";
-            $params['update_link'] = route('get_discover_update_email_page', array($newsletter->id, $newsletter->url_key));
+            $params['update_link'] = route('get_discover_newsletter_update', array($newsletter->id, $newsletter->url_key));
         }
 
         $params['frequency'] = $newsletter->frequency;
         $params['profile_count'] = $newsletter->profile_count;
         $params['search_id'] = $newsletter->search_id;
-        $params['use_blacklist'] = $newsletter->use_blacklist;
+        $params['use_blacklist'] = ($newsletter->use_blacklist == 1 ? 'yes' : 'no');
         
         $html = lang('emails.promotion_email_subscription_success.html', $params);
 

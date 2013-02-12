@@ -9,7 +9,7 @@ if ( ! empty($search_data)) {
     }
 }
 
-var_dump($search_data);
+//var_dump($search_data);
 ?>
 
 {{ Former::open_vertical(route('post_search')) }}

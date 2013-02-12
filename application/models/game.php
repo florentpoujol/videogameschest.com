@@ -57,13 +57,13 @@ class Game extends Profile
         Log::write('game create success', $msg);
 
 
-        $text = lang('emails.profile_created', array(
+        $text = lang('emails.profile_created.html', array(
             'user_name' => $game->user->name,
             'profile_type' => 'game',
             'profile_name' => $game->name,
         ));
 
-        sendMail($game->user->email, lang('emails.profile_created_subject'), $text);
+        sendMail($game->user->email, lang('emails.profile_created.subject'), $text);
 
 
         return $game;
