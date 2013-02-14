@@ -399,7 +399,6 @@ class Admin_Controller extends Base_Controller
     public function get_developer_update($profile_id = null)
     {
         $devs = user()->devs;
-        // can't use user()->ddevs in the condition because it would always return an empty array
 
         if ( ! is_admin() && empty($devs)) {
             return Redirect::to_route('get_developer_create');
@@ -427,6 +426,8 @@ class Admin_Controller extends Base_Controller
             HTML::set_error(lang('common.msg.edit_other_users_profile_not_allowed'));
             return Redirect::to_route('get_developer_update');
         }
+
+        // profile ans auth is ok, now get the preview profile
 
         $this->layout->nest('page_content', 'logged_in/updatedeveloper', array('profile_id'=>$profile_id));
     }

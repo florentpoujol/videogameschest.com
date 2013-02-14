@@ -1,5 +1,5 @@
 <?php
-$name = xssSecure($profile->name);
+$name = $profile->name;
 ?>
 @section('page_title')
     {{ $name }}
@@ -14,9 +14,9 @@ $name = xssSecure($profile->name);
         <div class="span4 header-side-column">
             <ul class="unstyled">
                 <?php
-                $website = trim(xssSecure($profile->website));
-                $email = trim(xssSecure($profile->email));
-                $presskit = trim(xssSecure($profile->presskit));
+                $website = trim($profile->website);
+                $email = trim($profile->email);
+                $presskit = trim($profile->presskit);
                 ?>
                 @if ($website != '')
                     <li>{{ icon('globe', lang('common.website')) }}<a href="{{ $website }}" title="{{ lang('common.website') }}">{{ shortenUrl($website) }}</a></li>
@@ -34,8 +34,8 @@ $name = xssSecure($profile->name);
 
         <div class="span2 header-side-column">
             <ul class="unstyled">
-                <li>{{ icon('flag', lang('common.country')) }}{{ Str::title(xssSecure($profile->country)) }}</li>
-                <li>{{ icon('group', lang('common.teamsize')) }}{{ xssSecure($profile->teamsize) }}</li>
+                <li>{{ icon('flag', lang('common.country')) }}{{ Str::title($profile->country) }}</li>
+                <li>{{ icon('group', lang('common.teamsize')) }}{{ $profile->teamsize }}</li>
             </ul>
         </div>
     </div>
@@ -45,7 +45,7 @@ $name = xssSecure($profile->name);
     <div class="row-fluid" >
         <div class="span12">
             <?php
-            $blogfeed = xssSecure($profile->blogfeed);
+            $blogfeed = $profile->blogfeed;
             ?>
             @if ($blogfeed != '')
                 <div class="span4">
@@ -56,7 +56,7 @@ $name = xssSecure($profile->name);
 
                     <ul class="unstyled">
                         <?php
-                        $feed = RSSReader::read($blogfeed, Config::get('vgc.dev_feed_item_count'));
+                        $feed = RSSReader::read($blogfeed, Config::get('vgc.profile_blog_feed_item_count'));
                         ?>
 
                         @foreach ($feed['items'] as $item)
@@ -66,7 +66,7 @@ $name = xssSecure($profile->name);
                 </div>
             @endif
 
-            <img src="{{ xssSecure($profile->logo) }}" alt="{{ $name }} logo" title="{{ $name }} logo" class="logo pull-right">
+            <img src="{{ $profile->logo }}" alt="{{ $name }} logo" title="{{ $name }} logo" class="logo pull-right">
 
             <i class="icon-quote-left icon-3x pull-left icon-muted"></i>
 
@@ -93,7 +93,7 @@ $name = xssSecure($profile->name);
                         <?php $array = $profile->$field; ?>
 
                         @for ($i = 0; $i < count($array['names']); $i++)
-                            <li><a href="{{ xssSecure($array['urls'][$i]) }}">{{ lang($field.'.'.$array['names'][$i]) }}</a></li>
+                            <li><a href="{{ $array['urls'][$i] }}">{{ lang($field.'.'.$array['names'][$i]) }}</a></li>
                         @endfor
                     @else
                         @foreach ($profile->$field as $name)

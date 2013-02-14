@@ -3,7 +3,7 @@
 class Developer extends Profile
 {
     // text fields which data is stored as json
-    public static $json_fields = array("stores", "devices", "operatingsystems", "technologies", 'socialnetworks', 'approved_by');
+    public static $json_fields = array("stores", "devices", "operatingsystems", "technologies", 'socialnetworks');
 
     // text fields which data is stored as json array
     public static $array_fields = array("stores", "devices", "operatingsystems", "technologies", );
@@ -14,56 +14,13 @@ class Developer extends Profile
     // fields to secure against XSS before displaying
     public static $secured_fields = array('name', 'email', 'pitch', 'logo', 'website', 'email', 'blogfeed', 'presskit');
 
+    // fields not to secure before displaying
+    public static $safe_fields = array();
 
-    //----------------------------------------------------------------------------------
-    // CONSTRUCTOR
-
-    /*public function __construct($attributes = array(), $exists = false)
-    {
-        parent::__construct($attributes, $exists);
-    }*/
 
 
     //----------------------------------------------------------------------------------
     // CRUD METHODS
-
-    /**
-     * Create a new developer profile
-     * @param  array $dev Data comming from the form
-     * @return Developer       The Developer instance
-     */
-	public static function create($input) 
-	{
-        $input = clean_form_input($input);
-
-        if ( ! isset($input['user_id'])) $input['user_id'] = user_id();
-        if ( ! isset($input['privacy'])) $input['privacy'] = 'publishing';
-
-        $input['approved_by'] = array();
-
-
-        $dev = parent::create($input);
-
-        // msg
-        $msg = lang('developer.msg.adddev_success', array(
-            'name' => $dev->name,
-            'id' => $dev->id
-        ));
-        HTML::set_success($msg);
-        Log::write('developer create success', $msg);
-
-        // email
-        $subject = lang('emails.profile_created.subject');
-        $html = lang('emails.profile_created.html', array(
-            'user_name' => $dev->user->name,
-            'profile_type' => 'developer',
-            'profile_name' => $dev->name,
-        ));
-
-        sendMail($dev->user->email, $subject, $html);
-
-        return $dev;
-    }
 
     /**
      * Update a developer profile
@@ -73,8 +30,6 @@ class Developer extends Profile
      */
     public static function update($id, $input)
     {
-        $input = clean_form_input($input);
-
         $dev = parent::find($id);
         // checking name change
         if (isset($input['name']) && $dev->name != $input['name']) { // the user want to change the dev name, must check is the name is not taken
@@ -91,51 +46,20 @@ class Developer extends Profile
             }
         }
 
-        parent::update($id, $input); // returns an int ?
-        $dev = Dev::find($id);
-
-        $msg = lang('developer.msg.editdev_success', array(
-            'name' => $dev->name,
-            'id' => $dev->id
-        ));
-        HTML::set_success($msg);
-        Log::write('developer update success', $msg);
-
+        parent::update($id, $input);
+        
         return true;
     }
 
 
     //----------------------------------------------------------------------------------
-    // REVIEWS
 
     /**
-     * Do stuffs when the profile passed a review
-     * @param  string $review  Review type
-     * @param  string $profile The profile type
+     * Get the "preview version" of the pofiles
      */
-    /*public function passed_review($user = null)
+    public static function preview_version()
     {
-        parent::passed_review($this->user);
-    }*/
-
-    /**
-     * Do stuffs when the profile failed a review
-     * @param  string $review   Review type
-     * @param  string $profile The profile type
-     */
-    /*public function failed_review($review, $profile = 'developer', $user = null)
-    {
-        parent::failed_review($review, $profile, $this->user);
-    }*/
-
-
-
-	//----------------------------------------------------------------------------------
-    // GETTERS
-
-    public function parsed_pitch() 
-    {
-        return nl2br(parse_bbcode($this->get_attribute('pitch')));
+        return Developer::where_privacy('publishing')->or_where('privacy', '=', 'preview');
     }
 
 
@@ -176,30 +100,19 @@ class Developer extends Profile
                 if (trim($attr) == '') $attr = '[]';
             }
 
-            $data = json_decode($attr, true);
+            return json_decode($attr, true);
         }
 
-        elseif (in_array($key, static::$secured_fields)) {
-            return xssSecure($this->get_attribute($key));
-        }
-
-        else $data = parent::__get($key);
-
-        return $data; // I could also use the helper e() (html_entities())
+        return XssSecure(parent::__get($key));
     }
 
 
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
-    // user and reports relationships are in Profile model
-
-    public function user()
-    {
-        return $this->belongs_to('User');
-    }
+    // reports relationships is in Profile model
 
     public function games()
     {
-        return $this->has_many('Game');
+        return $this->has_many('Game')/*->where_privacy('public')->or_where('privacy', '=', 'private')*/;
     }
 }

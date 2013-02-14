@@ -3,7 +3,7 @@
 class Game extends Profile
 {
     // fields which data is stored as json
-    public static $json_fields = array('approved_by', 'crosspromotion_profiles',
+    public static $json_fields = array( 'crosspromotion_profiles',
         'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'looks', 'periods',
         'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos', 'press');
     
@@ -27,46 +27,16 @@ class Game extends Profile
      */
 	public static function create($input) 
 	{
-        $input = clean_form_input($input);
-
-
-        if ( ! isset($input['user_id'])) $input['user_id'] = user_id();
-
         $dev = Dev::where_name($input['developer_name'])->first();
         if ( ! is_null($dev)) {
             $input['developer_name'] = '';
             $input['developer_id'] = $dev->id;
-        }
-        else $input['developer_id'] = 0;
+        } else $input['developer_id'] = 0;
 
-        if ( ! isset($input['privacy'])) $input['privacy'] = 'publishing';
-
-        $input['approved_by'] = array();
-
-        $input['crosspromotion_profiles'] = array('developers'=>array(),'games'=>array());
+        //$input['crosspromotion_profiles'] = array('developers'=>array(),'games'=>array());
         $input['crosspromotion_key'] = Str::random(40);
                 
-        $game = parent::create($input);
-        
-
-        $msg = lang('game.msg.addgame_success', array(
-            'name' => $game->name,
-            'id' => $game->id
-        ));
-        HTML::set_success($msg);
-        Log::write('game create success', $msg);
-
-
-        $text = lang('emails.profile_created.html', array(
-            'user_name' => $game->user->name,
-            'profile_type' => 'game',
-            'profile_name' => $game->name,
-        ));
-
-        sendMail($game->user->email, lang('emails.profile_created.subject'), $text);
-
-
-        return $game;
+        return parent::create($input);
     }
 
     /**
@@ -77,8 +47,6 @@ class Game extends Profile
      */
     public static function update($id, $input)
     {
-        $input = clean_form_input($input);
-
         // checking name change
         $game = parent::find($id);
         if (isset($input['name']) && $game->name != $input['name']) {  // the user want to change the name, must check is the name is not taken
@@ -100,23 +68,11 @@ class Game extends Profile
             if ( ! is_null($dev)) {
                 $input['developer_name'] = '';
                 $input['developer_id'] = $dev->id;
-            } 
-            else $input['developer_id'] = 0;
+            } else $input['developer_id'] = 0;
         }
         
-        $game = parent::update($id, $input); // 
-        $game = Game::find($id);
-        
-
-        $msg = lang('game.msg.editgame_success', array(
-            'name'=>$game->name,
-            'id'=>$game->id
-        ));
-
-        HTML::set_success($msg);
-        Log::write('game update success', $msg);
-
-        return $game;
+        $game = parent::update($id, $input);
+        return true;
     }
 
 
@@ -137,19 +93,13 @@ class Game extends Profile
         Log::write('game crosspromotion update success', 'The promoted profiles for the game (name : '.$game->name.') (id : '.$game->id.') have been updated.');
     }
 
-
-	//----------------------------------------------------------------------------------
-    // REVIEWS
-
     /**
-     * Do stuffs when the profile passed a review
-     * @param  string $review  Review type
-     * @param  string $profile The profile type (this arg is useless here but overriding passed_review() with less params than in the parent did cause issue (Class 'Log' not found))
+     * Get the "preview version" of the pofiles
      */
-    /*public function passed_review($user = null)
+    public static function preview_version()
     {
-        parent::passed_review($this->dev->user);
-    }*/
+        return Game::where_privacy('publishing')->or_where('privacy', '=', 'preview');
+    }
 
     
     //----------------------------------------------------------------------------------
@@ -183,16 +133,16 @@ class Game extends Profile
     {
         if (in_array($key, static::$json_fields)) {
             $attr = $this->get_attribute($key);
-            $data = json_decode($attr, true);
+
+            if (in_array($key, static::$array_fields)) {
+                // make sure $attr is a json array and not an empty string, so that json_decode return an array
+                if (trim($attr) == '') $attr = '[]';
+            }
+
+            return json_decode($attr, true);
         }
-        
-        /*elseif (in_array($key, static::$secured_items)) {
-            $data Security::xss_clean(e($this->get_attribute($key)));
-        }*/
 
-        else $data = parent::__get($key);
-
-        return $data; // I could also use the helper e() (html_entities())
+        return XssSecure(parent::__get($key));
     }
 
 
@@ -218,5 +168,18 @@ class Game extends Profile
     {
         if ($this->developer_id == 0) return $this->get_attribute('developer_name');
         else return $this->dev->name;
+    }
+
+    public function get_crosspromotion_profiles()
+    {
+        $promoted_profiles = $this->get_attribute('crosspromotion_profiles');
+
+        foreach (Config::get('vgc.profiles_types') as $profile_type) {
+            if ( ! isset($promoted_profiles[$profile_type.'s'])) {
+                $promoted_profiles[$profile_type.'s'] = array();
+            }
+        }
+
+        return $promoted_profiles;
     }
 }

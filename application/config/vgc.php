@@ -58,7 +58,7 @@ return array(
 
 
     'privacy' => array('private', 'public'),
-    'privacy_and_reviews' => array('publishing', 'private', 'public'),
+    'privacy_and_reviews' => array(/*'publishing',*/ 'private', 'public'),
 
 
     'recaptcha_private_key' => '6LeL59wSAAAAAPHo33Qt8iyf71Mf0U-QGET3IlhE',

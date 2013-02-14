@@ -1,5 +1,5 @@
 <?php 
-$name = xssSecure($profile->name);
+$name = $profile->name;
 ?>
 @section('page_title')
     {{ $name }}
@@ -7,7 +7,7 @@ $name = xssSecure($profile->name);
 
 <div id="game-profile" class="profile">
     <?php
-    $background_url = trim(xssSecure($profile->profile_background));
+    $background_url = trim($profile->profile_background);
     ?>
     @if ($background_url)
         <div id="profile-background">
@@ -26,15 +26,15 @@ $name = xssSecure($profile->name);
             <ul class="unstyled">
                 <?php
                 if ($profile->developer_id == 0) {
-                    $dev_name = trim(xssSecure($profile->developer_name));
+                    $dev_name = trim($profile->developer_name);
                     $dev_url = '';
                 } else {
-                    $dev_name = xssSecure($profile->dev->name);
+                    $dev_name = $profile->dev->name;
                     $dev_url = route('get_developer', array(name_to_url($dev_name)));
                 }
 
-                $publisher_name = xssSecure($profile->publishername);
-                $publisher_url = xssSecure($profile->publisherurl);
+                $publisher_name = $profile->publishername;
+                $publisher_url = $profile->publisherurl;
                 ?>
                 @if ($dev_name != '')
                     @if ($dev_url != '')
@@ -57,9 +57,9 @@ $name = xssSecure($profile->name);
         <div class="span4 header-side-column">
             <ul class="unstyled">
                 <?php
-                $website = trim(xssSecure($profile->website));
-                $presskit = trim(xssSecure($profile->presskit));
-                $soudtrack = trim(xssSecure($profile->soundtrackurl));
+                $website = trim($profile->website);
+                $presskit = trim($profile->presskit);
+                $soudtrack = trim($profile->soundtrackurl);
                 ?>
                 @if ($website != '')
                     <li>{{ icon('globe', lang('common.website')) }}<a href="{{ $website }}" title="{{ lang('common.website') }}">{{ shortenUrl($website) }}</a></li>
@@ -82,7 +82,7 @@ $name = xssSecure($profile->name);
     <div class="row-fluid">
         <div class="span12">
             <?php
-            $blogfeed = XssSecure($profile->blogfeed);
+            $blogfeed = $profile->blogfeed;
             ?>
             @if ($blogfeed != '')
                 <div class="span4">
@@ -104,7 +104,7 @@ $name = xssSecure($profile->name);
             @endif
 
 
-            <img src="{{ xssSecure($profile->cover) }}" alt="{{ $name }} box cover or icon" title="{{ $name }} box cover or icon" class="logo pull-right">
+            <img src="{{ $profile->cover }}" alt="{{ $name }} box cover or icon" title="{{ $name }} box cover or icon" class="logo pull-right">
 
             <i class="icon-quote-left icon-3x pull-left icon-muted"></i>
 
@@ -135,8 +135,8 @@ $name = xssSecure($profile->name);
                                 <?php
                                 $screenshots = $profile->screenshots;
                                 for ($i = 0; $i < count($screenshots['names']); $i++):
-                                    $url = xssSecure($screenshots['urls'][$i]);
-                                    $title = xssSecure($screenshots['names'][$i]);
+                                    $url = $screenshots['urls'][$i];
+                                    $title = $screenshots['names'][$i];
                                 ?>
                                     <div>
                                         <a href="{{ $url }}" title="{{ $title }}" class="screenshots-group">
@@ -162,7 +162,7 @@ $name = xssSecure($profile->name);
                                 @for ($i = 0; $i < count($videos['names']); $i++)
                                     <?php
                                     $video = new Video($videos['urls'][$i]);
-                                    $title = xssSecure($videos['names'][$i]);
+                                    $title = $videos['names'][$i];
                                     ?>
                                     <div>
                                         <a href="{{ $video->embed_url }}" title="{{ $title }}" class="colorbox-videos-group">
@@ -178,7 +178,7 @@ $name = xssSecure($profile->name);
                 <div class="tab-pane" id="soundtrack-pane">
                     <div id="soundtrack-container">
                         <?php
-                        echo DisplaySoundtrack(XssSecure($profile->soundtrack));
+                        echo DisplaySoundtrack($profile->soundtrack);
                         ?>
                     </div>
                 </div> <!-- /#soundtrack-pane .tab-pane -->
@@ -207,7 +207,7 @@ $name = xssSecure($profile->name);
 
             @for ($i = 0; $i < count($stores['names']); $i++)
                 <div class="store-icon">
-                    <a href="{{ XssSecure($stores['urls'][$i]) }}">
+                    <a href="{{ $stores['urls'][$i] }}">
                     <?php
                     $name = $stores['names'][$i];
                     $real_name = lang('stores.'.$name);
@@ -230,7 +230,7 @@ $name = xssSecure($profile->name);
 
                 <ul class="unstyled">
                     @for ($i = 0; $i < $press_count; $i++)
-                        <li><a href="{{ xssSecure($press['urls'][$i]) }}">{{ xssSecure($press['names'][$i]) }}</a></li>
+                        <li><a href="{{ $press['urls'][$i] }}">{{ $press['names'][$i] }}</a></li>
                     @endfor
                 </ul>
             </div> <!-- /.span4 -->
@@ -242,7 +242,7 @@ $name = xssSecure($profile->name);
 
                 <ul class="unstyled">
                     @for ($i = 0; $i < $social_count; $i++)
-                        <li><a href="{{ xssSecure($social['urls'][$i]) }}">{{ lang('socialnetworks.'.$social['names'][$i]) }}</a></li>
+                        <li><a href="{{ $social['urls'][$i] }}">{{ lang('socialnetworks.'.$social['names'][$i]) }}</a></li>
                     @endfor
                 </ul>
             </div> <!-- /.span4 -->

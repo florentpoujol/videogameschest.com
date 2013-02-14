@@ -382,14 +382,14 @@ $layout = View::of('layout');
 
 
         Route::get('testadmincontroller/(:num)', array('as' => 'get_testadmin_controller', 'uses' => 'discover@FeedData'));
-        Route::get('testadmin', function() use ($layout)
+        Route::get('test', function() use ($layout)
         {
             //return \Laravel\CLI\Command::run(array('sendpromotionnewsletters'));
             //return Response::view('partials/feed_profile_list');
             return $layout->nest('page_content', 'test');
         });
 
-        Route::post('testadmin', array('as' => 'post_test', function() use ($layout)
+        Route::post('test', array('as' => 'post_test', function() use ($layout)
         {
             Input::flash();
 

@@ -471,12 +471,11 @@ function SendMail($email, $subject, $body_html, $body_text = null, $priority = n
 {
     if (is_null($body_text)) $body_text = $body_html;
 
-    $env = Config::get('vgc.environement');
+    $env = Config::get('vgc.environment');
 
     if ($env == 'local') {
-        
-        
-        HTML::set_infos($html);
+        HTML::set_info($body_html);
+        return;
     }
 
     //Using SwiftMailer
@@ -714,7 +713,7 @@ function VideoFrame($link, $width = null, $height = null)
 
 
 
-function xssSecure($string)
+function XssSecure($string)
 {
     if (is_string($string)) return e($string);
     else return $string;

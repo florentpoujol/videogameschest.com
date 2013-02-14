@@ -307,8 +307,8 @@ return array(
         ),
 
         'msg' => array(
-            'adddev_success' => "The developer profile with name ':name' (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
-            'editdev_success' => "The developer profile with name ':name' (id : :id) has successfully been updated.",
+            'creation_success' => "The developer profile with name ':name' (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
+            'update_success' => "The developer profile with name ':name' (id : :id) has successfully been updated.",
 
             'select_editdev_id_not_found' => "No developer with id ':id' was found.",
             'select_editdev_name_not_found' => "No developer with name ':name' was found.",
@@ -713,6 +713,15 @@ return array(
         'title' => 'Press',
     ),
 
+// PROFILE
+
+    'profile' => array(
+        'msg' => array(
+            'creation_success' => "The :type profile with name ':name' (id=:id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
+            
+            'update_success' => "The :type profile with name ':name' (id=:id) has successfully been updated.",
+        ),
+    ),
 // PROMOTE
 
     'promote' => array(

@@ -17,10 +17,12 @@ Test en staging le vendredi 22/02/2013
     TODO to milestone
 ------------------------------------------------------------
 
-nouveau système de profil
-convertir models game et dev
+
 
 nouveau système d'update de profil
+
+plusieurs user peuvent éditer un même profil
+n'importe quel user peu ajouter un autre user
 
 ajout profils restant
     model
@@ -37,7 +39,7 @@ ajout profils restant
 
 Jeudi 14/02/2013
 
-
+nouveau système de profil - convertir models game et dev (annulé => sera en fait utilisé pour profil de preview)
 
 
 11/02/2013
