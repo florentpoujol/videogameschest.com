@@ -471,6 +471,13 @@ function SendMail($email, $subject, $body_html, $body_text = null, $priority = n
 {
     if (is_null($body_text)) $body_text = $body_html;
 
+    $env = Config::get('vgc.environement');
+
+    if ($env == 'local') {
+        
+        
+        HTML::set_infos($html);
+    }
 
     //Using SwiftMailer
 

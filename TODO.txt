@@ -1,20 +1,44 @@
+============================================================
+    MILESTONE
+------------------------------------------------------------
+
+Lundi 25 Fevrier 2013
+
+publication première mise à jour avec
+- profils outils, maps et mods
+- système d'update de profils
+- nouveau système de profils
+
+Test en staging le vendredi 22/02/2013
 
 
 
-Vérifier que tout fonctionne
+============================================================
+    TODO to milestone
+------------------------------------------------------------
 
-retravailler formuaire recherche
+nouveau système de profil
+convertir models game et dev
+
+nouveau système d'update de profil
+
+ajout profils restant
+    model
+    form creation
+    form update
+    profil
+    ajout en blacklist
 
 
 
-retravailler affichage dans feed et newletter
-
-système de comptabilisation de visite + provenance
-refaire form crosspromotion game comme blacklist
-
-
-
+============================================================
     DONE
+------------------------------------------------------------
+
+Jeudi 14/02/2013
+
+
+
 
 11/02/2013
 

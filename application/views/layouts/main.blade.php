@@ -15,7 +15,15 @@ $page_content .= Section::yield('page_content');
 
         <!-- Meta --> 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta name="robots" content="noindex,nofollow" >
+        
+        @if (Config::get('vgc.environment') == 'production')
+            <meta name="robots" content="index,follow">
+            <meta name="description" content="">
+            <meta name="keywords" content="">
+        @else
+            <meta name="robots" content="noindex,nofollow">
+        @endif
+        
         <!-- /Meta -->
 
         <!-- CSS -->        
@@ -36,7 +44,7 @@ $page_content .= Section::yield('page_content');
             @include('menu')
         </header>
 
-        <div class="container" id="page_content" role="main"->
+        <div class="container" id="page_content" role="main">
             <div id="message-box">
                 {{ HTML::get_messages($errors) }}
             </div>
@@ -84,7 +92,7 @@ $page_content .= Section::yield('page_content');
         </script> <!-- /JavaScript -->
 
         @if (Config::get('vgc.is_production_environement') === true)
-            @inclde('partials.googleanalytics')
+            @include('partials.googleanalytics')
         @endif
     </body>
 </html>

@@ -119,6 +119,7 @@ return array(
         'logo' => 'Logo',
 
         'medias' => 'Medias',
+        'meta_description' => 'VideoGamesChest is the participative place to search for, discover and promote everything that was, is and will be Video Games. It seek to improve the visibility of games and game-related content and people with innovative solutions.',
 
         'name' => 'Name',
         'nbplayers' => 'Number of players',
@@ -762,7 +763,7 @@ return array(
         'title' => 'Promote',
         'subtitle' => 'to the audience that cares',
         // 'subtitle' => 'by advertising with our help',
-        'home_text' => 'In addition to the full featured profiles and the comprehensive capacity given to the players to search for you, VideoGamesChest brings you innovatives ways to reach out specifiquely to the audience that cares about you.
+        'home_text' => 'In addition to the full featured profiles and the comprehensive capacity given to the players to search for you, VideoGamesChest brings you innovatives ways to reach out specifically to the audience that cares about you.
         ',
         /*
             VideoGamesChest is the perfect place to showcase your products and promote them in various ways.
@@ -873,7 +874,7 @@ return array(
         'title' => 'Search',
         'subtitle' => 'for games you are really intesred in',
         'subtitle' => 'for profiles you really care about',
-        'home_text' => 'You can thoroughtly search for the profiles that exactly fits your needs by filtering them with dosens of relevant criteria. <br> <br>
+        'home_text' => 'You can thoroughly search for the profiles that exactly fits your needs by filtering them with dozens of relevant criteria. <br> <br>
 
         The extensive filtering capabilities is the angular stone of VideoGamesChest\'s approach to discoverability and is used for the best by the discovering and promoting services.',
 

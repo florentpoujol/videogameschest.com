@@ -55,30 +55,34 @@ class Feed_Controller extends Base_Controller
                 $reports = $user->reports('developer');
             }
 
-            $feed_data = array( 
-                'channel' => array(
-                    'title' => 'Report feed for user '.$user->username,
-                    'link' => URL::base(),
-                    'permalink' => route('get_reports_feed', array($feed_type, $report_type, $user_id, $url_key)),
-                    // 'lastBuildDate' => $last_pub_date->format('r'),
-                ),
-
-                'items' => array(),
-            );
+            $feed = $this->getFeed()
+                ->title('Report feed for user '.$user->username)
+                ->permalink(route('get_reports_feed', array($feed_type, $report_type, $user_id, $url_key)));
 
             foreach ($reports as $report) {
-                $feed_data['items'][] = array(
-                    'title' => 'New report on '.$report->profile->class_name.' profile "'.$report->profile->name.'"',
-                    'pubDate' => $report->created_at,
-                    // 'link' => route('get_reports'),
-                    'guid isPermalink="false"' => 'report id '.$report->id,
-                    'description' => 
-                    $report->message.' <br>
-                    <a href="'.route('get_reports').'">See all your reports on VideoGamesChest.com</a> <br>',
-                );
+                $feed->entry()
+                    ->published($report->created_at)
+                    ->updated($report->updated_at)
+                    ->permalink('report id '.$report->id)
+
+                    ->title('New report on '.$report->profile->class_name.' profile "'.$report->profile->name.'"')
+
+                    ->content()
+                        ->add('text', 
+                            $report->message.'
+                            See all your reports on VideoGamesChest.com : '.route('get_reports')
+                        )->up()
+
+                    ->content()    
+                        ->add('html', 
+                            $report->message.' <br>
+                            <a href="'.route('get_reports').'">See all your reports on VideoGamesChest.com</a> <br>'
+                        )->up()
+                ;
             }
 
-            return Response::view('rss', array('feed_data' => $feed_data));
+            $this->publish($feed_type, $feed);
+            // return Response::view('rss', array('feed_data' => $feed_data));
         } else {
            return 'Unknow user or user id and url key do not match.';
         }

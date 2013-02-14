@@ -82,7 +82,7 @@
             <h3>{{ lang('about.developement_title') }}</h3>
 
             <p>
-                {{ lang('about.developement_text') }}
+                {{ lang('about.developement_text', array('blog_url' => route('get_blog_page'))) }}
             </p>
         </div>
     </div>
