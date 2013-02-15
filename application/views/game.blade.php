@@ -1,4 +1,6 @@
 <?php 
+if ( ! isset($preview)) $preview = false;
+
 $name = $profile->name;
 ?>
 @section('page_title')
@@ -19,7 +21,11 @@ $name = $profile->name;
     <!-- name dev website -->
     <div class="row">
         <div class="span5">
-            <h3>{{ $name }} <small>{{ $profile->class_name }}</small></h3>
+            <h3>{{ $name }} <small>{{ $profile->type }}
+                @if ($preview)
+                    preview
+                @endif
+            </small></h3>
         </div>
 
         <div class="span3 header-side-column">
@@ -312,18 +318,20 @@ $name = $profile->name;
         </div>
     @endif
 
-    <hr>
+    @if ( ! $preview)
+        <hr>
 
-    <!-- Button to trigger modal -->
-    <a class="muted accordion-toggle" data-toggle="collapse" href="#collapse-report">
-        {{ icon('flag') }} {{ lang('common.report_profile_link') }}
-    </a>
-            
-    <div id="collapse-report" class="collapse">
-        <div class="accordion-inner">
-            @include('forms/postreport')
+        <!-- Button to trigger modal -->
+        <a class="muted accordion-toggle" data-toggle="collapse" href="#collapse-report">
+            {{ icon('flag') }} {{ lang('common.report_profile_link') }}
+        </a>
+                
+        <div id="collapse-report" class="collapse">
+            <div class="accordion-inner">
+                @include('forms/postreport')
+            </div>
         </div>
-    </div>
+    @endif
 </div>
 
 @section('cssfiles')

@@ -1,5 +1,5 @@
 <?php
-if (is_admin()) $games = Game::preview_version()->get('id', 'name');
+if (is_admin()) $games = Game::all('id', 'name');
 else $games = user()->games;
 ?>
 <div id="selecteditgame">

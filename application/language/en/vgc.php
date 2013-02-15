@@ -128,6 +128,7 @@ return array(
 
         'pitch' => 'Pitch',
         'presskit' => 'Press Kit',
+        'preview_profile_modifications' => 'Preview modifications',
         'profile' => 'Profile',
         'profile_background' => 'Background image',
         'profile_background_help' => 'Background image for the profile\'s header. Max-height : 250px. Ideal min-width : 1000px.',

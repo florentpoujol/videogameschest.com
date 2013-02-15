@@ -41,6 +41,7 @@ HTML::macro('get_errors', function($view_errors = null)
         if ($session_errors != "") 
         {
             $session_errors = json_decode($session_errors, true);
+            if ($session_errors === null) $session_errors = array();
             foreach ($session_errors as $error) 
             {
                 $errors .= $error.' <br>
@@ -179,6 +180,7 @@ HTML::macro('get_infos', function()
         ';
 
         $array_success = json_decode($json_success, true);
+        if ($array_success === null) $array_success = array();
 
         foreach ($array_success as $success) 
         {

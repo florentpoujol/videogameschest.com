@@ -28,8 +28,9 @@
     <br>
 
     <?php 
-    $profiles = Game::where_privacy($review)->order_by('created_at', 'asc')->get();
-    $profiles = array_merge($profiles, Dev::where_privacy($review)->order_by('created_at', 'asc')->get());
+    // $profiles = Game::where_privacy($review)->order_by('created_at', 'asc')->get();
+    // $profiles = array_merge($profiles, Dev::where_privacy($review)->order_by('created_at', 'asc')->get());
+    $profiles = PreviewProfile::where_privacy($review)->order_by('created_at', 'asc')->get();
     ?>
 
     @if ( ! empty($profiles))
@@ -45,21 +46,21 @@
 
                 @foreach ($profiles as $profile)
                     <?php
-                    if ( ! in_array(user_id(), $profile->approved_by)):
+                    // if ( ! in_array(user_id(), $profile->approved_by)):
                         $class = '';
-                        if (is_admin() && count($profile->reports('admin')) > 0) $class = 'class="error"'; // empty() maked the page reload infinitely ?
+                        // if (is_admin() && count($profile->reports('admin')) > 0) $class = 'class="error"'; // empty() maked the page reload infinitely ?
                     ?>
                         <tr {{ $class }}>
                             <td>
-                                <a href="{{ route('get_'.$profile->class_name, array(name_to_url($profile->name))) }}">{{ $profile->name }}</a> ({{ $profile->class_name }})
+                                <a href="{{ route('get_'.$profile->type.'_preview', array($profile->profile->id)) }}" title="Preview">{{ $profile->name }}</a> ({{ $profile->type }}) <a href="{{ route('get_'.$profile->type, array(name_to_url($profile->name))) }}">Current version</a>
                             </td>
                             
                             <td>
                                 
-                                <input type="checkbox" name="approved_profiles[{{ $profile->class_name }}][]" value="{{ $profile->id }}">
+                                <input type="checkbox" name="approved_profiles[{{ $profile->type }}][]" value="{{ $profile->profile->id }}">
                             </td>
                         </tr>
-                    @endif
+                    <!-- endif -->
                 @endforeach
             </table>
         </form>

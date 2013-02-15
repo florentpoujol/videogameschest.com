@@ -250,6 +250,27 @@ $layout = View::of('layout');
 
     // DISPLAY DEVELOPERS
     // they are written in order to be after the add and edit routing
+    
+    Route::get('developer/preview/(:num)', array('as' => 'get_developer_preview', function($id = null) use ($layout)
+    {
+        $real_profile = Dev::find($id);
+        $profile = $real_profile->preview_profile;
+
+        if ($profile === null) {
+            HTML::set_error("Preview profile not found for developer profile '".$real_profile->name."' (id='".$real_profile->id."').");
+            return Redirect::to_route('get_home_page');
+        }
+
+        if (is_admin() || $real_profile->user_id == user_id()) {
+            return $layout
+            ->with('profile', $profile) // for the menu view
+            ->with('preview', true)
+            ->nest('page_content', 'developer', array('profile' => $profile, 'preview' => true));
+        } else {
+            HTML::set_error(lang('common.msg.access_not_allowed'));
+            return Redirect::to_route('get_home_page');
+        }
+    }));
 
     Route::get('developer/(:all?)', array('as' => 'get_developer', function($name = null) use ($layout)
     {
@@ -284,8 +305,30 @@ $layout = View::of('layout');
         }
     }));
 
+    
 
-    // DISPLAY DEVELOPERS
+    // DISPLAY GAMES
+    
+    Route::get('game/preview/(:num)', array('as' => 'get_game_preview', function($id = null) use ($layout)
+    {
+        $real_profile = Game::find($id);
+        $profile = $real_profile->preview_profile;
+
+        if ($profile === null) {
+            HTML::set_error("Preview profile not found for game profile '".$real_profile->name."' (id='".$real_profile->id."').");
+            return Redirect::to_route('get_home_page');
+        }
+
+        if (is_admin() || $real_profile->user_id == user_id()) {
+            return $layout
+            ->with('profile', $profile) // for the menu view
+            ->with('preview', true)
+            ->nest('page_content', 'game', array('profile' => $profile, 'preview' => true));
+        } else {
+            HTML::set_error(lang('common.msg.access_not_allowed'));
+            return Redirect::to_route('get_home_page');
+        }
+    }));
 
     Route::get('game/(:all?)', array('as' => 'get_game', function($name = null) use ($layout)
     {

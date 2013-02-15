@@ -1,9 +1,9 @@
 <?php
 
-class Developer extends Profile
+class PreviewDeveloper extends Profile
 {
     // text fields which data is stored as json
-    public static $json_fields = array('approved_by', "stores", "devices", "operatingsystems", "technologies", 'socialnetworks');
+    public static $json_fields = array("stores", "devices", "operatingsystems", "technologies", 'socialnetworks');
 
     // text fields which data is stored as json array
     public static $array_fields = array("stores", "devices", "operatingsystems", "technologies", );

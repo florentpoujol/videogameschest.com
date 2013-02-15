@@ -7,8 +7,10 @@ class Profile extends ExtendedEloquent
     public $type = 'profile';
     public $class_name_plural = 'profiles';
 
-    public static $table_fields = array('id', 'privacy', 'name', 'data', 'created_at', 'updated_at');
-    public static $regular_fields = array('id', 'privacy', 'name', 'created_at', 'updated_at');
+    public static $fields_to_remove = array('id', 'user_id', 'created_at', 'updated_at', 'in_promotion_feed',
+        'in_promotion_newsletter', 'crosspromotion_profiles', 'crosspromotion_key');
+
+
 
     //----------------------------------------------------------------------------------
     // CONSTRUCTOR
@@ -47,8 +49,6 @@ class Profile extends ExtendedEloquent
 
         $profile = parent::create($input);
 
-        // insert here mecanism to allow updates
-
         // msg
         $msg = lang('profile.msg.creation_success', array(
             'type' => $profile->type,
@@ -71,11 +71,7 @@ class Profile extends ExtendedEloquent
 
         // preview version
         if ($create_preview_version) {
-            $input['privacy'] = 'publishing';
-
-            $profile = $profile;
-            $preview_profile = parent::create($input);
-
+            $preview_profile = PreviewProfile::create($profile);
             Log::write('profile '.$preview_profile->type.' create success', "Preview version of ".$profile->type." profile with name='".$profile->name."' and id='".$profile->id."' has been created with id='".$preview_profile->id."'.");
         }
 
@@ -92,8 +88,11 @@ class Profile extends ExtendedEloquent
     {
         $input = clean_form_input($input);
 
-        parent::update($id, $input);
+        // update the preview profile
         $profile = parent::find($id);
+        $profile->preview_profile->datajson = $input;
+        $profile->preview_profile->privacy = 'publishing';
+        $profile->preview_profile->save();
 
         $msg = lang('profile.msg.update_success', array(
             'type' => $profile->type,
@@ -119,16 +118,25 @@ class Profile extends ExtendedEloquent
      */
     public function passed_review()
     {
-        $review = $this->privacy;
-        $profile = $this->class_name;
+        $preview_profile = $this->preview_profile;
+        $review = $preview_profile->privacy;
+        $profile_type = $this->type;
         
         if ($review == 'publishing') {
-            $this->privacy = 'public';
+            $preview_profile->privacy = '';
+            $preview_profile->save();
+        }
+      
+        // sanitize data before the real update in
+        $data = $preview_profile->datajson;
+        foreach ($data as $field => $value) {
+            if (in_array($field, static::$fields_to_remove)) unset($data[$field]);
         }
 
-        $this->save();
+        parent::update($this->id, $data);
 
-        Log::write($profile.' success review', $profile.' profile passed the '.$review.' review.');
+
+        Log::write($profile_type.' success review', $profile_type.' profile passed the '.$review.' review.');
 
         // email's text :
         // it explain that the profile has passed the review and what can they do with it
@@ -136,17 +144,15 @@ class Profile extends ExtendedEloquent
         
         $html = lang('emails.profile_passed_'.$review.'_review.html', array(
             'user_name' => $this->user->name,
-            'profile_type' => $profile,
+            'profile_type' => $profile_type,
             'profile_name' => $this->name,
-            'profile_link' => route('get_'.$profile, array(name_to_url($this->name))),
+            'profile_link' => route('get_'.$profile_type, array(name_to_url($this->name))),
         ));
 
         sendMail($this->user->email, $subject, $html);
     }
 
     
-
-
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
 
@@ -168,7 +174,12 @@ class Profile extends ExtendedEloquent
         else return $this->has_many('Report', $foreign_key)->where_type($report_type)->get();
     }
 
-    
+    public function preview_profile()
+    {
+        return $this->has_one('PreviewProfile');
+    }
+
+
     //----------------------------------------------------------------------------------
     // CROSS PROMOTION
 

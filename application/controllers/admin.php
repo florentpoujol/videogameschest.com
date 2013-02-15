@@ -427,7 +427,7 @@ class Admin_Controller extends Base_Controller
             return Redirect::to_route('get_developer_update');
         }
 
-        // profile ans auth is ok, now get the preview profile
+        // profile and auth are ok, now get the preview profile
 
         $this->layout->nest('page_content', 'logged_in/updatedeveloper', array('profile_id'=>$profile_id));
     }
@@ -443,7 +443,7 @@ class Admin_Controller extends Base_Controller
                 if ($dev->id == $input['id']) $forged = false;
             }
 
-            if ($forged) { // a user try to edit a dev profile which does not own
+            if ($forged) { // a user tried to edit a dev profile which does not own
                 HTML::set_error(lang('common.msg.edit_other_users_proile_not_allowed'));
                 Input::flash();
                 return Redirect::back();

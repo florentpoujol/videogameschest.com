@@ -3,7 +3,9 @@
 @endsection
 <?php
 $game = Game::find($profile_id);
-Former::populate($game);
+$preview_profile = $game->preview_profile;
+
+Former::populate($preview_profile->datajson);
 
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
@@ -23,6 +25,7 @@ $developer_name = $game->actual_developer_name;
     <hr>
 
     <p class="pull-right">
+        <a href="{{ route('get_game_preview', array($game->id)) }}">{{ lang('common.preview_profile_modifications') }}</a> | 
         <a href="{{ route('get_game', array(name_to_url($game->name))) }}">{{ icon('eye-open') }}{{ lang('common.view_profile_link') }}</a>
     </p>
 
@@ -112,7 +115,7 @@ $developer_name = $game->actual_developer_name;
                                 <?php
                                 foreach (Game::$array_fields as $field):
                                     if (isset($old[$field])) $values = $old[$field];
-                                    else $values = $game->$field;
+                                    else $values = $preview_profile->$field;
                                 ?>
                                 <div class="tab-pane" id="{{ $field }}">
                                     <p>{{ lang($field.'.help', '') }}</p>
@@ -146,7 +149,7 @@ $developer_name = $game->actual_developer_name;
                                     $options = array_merge(array('' => lang('common.select_arrayitem_first_option')), $options);
                                     
                                     if (isset($old[$fields])) $values = clean_names_urls_array($old[$fields]);
-                                    else $values = $game->$fields;
+                                    else $values = $preview_profile->$fields;
 
                                     $length = count($values['names']);
                                     for ($i = 0; $i < $length; $i++):
@@ -178,7 +181,7 @@ $developer_name = $game->actual_developer_name;
 
                                     <?php
                                     if (isset($old[$fields])) $values = clean_names_urls_array($old[$fields]);
-                                    else $values = $game->$fields;
+                                    else $values = $preview_profile->$fields;
 
                                     $length = count($values['names']);
                                     for ($i = 0; $i < $length; $i++):
@@ -230,7 +233,7 @@ $developer_name = $game->actual_developer_name;
 
                                     <?php
                                     if (isset($old[$fields])) $values = clean_names_urls_array($old[$fields]);
-                                    else $values = $game->$fields;
+                                    else $values = $preview_profile->$fields;
 
                                     $length = count($values['names']);
                                     for ($i = 0; $i < $length; $i++):

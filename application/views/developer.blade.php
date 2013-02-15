@@ -1,4 +1,6 @@
 <?php
+if ( ! isset($preview)) $preview = false;
+
 $name = $profile->name;
 ?>
 @section('page_title')
@@ -8,7 +10,11 @@ $name = $profile->name;
 <div id="developer-profile" class="profile">
     <div class="row-fluid">
         <div class="span6">
-            <h3>{{ $name }} <small>{{ $profile->class_name }}</small></h3> 
+            <h3>{{ $name }} <small>{{ $profile->type }}
+                @if ($preview)
+                    preview
+                @endif
+            </small></h3> 
         </div>
 
         <div class="span4 header-side-column">
@@ -106,34 +112,36 @@ $name = $profile->name;
     
     </div>
 
-    <hr>
+    @if ( ! $preview)
+        <hr>
 
-    <h4>{{ lang('common.games') }}</h4>
-        
-    <div class="row-fluid">
-        <div class="span12">
-            <?php
-            $profiles = $profile->games;
-            ?>
-            @if (empty($profiles))
-                <p>
-                    {{ lang('developer.profile.no_game') }}
-                </p>
-            @else
-                @include('partials.profile_list_tiles')
-            @endif
+        <h4>{{ lang('common.games') }}</h4>
+            
+        <div class="row-fluid">
+            <div class="span12">
+                <?php
+                $profiles = $profile->games;
+                ?>
+                @if (empty($profiles))
+                    <p>
+                        {{ lang('developer.profile.no_game') }}
+                    </p>
+                @else
+                    @include('partials.profile_list_tiles')
+                @endif
+            </div>
         </div>
-    </div>
 
-    <hr>
+        <hr>
 
-    <a class="muted accordion-toggle" data-toggle="collapse" href="#collapse-report">
-        {{ icon('flag') }} {{ lang('common.report_profile_link') }}
-    </a>
-    
-    <div id="collapse-report" class="collapse">
-        @include('forms/postreport')
-    </div>
+        <a class="muted accordion-toggle" data-toggle="collapse" href="#collapse-report">
+            {{ icon('flag') }} {{ lang('common.report_profile_link') }}
+        </a>
+        
+        <div id="collapse-report" class="collapse">
+            @include('forms/postreport')
+        </div>
+    @endif
 </div>
 
  

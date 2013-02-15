@@ -3,7 +3,7 @@
 class Game extends Profile
 {
     // fields which data is stored as json
-    public static $json_fields = array( 'crosspromotion_profiles',
+    public static $json_fields = array('approved_by', 'crosspromotion_profiles',
         'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'looks', 'periods',
         'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos', 'press');
     
@@ -69,6 +69,10 @@ class Game extends Profile
                 $input['developer_name'] = '';
                 $input['developer_id'] = $dev->id;
             } else $input['developer_id'] = 0;
+        }
+
+        foreach (static::$names_urls_fields as $field) {
+            $input[$field] = clean_names_urls_array($input[$field]);
         }
         
         $game = parent::update($id, $input);
