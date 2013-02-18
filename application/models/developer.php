@@ -55,17 +55,6 @@ class Developer extends Profile
 
 
     //----------------------------------------------------------------------------------
-
-    /**
-     * Get the "preview version" of the pofiles
-     */
-    public static function preview_version()
-    {
-        return Developer::where_privacy('publishing')->or_where('privacy', '=', 'preview');
-    }
-
-
-    //----------------------------------------------------------------------------------
     // MAGIC METHODS
 
     /**

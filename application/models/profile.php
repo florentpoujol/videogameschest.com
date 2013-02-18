@@ -7,7 +7,9 @@ class Profile extends ExtendedEloquent
     public $type = 'profile';
     public $class_name_plural = 'profiles';
 
-    public static $fields_to_remove = array('id', 'user_id', 'created_at', 'updated_at', 'in_promotion_feed',
+    public $is_preview = false;
+
+    public static $fields_to_remove = array('id', 'user_id', 'public_id', 'developer_id', 'created_at', 'updated_at', 'in_promotion_feed',
         'in_promotion_newsletter', 'crosspromotion_profiles', 'crosspromotion_key');
 
 
@@ -23,6 +25,8 @@ class Profile extends ExtendedEloquent
         $this->class_name_plural = $this->class_name.'s';
 
         $this->type = $this->class_name;
+
+        $this->is_preview = ($this->get_attribute('public_id') > 0 ? true : false);
     }
 
 
@@ -48,6 +52,9 @@ class Profile extends ExtendedEloquent
         if ( ! isset($input['privacy'])) $input['privacy'] = 'private';
 
         $profile = parent::create($input);
+        $preview_profile = parent::create($input);
+        $profile->preview_profile->insert($preview_profile); // ?
+
 
         // msg
         $msg = lang('profile.msg.creation_success', array(
@@ -71,7 +78,8 @@ class Profile extends ExtendedEloquent
 
         // preview version
         if ($create_preview_version) {
-            $preview_profile = PreviewProfile::create($profile);
+            // $preview_profile = PreviewProfile::create($profile);
+            $preview_profile = parent::create($input);
             Log::write('profile '.$preview_profile->type.' create success', "Preview version of ".$profile->type." profile with name='".$profile->name."' and id='".$profile->id."' has been created with id='".$preview_profile->id."'.");
         }
 
@@ -87,12 +95,15 @@ class Profile extends ExtendedEloquent
     public static function update($id, $input)
     {
         $input = clean_form_input($input);
-
-        // update the preview profile
         $profile = parent::find($id);
-        $profile->preview_profile->datajson = $input;
-        $profile->preview_profile->privacy = 'publishing';
-        $profile->preview_profile->save();
+
+        $preview_data = static::strip_preview_data_from_input($input, $profile->type);
+
+        if (count($input) > 0) parent::update($id, $input);
+        $profile = parent::find($id);
+
+        $preview_profile = $profile->preview_profile;
+        PreviewProfile::update($preview_profile->id, array('data' => $preview_data));
 
         $msg = lang('profile.msg.update_success', array(
             'type' => $profile->type,
@@ -102,11 +113,49 @@ class Profile extends ExtendedEloquent
 
         HTML::set_success($msg);
 
-        Log::write($profile->type.' profile update success', "User '".user()->name."' (id=".user_id().") has updated the ".$profile->type." profile with name='".$profile->name."' and id='".$profile->id."'.");
-
+        Log::write($profile->type.' profile update success', "User '".user()->name."' (id=".user_id().") has updated the public ".$profile->type." profile with name='".$profile->name."' and id='".$profile->id."'.");
         return $profile;
     }
 
+
+    //----------------------------------------------------------------------------------
+
+    /**
+     * Update this profile instance with the stored preview data
+     * So that this instance looks like the proile if the preview data was saved
+     */
+    public function update_with_preview_data()
+    {
+        $preview_data = $this->preview_profile->data;
+
+        foreach ($preview_data as $key => $value) {
+            //$this->set_attribute($key, $value);
+            $this->$key = $value;
+        }
+    }
+
+    /**
+     * Update $input at the same time
+     * @param  [type] $input [description]
+     * @return [type]        [description]
+     */
+    protected static function strip_preview_data_from_input(&$input, $profile_type)
+    {
+        $preview_data = array();
+        $preview_fields = array_merge(
+            Config::get('vgc.profile_fields_to_review.common'),
+            Config::get('vgc.profile_fields_to_review.'.$profile_type)
+        );
+        
+        foreach ($preview_fields as $field) {
+            if (isset($input[$field])) {
+                $preview_data[$field] = $input[$field];
+                unset($input[$field]);
+            }
+        }
+
+        return $preview_data;
+    }
 
     //----------------------------------------------------------------------------------
     // REVIEWS
@@ -118,7 +167,7 @@ class Profile extends ExtendedEloquent
      */
     public function passed_review()
     {
-        $preview_profile = $this->preview_profile;
+        /*$preview_profile = $this->preview_profile;
         $review = $preview_profile->privacy;
         $profile_type = $this->type;
         
@@ -128,12 +177,22 @@ class Profile extends ExtendedEloquent
         }
       
         // sanitize data before the real update in
-        $data = $preview_profile->datajson;
+        $data = $preview_profile->to_array();
         foreach ($data as $field => $value) {
             if (in_array($field, static::$fields_to_remove)) unset($data[$field]);
         }
 
-        parent::update($this->id, $data);
+        parent::update($this->id, $data);*/
+
+        $preview_profile = $this->preview_profile;
+        $review = $preview_profile->privacy;
+        $profile_type = $this->type;
+
+        $preview_profile->privacy = '';
+        $preview_profile->save();
+
+        $this->update_with_preview_data();
+        $this->save();
 
 
         Log::write($profile_type.' success review', $profile_type.' profile passed the '.$review.' review.');
@@ -158,7 +217,7 @@ class Profile extends ExtendedEloquent
 
     public function user()
     {
-        return $this->belongs_to('User');
+        return $this->belongs_to('User', 'user_id');
     }
 
     /**
@@ -174,9 +233,20 @@ class Profile extends ExtendedEloquent
         else return $this->has_many('Report', $foreign_key)->where_type($report_type)->get();
     }
 
+
+    /*public function preview_profile()
+    {
+        return $this->has_one(ucfirst($this->type), 'public_id');
+    }
+
+    public function public_profile()
+    {
+        return $this->belongs_to(ucfirst($this->type), 'public_id');
+    }*/
+
     public function preview_profile()
     {
-        return $this->has_one('PreviewProfile');
+        return $preview_profile = $this->has_one("PreviewProfile");
     }
 
 

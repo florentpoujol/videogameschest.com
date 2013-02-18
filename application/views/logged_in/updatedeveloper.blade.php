@@ -13,10 +13,10 @@ $rules = array(
     'teamsize' => 'integer|min:1'
 );
 
-$dev = Dev::find($profile_id);
-$preview_profile = $dev->preview_profile;
+$profile = Dev::find($profile_id);
+$profile->update_with_preview_data();
 
-Former::populate($preview_profile->datajson);
+Former::populate($profile);
 
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
@@ -27,13 +27,13 @@ if (is_admin()) {
 }
 ?>
 <div id="editdeveloper">
-    <h1>{{ lang('developer.edit.title') }} <small>{{ $dev->name }}</small></h1>
+    <h1>{{ lang('developer.edit.title') }} <small>{{ $profile->name }}</small></h1>
     
     <hr>
 
     <p class="pull-right">
-        <a href="{{ route('get_developer_preview', array($dev->id)) }}">{{ lang('common.preview_profile_modifications') }}</a> | 
-        <a href="{{ route('get_developer', array(name_to_url($dev->name))) }}">{{ icon('eye-open') }} {{ lang('common.view_profile_link') }}</a>
+        <a href="{{ route('get_developer_preview', array($profile->id)) }}">{{ lang('common.preview_profile_modifications') }}</a> | 
+        <a href="{{ route('get_developer', array(name_to_url($profile->name))) }}">{{ icon('eye-open') }} {{ lang('common.view_profile_link') }}</a>
     </p>
 
     <ul class="nav nav-tabs" id="main-tabs">
@@ -111,7 +111,7 @@ if (is_admin()) {
                                 <?php
                                 foreach (Dev::$array_fields as $field):
                                     if (isset($old[$field])) $values = $old[$field];
-                                    else $values = $preview_profile->$field;
+                                    else $values = $profile->$field;
                                 ?>
                                 <div class="tab-pane" id="{{ $field }}">
                                     <p>{{ lang('developer.'.$field.'_help') }}</p>
@@ -125,7 +125,7 @@ if (is_admin()) {
                                     $options = array_merge(array('' => lang('common.select_arrayitem_first_option')), $options);
 
                                     if (isset($old['socialnetworks'])) $socialnetworks = clean_names_urls_array($old['socialnetworks']);
-                                    else $socialnetworks = $preview_profile->socialnetworks;
+                                    else $socialnetworks = $profile->socialnetworks;
 
                                     $length = count($socialnetworks['names']);
                                     for ($i = 0; $i < $length; $i++):
@@ -165,7 +165,7 @@ if (is_admin()) {
                 <h3>{{ lang('discover.feed_title') }}/{{ lang('discover.email_title') }}</h3>
 
                 <?php
-                $profile = $dev;
+                //$profile = $dev;
                 ?>
                 @include('forms/promote_update_profile_subscription')
                 

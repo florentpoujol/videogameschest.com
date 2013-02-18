@@ -97,15 +97,7 @@ class Game extends Profile
         Log::write('game crosspromotion update success', 'The promoted profiles for the game (name : '.$game->name.') (id : '.$game->id.') have been updated.');
     }
 
-    /**
-     * Get the "preview version" of the pofiles
-     */
-    public static function preview_version()
-    {
-        return Game::where_privacy('publishing')->or_where('privacy', '=', 'preview');
-    }
-
-    
+   
     //----------------------------------------------------------------------------------
     // MAGIC METHODS
 

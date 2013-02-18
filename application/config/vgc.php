@@ -50,9 +50,15 @@ return array(
 
     'language_files' => array('vgc', 'emails'),
 
+  
+    // field that needs an admin review before their update is approved
+    'profile_fields_to_review' => array(
+        'common' => array('name', 'email', 'developer_url', 'pitch', 'logo', 'website', 'blogfeed', 'presskit', 'socialnetworks', 'press', 'screenshots', 'videos', 'soundtrack'),
+        'developer' => array(),
+        'game' => array('developer_name',  'stores'),
 
-    
 
+    ),
 
     'profile_types' => array('game', 'developer'),
 

@@ -4,8 +4,8 @@
 <?php
 $game = Game::find($profile_id);
 $preview_profile = $game->preview_profile;
-
-Former::populate($preview_profile->datajson);
+var_dump($preview_profile);
+Former::populate($preview_profile);
 
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
@@ -55,7 +55,7 @@ $developer_name = $game->actual_developer_name;
             ?>
             {{ Former::open_vertical(route('post_game_update'))->rules($rules) }} 
                 {{ Form::token() }}
-                {{ Form::hidden('id', $profile_id) }}
+                {{ Form::hidden('id') }}
 
                 {{ Former::primary_submit(lang('common.update')) }}
 

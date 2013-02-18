@@ -253,15 +253,17 @@ $layout = View::of('layout');
     
     Route::get('developer/preview/(:num)', array('as' => 'get_developer_preview', function($id = null) use ($layout)
     {
-        $real_profile = Dev::find($id);
-        $profile = $real_profile->preview_profile;
+        $profile = Dev::find($id);
+        $preview_profile = $profile->preview_profile;
 
-        if ($profile === null) {
-            HTML::set_error("Preview profile not found for developer profile '".$real_profile->name."' (id='".$real_profile->id."').");
+        if ($preview_profile === null) {
+            HTML::set_error("Preview profile not found for developer profile '".$profile->name."' (id='".$profile->id."').");
             return Redirect::to_route('get_home_page');
         }
 
-        if (is_admin() || $real_profile->user_id == user_id()) {
+        if (is_admin() || $profile->user_id == user_id()) {
+            $profile->update_with_preview_data();
+
             return $layout
             ->with('profile', $profile) // for the menu view
             ->with('preview', true)
@@ -311,8 +313,8 @@ $layout = View::of('layout');
     
     Route::get('game/preview/(:num)', array('as' => 'get_game_preview', function($id = null) use ($layout)
     {
-        $real_profile = Game::find($id);
-        $profile = $real_profile->preview_profile;
+        $public_profile = Game::find($id);
+        $profile = $public_profile->preview_profile;
 
         if ($profile === null) {
             HTML::set_error("Preview profile not found for game profile '".$real_profile->name."' (id='".$real_profile->id."').");
@@ -321,7 +323,8 @@ $layout = View::of('layout');
 
         if (is_admin() || $real_profile->user_id == user_id()) {
             return $layout
-            ->with('profile', $profile) // for the menu view
+            ->with('profile', $public_profile) // for the menu view
+            //->with('preview_profile', $profile)
             ->with('preview', true)
             ->nest('page_content', 'game', array('profile' => $profile, 'preview' => true));
         } else {

@@ -70,9 +70,9 @@
                                 @if ($show_profile_edit_link)
                                 <?php
                                 $profile_id = $profile->id;
-                                if (isset($preview) && $preview == true) {
-                                    $profile_id = $profile->profile->id;
-                                }
+                                /*if (isset($preview) && $preview == true) {
+                                    $profile_id = $preview_profile->id;
+                                }*/
                                 ?>
                                     <li><a href="{{ route('get_'.$profile->type.'_update', array($profile_id)) }}">{{ lang('common.update_profile') }}</a> </li>
 

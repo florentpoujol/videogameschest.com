@@ -18,7 +18,7 @@ class PreviewProfile extends ExtendedEloquent
             'type' => $profile->type,
             'privacy' => 'publishing',
             $profile->type.'_id' => $profile->id,
-            'data' => $profile->to_array()
+            'datajson' => '{}',
         );
 
         parent::create($input);
@@ -31,11 +31,10 @@ class PreviewProfile extends ExtendedEloquent
      * @param  array $input The profile data
      * @return Developer   The updated dev instance
      */
-    public static function update($profile, $input)
+    /*public static function update($id, $input)
     {
-        dd($input);
-        $profile->preview_profile->datajson = $input; 
-    }
+        parent::update($id, $input);
+    }*/
 
 
 
@@ -57,23 +56,12 @@ class PreviewProfile extends ExtendedEloquent
 
     public function get_data()
     {
-        
-        return unserialize($this->get_attribute('data'));
+        return json_decode($this->get_attribute('data'), true);
     }
 
     public function set_data($data)
     {
-        $this->set_attribute('data', serialize($data));
-    }
-
-    public function get_datajson()
-    {
-        return json_decode($this->get_attribute('datajson'), true);
-    }
-
-    public function set_datajson($data)
-    {
-        $this->set_attribute('datajson', json_encode($data));
+        $this->set_attribute('data', json_encode($data));
     }
 
     //----------------------------------------------------------------------------------
@@ -96,7 +84,7 @@ class PreviewProfile extends ExtendedEloquent
      * @param  string  $key
      * @return mixed
      */
-    public function __get($field)
+    /*public function __get($field)
     {
         $profile_type = $this->get_attribute('type');
         $data = $this->get_datajson();
@@ -108,6 +96,6 @@ class PreviewProfile extends ExtendedEloquent
         }
 
         return XssSecure(parent::__get($field));
-    }
+    }*/
 }
 

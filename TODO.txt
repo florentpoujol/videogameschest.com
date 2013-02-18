@@ -18,8 +18,9 @@ Test en staging le vendredi 22/02/2013
 ------------------------------------------------------------
 
 
+nouveau système d'update de profil >
+1ère création du profil et 1ère review et reviews par après
 
-nouveau système d'update de profil
 
 plusieurs user peuvent éditer un même profil
 n'importe quel user peu ajouter un autre user
@@ -31,11 +32,24 @@ ajout profils restant
     profil
     ajout en blacklist
 
+sauvegarde des message infos/erreur avec serialize au lieu de json
 
 
 ============================================================
     DONE
 ------------------------------------------------------------
+
+
+Lundi 1/02/2013
+
+nouveau système d'update => reste à règler : 1ère création du profil et 1ère review et reviews par après
+
+
+Vendredi 15/02/2013
+
+Post sur forum + blog Wefrag
+nouveau système d'update de profil
+
 
 Jeudi 14/02/2013
 
