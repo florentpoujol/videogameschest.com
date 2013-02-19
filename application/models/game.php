@@ -32,8 +32,7 @@ class Game extends Profile
             $input['developer_name'] = '';
             $input['developer_id'] = $dev->id;
         } else $input['developer_id'] = 0;
-
-        //$input['crosspromotion_profiles'] = array('developers'=>array(),'games'=>array());
+        
         $input['crosspromotion_key'] = Str::random(40);
                 
         return parent::create($input);

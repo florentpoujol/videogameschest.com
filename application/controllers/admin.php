@@ -514,7 +514,7 @@ class Admin_Controller extends Base_Controller
 
     //----------------------------------------------------------------------------------
     // EDIT GAME
-   
+
     public function post_selecteditgame()
     {
         $name = Input::get('game_name');
@@ -650,42 +650,23 @@ class Admin_Controller extends Base_Controller
 
         $input = Input::all();
 
-        
         if ( ! isset($input['approved_profiles'])) $input['approved_profiles'] = array();
-        // if ( ! isset($input['approved_games'])) $input['approved_games'] = array();
 
-        if (is_admin()) {
-            $num = 0;
-            foreach ($input['approved_profiles'] as $profile_type => $approved_profiles) {
-                foreach ($approved_profiles as $id) {
-                    $profile_type::find($id)->passed_review();
-                    $num++;
-                }
+        $num = 0;
+        foreach ($input['approved_profiles'] as $profile_type => $approved_profiles) {
+            foreach ($approved_profiles as $id) {
+                $profile_type::find($id)->passed_review();
+                $num++;
             }
-
-            if ($num > 0) {
-                HTML::set_success(lang('reviews.msg.profiles_approved', array('num' => $num)));
-
-                Log::write('admin success review '.$input['review_type'],
-                'Admin (name : '.user()->name.') (id : '.user_id().') has approved '.$num.' profiles in '.$input['review_type'].' review.');
-            }
-        } else {
-            /*foreach ($input['approved_profiles'] as $id) {
-                $profile = $input['profile_type']::find($id);
-
-                $approved_by = $profile->approved_by;
-                $approved_by[] = user_id();
-                $profile->approved_by = $approved_by;
-                $profile->save();
-            }
-
-            $num = count($input['approved_profiles']);
-            HTML::set_success(lang('reviews.msg.profiles_approved', array('num' => $num)));
-            Log::write('approve review '.$input['profile_type'].' '.$input['review_type'],
-            'User (name : '.user()->name.') (id : '.user_id().') has approved '.$num.' profiles in '.$input['review_type'].' review.');
-            */
         }
 
+        if ($num > 0) {
+            HTML::set_success(lang('reviews.msg.profiles_approved', array('num' => $num)));
+
+            Log::write('admin success review '.$input['review_type'],
+            user()->type." '".user()->name."' (id='".user_id()."') has approved $num profiles in ".$input['review_type']." review.");
+        }
+        
         return Redirect::back();
     }
 

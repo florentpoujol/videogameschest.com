@@ -30,10 +30,10 @@
     <?php 
     // $profiles = Game::where_privacy($review)->order_by('created_at', 'asc')->get();
     // $profiles = array_merge($profiles, Dev::where_privacy($review)->order_by('created_at', 'asc')->get());
-    $profiles = PreviewProfile::where_privacy($review)->order_by('created_at', 'asc')->get();
+    $preview_profiles = PreviewProfile::where_privacy($review)->order_by('created_at', 'asc')->get();
     ?>
 
-    @if ( ! empty($profiles))
+    @if ( ! empty($preview_profiles))
         {{ Former::open(route('post_reviews')) }}
             {{ Form::token() }}
             {{ Form::hidden('review_type', $review) }}
@@ -44,20 +44,22 @@
                     <th><input type="submit" value="{{ lang('reviews.table.approve') }}" class="btn btn-success"></th>
                 </tr>
 
-                @foreach ($profiles as $profile)
+                @foreach ($preview_profiles as $preview_profile)
                     <?php
+                    $profile = $preview_profile->public_profile;
+                    
                     // if ( ! in_array(user_id(), $profile->approved_by)):
                         $class = '';
                         // if (is_admin() && count($profile->reports('admin')) > 0) $class = 'class="error"'; // empty() maked the page reload infinitely ?
                     ?>
                         <tr {{ $class }}>
                             <td>
-                                <a href="{{ route('get_'.$profile->type.'_preview', array($profile->profile->id)) }}" title="Preview">{{ $profile->name }}</a> ({{ $profile->type }}) <a href="{{ route('get_'.$profile->type, array(name_to_url($profile->name))) }}">Current version</a>
+                                <a href="{{ route('get_'.$profile->type.'_preview', array($profile->id)) }}" title="Preview">{{ $profile->name }}</a> ({{ $profile->type }}) <a href="{{ route('get_'.$profile->type, array(name_to_url($profile->name))) }}">Current version</a>
                             </td>
                             
                             <td>
                                 
-                                <input type="checkbox" name="approved_profiles[{{ $profile->type }}][]" value="{{ $profile->profile->id }}">
+                                <input type="checkbox" name="approved_profiles[{{ $profile->type }}][]" value="{{ $profile->id }}">
                             </td>
                         </tr>
                     <!-- endif -->

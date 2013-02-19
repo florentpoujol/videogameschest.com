@@ -2,10 +2,10 @@
     {{ lang('game.edit.title') }}
 @endsection
 <?php
-$game = Game::find($profile_id);
-$preview_profile = $game->preview_profile;
-var_dump($preview_profile);
-Former::populate($preview_profile);
+$profile = Game::find($profile_id);
+$profile->update_with_preview_data();
+
+Former::populate($profile);
 
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
@@ -16,17 +16,17 @@ if (is_admin()) {
 }
 else $devs = Dev::where_privacy('public')->get(array('id', 'name'));
 
-$developer_name = $game->actual_developer_name;
+$developer_name = $profile->actual_developer_name;
 ?>
 
 <div id="editgame">
-    <h1>{{ lang('game.edit.title') }} <small>{{ xssSecure($game->name) }} </small></h1>
+    <h1>{{ lang('game.edit.title') }} <small>{{ xssSecure($profile->name) }} </small></h1>
 
     <hr>
 
     <p class="pull-right">
-        <a href="{{ route('get_game_preview', array($game->id)) }}">{{ lang('common.preview_profile_modifications') }}</a> | 
-        <a href="{{ route('get_game', array(name_to_url($game->name))) }}">{{ icon('eye-open') }}{{ lang('common.view_profile_link') }}</a>
+        <a href="{{ route('get_game_preview', array($profile->id)) }}">{{ lang('common.preview_profile_modifications') }}</a> | 
+        <a href="{{ route('get_game', array(name_to_url($profile->name))) }}">{{ icon('eye-open') }}{{ lang('common.view_profile_link') }}</a>
     </p>
 
     <ul class="nav nav-tabs" id="main-tabs">
@@ -55,7 +55,7 @@ $developer_name = $game->actual_developer_name;
             ?>
             {{ Former::open_vertical(route('post_game_update'))->rules($rules) }} 
                 {{ Form::token() }}
-                {{ Form::hidden('id') }}
+                {{ Form::hidden('id', $profile->id) }}
 
                 {{ Former::primary_submit(lang('common.update')) }}
 
@@ -115,7 +115,7 @@ $developer_name = $game->actual_developer_name;
                                 <?php
                                 foreach (Game::$array_fields as $field):
                                     if (isset($old[$field])) $values = $old[$field];
-                                    else $values = $preview_profile->$field;
+                                    else $values = $profile->$field;
                                 ?>
                                 <div class="tab-pane" id="{{ $field }}">
                                     <p>{{ lang($field.'.help', '') }}</p>
@@ -149,7 +149,7 @@ $developer_name = $game->actual_developer_name;
                                     $options = array_merge(array('' => lang('common.select_arrayitem_first_option')), $options);
                                     
                                     if (isset($old[$fields])) $values = clean_names_urls_array($old[$fields]);
-                                    else $values = $preview_profile->$fields;
+                                    else $values = $profile->$fields;
 
                                     $length = count($values['names']);
                                     for ($i = 0; $i < $length; $i++):
@@ -181,7 +181,7 @@ $developer_name = $game->actual_developer_name;
 
                                     <?php
                                     if (isset($old[$fields])) $values = clean_names_urls_array($old[$fields]);
-                                    else $values = $preview_profile->$fields;
+                                    else $values = $profile->$fields;
 
                                     $length = count($values['names']);
                                     for ($i = 0; $i < $length; $i++):
@@ -233,7 +233,7 @@ $developer_name = $game->actual_developer_name;
 
                                     <?php
                                     if (isset($old[$fields])) $values = clean_names_urls_array($old[$fields]);
-                                    else $values = $preview_profile->$fields;
+                                    else $values = $profile->$fields;
 
                                     $length = count($values['names']);
                                     for ($i = 0; $i < $length; $i++):
@@ -286,7 +286,7 @@ $developer_name = $game->actual_developer_name;
                 <h3>{{ lang('discover.feed_title') }}/{{ lang('discover.email_title') }}</h3>
 
                 <?php
-                $profile = $game;
+                $profile = $profile;
 
                 ?>
                 @include('forms/promote_update_profile_subscription')
@@ -300,7 +300,7 @@ $developer_name = $game->actual_developer_name;
         <div class="tab-pane" id="crosspromotion-pane">
             {{ Former::open_vertical(route('post_crosspromotion_game_update')) }}
                 {{ Form::token() }}
-                {{ Former::hidden('id', $game->id)}}
+                {{ Former::hidden('id', $profile->id)}}
                 
                 <p>
                     {{ lang('crosspromotion.editgame.select_text') }}
@@ -311,7 +311,7 @@ $developer_name = $game->actual_developer_name;
                         <?php
                         $options = Dev::where_privacy('public');
 
-                        $values = $game->crosspromotion_profiles['developers'];
+                        $values = $profile->crosspromotion_profiles['developers'];
                         
                         $size = count($options);
                         if ($size > 15) $size = 15;
@@ -323,7 +323,7 @@ $developer_name = $game->actual_developer_name;
                         <?php
                         $options = Game::where_privacy('public');
                         
-                        $values = $game->crosspromotion_profiles['games'];
+                        $values = $profile->crosspromotion_profiles['games'];
 
                         $size = count($options);
                         if ($size > 15) $size = 15;
@@ -340,7 +340,7 @@ $developer_name = $game->actual_developer_name;
 
             <p>
                 <?php
-                $link = route('get_crosspromotion_from_game', array($game->id, $game->crosspromotion_key)); 
+                $link = route('get_crosspromotion_from_game', array($profile->id, $profile->crosspromotion_key)); 
                 ?>
                 {{ lang('crosspromotion.editgame.link_text', array('url'=>$link)) }}
             </p>

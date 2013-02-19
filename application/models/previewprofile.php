@@ -18,34 +18,20 @@ class PreviewProfile extends ExtendedEloquent
             'type' => $profile->type,
             'privacy' => 'publishing',
             $profile->type.'_id' => $profile->id,
-            'datajson' => '{}',
+            'data' => array(),
         );
 
         parent::create($input);
     }
 
 
-    /**
-     * Update a developer profile
-     * @param  int $id     The real profile id
-     * @param  array $input The profile data
-     * @return Developer   The updated dev instance
-     */
-    /*public static function update($id, $input)
-    {
-        parent::update($id, $input);
-    }*/
-
-
-
-
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
 
     // FIXME : do not work (return null) 15/02/2013
-    // => fixed : again, dynamic method with relationhip do not work whrn the method name has not the model name
+    // => fixed : again, dynamic method with relationhip do not work when the method name has not the model name
     // in this case, you have to manually set the foreign key
-    public function profile()
+    public function public_profile()
     {
         $profile_type = $this->get_attribute('type');
         return $this->belongs_to(ucfirst($profile_type), $profile_type.'_id');
@@ -63,39 +49,5 @@ class PreviewProfile extends ExtendedEloquent
     {
         $this->set_attribute('data', json_encode($data));
     }
-
-    //----------------------------------------------------------------------------------
-    // GETTERS
-
-    public function get_parsed_pitch() 
-    {
-        $data = $this->get_datajson();
-
-        return nl2br(parse_bbcode(xssSecure($data['pitch'])));
-    }
-
-
-    //----------------------------------------------------------------------------------
-    // MAGIC METHODS
-
-    /**
-     * Handle the dynamic retrieval of attributes and associations.
-     *
-     * @param  string  $key
-     * @return mixed
-     */
-    /*public function __get($field)
-    {
-        $profile_type = $this->get_attribute('type');
-        $data = $this->get_datajson();
-
-        $value = $this->get_attribute($field);
-
-        if ($value === null && isset($data[$field])) {
-            return XssSecure($data[$field]);
-        }
-
-        return XssSecure(parent::__get($field));
-    }*/
 }
 

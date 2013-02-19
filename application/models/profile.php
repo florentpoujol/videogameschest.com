@@ -52,10 +52,7 @@ class Profile extends ExtendedEloquent
         if ( ! isset($input['privacy'])) $input['privacy'] = 'private';
 
         $profile = parent::create($input);
-        $preview_profile = parent::create($input);
-        $profile->preview_profile->insert($preview_profile); // ?
-
-
+        
         // msg
         $msg = lang('profile.msg.creation_success', array(
             'type' => $profile->type,
@@ -78,8 +75,8 @@ class Profile extends ExtendedEloquent
 
         // preview version
         if ($create_preview_version) {
-            // $preview_profile = PreviewProfile::create($profile);
             $preview_profile = parent::create($input);
+            $profile->preview_profile->insert($preview_profile); // ?
             Log::write('profile '.$preview_profile->type.' create success', "Preview version of ".$profile->type." profile with name='".$profile->name."' and id='".$profile->id."' has been created with id='".$preview_profile->id."'.");
         }
 
@@ -103,7 +100,10 @@ class Profile extends ExtendedEloquent
         $profile = parent::find($id);
 
         $preview_profile = $profile->preview_profile;
-        PreviewProfile::update($preview_profile->id, array('data' => $preview_data));
+        PreviewProfile::update($preview_profile->id, array(
+            'privacy' => 'publishing',
+            'data' => $preview_data
+        ));
 
         $msg = lang('profile.msg.update_success', array(
             'type' => $profile->type,
@@ -127,7 +127,7 @@ class Profile extends ExtendedEloquent
     public function update_with_preview_data()
     {
         $preview_data = $this->preview_profile->data;
-
+        
         foreach ($preview_data as $key => $value) {
             //$this->set_attribute($key, $value);
             $this->$key = $value;
@@ -163,27 +163,9 @@ class Profile extends ExtendedEloquent
     /**
      * Do stuffs when a profile passed a review
      * Called from admin@post_reviews
-     * @param  string $user The User
      */
     public function passed_review()
     {
-        /*$preview_profile = $this->preview_profile;
-        $review = $preview_profile->privacy;
-        $profile_type = $this->type;
-        
-        if ($review == 'publishing') {
-            $preview_profile->privacy = '';
-            $preview_profile->save();
-        }
-      
-        // sanitize data before the real update in
-        $data = $preview_profile->to_array();
-        foreach ($data as $field => $value) {
-            if (in_array($field, static::$fields_to_remove)) unset($data[$field]);
-        }
-
-        parent::update($this->id, $data);*/
-
         $preview_profile = $this->preview_profile;
         $review = $preview_profile->privacy;
         $profile_type = $this->type;
@@ -191,9 +173,9 @@ class Profile extends ExtendedEloquent
         $preview_profile->privacy = '';
         $preview_profile->save();
 
+        $this->privacy = 'public'; // nessessary only the first time when the "real" profile goes from private to public
         $this->update_with_preview_data();
         $this->save();
-
 
         Log::write($profile_type.' success review', $profile_type.' profile passed the '.$review.' review.');
 
