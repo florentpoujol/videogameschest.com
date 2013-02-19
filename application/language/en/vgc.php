@@ -717,12 +717,16 @@ return array(
 // PROFILE
 
     'profile' => array(
+        'update_help' => 'Every text fields needs to be reviewed by an administrator everytimes you update them. The modification of those fields will not be visible by everyone before they are reviewed. <br>
+        You can preview how the profile looks with the modifications by clicking on the "Preview modifications" link above. You still need to save the modifications by validating the form with the "Update" button before they become visible.',
+
         'msg' => array(
             'creation_success' => "The :type profile with name ':name' (id=:id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
             
             'update_success' => "The :type profile with name ':name' (id=:id) has successfully been updated.",
         ),
     ),
+
 // PROMOTE
 
     'promote' => array(

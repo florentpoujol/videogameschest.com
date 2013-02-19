@@ -24,10 +24,7 @@ $developer_name = $profile->actual_developer_name;
 
     <hr>
 
-    <p class="pull-right">
-        <a href="{{ route('get_game_preview', array($profile->id)) }}">{{ lang('common.preview_profile_modifications') }}</a> | 
-        <a href="{{ route('get_game', array(name_to_url($profile->name))) }}">{{ icon('eye-open') }}{{ lang('common.view_profile_link') }}</a>
-    </p>
+    
 
     <ul class="nav nav-tabs" id="main-tabs">
         <li><a href="#general-pane" data-toggle="tab">{{ lang('common.general') }}</a></li>
@@ -37,6 +34,11 @@ $developer_name = $profile->actual_developer_name;
 
     <div class="tab-content">
         <div class="tab-pane" id="general-pane">
+            <p class="pull-right">
+                <a href="{{ route('get_game_preview', array($profile->id)) }}">{{ lang('common.preview_profile_modifications') }}</a> | 
+                <a href="{{ route('get_game', array(name_to_url($profile->name))) }}">{{ lang('common.view_profile_link') }}</a>
+            </p>
+
             <?php
             $rules = array(
                 'name' => 'required|alpha_dash_extended|min:2',
@@ -58,6 +60,12 @@ $developer_name = $profile->actual_developer_name;
                 {{ Form::hidden('id', $profile->id) }}
 
                 {{ Former::primary_submit(lang('common.update')) }}
+                
+                <br>
+                <br>
+                <div class="alert alert-info">
+                    {{ lang('vgc.profile.update_help') }}
+                </div>
 
                 <hr>
 

@@ -3,15 +3,7 @@
 @endsection
 
 <?php
-$rules = array(
-    'name' => 'required|alpha_dash_extended|min:2',
-    'email' => 'email',
-    'logo' => 'url',
-    'website' => 'url',
-    'blogfeed' => 'url',
-    'presskit' => 'url',
-    'teamsize' => 'integer|min:1'
-);
+
 
 $profile = Dev::find($profile_id);
 $profile->update_with_preview_data();
@@ -31,11 +23,6 @@ if (is_admin()) {
     
     <hr>
 
-    <p class="pull-right">
-        <a href="{{ route('get_developer_preview', array($profile->id)) }}">{{ lang('common.preview_profile_modifications') }}</a> | 
-        <a href="{{ route('get_developer', array(name_to_url($profile->name))) }}">{{ icon('eye-open') }} {{ lang('common.view_profile_link') }}</a>
-    </p>
-
     <ul class="nav nav-tabs" id="main-tabs">
         <li><a href="#general-pane" data-toggle="tab">{{ lang('common.general') }}</a></li>
         <li><a href="#promote-pane" data-toggle="tab">{{ lang('promote.title') }}</a></li>
@@ -43,11 +30,33 @@ if (is_admin()) {
 
     <div class="tab-content">
         <div class="tab-pane" id="general-pane">
+            <p class="pull-right">
+                <a href="{{ route('get_developer_preview', array($profile->id)) }}">{{ lang('common.preview_profile_modifications') }}</a> | 
+                <a href="{{ route('get_developer', array(name_to_url($profile->name))) }}">{{ lang('common.view_profile_link') }}</a>
+            </p>
+
+            <?php
+            $rules = array(
+                'name' => 'required|alpha_dash_extended|min:2',
+                'email' => 'email',
+                'logo' => 'url',
+                'website' => 'url',
+                'blogfeed' => 'url',
+                'presskit' => 'url',
+                'teamsize' => 'integer|min:1'
+            );
+            ?>
             {{ Former::open_vertical(route('post_developer_update'))->rules($rules) }} 
                 {{ Form::token() }}
                 {{ Form::hidden('id', $profile_id) }}
 
                 {{ Former::primary_submit(lang('common.update')) }} 
+
+                <br>
+                <br>
+                <div class="alert alert-info">
+                    {{ lang('vgc.profile.update_help') }}
+                </div>
 
                 <hr>
 

@@ -127,7 +127,7 @@ class Profile extends ExtendedEloquent
     public function update_with_preview_data()
     {
         $preview_data = $this->preview_profile->data;
-        
+
         foreach ($preview_data as $key => $value) {
             //$this->set_attribute($key, $value);
             $this->$key = $value;
@@ -173,24 +173,29 @@ class Profile extends ExtendedEloquent
         $preview_profile->privacy = '';
         $preview_profile->save();
 
+        $send_email = false;
+        if ($this->privacy == 'private') $send_email = true;
+
         $this->privacy = 'public'; // nessessary only the first time when the "real" profile goes from private to public
         $this->update_with_preview_data();
         $this->save();
 
         Log::write($profile_type.' success review', $profile_type.' profile passed the '.$review.' review.');
 
-        // email's text :
-        // it explain that the profile has passed the review and what can they do with it
-        $subject = lang('emails.profile_passed_publishing_review.subject');
-        
-        $html = lang('emails.profile_passed_'.$review.'_review.html', array(
-            'user_name' => $this->user->name,
-            'profile_type' => $profile_type,
-            'profile_name' => $this->name,
-            'profile_link' => route('get_'.$profile_type, array(name_to_url($this->name))),
-        ));
+        if ($send_email) {
+            // email's text :
+            // it explain that the profile has passed the review and what can they do with it
+            $subject = lang('emails.profile_passed_publishing_review.subject');
+            
+            $html = lang('emails.profile_passed_'.$review.'_review.html', array(
+                'user_name' => $this->user->name,
+                'profile_type' => $profile_type,
+                'profile_name' => $this->name,
+                'profile_link' => route('get_'.$profile_type, array(name_to_url($this->name))),
+            ));
 
-        sendMail($this->user->email, $subject, $html);
+            sendMail($this->user->email, $subject, $html);
+        }
     }
 
     
