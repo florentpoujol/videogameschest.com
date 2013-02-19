@@ -21,7 +21,7 @@ class PreviewProfile extends ExtendedEloquent
             'data' => array(),
         );
 
-        parent::create($input);
+        return parent::create($input);
     }
 
 

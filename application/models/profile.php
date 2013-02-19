@@ -75,8 +75,8 @@ class Profile extends ExtendedEloquent
 
         // preview version
         if ($create_preview_version) {
-            $preview_profile = parent::create($input);
-            $profile->preview_profile->insert($preview_profile); // ?
+            $preview_profile = PreviewProfile::create($profile);
+
             Log::write('profile '.$preview_profile->type.' create success', "Preview version of ".$profile->type." profile with name='".$profile->name."' and id='".$profile->id."' has been created with id='".$preview_profile->id."'.");
         }
 
@@ -166,13 +166,6 @@ class Profile extends ExtendedEloquent
      */
     public function passed_review()
     {
-        $preview_profile = $this->preview_profile;
-        $review = $preview_profile->privacy;
-        $profile_type = $this->type;
-
-        $preview_profile->privacy = '';
-        $preview_profile->save();
-
         $send_email = false;
         if ($this->privacy == 'private') $send_email = true;
 
@@ -180,6 +173,14 @@ class Profile extends ExtendedEloquent
         $this->update_with_preview_data();
         $this->save();
 
+        $preview_profile = $this->preview_profile;
+        $review = $preview_profile->privacy;
+
+        $preview_profile->data = array();
+        $preview_profile->privacy = '';
+        $preview_profile->save();
+
+        $profile_type = $this->type;
         Log::write($profile_type.' success review', $profile_type.' profile passed the '.$review.' review.');
 
         if ($send_email) {
