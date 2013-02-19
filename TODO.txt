@@ -2,6 +2,7 @@
     MILESTONE
 ------------------------------------------------------------
 
+
 Lundi 25 Fevrier 2013
 
 publication première mise à jour avec
@@ -14,16 +15,14 @@ Test en staging le vendredi 22/02/2013
 DONE :
 
 new profile update system
+markdown pour les pitchs
+champs meta keyword et meta description pour les profils
+
 
 
 ============================================================
     TODO to milestone
 ------------------------------------------------------------
-
-
-- sauvegarde des message infos/erreur avec serialize au lieu de json
-- markdown pour les pitchs
-- champs meta keyword et meta description
 
 
 ajout profils restant
@@ -49,6 +48,9 @@ n'importe quel user peu ajouter un autre user
 
 Mardi 19/02/2013
 
+- champs meta keyword et meta description
+- markdown pour les pitchs
+- sauvegarde des message infos/erreur avec serialize au lieu de json
 nouveau système d'update => fin
 
 

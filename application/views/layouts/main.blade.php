@@ -7,6 +7,8 @@ if ( ! isset($page_title)) {
 
 if ( ! isset($page_content)) $page_content = '';
 $page_content .= Section::yield('page_content');
+
+if ( ! isset($preview_profile)) $preview_profile = false;
 ?><!DOCTYPE html>
 <html lang="{{ LANGUAGE }}"> 
     <!-- ENVIRONEMENT : {{ Config::get('vgc.environment') }} -->
@@ -16,10 +18,32 @@ $page_content .= Section::yield('page_content');
         <!-- Meta --> 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         
-        @if (Config::get('vgc.environment') == 'production')
+        @if (Config::get('vgc.environment') == 'production' && $preview_profile == false)
             <meta name="robots" content="index,follow">
-            <meta name="description" content="">
-            <meta name="keywords" content="">
+            <?php
+            if (isset($profile)) { //displaying a profile
+                $meta_description = $profile->meta_description;
+
+                $meta_keywords = '';
+                $keywords = $profile->meta_keywords;
+                $keywords = explode(',', $keywords);
+
+                foreach ($keywords as $keyword) {
+                    $keyword = trim($keyword);
+
+                    if ($keyword != '') {
+                        $meta_keywords .= $keyword.', ';
+                    }
+                }
+
+                $meta_keywords = substr($meta_keywords, 0, strlen($meta_keywords)-2);
+            } else {
+                $meta_description = lang('vgc.common.site_meta_description');
+                $meta_keywords = lang('vgc.common.site_meta_keywords');
+            }
+            ?>
+            <meta name="description" content="{{ $meta_description }}">
+            <meta name="keywords" content="{{ $meta_keywords }}">
         @else
             <meta name="robots" content="noindex,nofollow">
         @endif

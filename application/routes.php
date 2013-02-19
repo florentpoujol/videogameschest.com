@@ -265,7 +265,8 @@ $layout = View::of('layout');
             $profile->update_with_preview_data();
 
             return $layout
-            ->with('profile', $profile) // for the menu view
+            ->with('preview_profile', true) // for the layout
+            ->with('profile', $profile)
             ->nest('page_content', 'developer', array('profile' => $profile, 'preview' => true));
         } else {
             HTML::set_error(lang('common.msg.access_not_allowed'));
@@ -324,7 +325,8 @@ $layout = View::of('layout');
             $profile->update_with_preview_data();
 
             return $layout
-            ->with('profile', $profile) // for the menu view
+            ->with('preview_profile', true) // for the layout
+            ->with('profile', $profile) 
             ->nest('page_content', 'game', array('profile' => $profile, 'preview' => true));
         } else {
             HTML::set_error(lang('common.msg.access_not_allowed'));

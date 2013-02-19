@@ -19,7 +19,7 @@ else $devs = Dev::where_privacy('public')->get(array('id', 'name'));
 $developer_name = $profile->actual_developer_name;
 ?>
 
-<div id="editgame">
+<div id="editgame" class="profile-form update-profile-form">
     <h1>{{ lang('game.edit.title') }} <small>{{ xssSecure($profile->name) }} </small></h1>
 
     <hr>
@@ -69,15 +69,19 @@ $developer_name = $profile->actual_developer_name;
 
                 <hr>
 
+                @if (is_admin())
+                    {{ Former::select('privacy')->options($privacy) }}
+
+                    <hr>
+                @endif
+
                 <div class="row">
                     <div class="span4">
                         {{ Former::text('name', lang('common.name')) }}
 
                         {{ Former::select('devstate', lang('game.devstate'))->options(get_array_lang(Config::get('vgc.developmentstates'), 'developmentstates.'))->value('released') }}
 
-                        @if (is_admin())
-                            {{ Former::select('privacy')->options($privacy) }}
-                        @endif
+                        {{ Former::textarea('meta_description', lang('vgc.profile.meta_description'))->id('meta-description') }}
                     </div>
 
                     <div class="span4">
@@ -90,6 +94,8 @@ $developer_name = $profile->actual_developer_name;
                         {{ Former::text('publisher_name', lang('common.publisher_name')) }}
                         
                         {{ Former::url('publisher_url', lang('common.publisher_url'))->placeholder(lang('common.url')) }}
+
+                        {{ Former::text('meta_keywords', lang('vgc.profile.meta_keywords'))->help(lang('vgc.profile.meta_keywords_help')) }}
                     </div>
                 </div> <!-- /.row -->
 
@@ -103,7 +109,7 @@ $developer_name = $profile->actual_developer_name;
                     </div>
 
                     <div class="span8">
-                        {{ Former::textarea('pitch', lang('game.pitch'))->help(lang('common.bbcode_explanation'))->class('span8') }}
+                        {{ Former::textarea('pitch', lang('game.pitch'))->help(lang('common.markdown_help'))->class('span8') }}
                     </div>
                 </div> <!-- /.row -->
 

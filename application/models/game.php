@@ -129,7 +129,7 @@ class Game extends Profile
         if (in_array($key, static::$json_fields)) {
             $attr = $this->get_attribute($key);
 
-            if (in_array($key, static::$array_fields)) {
+            if (in_array($key, static::$array_fields) || $key == "meta_data") {
                 // make sure $attr is a json array and not an empty string, so that json_decode return an array
                 if (trim($attr) == '') $attr = '[]';
             }

@@ -13,7 +13,7 @@ if (is_admin()) {
 $devs = Dev::get(array('id', 'name'));
 
 ?>
-<div id="addgame">
+<div id="addgame" class="profile-form create-profile-form">
     <h1>{{ lang('game.add.title') }}</h1>
 
     <hr>
@@ -43,6 +43,8 @@ $devs = Dev::get(array('id', 'name'));
 
         @if (is_admin())
             {{ Former::select('privacy')->options($privacy) }}
+
+            <hr>
         @endif
 
         <div class="row">
@@ -50,6 +52,8 @@ $devs = Dev::get(array('id', 'name'));
                 {{ Former::text('name', lang('common.name')) }}
 
                 {{ Former::select('devstate', lang('game.devstate'))->options(get_array_lang(Config::get('vgc.developmentstates'), 'developmentstates.'))->value('released') }}
+
+                {{ Former::textarea('meta_description', lang('vgc.profile.meta_description'))->id('meta-description') }}
             </div>
 
             <div class="span4">
@@ -62,6 +66,8 @@ $devs = Dev::get(array('id', 'name'));
                 {{ Former::text('publisher_name', lang('common.publisher_name')) }}
                 
                 {{ Former::url('publisher_url', lang('common.publisher_url'))->placeholder(lang('common.url')) }}
+
+                {{ Former::text('meta_keywords', lang('vgc.profile.meta_keywords'))->help(lang('vgc.profile.meta_keywords_help')) }}
             </div>
         </div> <!-- /.row -->
 
@@ -75,7 +81,7 @@ $devs = Dev::get(array('id', 'name'));
             </div>
 
             <div class="span8">
-                {{ Former::textarea('pitch', lang('game.pitch'))->help(lang('common.bbcode_explanation'))->class('span8') }}
+                {{ Former::textarea('pitch', lang('game.pitch'))->help(lang('common.markdown_help'))->class('span8') }}
             </div>
         </div> <!-- /.row -->
 

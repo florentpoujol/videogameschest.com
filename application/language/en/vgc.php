@@ -88,7 +88,7 @@ return array(
         'array_field_where_all' => 'All',
         'array_field_where_any' => 'Any of',
 
-        'bbcode_explanation' => 'You may use the following BBCode tags : h1, h2, b and i.',
+        //'bbcode_explanation' => 'You may use the following BBCode tags : h1, h2, b and i.',
         // 'You may use HTML in the textarea above (only when editing a profile).'
 
         'blogfeed' => 'Blog RSS feed',
@@ -118,8 +118,9 @@ return array(
         'learn_more' => 'Learn more',
         'logo' => 'Logo',
 
+        'markdown_help' => 'You may style your pitch with <a href="http://daringfireball.net/projects/markdown/syntax" title="Go to the Markdown documentation">markdown tags</a>.',
         'medias' => 'Medias',
-        'meta_description' => 'VideoGamesChest is the participative place to search for, discover and promote everything that was, is and will be Video Games. It seek to improve the visibility of games and game-related content and people with innovative solutions.',
+        
 
         'name' => 'Name',
         'nbplayers' => 'Number of players',
@@ -144,6 +145,8 @@ return array(
         'screenshots' => 'Screenshots',
         'select_first_option' => 'Select below',
         'select_arrayitem_first_option' => 'Select below or select this option to delete the item',
+        'site_meta_description' => 'VideoGamesChest is the participative place to search for, discover and promote everything that was, is and will be Video Games. It seek to improve the visibility of games and game-related content and people with innovative solutions.',
+        'site_meta_keywords' => '',
         'site_name' => 'VideoGamesChest',
         'site_url' => 'VideoGamesChest.com',
         'socialnetworks' => 'Social networks',
@@ -717,6 +720,11 @@ return array(
 // PROFILE
 
     'profile' => array(
+
+        'meta_description' => 'Meta Description',
+        'meta_keywords' => 'Meta Keywords',
+        'meta_keywords_help' => 'Keywords separated by a coma to appear in the "keywords" meta tag. Keywords are trimmed.',
+
         'update_help' => 'Every text fields needs to be reviewed by an administrator everytimes you update them. The modification of those fields will not be visible by everyone before they are reviewed. <br>
         You can preview how the profile looks with the modifications by clicking on the "Preview modifications" link above. You still need to save the modifications by validating the form with the "Update" button before they become visible.',
 

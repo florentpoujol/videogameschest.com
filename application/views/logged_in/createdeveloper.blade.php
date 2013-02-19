@@ -21,7 +21,7 @@ if (is_admin()) {
     $privacy = array_set_values_as_keys(Config::get('vgc.privacy_and_reviews'));
 }
 ?>
-<div id="adddeveloper">
+<div id="adddeveloper" class="create-profile-form profile-form">
     <h1>{{ lang('developer.add.title') }}</h1>
 
     <hr>
@@ -46,10 +46,14 @@ if (is_admin()) {
                 {{ Former::text('name', lang('common.name'))->help(lang('developer.name_help')) }}
 
                 {{ Former::url('logo', lang('common.logo'))->placeholder(lang('common.url')) }}
+
+                {{ Former::textarea('meta_description', lang('vgc.profile.meta_description'))->id('meta-description') }}
+
+                {{ Former::text('meta_keywords', lang('vgc.profile.meta_keywords'))->help(lang('vgc.profile.meta_keywords_help')) }}
             </div>
             
             <div class="span8">
-                {{ Former::textarea('pitch', lang('developer.pitch'))->class('span8')->help(lang('common.bbcode_explanation')) }}
+                {{ Former::textarea('pitch', lang('developer.pitch'))->class('span8')->help(lang('common.markdown_help')) }}
             </div>
         </div>
 

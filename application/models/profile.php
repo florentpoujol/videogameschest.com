@@ -221,17 +221,6 @@ class Profile extends ExtendedEloquent
         else return $this->has_many('Report', $foreign_key)->where_type($report_type)->get();
     }
 
-
-    /*public function preview_profile()
-    {
-        return $this->has_one(ucfirst($this->type), 'public_id');
-    }
-
-    public function public_profile()
-    {
-        return $this->belongs_to(ucfirst($this->type), 'public_id');
-    }*/
-
     public function preview_profile()
     {
         return $preview_profile = $this->has_one("PreviewProfile");
@@ -274,6 +263,6 @@ class Profile extends ExtendedEloquent
 
     public function get_parsed_pitch() 
     {
-        return nl2br(parse_bbcode(xssSecure($this->pitch)));
+        return Sparkdown\Markdown($this->pitch);
     }
 }

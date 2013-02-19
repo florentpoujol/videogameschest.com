@@ -35,12 +35,13 @@
 
 return array(
 
-    'docs' => array('handles' => 'docs'),
+    // 'docs' => array('handles' => 'docs'),
     'former' => array('auto' => true),
     'bootstrapper' => array('auto' => true),
     'swiftmailer' => array('auto' => true),
     'feeder' => array('auto' => true),
     'recaptcha' => array('auto' => true),
+    'markdown' => array('auto' => true),
     
     /*'logreader' => array('auto' => true),
 
