@@ -47,22 +47,18 @@
                 @foreach ($preview_profiles as $preview_profile)
                     <?php
                     $profile = $preview_profile->public_profile;
-                    
-                    // if ( ! in_array(user_id(), $profile->approved_by)):
-                        $class = '';
-                        // if (is_admin() && count($profile->reports('admin')) > 0) $class = 'class="error"'; // empty() maked the page reload infinitely ?
+                    // dd($preview_profile);
                     ?>
-                        <tr {{ $class }}>
-                            <td>
-                                <a href="{{ route('get_'.$profile->type.'_preview', array($profile->id)) }}" title="Preview">{{ $profile->name }}</a> ({{ $profile->type }}) <a href="{{ route('get_'.$profile->type, array(name_to_url($profile->name))) }}">Current version</a>
-                            </td>
+                    <tr>
+                        <td>
+                            <a href="{{ route('get_'.$profile->type.'_preview', array($profile->id)) }}" title="Preview">{{ $profile->name }}</a> ({{ $profile->type }}) <a href="{{ route('get_'.$profile->type, array(name_to_url($profile->name))) }}">Current version</a>
+                        </td>
+                        
+                        <td>
                             
-                            <td>
-                                
-                                <input type="checkbox" name="approved_profiles[{{ $profile->type }}][]" value="{{ $profile->id }}">
-                            </td>
-                        </tr>
-                    <!-- endif -->
+                            <input type="checkbox" name="approved_profiles[{{ $profile->type }}][]" value="{{ $profile->id }}">
+                        </td>
+                    </tr>
                 @endforeach
             </table>
         </form>

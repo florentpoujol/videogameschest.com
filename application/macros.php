@@ -30,42 +30,37 @@ HTML::macro('get_messages', function($view_errors = null)
  */
 HTML::macro('get_errors', function($view_errors = null) 
 {
-	$session_errors = Session::get('vgc_errors');
-    $errors = "";
+	$session_data = Session::get('vgc_errors', null);
+    $html = "";
 
-    if ($session_errors != "" || (is_object($view_errors) && count($view_errors->all()) > 0) ) 
-    {
-        $errors .= '<div class="alert alert-error"><a class="close" data-dismiss="alert" href="#">&times;</a>
+    if ($session_data !== null || (is_object($view_errors) && count($view_errors->all()) > 0) ) {
+        $html .= '<div class="alert alert-error"><a class="close" data-dismiss="alert" href="#">&times;</a>
         ';
 
-        if ($session_errors != "") 
-        {
-            $session_errors = json_decode($session_errors, true);
-            if ($session_errors === null) $session_errors = array();
-            foreach ($session_errors as $error) 
-            {
-                $errors .= $error.' <br>
+        if ($session_data !== null) {
+            $msgs = unserialize($session_data);
+            
+            foreach ($msgs as $msg) {
+                $html .= $msg.' <br>
                 ';
             }
         }
 
-        if ($view_errors != null) 
-        {
-            foreach ($view_errors->all() as $error) 
-            {
-                $errors .= $error.' <br>
+        if ($view_errors !== null) {
+            foreach ($view_errors->all() as $msg) {
+                $html .= $msg.' <br>
                 ';
             }
         }
 
-        $errors .= "
+        $html .= "
         </div>
         ";
     }
 
     Session::forget('vgc_errors');
 
-    return $errors;
+    return $html;
 });
 
 
@@ -75,34 +70,28 @@ HTML::macro('get_errors', function($view_errors = null)
  */
 HTML::macro('set_error', function($error) 
 {
-    $session_errors = Session::get('vgc_errors');
+    $session_data = Session::get('vgc_errors', null);
     
-    if ($session_errors != '') {
-        $session_errors = json_decode($session_errors, true);
-    }
-    else {
-        $session_errors = array();
-    }
+    if ($session_data !== null) {
+        $msgs = unserialize($session_data);
+    } else $msgs = array();
+    
 
     if (is_string($error)) {
-        $session_errors[] = $error;
-    }
-    elseif (is_array($error)) 
-    {
+        $msgs[] = $error;
+    } elseif (is_array($error)) {
         $errors = $error;
         foreach ($errors as $error) {
-            $session_errors[] = $error;
+            $msgs[] = $error;
         }
-    }
-    else 
-    { // error must an object of type Laravel/Message, probably from the Validator class
+    } else { // error must be an object of type Laravel/Message, probably from the Validator class
         $errors = $error;
         foreach ($errors->all() as $error) {
-            $session_errors[] = $error;
+            $msgs[] = $error;
         }
     }
 
-    Session::put("vgc_errors", to_json($session_errors));
+    Session::put("vgc_errors", serialize($msgs));
 });
 
 
@@ -116,29 +105,27 @@ HTML::macro('set_error', function($error)
  */
 HTML::macro('get_success', function() 
 {
-    $json_success = Session::get('vgc_success');
-    $html_success = "";
+    $session_data = Session::get('vgc_success', null);
+    $html = "";
 
-    if (trim($json_success) != "") 
-    {
-        $html_success .= '<div class="alert alert-success"><a class="close" data-dismiss="alert" href="#">&times;</a>
+    if ($session_data !== null) {
+        $html .= '<div class="alert alert-success"><a class="close" data-dismiss="alert" href="#">&times;</a>
         ';
         
-        $array_success = json_decode($json_success, true);
-        if (is_null($array_success)) $array_success = array();
-        foreach ($array_success as $success) 
-        {
-            $html_success .= $success.' <br>
+        $msgs = unserialize($session_data);
+        
+        foreach ($msgs as $msg) {
+            $html .= $msg.' <br>
             ';
         }
         
-        $html_success .= "</div>
+        $html .= "</div>
         ";
     }
 
     Session::forget('vgc_success');
 
-    return $html_success;
+    return $html;
 });
 
 
@@ -146,18 +133,18 @@ HTML::macro('get_success', function()
 /**
  * Register a success message to be displayed the next time HTML::get_success() is called
  */
-HTML::macro('set_success', function($success) 
+HTML::macro('set_success', function($msg) 
 {
-    $session_success = Session::get('vgc_success');
+    $session_data = Session::get('vgc_success', null);
     
-    if ($session_success != "") 
+    if ($session_data !== null) 
     {
-        $session_success = json_decode($session_success, true);
-        $session_success[] = $success;
-        Session::put("vgc_success", to_json($session_success));
+        $session_data = unserialize($session_data);
+        $session_data[] = $msg;
+        Session::put("vgc_success", serialize($session_data));
     }
     else
-        Session::put("vgc_success", '["'.$success.'"]');
+        Session::put("vgc_success", serialize(array($msg)));
 });
 
 
@@ -171,30 +158,27 @@ HTML::macro('set_success', function($success)
  */
 HTML::macro('get_infos', function() 
 {
-    $json_success = Session::get('vgc_infos');
-    $html_success = "";
-    
-    if ($json_success != "") 
-    {
-        $html_success .= '<div class="alert alert-info"><a class="close" data-dismiss="alert" href="#">&times;</a>
+    $session_data = Session::get('vgc_info', null);
+    $html = "";
+
+    if ($session_data !== null) {
+        $html .= '<div class="alert alert-info"><a class="close" data-dismiss="alert" href="#">&times;</a>
         ';
-
-        $array_success = json_decode($json_success, true);
-        if ($array_success === null) $array_success = array();
-
-        foreach ($array_success as $success) 
-        {
-            $html_success .= $success.' <br>
+        
+        $msgs = unserialize($session_data);
+        
+        foreach ($msgs as $msg) {
+            $html .= $msg.' <br>
             ';
         }
         
-        $html_success .= "</div>
+        $html .= "</div>
         ";
     }
 
-    Session::forget('vgc_infos');
+    Session::forget('vgc_info');
 
-    return $html_success;
+    return $html;
 });
 
 
@@ -202,19 +186,21 @@ HTML::macro('get_infos', function()
 /**
  * Register a success message to be displayed the next time HTML::get_success() is called
  */
-HTML::macro('set_info', function($success) 
+HTML::macro('set_info', function($msg) 
 {
-    $session_success = Session::get('vgc_infos');
+    $session_data = Session::get('vgc_info', null);
     
-    if ($session_success != "") 
+    if ($session_data !== null) 
     {
-        $session_success = json_decode($session_success, true);
-        $session_success[] = $success;
-        Session::put("vgc_infos", to_json($session_success));
+        $session_data = unserialize($session_data);
+        $session_data[] = $msg;
+        Session::put("vgc_info", serialize($session_data));
     }
     else
-        Session::put("vgc_infos", '["'.$success.'"]');
+        Session::put("vgc_info", serialize(array($msg)));
 });
+
+
 //----------------------------------------------------------------------------------
 //    FORM
 //----------------------------------------------------------------------------------
