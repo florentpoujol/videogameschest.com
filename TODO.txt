@@ -13,7 +13,7 @@ Test en staging le vendredi 22/02/2013
 
 DONE :
 
-
+new profile update system
 
 
 ============================================================
@@ -21,12 +21,10 @@ DONE :
 ------------------------------------------------------------
 
 
-nouveau système d'update de profil >
-1ère création du profil et 1ère review et reviews par après
+- sauvegarde des message infos/erreur avec serialize au lieu de json
+- markdown pour les pitchs
+- champs meta keyword et meta description
 
-
-plusieurs user peuvent éditer un même profil
-n'importe quel user peu ajouter un autre user
 
 ajout profils restant
     model
@@ -35,7 +33,13 @@ ajout profils restant
     profil
     ajout en blacklist
 
-sauvegarde des message infos/erreur avec serialize au lieu de json
+- refaire home
+
+==
+
+plusieurs user peuvent éditer un même profil
+n'importe quel user peu ajouter un autre user
+
 
 
 ============================================================
@@ -43,7 +47,13 @@ sauvegarde des message infos/erreur avec serialize au lieu de json
 ------------------------------------------------------------
 
 
-Lundi 1/02/2013
+Mardi 19/02/2013
+
+nouveau système d'update => fin
+
+
+
+Lundi 18/02/2013
 
 nouveau système d'update => reste à règler : 1ère création du profil et 1ère review et reviews par après
 
