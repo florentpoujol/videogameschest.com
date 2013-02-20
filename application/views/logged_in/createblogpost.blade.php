@@ -9,7 +9,7 @@
 
     {{ Former::text('title_url') }}
 
-    {{ Former::textarea('content')->class('span8') }}
+    {{ Former::textarea('content')->class('span8')->help(lang('vgc.common.markdown_help')) }}
 
     {{ Former::submit('Submit') }}
 

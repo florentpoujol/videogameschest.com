@@ -17,7 +17,7 @@ if (isset($post)) {
 
     {{ Former::text('title_url') }}
 
-    {{ Former::textarea('content')->class('span8') }}
+    {{ Former::textarea('content')->class('span8')->help(lang('common.markdown_help')) }}
 
     {{ Former::submit('Update') }}
 

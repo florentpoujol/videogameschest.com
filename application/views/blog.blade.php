@@ -16,7 +16,7 @@
                     <h2>{{ $post->title }} <small>{{ $post->date }}</small></h2>
 
 
-                    {{ $post->content }}
+                    {{ $post->parsed_content }}
                     <br>
 
                     @if (is_admin())

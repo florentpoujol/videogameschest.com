@@ -24,6 +24,7 @@ champs meta keyword et meta description pour les profils
     TODO to milestone
 ------------------------------------------------------------
 
+makdown pour le blog
 
 ajout profils restant
     model

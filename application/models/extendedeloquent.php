@@ -5,6 +5,18 @@ class ExtendedEloquent extends Eloquent
     public static $timestamps = true;
     
     //----------------------------------------------------------------------------------
+
+    public static function create($input)
+    {
+        return parent::create(clean_form_input($input));
+    }
+
+    public static function update($id, $input)
+    {
+        return parent::update($id, clean_form_input($input));
+    }
+
+    //----------------------------------------------------------------------------------
     // MAGIC METHODS
 
     /**
@@ -14,13 +26,13 @@ class ExtendedEloquent extends Eloquent
      * @param  string  $key
      * @return mixed
      */
-    public function __get($key)
+    /*public function __get($key)
     {
         $value = parent::__get($key);
 
         if (is_string($value)) return $value;
         else return $value;
-    }
+    }*/
 
     // NOTE : it's not a good idea to secure data agains XSS with e() or Security::xss_clean() here
     // because it will mess up with data that does not need to be escaped (especially json strings)
