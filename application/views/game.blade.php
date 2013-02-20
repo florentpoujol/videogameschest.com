@@ -36,7 +36,7 @@ $name = $profile->name;
                     $dev_url = '';
                 } else {
                     $dev_name = $profile->dev->name;
-                    $dev_url = route('get_developer', array(name_to_url($dev_name)));
+                    $dev_url = route('get_profile_view', array('developer', name_to_url($dev_name)));
                 }
 
                 $publisher_name = $profile->publishername;

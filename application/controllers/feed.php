@@ -106,28 +106,26 @@ class Feed_Controller extends Base_Controller
                 ->permalink(route('get_search_feed', array($search_id, $feed_type)));
 
             foreach ($profiles as $profile) {
-                $class_name = $profile->class_name;
-                $profile_name = $profile->name;
-                $profile_link = route('get_'.$class_name, array(name_to_url($profile_name)));
+                $profile_link = route('get_pofile_view', array($profile->type, name_to_url($profile->name)));
 
                 $feed->entry()
                     ->published($profile->created_at)
                     ->updated($profile->updated_at)
                     ->permalink($profile_link)
 
-                    ->title('New '.$class_name.' profile : '.$profile_name)
+                    ->title('New '.$profile->type.' profile : '.$profile->name)
 
                     ->content()
                         ->add('text', 
-                            'A new '.$class_name.' profile has been published on VideoGamesChest.com.
+                            'A new '.$profile->type.' profile has been published on VideoGamesChest.com.
                             You can see it at this url : 
                             '.$profile_link
                         )->up()
 
                     ->content()    
                         ->add('html', 
-                            'A new '.$class_name.' profile has been published on VideoGamesChest.com. <br>
-                            You can see it at this url : <a href="'.$profile_link.'" title="Go to '.$profile_name.'\'s profile">'.$profile_name.'</a>'
+                            'A new '.$profile->type.' profile has been published on VideoGamesChest.com. <br>
+                            You can see it at this url : <a href="'.$profile_link.'" title="Go to '.$profile->name.'\'s profile">'.$profile->name.'</a>'
                         )->up()
                 ;
             }
@@ -156,23 +154,21 @@ class Feed_Controller extends Base_Controller
                     ->permalink(route('get_reviews_feed', array($review_type, $user_id, $url_key)));
 
                 foreach ($profiles as $profile) {
-                    $class_name = $profile->class_name;
-                    $profile_name = $profile->name;
-                    $profile_link = route('get_'.$class_name, array(name_to_url($profile_name)));
+                    $profile_link = route('get_profile_view', array($profile->type, name_to_url($profile_name)));
 
                     $feed->entry()
                         ->published($profile->created_at)
                         ->updated($profile->updated_at)
                         ->permalink($profile_link)
 
-                        ->title('New '.$class_name.' profile in '.$review_type.' review')
+                        ->title('New '.$profile->type.' profile in '.$review_type.' review')
 
                         ->content()->add('text', 
-                                'New '.$class_name.' profile in '.$review_type.' review. '.$profile_link
+                                'New '.$profile->type.' profile in '.$review_type.' review. '.$profile_link
                             )->up()
 
                         ->content()->add('html', 
-                                'New '.$class_name.' profile in '.$review_type.' review. <a href="'.$profile_link.'" title="Go to '.$profile_name.'\'s profile">'.$profile_name.'</a>'
+                                'New '.$profile->type.' profile in '.$review_type.' review. <a href="'.$profile_link.'" title="Go to '.$profile->name.'\'s profile">'.$profile->name.'</a>'
                             )->up()
                     ;
                 }

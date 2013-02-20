@@ -27,7 +27,7 @@
                 ?>
                 <tr>
                     <td>
-                        <a href="{{ route('get_'.$profile->class_name, array(name_to_url($profile->name))) }}">{{ $profile->name }}</a> ({{ $profile->class_name }})
+                        <a href="{{ route('get_profile_view', array($profile->type, name_to_url($profile->name))) }}">{{ $profile->name }}</a> ({{ $profile->type }})
                     </td>
                     
                     <td>

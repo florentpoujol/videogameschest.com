@@ -3,15 +3,13 @@
 class Profile extends ExtendedEloquent
 {
     //public $_user = null;
-    public $class_name = 'profile';
     public $type = 'profile';
-    public $class_name_plural = 'profiles';
+    public $types = 'profiles';
 
-    public $is_preview = false;
-
-    public static $fields_to_remove = array('id', 'user_id', 'public_id', 'developer_id', 'created_at', 'updated_at', 'in_promotion_feed',
+    
+   /* public static $fields_to_remove = array('id', 'user_id', 'public_id', 'developer_id', 'created_at', 'updated_at', 'in_promotion_feed',
         'in_promotion_newsletter', 'crosspromotion_profiles', 'crosspromotion_key');
-
+*/
 
 
     //----------------------------------------------------------------------------------
@@ -21,12 +19,8 @@ class Profile extends ExtendedEloquent
     {
         parent::__construct($attributes, $exists);
 
-        $this->class_name = strtolower(get_class($this)); // get the child class name
-        $this->class_name_plural = $this->class_name.'s';
-
-        $this->type = $this->class_name;
-
-        $this->is_preview = ($this->get_attribute('public_id') > 0 ? true : false);
+        $this->type = strtolower(get_class($this)); // get the child class name
+        $this->types = $this->type.'s';
     }
 
 
@@ -192,7 +186,7 @@ class Profile extends ExtendedEloquent
                 'user_name' => $this->user->name,
                 'profile_type' => $profile_type,
                 'profile_name' => $this->name,
-                'profile_link' => route('get_'.$profile_type, array(name_to_url($this->name))),
+                'profile_link' => route('get_profile_view', array($profile_type,name_to_url($this->name))),
             ));
 
             sendMail($this->user->email, $subject, $html);
@@ -246,7 +240,7 @@ class Profile extends ExtendedEloquent
         if ($this->class_name == 'game') $profile['developer_name'] = $this->developer_name;
 
         $profile['pitch_html'] = $this->get_parsed_pitch();
-        $profile['url'] = route('get_'.$this->class_name, array(name_to_url($this->name)));
+        $profile['url'] = route('get_profile_view', array($thi->type, name_to_url($this->name)));
 
         //
         $class_name = $this->class_name;

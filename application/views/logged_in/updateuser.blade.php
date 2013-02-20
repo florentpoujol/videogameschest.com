@@ -3,11 +3,6 @@
 @endsection
 
 <?php
-$rules = array(
-    'username' => 'required|alpha_dash_extended|min:2',
-    'email' => 'required|min:5|email',
-);
-
 $user = User::find($user_id);
 
 Former::populate($user);
@@ -29,6 +24,12 @@ if ( ! empty($old)) Former::populate($old);
         <div class="tab-pane" id="profile-pane">
             <div class="row">
                 <div class="span6">
+                    <?php
+                    $rules = array(
+                        'username' => 'required|alpha_dash_extended|min:2',
+                        'email' => 'required|min:5|email',
+                    );
+                    ?>
                     {{ Former::open_vertical(route('post_user_update'))->rules($rules) }}    
                         {{ Form::token() }}
 

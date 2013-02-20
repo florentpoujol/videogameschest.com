@@ -2,6 +2,7 @@
     {{ lang('game.edit.title') }}
 @endsection
 <?php
+$profile_type = 'game';
 $profile = Game::find($profile_id);
 $profile->update_with_preview_data();
 
@@ -35,8 +36,8 @@ $developer_name = $profile->actual_developer_name;
     <div class="tab-content">
         <div class="tab-pane" id="general-pane">
             <p class="pull-right">
-                <a href="{{ route('get_game_preview', array($profile->id)) }}">{{ lang('common.preview_profile_modifications') }}</a> | 
-                <a href="{{ route('get_game', array(name_to_url($profile->name))) }}">{{ lang('common.view_profile_link') }}</a>
+                <a href="{{ route('get_profile_preview', array($profile_type, $profile->id)) }}">{{ lang('common.preview_profile_modifications') }}</a> | 
+                <a href="{{ route('get_profile_view', array($profile_type, name_to_url($profile->name))) }}">{{ lang('common.view_profile_link') }}</a>
             </p>
 
             <?php
@@ -55,7 +56,7 @@ $developer_name = $profile->actual_developer_name;
                 'soundtrack' => 'url',
             );
             ?>
-            {{ Former::open_vertical(route('post_profile_update'), array('game'))->rules($rules) }} 
+            {{ Former::open_vertical(route('post_profile_update', $profile_type))->rules($rules) }} 
                 {{ Form::token() }}
                 {{ Form::hidden('id', $profile->id) }}
 

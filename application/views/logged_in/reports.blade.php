@@ -57,7 +57,7 @@
 
                 @foreach ($reports as $report)
                     <?php
-                    $class_name = $report->profile->class_name;
+                    $profile_type = $report->profile->class_name;
                     $profile_name = $report->profile->name;
                     ?>
                     <tr>
@@ -66,7 +66,7 @@
                         </td>
 
                         <td>
-                            <a href="{{ route('get_'.$class_name, array(name_to_url($profile_name))) }}">{{ $profile_name }}</a> ({{ $class_name }})
+                            <a href="{{ route('get_profile_view', array($profile_name, name_to_url($profile_name))) }}">{{ $profile_name }}</a> ({{ $profile_type }})
                         </td>
 
                         <td class="span5">

@@ -18,7 +18,7 @@
             ?>
 
             <div class="span3 tile">
-                <a href="{{ route('get_'.$profile->class_name, array(name_to_url($profile->name))) }}">
+                <a href="{{ route('get_profile_view', array($profile->type, name_to_url($profile->name))) }}">
                     <img src="{{ $src }}" alt="{{ $alt }}" class="profile-img"> <br>
                 {{ $profile->name }}</a>
             </div>

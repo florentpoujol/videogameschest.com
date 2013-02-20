@@ -108,6 +108,44 @@ $layout = View::of('layout');
     Route::get('discover/newsletter/(:num)/(:any)', array('as' => 'get_discover_newsletter_update', 'uses' => 'discover@newsletter_page'));
     
 
+    //VIEW PROFILE
+    Route::get(get_profile_types(true).'/view/(:all?)', array('as' => 'get_profile_view', function($profile_type, $name = null) use ($layout)
+    {
+        if (is_null($name)) return Redirect::to_route('get_search_page');
+        
+        if (is_numeric($name)) {
+            $profile = $profile_type::find($name);
+            return Redirect::to_route('get_profile_view', array($profile_type, name_to_url($profile->name)));
+        }
+
+        $profile = $profile_type::where_name(url_to_name($name))->first();
+
+        if (is_null($profile)) {
+            $field_name = 'name';
+            if (is_numeric($name)) $field_name = 'id';
+
+            HTML::set_error(lang('profile.msg.profile_not_found', array(
+                'type' => $profile_type,
+                'field_name' => $field_name,
+                'field_value' => $name
+            )));
+
+            return Redirect::to_route('get_search_page');
+        }
+
+        // display profile if :
+        // profile is public
+        // user is admin
+        // user is dev and profile is user's or in review   
+        if ($profile->privacy == 'public' || is_admin() || $profile->user_id == user_id()) {
+            return $layout
+            ->with('profile', $profile)
+            ->nest('page_content', $profile_type, array('profile' => $profile));
+        } 
+
+        HTML::set_error(lang('common.msg.access_not_allowed', array('page' => $profile_type.' profile '.$name)));
+        return Redirect::to_route('get_search_page');
+    }));
 
 
     // SET LANGUAGE
@@ -236,152 +274,14 @@ $layout = View::of('layout');
 
         Route::get('user/update/(:num?)', array('as' => 'get_user_update', 'uses' => 'admin@user_update'));
         
-
         Route::get(get_profile_types(true).'/create', array('as' => 'get_profile_create', 'uses' => 'admin@profile_create'));
         Route::get(get_profile_types(true).'/update/(:num?)', array('as' => 'get_profile_update', 'uses' => 'admin@profile_update'));
+        Route::get(get_profile_types(true).'/preview/(:num)', array('as' => 'get_profile_preview', 'uses' => 'admin@profile_preview'));
         // I could also use
         // Route::get('(add|edit)developer', 'admin@(:1)developer');
 
-        
-        /*Route::get('(developer)/create', array('as' => 'get_developer_create', 'uses' => 'admin@profile_create'));
-        Route::get('(developer)/update/(:num?)', array('as' => 'get_developer_update', 'uses' => 'admin@profile_update'));
-        
-        Route::get('game/create', array('as' => 'get_game_create', 'uses' => 'admin@game_create'));
-        Route::get('game/update/(:num?)', array('as' => 'get_game_update', 'uses' => 'admin@game_update'));
-
-        Route::get('tool/create', array('as' => 'get_tool_create', 'uses' => 'admin@tool_create'));
-        Route::get('tool/update/(:num?)', array('as' => 'get_tool_update', 'uses' => 'admin@tool_update'));
-
-        Route::get('level/create', array('as' => 'get_level_create', 'uses' => 'admin@level_create'));
-        Route::get('level/update/(:num?)', array('as' => 'get_level_update', 'uses' => 'admin@level_update'));
-
-        Route::get('mod/create', array('as' => 'get_mod_create', 'uses' => 'admin@mod_create'));
-        Route::get('mod/update/(:num?)', array('as' => 'get_mod_update', 'uses' => 'admin@mod_update'));*/
-
         Route::get('reports/(:any?)', array('as' => 'get_reports', 'uses' => 'admin@reports'));
-
-        
     });
-
-    
-    // DISPLAY DEVELOPERS
-    // they are written in order to be after the add and edit routing
-    
-    Route::get('developer/preview/(:num)', array('as' => 'get_developer_preview', function($id = null) use ($layout)
-    {
-        $profile = Dev::find($id);
-        $preview_profile = $profile->preview_profile;
-
-        if ($preview_profile === null) {
-            HTML::set_error("Preview profile not found for developer profile '".$profile->name."' (id='".$profile->id."').");
-            return Redirect::to_route('get_home_page');
-        }
-
-        if (is_admin() || $profile->user_id == user_id()) {
-            $profile->update_with_preview_data();
-
-            return $layout
-            ->with('preview_profile', true) // for the layout
-            ->with('profile', $profile)
-            ->nest('page_content', 'developer', array('profile' => $profile, 'preview' => true));
-        } else {
-            HTML::set_error(lang('common.msg.access_not_allowed'));
-            return Redirect::to_route('get_home_page');
-        }
-    }));
-
-    /*Route::get('developer/(:all?)', array('as' => 'get_developer', function($name = null) use ($layout)
-    {
-        if (is_null($name)) return Redirect::to_route('get_search_page');
-        
-        if (is_numeric($name)) {
-            $profile = Dev::find($name);
-            return Redirect::to_route('get_developer', array(name_to_url($profile->name)));
-        }
-
-        $profile = Dev::where_name(url_to_name($name))->first();
-
-        if (is_null($profile)) {
-            if (is_numeric($name)) {
-                HTML::set_error(lang('errors.developer_profile_id_not_found', array('id'=>$name)));
-            } else HTML::set_error(lang('errors.developer_profile_name_not_found', array('name'=>$name)));
-
-            return Redirect::to_route('get_search_page');
-        }
-
-        // display profile if :
-        // profile is public
-        // user is admin
-        // user is dev and profile is user's or in review   
-        if ($profile->privacy == 'public' || is_admin() || $profile->user_id == user_id()) {
-            return $layout
-            ->with('profile', $profile)
-            ->nest('page_content', 'developer', array('profile' => $profile));
-        } else {
-            HTML::set_error(lang('common.msg.access_not_allowed', array('page' => 'Developer profile '.$name)));
-            return Redirect::to_route('get_search_page');
-        }
-    }));*/
-
-    
-
-    // DISPLAY GAMES
-    
-    Route::get('game/preview/(:num)', array('as' => 'get_game_preview', function($id = null) use ($layout)
-    {
-        $profile = Game::find($id);
-        $preview_profile = $profile->preview_profile;
-
-        if ($preview_profile === null) {
-            HTML::set_error("Preview profile not found for game profile '".$profile->name."' (id='".$profile->id."').");
-            return Redirect::to_route('get_home_page');
-        }
-
-        if (is_admin() || $profile->user_id == user_id()) {
-            $profile->update_with_preview_data();
-
-            return $layout
-            ->with('preview_profile', true) // for the layout
-            ->with('profile', $profile) 
-            ->nest('page_content', 'game', array('profile' => $profile, 'preview' => true));
-        } else {
-            HTML::set_error(lang('common.msg.access_not_allowed'));
-            return Redirect::to_route('get_home_page');
-        }
-    }));
-
-    /*Route::get('game/(:all?)', array('as' => 'get_game', function($name = null) use ($layout)
-    {
-        if (is_null($name)) return Redirect::to_route('get_search_page');
-        
-        if (is_numeric($name)) {
-            $profile = Game::find($name);
-            return Redirect::to_route('get_game', array(name_to_url($profile->name)));
-        } 
-
-        $profile = Game::where_name(url_to_name($name))->first();
-
-        if (is_null($profile)) {
-            if (is_numeric($name)) { 
-                HTML::set_error(lang('errors.game_profile_id_not_found', array('id'=>$name)));
-            } else HTML::set_error(lang('errors.game_profile_name_not_found', array('name'=>$name)));
-
-            return Redirect::to_route('get_search_page');
-        }
-
-        // display profile if :
-        // profile is public
-        // user is admin
-        // user is dev and profile is user's or in review
-        if ($profile->privacy == 'public' || is_admin() || $profile->user_id == user_id()) {
-            return $layout
-            ->with('profile', $profile)
-            ->nest('page_content', 'game', array('profile' => $profile));
-        } else {
-            HTML::set_error(lang('common.msg.access_not_allowed', array('page' => 'Game profile '.$name)));
-            return Redirect::to_route('get_search_page');
-        }
-    }));*/
 
 
 
@@ -400,28 +300,7 @@ $layout = View::of('layout');
         Route::post(get_profile_types(true).'/select', array('as' => 'post_profile_select', 'uses' => 'admin@profile_select'));
         Route::post(get_profile_types(true).'/create', array('as' => 'post_profile_create', 'uses' => 'admin@profile_create'));
         Route::post(get_profile_types(true).'/update', array('as' => 'post_profile_update', 'uses' => 'admin@profile_update'));
-
-        /*Route::post('selecteditdeveloper', array('as' => 'post_selecteditdeveloper', 'uses' => 'admin@selecteditdeveloper'));
-        Route::post('developer/create', array('as' => 'post_developer_create', 'uses' => 'admin@developer_create'));
-        Route::post('developer/update', array('as' => 'post_developer_update', 'uses' => 'admin@developer_update'));
-
-        Route::post('selecteditgame', array('as' => 'post_selecteditgame', 'uses' => 'admin@selecteditgame'));
-        Route::post('game/create', array('as' => 'post_game_create', 'uses' => 'admin@game_create'));
-        Route::post('game/update', array('as' => 'post_game_update', 'uses' => 'admin@game_update'));
-
-        Route::post('selectedittool', array('as' => 'post_selectedittool', 'uses' => 'admin@selectedittool'));
-        Route::post('tool/create', array('as' => 'post_tool_create', 'uses' => 'admin@tool_create'));
-        Route::post('tool/update', array('as' => 'post_tool_update', 'uses' => 'admin@tool_update'));
-
-        Route::post('selecteditlevel', array('as' => 'post_selecteditlevel', 'uses' => 'admin@selecteditlevel'));
-        Route::post('level/create', array('as' => 'post_level_create', 'uses' => 'admin@level_create'));
-        Route::post('level/update', array('as' => 'post_level_update', 'uses' => 'admin@level_update'));
-
-        Route::post('selecteditmod', array('as' => 'post_selecteditmod', 'uses' => 'admin@selecteditmod'));
-        Route::post('mod/create', array('as' => 'post_mod_create', 'uses' => 'admin@mod_create'));
-        Route::post('mod/update', array('as' => 'post_mod_update', 'uses' => 'admin@mod_update'));*/
-
-        
+       
         Route::post('reports/update', array('as' => 'post_reports_update', 'uses' => 'admin@reports_update'));
 
         Route::post('promotion/crosspromotion', array('as' => 'post_crosspromotion_update', 'uses' => 'promotion@crosspromotion_update'));
@@ -447,7 +326,7 @@ $layout = View::of('layout');
 
     Route::group(array('before' => 'auth|is_developer|csrf'), function()
     {
-        Route::post('promote/update_game_subscription', array('as' => 'post_promote_update_profile_subscription', 'uses' => 'promotion@promote_update_profile_subscription'));
+        Route::post('promote/update_game_subscription/post', array('as' => 'post_promote_update_profile_subscription', 'uses' => 'promotion@promote_update_profile_subscription'));
     });
 
 

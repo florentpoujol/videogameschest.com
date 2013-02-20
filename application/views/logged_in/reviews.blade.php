@@ -51,7 +51,7 @@
                     ?>
                     <tr>
                         <td>
-                            <a href="{{ route('get_'.$profile->type.'_preview', array($profile->id)) }}" title="Preview">{{ $profile->name }}</a> ({{ $profile->type }}) <a href="{{ route('get_'.$profile->type, array(name_to_url($profile->name))) }}">Current version</a>
+                            <a href="{{ route('get_profile_preview', array($profile->type, $profile->id)) }}" title="Preview">{{ $profile->name }}</a> ({{ $profile->type }}) <a href="{{ route('get_profile_view', array($profile->type, name_to_url($profile->name))) }}">Current version</a>
                         </td>
                         
                         <td>

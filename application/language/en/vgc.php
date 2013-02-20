@@ -162,6 +162,7 @@ return array(
         'text_url_delete_help' => 'Leave a title blanck to delete an item.',
         'themes' => 'Themes',
         'title' => 'Title',
+        'tool' => 'Tool',
 
         'unsubscribe' => 'Unsubscribe',
         'update' => 'Update',
@@ -725,8 +726,8 @@ return array(
         'meta_keywords' => 'Meta Keywords',
         'meta_keywords_help' => 'Keywords separated by a coma to appear in the "keywords" meta tag. Keywords are trimmed.',
 
-        'select_profile_to_update' => 'Select the :type to edit',
-        'select_profile_to_update_placeholder' => 'Name or id',
+        'profile_select' => 'Select the :type to edit',
+        'profile_select_placeholder' => 'Name or id',
 
         'update_help' => 'Every text fields needs to be reviewed by an administrator everytimes you update them. The modification of those fields will not be visible by everyone before they are reviewed. <br>
         You can preview how the profile looks with the modifications by clicking on the "Preview modifications" link above. You still need to save the modifications by validating the form with the "Update" button before they become visible.',
@@ -978,7 +979,7 @@ return array(
 // TOOL
 
     'tool' => array(
-        
+
 
         'developer_name_help' => 'OR if the developer profile does not yet exist on VGC, you can just',
         'dev_not_in_list_link' => 'enter its name and website URL below :',
@@ -1038,6 +1039,7 @@ return array(
         ),
 
     ), // end of game
+
 // USER
 
     'user' => array(

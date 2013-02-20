@@ -3,8 +3,7 @@
 @endsection
 
 <?php
-
-
+$profile_type = 'developer';
 $profile = Dev::find($profile_id);
 $profile->update_with_preview_data();
 
@@ -31,8 +30,8 @@ if (is_admin()) {
     <div class="tab-content">
         <div class="tab-pane" id="general-pane">
             <p class="pull-right">
-                <a href="{{ route('get_developer_preview', array($profile->id)) }}">{{ lang('common.preview_profile_modifications') }}</a> | 
-                <a href="{{ route('get_developer', array(name_to_url($profile->name))) }}">{{ lang('common.view_profile_link') }}</a>
+                <a href="{{ route('get_profile_preview', array($profile_type, $profile->id)) }}">{{ lang('common.preview_profile_modifications') }}</a> | 
+                <a href="{{ route('get_profile_view', array($profile_type, name_to_url($profile->name))) }}">{{ lang('common.view_profile_link') }}</a>
             </p>
 
             <?php
@@ -46,7 +45,7 @@ if (is_admin()) {
                 'teamsize' => 'integer|min:1'
             );
             ?>
-            {{ Former::open_vertical(route('post_profile_update'), array('developer'))->rules($rules) }} 
+            {{ Former::open_vertical(route('post_profile_update', $profile_type))->rules($rules) }} 
                 {{ Form::token() }}
                 {{ Form::hidden('id', $profile_id) }}
 

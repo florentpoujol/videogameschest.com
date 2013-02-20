@@ -385,8 +385,7 @@ function lang($key, $replacements = array(), $language = null)
  */
 function name_to_url($name)
 {
-    $url = str_replace(array(' '), '-', $name);
-    return $url;
+    return strtolower(str_replace(array(' '), '-', $name));
 }
 
 
