@@ -44,7 +44,7 @@ if (isset($search_id) && isset($profiles)) {
             <li class="{{ $results_disabled }}"><a href="#results-pane">{{ lang('search.results') }}</a></li>
         @endif
 
-        @foreach (get_profiles_types() as $profile_type)
+        @foreach (get_profile_types() as $profile_type)
             <li><a href="#{{ $profile_type }}-pane" data-toggle="tab">{{ lang('common.'.$profile_type) }}</a></li>
         @endforeach
     </ul>
@@ -71,7 +71,7 @@ if (isset($search_id) && isset($profiles)) {
             </div> <!-- /#results-pane .tab-pane -->
         @endif
         
-        @foreach (get_profiles_types() as $profile_type)
+        @foreach (get_profile_types() as $profile_type)
             <div class="tab-pane" id="{{ $profile_type }}-pane">
                 @include('forms.search_profiles_common')
                 

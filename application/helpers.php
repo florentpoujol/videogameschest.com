@@ -214,9 +214,15 @@ function get_language()
 }
 
 
-function get_profiles_types()
+function get_profile_types($regex_style = false)
 {
-    return Config::get('vgc.profile_types', array());
+    $profile_types = Config::get('vgc.profile_types', array());
+
+    if ($regex_style) {
+        $profile_types = '('.implode('|', $profile_types).')';
+    }
+
+    return $profile_types;
 }
 
 

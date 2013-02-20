@@ -60,7 +60,66 @@ return array(
 
     ),
 
-    'profile_types' => array('game', 'developer'),
+
+
+    'profiles_post_create_rules' => array(
+        'game' => array(
+            'name' => 'required|alpha_dash_extended|min:2|unique:games',
+            'developer_name' => 'required|alpha_dash_extended|min:2',
+            'developer_url' => 'url',
+            'publisher_name' => 'min:2',
+            'publisher_url' => 'url',
+            'website' => 'url',
+            'blogfeed' => 'url',
+            'presskit' => 'url',
+
+            'profile_background' => 'url',
+            'cover' => 'url',
+            'soundtrack' => 'url',
+        ),
+
+        'developer' => array(
+            'name' => 'required|alpha_dash_extended|min:2|unique:developers',
+            'email' => 'min:5|email',
+            'logo' => 'url',
+            'website' => 'url',
+            'blogfeed' => 'url',
+            'presskit' => 'url',
+            'teamsize' => 'integer|min:1'
+        ),
+    ),
+
+
+    'profiles_post_update_rules' => array(
+        'game' => array(
+            'name' => 'required|alpha_dash_extended|min:2',
+            'developer_name' => 'required|alpha_dash_extended|min:2',
+            'developer_url' => 'url',
+            'publisher_name' => 'min:2',
+            'publisher_url' => 'url',
+            'website' => 'url',
+            'blogfeed' => 'url',
+            'presskit' => 'url',
+
+            'profile_background' => 'url',
+            'cover' => 'url',
+            'soundtrack' => 'url',
+        ),
+
+        'developer' => array(
+            'name' => 'required|alpha_dash_extended|min:2',
+            'email' => 'email',
+            'logo' => 'url',
+            'website' => 'url',
+            'blogfeed' => 'url',
+            'presskit' => 'url',
+            'teamsize' => 'integer|min:1'
+        ),
+    ),
+
+
+
+    'profile_types' => array('game', 'developer', 'tool'),
 
 
     'privacy' => array('private', 'public'),

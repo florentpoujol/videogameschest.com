@@ -725,13 +725,20 @@ return array(
         'meta_keywords' => 'Meta Keywords',
         'meta_keywords_help' => 'Keywords separated by a coma to appear in the "keywords" meta tag. Keywords are trimmed.',
 
+        'select_profile_to_update' => 'Select the :type to edit',
+        'select_profile_to_update_placeholder' => 'Name or id',
+
         'update_help' => 'Every text fields needs to be reviewed by an administrator everytimes you update them. The modification of those fields will not be visible by everyone before they are reviewed. <br>
         You can preview how the profile looks with the modifications by clicking on the "Preview modifications" link above. You still need to save the modifications by validating the form with the "Update" button before they become visible.',
 
         'msg' => array(
             'creation_success' => "The :type profile with name ':name' (id=:id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
             
+            'profile_not_found' => "No :type profile with :field_name ':field_value' was found.",
+
+            'update_nametaken' => "Can't rename the :type profile with name ':name' (id : :id) because the name ':newname' is already taken.",
             'update_success' => "The :type profile with name ':name' (id=:id) has successfully been updated.",
+
         ),
     ),
 
@@ -968,6 +975,69 @@ return array(
         
     ),
 
+// TOOL
+
+    'tool' => array(
+        
+
+        'developer_name_help' => 'OR if the developer profile does not yet exist on VGC, you can just',
+        'dev_not_in_list_link' => 'enter its name and website URL below :',
+
+        'logo' => 'Logo',
+        
+
+        'pitch' => 'Pitch what the tool does, what are its features...',
+
+        'press_help' => "How and where the press talk about the game.",
+                
+
+        'soundtrack_alert' => '<strong>DO NOT put a direct link</strong> to a soundtrack that is not meant to be downloaded or listened for free. <br>
+        IE : it\'s <strong>NOT OK</strong> to link to a rip of the soundtrack on Youtube on a random channel.',
+
+
+        
+        'releasedate' => 'Release date',
+
+        'developer_name_help' => 'If the developer has a profile on VGC, its name should appear below the field as you type it. 
+        If that\'s the case, a link to the developer\'s profile will be done from the game\'s profile instead of using the URL below.',
+
+
+        'add' => array(
+            'title' => 'Add a tool profile',
+            'submit' => 'Submit this tool profile',
+        ),
+
+        'edit' => array(
+            'title' => 'Edit a tool',
+            'submit' => 'Edit this tool',
+            
+            'select_profile_help' => 'Select the tool to edit',
+        ),
+
+        'profile' => array(
+            'title' => 'tool',
+            'website' => 'Go to the tool\'s website',
+            'blogfeed' => 'Lastest articles from the blog',
+            'soundtrack' => 'Get the soundtrack',
+            'screenshots_help' => 'Click on them to view in full size',
+
+            'get_this_tool_from' => 'Get this tool from :store_name',
+        ),
+
+
+        'msg' => array(
+            'addtool_success' => "The tool profile with name ':name' (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
+            'edittool_success' => "The tool profile with name ':name' (id : :id) has successfully been updated.",
+
+            'select_edittool_id_not_found' => "No tool profile with id ':id' was found.",
+            'select_edittool_name_not_found' => "No tool profile with name ':name' was found.",
+
+            'profile_not_found' => "No tool profile with id ':id' was found.",
+
+            'edittool_nametaken' => "Can't rename the tool profile with name ':name' (id : :id) because the name ':newname' is already taken.",
+        ),
+
+    ), // end of game
 // USER
 
     'user' => array(

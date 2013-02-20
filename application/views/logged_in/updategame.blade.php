@@ -55,7 +55,7 @@ $developer_name = $profile->actual_developer_name;
                 'soundtrack' => 'url',
             );
             ?>
-            {{ Former::open_vertical(route('post_game_update'))->rules($rules) }} 
+            {{ Former::open_vertical(route('post_profile_update'), array('game'))->rules($rules) }} 
                 {{ Form::token() }}
                 {{ Form::hidden('id', $profile->id) }}
 

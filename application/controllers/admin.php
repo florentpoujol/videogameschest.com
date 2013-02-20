@@ -337,7 +337,7 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // ADD DEVELOPER
 
-    public function get_developer_create()
+    /*public function get_developer_create()
     {
         $this->layout->nest('page_content', 'logged_in/createdeveloper');
     }
@@ -618,7 +618,297 @@ class Admin_Controller extends Base_Controller
         }
 
         return Redirect::to_route('get_game_update', array($input['id']));
+    }*/
+
+
+    //----------------------------------------------------------------------------------
+    // ADD TOOL
+
+    /*public function get_tool_create()
+    {
+        $this->layout->nest('page_content', 'logged_in/createtool');
     }
+
+    public function post_tool_create()
+    {
+        $input = Input::all();
+
+        // checking form
+        $rules = array(
+            'name' => 'required|alpha_dash_extended|min:2|unique:tools',
+            'developer_name' => 'required|alpha_dash_extended|min:2',
+            'developer_url' => 'url',
+            'website' => 'url',
+            'blogfeed' => 'url',
+            'background' => 'url',
+            'logo' => 'url',
+        );
+
+        $validation = Validator::make($input, $rules);
+        
+        if ($validation->passes()) {
+            $profile = Tool::create($input);
+            
+            return Redirect::to_route('get_tool_update', array($profile->id));
+        }
+
+        return Redirect::back()->with_errors($validation)->with_input();
+    }
+
+
+    //----------------------------------------------------------------------------------
+    // EDIT TOOL
+
+    public function post_selectedittool()
+    {
+        $name = Input::get('tool_name');
+        $id = null;
+        
+        if (is_numeric($name)) {
+            if (Tool::find($name) == null) {
+                HTML::set_error(lang('profile.msg.profile_not_found', array(
+                    'type' => 'tool',
+                    'field_name' => 'id',
+                    'field_value' => $name,
+                )));
+            } else {
+                $id = $name;
+            }
+        } else {
+            $profile = Tool::where_name($name)->first();
+            
+            if ($profile == null) {
+                HTML::set_error(lang('profile.msg.profile_not_found', array(
+                    'type' => 'tool',
+                    'field_name' => 'name',
+                    'field_value' => $name,
+                )));
+            } else {
+                $id = $profile->id;
+            }
+        }
+
+        return Redirect::to_route('get_game_update', array($id));
+    }
+
+    public function get_tool_update($profile_id = null)
+    {
+        $games = user()->games; 
+        // can't use user()->games in the condition because it would always return an empty array
+
+        if ( ! is_admin() && empty($games)) {
+            return Redirect::to_route('get_game_create');
+        }
+
+        if (is_null($profile_id)) {
+            if ( ! is_admin() && count($games) == 1) {
+                $profile_id = $games[0]->id;
+                return Redirect::to_route('get_game_update', array($profile_id));
+            }
+
+            $this->layout->nest('page_content', 'forms/selecteditgame');
+            return;
+        }
+
+        $game = Game::find($profile_id);
+
+        if (is_null($game)) {
+            HTML::set_error(lang('game.msg.profile_not_found', array('id'=>$profile_id)));
+            return Redirect::to_route('get_game_update');
+        }
+
+        if ( ! is_admin() && $game->user_id != user_id()) {
+            HTML::set_error(lang('common.msg.edit_other_users_profile_not_allowed'));
+            return Redirect::to_route('get_game_update');
+        }
+
+        $this->layout->nest('page_content', 'logged_in/updategame', array('profile_id'=>$profile_id));
+    }
+
+    public function post_tool_update() 
+    {
+        $input = Input::all();
+        
+        if (is_not_admin()) {
+            // check that $input['id'] is one of the user's game profiles
+            $forged = true;
+            foreach (user()->games as $game) {
+                if ($game->id == $input['id']) $forged = false;
+            }
+
+            if ($forged) { // a user try to edit a dev profile which does not own
+                HTML::set_error(lang('common.msg.edit_other_users_proile_not_allowed'));
+                return Redirect::back();
+            }
+        }
+
+        // checking form
+        if (isset($input['name'])) { // general pane
+            $rules = array(
+                'name' => 'required|alpha_dash_extended|min:2',
+                'developer_name' => 'required|alpha_dash_extended|min:2',
+                'developer_url' => 'url',
+                'publisher_name' => 'min:2',
+                'publisher_url' => 'url',
+                'website' => 'url',
+                'blogfeed' => 'url',
+                'presskit' => 'url',
+            );
+        } else {
+            $rules = array(
+                'profile_background' => 'url',
+                'cover' => 'url',
+                'soundtrack' => 'url',
+            );
+        }
+        
+        $validation = Validator::make($input, $rules);
+        
+        if ( ! $validation->passes() || ! Game::update($input['id'], $input)) {
+            Input::flash();
+            return Redirect::to_route('get_game_update', array($input['id']))->with_errors($validation);
+        }
+
+        return Redirect::to_route('get_game_update', array($input['id']));
+    }*/
+
+
+
+
+
+    //----------------------------------------------------------------------------------
+    // ADD PROFILE
+    
+    public function get_profile_create($profile_type)
+    {
+        $this->layout->nest('page_content', 'logged_in/create'.$profile_type);
+    }
+
+    public function post_profile_create($profile_type)
+    {
+        $input = Input::all();
+        $rules = Config::get('profiles_post_create_rules.'.$profile_type, array());
+        $validation = Validator::make($input, $rules);
+        
+        if ($validation->passes()) {
+            $profile = $profile_type::create($input);
+            
+            return Redirect::to_route('get_profile_update', array($profile_type, $profile->id));
+        }
+
+        return Redirect::back()->with_errors($validation)->with_input();
+    }
+
+
+    //----------------------------------------------------------------------------------
+    // EDIT PROFILE
+
+    public function post_profile_select($profile_type)
+    {
+        $input = Input::all();
+        $name = $input['name'];
+        $id = null;
+        
+        if (is_numeric($name)) {
+            if ($profile_type::find($id) === null) {
+                HTML::set_error(lang('profile.msg.profile_not_found', array(
+                    'type' => $profile_type,
+                    'field_name' => 'id',
+                    'field_value' => $id,
+                )));
+            } else { // $id is set in an else block so that it stays null when there is an error, and user is redirected to the select form
+                $id = $name;
+            }
+        } else {
+            $profile = $profile_type::where_name($name)->first();
+            
+            if ($profile === null) {
+                HTML::set_error(lang('profile.msg.profile_not_found', array(
+                    'type' => $profile_type,
+                    'field_name' => 'name',
+                    'field_value' => $name,
+                )));
+            } else {
+                $id = $profile->id;
+            }
+        }
+
+        return Redirect::to_route('get_profile_update', array($profile_type, $id));
+    }
+
+
+    public function get_profile_update($profile_type, $profile_id = null)
+    {
+        $profiles = user()->{$profile_type.'s'}; 
+        // can't use user()->profiles in the condition because it would always return an empty array
+
+        if ( ! is_admin() && empty($profiles)) {
+            return Redirect::to_route('get_profile_create', $profile_type);
+        }
+
+        if ($profile_id == null) {
+            if ( ! is_admin() && count($profiles) == 1) {
+                return Redirect::to_route('get_profile_update', array($profile_type, $profiles[0]->id));
+            }
+
+            $this->layout->nest('page_content', 'forms/profile_select', array($profile_type));
+            return;
+        }
+
+        $profile = $profile_type::find($profile_id);
+
+        if ($profile === null) {
+            HTML::set_error(lang('profile.msg.profile_not_found', array(
+                'type' => $profile_type,
+                'field_name' => 'id',
+                'field_value' => $profile_id
+            )));
+
+            return Redirect::to_route('get_profile_update', $profile_type);
+        }
+
+        if ( ! is_admin() && $profile->user_id != user_id()) {
+            HTML::set_error(lang('common.msg.edit_other_users_profile_not_allowed'));
+            return Redirect::to_route('get_profile_update', $profile_type);
+        }
+
+        $this->layout->nest('page_content', 'logged_in/update'.$profile_type, array('profile_id' => $profile_id));
+    }
+
+
+    public function post_profile_update($profile_type) 
+    {
+        $input = Input::all();
+
+        if (is_not_admin()) {
+            // check that $input['id'] is one of the user's game profiles
+            $forged = true;
+            foreach (user()->{$profile_type} as $game) {
+                if ($game->id == $input['id']) $forged = false;
+            }
+
+            if ($forged) { // a user try to edit a dev profile which does not own
+                HTML::set_error(lang('common.msg.edit_other_users_proile_not_allowed'));
+                return Redirect::back();
+            }
+        }
+
+        // checking form
+        $rules = Config::get('vgc.profiles_post_update_rules.'.$profile_type);
+        $validation = Validator::make($input, $rules);
+        
+        if ( ! $validation->passes() || ! $profile_type::update($input['id'], $input)) {
+            Input::flash();
+            return Redirect::to_route('get_profile_update', array($profile_type, $input['id']))->with_errors($validation);
+        }
+
+        return Redirect::to_route('get_profile_update', array($profile_type, $input['id']));
+    }
+
+
+
+
+
 
 
     //----------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 @section('page_title')
-    {{ lang('game.add.title') }}
+    {{ lang('tool.add.title') }}
 @endsection
 <?php
 $old = Input::old();
@@ -10,11 +10,9 @@ if (is_admin()) {
     $privacy = array_set_values_as_keys(Config::get('vgc.privacy_and_reviews'));
 } 
 
-$devs = Dev::get(array('id', 'name'));
-
 ?>
-<div id="addgame" class="profile-form create-profile-form">
-    <h1>{{ lang('game.add.title') }}</h1>
+<div id="addtool" class="profile-form create-profile-form">
+    <h1>{{ lang('tool.add.title') }}</h1>
 
     <hr>
 
@@ -23,18 +21,13 @@ $devs = Dev::get(array('id', 'name'));
         'name' => 'required|alpha_dash_extended|min:2',
         'developer_name' => 'required|alpha_dash_extended|min:2',
         'developer_url' => 'url',
-        'publisher_name' => 'min:2',
-        'publisher_url' => 'url',
         'website' => 'url',
         'blogfeed' => 'url',
-        'presskit' => 'url',
-
-        'profile_background' => 'url',
-        'cover' => 'url',
-        'soundtrack' => 'url',
+        'background' => 'url',
+        'logo' => 'url',
     );
     ?>
-    {{ Former::open_vertical(route('post_profile_create', array('game')))->rules($rules) }} 
+    {{ Former::open_vertical(route('post_tool_create'))->rules($rules) }} 
         {{ Form::token() }}
 
         {{ Former::primary_submit(lang('common.add_profile')) }}
@@ -51,21 +44,17 @@ $devs = Dev::get(array('id', 'name'));
             <div class="span4">
                 {{ Former::text('name', lang('common.name')) }}
 
-                {{ Former::select('devstate', lang('game.devstate'))->options(get_array_lang(Config::get('vgc.developmentstates'), 'developmentstates.'))->value('released') }}
-
-                {{ Former::textarea('meta_description', lang('vgc.profile.meta_description'))->id('meta-description') }}
+                {{ Former::url('logo', lang('common.logo'))->placeholder(lang('common.logo')) }}
             </div>
 
             <div class="span4">
-                {{ Former::text('developer_name', lang('common.developer_name'))->useDatalist($devs, 'name')->help(lang('game.developer_name_help')) }}
+                {{ Former::text('developer_name', lang('common.developer_name')) }}
 
                 {{ Former::url('developer_url', lang('common.developer_url'))->placeholder(lang('common.url')) }}
             </div>
 
             <div class="span4">
-                {{ Former::text('publisher_name', lang('common.publisher_name')) }}
-                
-                {{ Former::url('publisher_url', lang('common.publisher_url'))->placeholder(lang('common.url')) }}
+                {{ Former::textarea('meta_description', lang('vgc.profile.meta_description'))->id('meta-description') }}
 
                 {{ Former::text('meta_keywords', lang('vgc.profile.meta_keywords'))->help(lang('vgc.profile.meta_keywords_help')) }}
             </div>
@@ -76,8 +65,8 @@ $devs = Dev::get(array('id', 'name'));
         <div class="row">
             <div class="span4">
                 {{ Former::url('website', lang('common.website'))->placeholder(lang('common.url')) }}
+
                 {{ Former::url('blogfeed', lang('common.blogfeed'))->placeholder(lang('common.url'))->help(lang('common.blogfeed_help')) }}
-                {{ Former::url('presskit', lang('common.presskit'))->placeholder(lang('common.url')) }}
             </div>
 
             <div class="span8">

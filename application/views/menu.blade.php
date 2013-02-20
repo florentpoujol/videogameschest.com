@@ -39,7 +39,7 @@
                 }
 
                 $show_profile_edit_link = false;
-                if (in_array(CONTROLLER, get_profiles_types()) && ! in_array(ACTION, array('create', 'update'))) {
+                if (in_array(CONTROLLER, get_profile_types()) && ! in_array(ACTION, array('create', 'update'))) {
                     $admin = '';
 
                     if (isset($profile) && (is_admin() || $profile->user_id == user_id())) {
@@ -85,8 +85,9 @@
                             @endif
                             <li><a href="{{ route('get_user_update') }}">{{ icon('edit') }} {{ lang('admin.menu.edit_user_account') }}</a></li>
                             <li class="divider"></li>
-
-                            <li><a href="{{ route('get_game_create') }}">{{ icon('plus') }} {{ lang('admin.menu.add_game') }}</a></li>
+                            
+                            <?php /*
+                            <!-- <li><a href="{{ route('get_game_create') }}">{{ icon('plus') }} {{ lang('admin.menu.add_game') }}</a></li>
                             @if ( ! empty(user()->games) || is_admin())
                                 <li><a href="{{ route('get_game_update') }}">{{ icon('edit') }} {{ lang('admin.menu.edit_game') }}</a></li>
                             @endif
@@ -96,7 +97,16 @@
                             @if ( ! empty(user()->devs) || is_admin())
                                 <li><a href="{{ route('get_developer_update') }}">{{ icon('edit') }} {{ lang('admin.menu.edit_developer') }}</a></li>
                             @endif
-                            <li class="divider"></li>
+                            <li class="divider"></li> --> */
+                            ?>
+
+                            @foreach (get_profile_types() as $profile_type)
+                                <li><a href="{{ route('get_profile_create', array($profile_type)) }}">{{ icon('plus') }} {{ lang($profile_type.'.add.title') }}</a></li>
+                                @if ( ! empty(user()->{$profile_type.'s'}) || is_admin())
+                                    <li><a href="{{ route('get_profile_update', array($profile_type)) }}">{{ icon('edit') }} {{ lang($profile_type.'.edit.title') }}</a></li>
+                                @endif
+                                <li class="divider"></li>
+                            @endforeach
 
                             @if (is_admin())
                                 <li><a href="{{ route('get_reviews') }}">{{ lang('reviews.title') }}</a></li>

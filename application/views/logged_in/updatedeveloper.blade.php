@@ -46,7 +46,7 @@ if (is_admin()) {
                 'teamsize' => 'integer|min:1'
             );
             ?>
-            {{ Former::open_vertical(route('post_developer_update'))->rules($rules) }} 
+            {{ Former::open_vertical(route('post_profile_update'), array('developer'))->rules($rules) }} 
                 {{ Form::token() }}
                 {{ Form::hidden('id', $profile_id) }}
 
