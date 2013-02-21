@@ -103,6 +103,8 @@ return array(
         'developer_url' => 'Developer\'s website',
         'developers' => 'Developers',
         'devices' => 'Devices',
+        'documentation' => 'Documentation',
+        'documentation_help' => 'Doc / manual / script reference',
 
         'email' => 'Email',
         'edit_profile' => 'Edit this profile',
@@ -118,7 +120,8 @@ return array(
         'learn_more' => 'Learn more',
         'logo' => 'Logo',
 
-        'markdown_help' => 'You may style your pitch with <a href="http://daringfireball.net/projects/markdown/syntax" title="Go to the Markdown documentation">markdown tags</a>.',
+        'markdown_help' => 'You may style your pitch with <a href="http://daringfireball.net/projects/markdown/syntax" title="Go to the Markdown documentation">Markdown</a>.',
+        
         'medias' => 'Medias',
         
 
@@ -724,8 +727,9 @@ return array(
 
         'meta_description' => 'Meta Description',
         'meta_keywords' => 'Meta Keywords',
-        'meta_keywords_help' => 'Keywords separated by a coma to appear in the "keywords" meta tag. Keywords are trimmed.',
+        'meta_keywords_help' => 'Keywords separated by comas.',
 
+        'press_help' => "How and where the press talk about the :type.",
         'profile_select' => 'Select the :type to edit',
         'profile_select_placeholder' => 'Name or id',
 
@@ -979,28 +983,23 @@ return array(
 // TOOL
 
     'tool' => array(
-
-
-        'developer_name_help' => 'OR if the developer profile does not yet exist on VGC, you can just',
-        'dev_not_in_list_link' => 'enter its name and website URL below :',
+        //'developer_name_help' => 'OR if the developer profile does not yet exist on VGC, you can just',
+        //'dev_not_in_list_link' => 'enter its name and website URL below :',
 
         'logo' => 'Logo',
         
-
         'pitch' => 'Pitch what the tool does, what are its features...',
-
-        'press_help' => "How and where the press talk about the game.",
-                
-
-        'soundtrack_alert' => '<strong>DO NOT put a direct link</strong> to a soundtrack that is not meant to be downloaded or listened for free. <br>
-        IE : it\'s <strong>NOT OK</strong> to link to a rip of the soundtrack on Youtube on a random channel.',
-
-
         
         'releasedate' => 'Release date',
 
         'developer_name_help' => 'If the developer has a profile on VGC, its name should appear below the field as you type it. 
         If that\'s the case, a link to the developer\'s profile will be done from the game\'s profile instead of using the URL below.',
+
+
+        'profile_form_tool_works_on_os_pane_title' => 'Tool works on OS',
+        'profile_form_operatingsystems_pane_title' => 'Game runs on OS',
+        'profile_form_devices_pane_title' => 'Game plays on devices',
+
 
 
         'add' => array(
@@ -1112,6 +1111,7 @@ return array(
     'operatingsystems' => array(
         'title' => 'OS',
         'help' => 'The operating systems the game runs on (not applicable for most console games).',
+        'tool_help' => 'The operating systems the games built with the tool runs on.',
 
         'android' => 'Android',
         'blackberry' => 'BlackBerry',
@@ -1129,6 +1129,7 @@ return array(
     'devices' => array(
         'title' => 'Devices',
         'help' => 'The devices the game is playable on.',
+        'tool_help' => 'The devices the games built with the tool can be played on.',
 
         '3ds' => '3DS',
         '3dsxl' => '3DS XL',
@@ -1361,4 +1362,17 @@ return array(
         'steampunk' => 'Steampunk',
     ),
 
+// TOOL_WORKS_ON_os
+
+    'tool_works_on_os' => array(
+        'title' => 'Works on OS',
+        'tool_help' => 'The operating systems the tool runs on.',
+
+        'browser' => 'Browser',
+        'linux' => 'Linux',
+        'mac' => 'Mac OS',
+        'windowsdesktop' => 'Windows desktop',
+        'windowsdesktop_help' => 'Any Windows but Windows 8 Metro and Windows Phone',
+        'windows8' => 'Windows 8 Metro',
+    ),
 );

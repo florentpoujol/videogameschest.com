@@ -350,7 +350,6 @@ class Admin_Controller extends Base_Controller
         
         if ($validation->passes()) {
             $profile = $profile_type::create($input);
-            
             return Redirect::to_route('get_profile_update', array($profile_type, $profile->id));
         }
 

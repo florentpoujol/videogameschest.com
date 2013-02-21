@@ -1,26 +1,38 @@
 @section('page_title')
-    {{ lang('vgc.tool.add.title') }}
+    {{ lang('vgc.tool.edit.title') }}
 @endsection
 <?php
+$profile_type = 'tool';
+$profile = Tool::find($profile_id);
+$profile->update_with_preview_data();
+
+Former::populate($profile);
+
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
 
 if (is_admin()) {
     $privacy = array_set_values_as_keys(Config::get('vgc.privacy_and_reviews'));
-} 
+}
 ?>
-<div id="addtool" class="profile-form create-profile-form">
-    <h1>{{ lang('vgc.tool.add.title') }}</h1>
+<div id="edittool" class="profile-form update-profile-form">
+    <h1>{{ lang('vgc.tool.edit.title') }}</h1>
 
     <hr>
 
-    <?php
-    $rules = Config::get('vgc.profiles_post_create_rules.tool', array())
-    ?>
-    {{ Former::open_vertical(route('post_profile_create', 'tool'))->rules($rules) }} 
-        {{ Form::token() }}
+    <p class="pull-right">
+        <a href="{{ route('get_profile_preview', array($profile_type, $profile->id)) }}">{{ lang('vgc.common.preview_profile_modifications') }}</a> | 
+        <a href="{{ route('get_profile_view', array($profile_type, name_to_url($profile->name))) }}">{{ lang('vgc.common.view_profile_link') }}</a>
+    </p>
 
-        {{ Former::primary_submit(lang('vgc.common.add_profile')) }}
+    <?php
+    $rules = Config::get('vgc.profiles_post_update_rules.tool', array())
+    ?>
+    {{ Former::open_vertical(route('post_profile_update', 'tool'))->rules($rules) }} 
+        {{ Form::token() }}
+        {{ Form::hidden('id', $profile->id) }}
+
+        {{ Former::primary_submit(lang('vgc.common.edit_profile')) }}
 
         <hr>
 
@@ -41,7 +53,6 @@ if (is_admin()) {
 
             <div class="span4">
                 {{ Former::url('background', lang('vgc.common.profile_background'))->placeholder(lang('vgc.common.url'))->help(lang('vgc.common.profile_background_help')) }}
-                
             </div>
 
             <div class="span4">
@@ -83,7 +94,7 @@ if (is_admin()) {
                         <?php
                         foreach (Tool::$array_fields as $field):
                             if (isset($old[$field])) $values = $old[$field];
-                            else $values = array();
+                            else $values = $profile->$field;
                         ?>
                             <div class="tab-pane" id="{{ $field }}">
                                 <p>{{ lang($field.'.tool_help', '') }}</p>
@@ -113,22 +124,33 @@ if (is_admin()) {
                     <?php
                     // name url select
                     $nu_select = array('socialnetworks'); 
-                    foreach ($nu_select as $fields):
-                        $options = get_array_lang(Config::get('vgc.'.$fields), $fields.'.');
-                        $options = array_merge(array('' => lang('vgc.common.select_arrayitem_first_option')), $options);
-
-                        if (isset($old[$fields])) $values = clean_names_urls_array($old[$fields]);
-                        else $values = array();
+                    foreach ($nu_select as $field):
                     ?>
-                        <div class="tab-pane" id="{{ $fields }}">
-                            @for ($i = 0; $i < 4; $i++)
+                        <div class="tab-pane" id="{{ $field }}">
+                            <?php
+                            $options = get_array_lang(Config::get('vgc.'.$field), $field.'.');
+                            $options = array_merge(array('' => lang('vgc.common.select_arrayitem_first_option')), $options);
+
+                            if (isset($old[$field])) $values = clean_names_urls_array($old[$field]);
+                            else $values = $profile->$field;
+
+                            $length = count($values['names']);
+                            for ($i = 0; $i < $length; $i++):
+                            ?>
                                 <div class="control-group-inline">
                                     <?php
                                     $name = isset($values['names'][$i]) ? $values['names'][$i] : '';
                                     $url = isset($values['urls'][$i]) ? $values['urls'][$i] : '';
                                     ?>
-                                    {{ Former::select($fields.'[names][]', '')->options($options)->value($name) }} 
-                                    {{ Former::url($fields.'[urls][]', '')->placeholder(lang('vgc.common.url'))->value($url) }}
+                                    {{ Former::select($field.'[names][]', '')->options($options)->value($name) }} 
+                                    {{ Former::url($field.'[urls][]', '')->placeholder(lang('vgc.common.url'))->value($url) }}
+                                </div>
+                            @endfor
+
+                            @for ($i = 0; $i < 4; $i++)
+                                <div class="control-group-inline">
+                                    {{ Former::select($field.'[names][]', '')->options($options) }} 
+                                    {{ Former::url($field.'[urls][]', '')->placeholder(lang('vgc.common.url')) }}
                                 </div>
                             @endfor
                         </div>
@@ -137,8 +159,6 @@ if (is_admin()) {
                     <?php
                     $nu_text = array('screenshots', 'videos', 'press');
                     foreach ($nu_text as $field):
-                        if (isset($old[$field])) $values = clean_names_urls_array($old[$field]);
-                        else $values = array();
                     ?>
                         <div class="tab-pane" id="{{ $field }}">
                             <p>
@@ -147,8 +167,13 @@ if (is_admin()) {
                                 @endif
                                 {{ lang('vgc.common.text_url_delete_help') }}
                             </p>
+                            <?php
+                            if (isset($old[$field])) $values = clean_names_urls_array($old[$field]);
+                            else $values = $profile->$field;
 
-                            @for ($i = 0; $i < 4; $i++)
+                            $length = count($values['names']);
+                            for ($i = 0; $i < $length; $i++):
+                            ?>
                                 <div class="control-group-inline">
                                     <?php
                                     $name = isset($values['names'][$i]) ? $values['names'][$i] : '';
@@ -156,6 +181,13 @@ if (is_admin()) {
                                     ?>
                                     {{ Former::text($field.'[names][]', '')->value($name)->placeholder(lang('vgc.common.title')) }} 
                                     {{ Former::url($field.'[urls][]', '')->value($url)->placeholder(lang('vgc.common.url')) }}
+                                </div>
+                            @endfor
+
+                            @for ($i = 0; $i < 4; $i++)
+                                <div class="control-group-inline">
+                                    {{ Former::text($field.'[names][]', '')->placeholder(lang('vgc.common.title')) }} 
+                                    {{ Former::url($field.'[urls][]', '')->placeholder(lang('vgc.common.url')) }}
                                 </div>
                             @endfor
                         </div>

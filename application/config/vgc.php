@@ -54,7 +54,7 @@ return array(
     // field that needs an admin review before their update is approved
     'profile_fields_to_review' => array(
         'common' => array('name', 'email', 'developer_url', 'pitch', 'logo', 'website', 'blogfeed', 'presskit', 'socialnetworks', 'press', 'screenshots', 'videos', 'soundtrack'),
-        'developer' => array(),
+        
         'game' => array('developer_name',  'stores'),
 
 
@@ -87,6 +87,14 @@ return array(
             'presskit' => 'url',
             'teamsize' => 'integer|min:1'
         ),
+
+        'tool' => array(
+            'name' => 'required|alpha_dash_extended|min:2|unique:tools',
+            'website' => 'url',
+            'blogfeed' => 'url',
+            'background' => 'url',
+            'logo' => 'url',
+        ),
     ),
 
 
@@ -114,6 +122,14 @@ return array(
             'blogfeed' => 'url',
             'presskit' => 'url',
             'teamsize' => 'integer|min:1'
+        ),
+
+        'tool' => array(
+            'name' => 'required|alpha_dash_extended|min:2',
+            'website' => 'url',
+            'blogfeed' => 'url',
+            'background' => 'url',
+            'logo' => 'url',
         ),
     ),
 
@@ -386,6 +402,19 @@ return array(
         "mafia",
         "steampunk",
     ),
+
+
+    // FOR TOOLS
+
+    /*'tool_works_on_os' => array(
+        'windowsdesktop',
+        'windows8',
+        'browser',
+        'mac',
+        'linux',
+    ),*/
+
+
 
     // ICONS
 

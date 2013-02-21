@@ -57,7 +57,7 @@
 
                 @foreach ($reports as $report)
                     <?php
-                    $profile_type = $report->profile->class_name;
+                    $profile_type = $report->profile->type;
                     $profile_name = $report->profile->name;
                     ?>
                     <tr>

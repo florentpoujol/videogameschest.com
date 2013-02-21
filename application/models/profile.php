@@ -2,14 +2,8 @@
 
 class Profile extends ExtendedEloquent
 {
-    //public $_user = null;
     public $type = 'profile';
     public $types = 'profiles';
-
-    
-   /* public static $fields_to_remove = array('id', 'user_id', 'public_id', 'developer_id', 'created_at', 'updated_at', 'in_promotion_feed',
-        'in_promotion_newsletter', 'crosspromotion_profiles', 'crosspromotion_key');
-*/
 
 
     //----------------------------------------------------------------------------------
@@ -138,7 +132,7 @@ class Profile extends ExtendedEloquent
         $preview_data = array();
         $preview_fields = array_merge(
             Config::get('vgc.profile_fields_to_review.common'),
-            Config::get('vgc.profile_fields_to_review.'.$profile_type)
+            Config::get('vgc.profile_fields_to_review.'.$profile_type, array())
         );
         
         foreach ($preview_fields as $field) {

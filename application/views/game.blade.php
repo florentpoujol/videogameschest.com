@@ -121,6 +121,7 @@ $name = $profile->name;
     </div>
 
     <hr>
+    
     <!-- MEDIA row -->
     <div class="row">
         <div class="span12">
