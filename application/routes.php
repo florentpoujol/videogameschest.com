@@ -257,7 +257,7 @@ $layout = View::of('layout');
 
 
 //----------------------------------------------------------------------------------
-//  MUST BE LOGGED IN + display developers and games
+//  MUST BE LOGGED IN
 //----------------------------------------------------------------------------------
 
     Route::group(array('before' => 'auth'), function()
@@ -300,6 +300,8 @@ $layout = View::of('layout');
         Route::post(get_profile_types(true).'/select', array('as' => 'post_profile_select', 'uses' => 'admin@profile_select'));
         Route::post(get_profile_types(true).'/create', array('as' => 'post_profile_create', 'uses' => 'admin@profile_create'));
         Route::post(get_profile_types(true).'/update', array('as' => 'post_profile_update', 'uses' => 'admin@profile_update'));
+
+        Route::post('post_profile_many_relationship_update', array('as' => 'post_profile_many_relationship_update', 'uses' => 'admin@profile_many_relationship_update'));
        
         Route::post('reports/update', array('as' => 'post_reports_update', 'uses' => 'admin@reports_update'));
 

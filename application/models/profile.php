@@ -43,7 +43,7 @@ class Profile extends ExtendedEloquent
         
         // msg
         $msg = lang('profile.msg.creation_success', array(
-            'type' => $profile->type,
+            'profile_type' => $profile->type,
             'name' => $profile->name,
             'id' => $profile->id
         ));
@@ -94,7 +94,7 @@ class Profile extends ExtendedEloquent
         ));
 
         $msg = lang('profile.msg.update_success', array(
-            'type' => $profile->type,
+            'profile_type' => $profile->type,
             'name' => $profile->name,
             'id' => $profile->id
         ));
@@ -191,10 +191,26 @@ class Profile extends ExtendedEloquent
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
 
+    public function users()
+    {
+        return $this->has_many_and_belongs_to('User');
+    }
+
     public function user()
     {
         return $this->belongs_to('User', 'user_id');
     }
+
+    public function creator()
+    {
+        return $this->belongs_to('User', 'creator_id');
+    }
+
+    /*public function user()
+    {
+        return $this->creator();
+    }*/
+
 
     /**
      * Get all reports of the specified type linked to this profile

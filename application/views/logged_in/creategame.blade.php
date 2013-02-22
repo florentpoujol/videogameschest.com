@@ -19,20 +19,7 @@ $devs = Dev::get(array('id', 'name'));
     <hr>
 
     <?php
-    $rules = array(
-        'name' => 'required|alpha_dash_extended|min:2',
-        'developer_name' => 'required|alpha_dash_extended|min:2',
-        'developer_url' => 'url',
-        'publisher_name' => 'min:2',
-        'publisher_url' => 'url',
-        'website' => 'url',
-        'blogfeed' => 'url',
-        'presskit' => 'url',
-
-        'profile_background' => 'url',
-        'cover' => 'url',
-        'soundtrack' => 'url',
-    );
+    $rules = Config::get('vgc.profiles_post_create_rules.game', array());
     ?>
     {{ Former::open_vertical(route('post_profile_create', array('game')))->rules($rules) }} 
         {{ Form::token() }}
@@ -67,7 +54,7 @@ $devs = Dev::get(array('id', 'name'));
                 
                 {{ Former::url('publisher_url', lang('common.publisher_url'))->placeholder(lang('common.url')) }}
 
-                {{ Former::text('meta_keywords', lang('vgc.profile.meta_keywords'))->help(lang('vgc.profile.meta_keywords_help')) }}
+                {{ Former::text('meta_keywords', lang('vgc.profile.meta_keywords'))->placeholder(lang('vgc.profile.meta_keywords_help')) }}
             </div>
         </div> <!-- /.row -->
 
@@ -221,10 +208,6 @@ $devs = Dev::get(array('id', 'name'));
                         <p>
                             {{ lang('game.soundtrack_help') }}
                         </p>
-
-                        <div class="alert alert-error">
-                            {{ lang('game.soundtrack_alert') }}
-                        </div>
 
                         {{ Former::xlarge_url('soundtrack', lang('game.soundtrackurl'))->placeholder(lang('common.url')) }}
                     </div> 

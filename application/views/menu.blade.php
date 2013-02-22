@@ -38,9 +38,11 @@
                     if (${$item} != '') $admin = '';
                 }
 
+
                 $show_profile_edit_link = false;
-                if (in_array(CONTROLLER, get_profile_types()) && ! in_array(ACTION, array('create', 'update'))) {
+                if (CONTROLLER == get_profile_types(true) && ! in_array(ACTION, array('create', 'update'))) {
                     $admin = '';
+                    
 
                     if (isset($profile) && (is_admin() || $profile->user_id == user_id())) {
                         $show_profile_edit_link = true;

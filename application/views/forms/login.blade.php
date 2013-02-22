@@ -12,8 +12,6 @@ $rules = array(
     {{ Former::password('password', '')->placeholder(lang('login.password_label')) }}
 
     {{ Former::checkbox('keep_logged_in', '')->text(lang('login.keep_logged_in_label'))->check() }}
-    
-    {{ antiBot() }}
 
     {{ Former::primary_submit(lang('login.submit')) }}
 {{ Former::close() }}

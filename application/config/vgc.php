@@ -56,7 +56,7 @@ return array(
         'common' => array('name', 'email', 'developer_url', 'pitch', 'logo', 'website', 'blogfeed', 'presskit', 'socialnetworks', 'press', 'screenshots', 'videos', 'soundtrack'),
         
         'game' => array('developer_name',  'stores'),
-
+        'tool' => array('documentation'),
 
     ),
 
@@ -234,6 +234,7 @@ return array(
         "ouya",
         "pc",
         "ps3",
+        'ps4',
         "psp",
         "psvita",
         "wii",
@@ -258,6 +259,7 @@ return array(
         "html5",
         "impactjs",
         "java",
+        'love',
         "ogre3d",
         "python",
         "rpgmaker",
@@ -268,7 +270,9 @@ return array(
         "udk",
         "unity3d",
         "unrealengine",
-        "xna"
+        "xna",
+        'yna',
+        
     ),
 
     "stores" => array(
@@ -413,6 +417,19 @@ return array(
         'mac',
         'linux',
     ),*/
+
+    'scriptinglanguages' => array(
+        'actionscript',
+        'boo',
+        'c',
+        'csharp',
+        'haxe',
+        'java',
+        'javascript',
+        'lua',
+        'unityscript',
+        
+    ),
 
 
 

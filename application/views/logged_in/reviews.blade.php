@@ -2,13 +2,13 @@
 	{{ lang('reviews.title') }}
 @endsection
 
-<div class="peerreview">
+<div class="review">
     <h1>{{ lang('reviews.title') }}</h1>
 
     <hr>
 
     <?php
-    echo 
+    /*echo 
     Navigation::tabs(array(
     	array(
     		'url' => route('get_reviews', array('submission')),
@@ -19,7 +19,7 @@
     		'url' => route('get_reviews', array('publishing')),
     		'label' => lang('reviews.publishing_title'),
     	),
-    ));
+    ));*/
     ?>
 
     <p>

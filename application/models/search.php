@@ -34,7 +34,7 @@ class Search extends ExtendedEloquent
         if ( ! isset($input['profile_type'])) $input['profile_type'] = 'game';
         $profile_type = $input['profile_type'];
 
-        if ( ! in_array($profile_type, get_profiles_types())) {
+        if ( ! in_array($profile_type, get_profile_types())) {
             Log::write('search error', "Wrong class '$profile_type' for search id='$search_id'");
             HTML::set_error(lang('common.msg.error'));
             return new SearchError("Wrong class '$profile_type' for search id='$search_id'");

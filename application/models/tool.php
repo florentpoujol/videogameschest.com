@@ -3,14 +3,14 @@
 class Tool extends Profile
 {
     // fields which data is stored as json
-    public static $json_fields = array('socialnetworks', 'screenshots', 'videos', 'press',
-        'tool_works_on_os', 'devices', 'operatingsystems');
+    public static $json_fields = array('socialnetworks', 'screenshots', 'videos', 
+        'tool_works_on_os', 'devices', 'operatingsystems', 'scriptinglanguages');
     
     // text fields which data is stored as json array
-    public static $array_fields = array('tool_works_on_os', 'operatingsystems', 'devices', );
+    public static $array_fields = array('tool_works_on_os', 'scriptinglanguages', 'operatingsystems', 'devices',  );
 
     // text fields which data is stored as json object with a 'names' and 'urls' keys containing an array ot items
-    public static $names_urls_fields = array('socialnetworks', 'screenshots', 'videos', 'press');
+    public static $names_urls_fields = array('socialnetworks', 'screenshots', 'videos');
 
 	//----------------------------------------------------------------------------------
     // CRUD METHODS
@@ -102,7 +102,7 @@ class Tool extends Profile
 
     public function games()
     {
-        return $this->has_many('Game');
+        return $this->has_many_and_belongs_to('Game');
     }
 
 

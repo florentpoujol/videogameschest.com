@@ -1,5 +1,5 @@
 @section('page_title')
-    {{ lang('vgc.tool.add.title') }}
+    {{ lang('vgc.tool.add_title') }}
 @endsection
 <?php
 $old = Input::old();
@@ -10,12 +10,12 @@ if (is_admin()) {
 } 
 ?>
 <div id="addtool" class="profile-form create-profile-form">
-    <h1>{{ lang('vgc.tool.add.title') }}</h1>
+    <h1>{{ lang('vgc.tool.add_title') }}</h1>
 
     <hr>
 
     <?php
-    $rules = Config::get('vgc.profiles_post_create_rules.tool', array())
+    $rules = Config::get('vgc.profiles_post_create_rules.tool', array());
     ?>
     {{ Former::open_vertical(route('post_profile_create', 'tool'))->rules($rules) }} 
         {{ Form::token() }}
@@ -105,7 +105,7 @@ if (is_admin()) {
                 <ul class="nav nav-tabs" id="general-nu-text-tabs">
                     <li><a href="#screenshots" data-toggle="tab">{{ lang('vgc.common.screenshots') }}</a></li>
                     <li><a href="#videos" data-toggle="tab">{{ lang('vgc.common.videos') }}</a></li>
-                    <li><a href="#press" data-toggle="tab">{{ lang('vgc.press.title') }}</a></li>
+                    
                     <li><a href="#socialnetworks" data-toggle="tab">{{ lang('vgc.common.socialnetworks') }}</a></li>
                 </ul>
 
@@ -135,7 +135,7 @@ if (is_admin()) {
                     @endforeach
 
                     <?php
-                    $nu_text = array('screenshots', 'videos', 'press');
+                    $nu_text = array('screenshots', 'videos');
                     foreach ($nu_text as $field):
                         if (isset($old[$field])) $values = clean_names_urls_array($old[$field]);
                         else $values = array();

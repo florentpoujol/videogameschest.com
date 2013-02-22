@@ -155,6 +155,11 @@ class Game extends Profile
         return $this->developer();
     }
 
+    public function tools()
+    {
+        return $this->has_many_and_belongs_to('Tool');
+    }
+
 
     //----------------------------------------------------------------------------------
     // GETTER

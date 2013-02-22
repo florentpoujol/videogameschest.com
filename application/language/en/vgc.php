@@ -83,7 +83,6 @@ return array(
 // COMMON
 
     'common' => array(
-        'add_names_help' => 'One or several (comma separated) profile\'s names or ids.',
         'add_profile' => 'Add this profile',
         'array_field_where_all' => 'All',
         'array_field_where_any' => 'Any of',
@@ -137,7 +136,8 @@ return array(
         'profile_background' => 'Background image',
         'profile_background_help' => 'Background image for the profile\'s header. Max-height : 250px. Ideal min-width : 1000px.',
         'profile_blogfeed' => 'Latest articles',
-        'profile_list_empty' => 'No profile to display',
+        'profile_list_add_names_help' => 'One or several (comma separated) :profile_type names or ids.',
+        'profile_list_empty' => 'No :profile_type to display',
         'publisher' => 'Publisher',
         'publisher_name' => 'Publisher\'s name',
         'publisher_url' => 'Publisher\'s website',
@@ -736,14 +736,24 @@ return array(
         'update_help' => 'Every text fields needs to be reviewed by an administrator everytimes you update them. The modification of those fields will not be visible by everyone before they are reviewed. <br>
         You can preview how the profile looks with the modifications by clicking on the "Preview modifications" link above. You still need to save the modifications by validating the form with the "Update" button before they become visible.',
 
+        'many_relationship_list' => array(
+
+        ),
+
+
+
+
         'msg' => array(
-            'creation_success' => "The :type profile with name ':name' (id=:id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
+            'creation_success' => "The :profile_type profile with name ':name' (id=:id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
             
-            'profile_not_found' => "No :type profile with :field_name ':field_value' was found.",
+            'profile_not_found' => "No :profile_type profile with :field_name ':field_value' was found.",
 
-            'update_nametaken' => "Can't rename the :type profile with name ':name' (id : :id) because the name ':newname' is already taken.",
-            'update_success' => "The :type profile with name ':name' (id=:id) has successfully been updated.",
+            'update_nametaken' => "Can't rename the :profile_type profile with name ':name' (id : :id) because the name ':newname' is already taken.",
+            'update_success' => "The :profile_type profile with name ':name' (id=:id) has successfully been updated.",
 
+            'many_relationship_add_success' => "You successfully added :count :rel_profile_type profiles in the relationship with your :updated_profile_type profile ':name' (id=:id).",
+
+            'many_relationship_delete_success' => "You successfully deleted :count :rel_profile_type profiles from the relationship with your :updated_profile_type profile ':name' (id=:id).",
         ),
     ),
 
@@ -882,7 +892,7 @@ return array(
 // REVIEWS
 
     'reviews' => array(
-        'title' => 'Peer Reviews',
+        'title' => 'Reviews',
         'submission_title' => 'Submission Review',
         'publishing_title' => 'Publishing Review',
         'game_title' => 'Games',
@@ -985,59 +995,32 @@ return array(
     'tool' => array(
         //'developer_name_help' => 'OR if the developer profile does not yet exist on VGC, you can just',
         //'dev_not_in_list_link' => 'enter its name and website URL below :',
+        'add_game_relationship_help' => 'Add the games that have been built with your tool below :',
+        
 
-        'logo' => 'Logo',
         
         'pitch' => 'Pitch what the tool does, what are its features...',
         
-        'releasedate' => 'Release date',
-
-        'developer_name_help' => 'If the developer has a profile on VGC, its name should appear below the field as you type it. 
-        If that\'s the case, a link to the developer\'s profile will be done from the game\'s profile instead of using the URL below.',
 
 
         'profile_form_tool_works_on_os_pane_title' => 'Tool works on OS',
+        'profile_form_scriptinglanguages_pane_title' => 'Script languages',
         'profile_form_operatingsystems_pane_title' => 'Game runs on OS',
         'profile_form_devices_pane_title' => 'Game plays on devices',
 
 
-
+        'add_title' => 'Add a tool profile',
+        'edit_title' => 'Edit a tool',
+        
         'add' => array(
             'title' => 'Add a tool profile',
-            'submit' => 'Submit this tool profile',
         ),
 
         'edit' => array(
             'title' => 'Edit a tool',
-            'submit' => 'Edit this tool',
-            
-            'select_profile_help' => 'Select the tool to edit',
         ),
 
-        'profile' => array(
-            'title' => 'tool',
-            'website' => 'Go to the tool\'s website',
-            'blogfeed' => 'Lastest articles from the blog',
-            'soundtrack' => 'Get the soundtrack',
-            'screenshots_help' => 'Click on them to view in full size',
-
-            'get_this_tool_from' => 'Get this tool from :store_name',
-        ),
-
-
-        'msg' => array(
-            'addtool_success' => "The tool profile with name ':name' (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
-            'edittool_success' => "The tool profile with name ':name' (id : :id) has successfully been updated.",
-
-            'select_edittool_id_not_found' => "No tool profile with id ':id' was found.",
-            'select_edittool_name_not_found' => "No tool profile with name ':name' was found.",
-
-            'profile_not_found' => "No tool profile with id ':id' was found.",
-
-            'edittool_nametaken' => "Can't rename the tool profile with name ':name' (id : :id) because the name ':newname' is already taken.",
-        ),
-
-    ), // end of game
+    ),
 
 // USER
 
@@ -1145,7 +1128,8 @@ return array(
         'mac' => 'Mac',
         'ouya' => 'Ouya',
         'pc' => 'PC',
-        'ps3' => 'PS3',
+        'ps3' => 'PlayStation 3',
+        'ps4' => 'PlayStation 4',
         'psp' => 'PSP',
         'psvita' => 'PS Vita',
         'wii' => 'Wii',
@@ -1186,6 +1170,8 @@ return array(
         'unity3d' => 'Unity 3D',
         'unrealengine' => 'Unreal Engine',
         'xna' => 'XNA',
+        'love' => 'Löve',
+        'yna' => 'YNA',
     ),
 
 // STORES
@@ -1375,4 +1361,22 @@ return array(
         'windowsdesktop_help' => 'Any Windows but Windows 8 Metro and Windows Phone',
         'windows8' => 'Windows 8 Metro',
     ),
+
+// SCRIPTING LANGUAGES
+
+    'scriptinglanguages' => array(
+        'title' => 'Script languages',
+        'tool_help' => 'The scripting languages that can be used with the tool.',
+
+        'lua' => 'Lua',
+        'csharp' => 'C#',
+        'javascript' => 'JavaScript',
+        'boo' => 'Boo',
+        'unityscript' => 'UnityScript',
+        'actionscript' => 'ActionScript',
+        'java' => 'Java',
+        'c' => 'C/C++',
+        'haxe' => 'Haxe',
+    ),
+
 );

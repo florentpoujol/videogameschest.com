@@ -4,9 +4,9 @@
 ?>
 <div id="profile-list-form">
 
-    {{ Former::hidden('profile_type', $profile_type) }}
+    {{ Former::hidden('relationship_profile_type', $profile_type) }}
 
-    {{ Former::text('name', lang('common.name'))->help(lang('common.profile_list_add_names_help'), array('profile_type' => $profile_type)) }}
+    {{ Former::text('name', lang('common.name'))->help(lang('common.profile_list_add_names_help', array('profile_type' => $profile_type))) }}
 
     <input type="submit" name="add" value="{{ lang('common.add_profile') }}" class="btn btn-success">
 
@@ -31,7 +31,7 @@
                     </td>
                     
                     <td>
-                        <input type="checkbox" name="ids_to_delete[]" value="{{ $profile_id }}">
+                        <input type="checkbox" name="ids_to_delete[]" value="{{ $profile->id }}">
                     </td>
                 </tr>
             @endforeach

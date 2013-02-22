@@ -25,10 +25,8 @@ $developer_name = $profile->actual_developer_name;
 
     <hr>
 
-    
-
     <ul class="nav nav-tabs" id="main-tabs">
-        <li><a href="#general-pane" data-toggle="tab">{{ lang('vgc.common.general') }}</a></li>
+        <li><a href="#general-pane" data-toggle="tab">{{ lang('vgc.common.profile') }}</a></li>
         <li><a href="#promote-pane" data-toggle="tab">{{ lang('vgc.promote.title') }}</a></li>
         <li><a href="#crosspromotion-pane" data-toggle="tab">{{ lang('vgc.crosspromotion.title') }}</a></li>
     </ul>
@@ -41,20 +39,7 @@ $developer_name = $profile->actual_developer_name;
             </p>
 
             <?php
-            $rules = array(
-                'name' => 'required|alpha_dash_extended|min:2',
-                'developer_name' => 'required|alpha_dash_extended|min:2',
-                'developer_url' => 'url',
-                'publisher_name' => 'min:2',
-                'publisher_url' => 'url',
-                'website' => 'url',
-                'blogfeed' => 'url',
-                'presskit' => 'url',
-
-                'profile_background' => 'url',
-                'cover' => 'url',
-                'soundtrack' => 'url',
-            );
+            $rules = Config::get('vgc.profiles_post_update_rules.game', array());
             ?>
             {{ Former::open_vertical(route('post_profile_update', $profile_type))->rules($rules) }} 
                 {{ Form::token() }}
@@ -96,7 +81,7 @@ $developer_name = $profile->actual_developer_name;
                         
                         {{ Former::url('publisher_url', lang('vgc.common.publisher_url'))->placeholder(lang('vgc.common.url')) }}
 
-                        {{ Former::text('meta_keywords', lang('vgc.profile.meta_keywords'))->help(lang('vgc.profile.meta_keywords_help')) }}
+                        {{ Former::text('meta_keywords', lang('vgc.profile.meta_keywords'))->placeholder(lang('vgc.profile.meta_keywords_help')) }}
                     </div>
                 </div> <!-- /.row -->
 
@@ -272,10 +257,6 @@ $developer_name = $profile->actual_developer_name;
                                 <p>
                                     {{ lang('vgc.game.soundtrack_help') }}
                                 </p>
-
-                                <div class="alert alert-error">
-                                    {{ lang('vgc.game.soundtrack_alert') }}
-                                </div>
 
                                 {{ Former::xlarge_url('soundtrack', lang('vgc.game.soundtrackurl'))->placeholder(lang('vgc.common.url')) }}
                             </div> 

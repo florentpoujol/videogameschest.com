@@ -31,8 +31,8 @@ $name = $profile->name;
         <div class="span4 header-side-column">
             <ul class="unstyled">
                 <?php
-                $website = trim($profile->website);
-                $documentation = trim($profile->website);
+                $website = $profile->website;
+                $documentation = $profile->documentation;
                 ?>
                 @if ($website != '')
                     <li>{{ icon('globe', lang('common.website')) }} <a href="{{ $website }}" title="{{ lang('common.website') }}">{{ shortenUrl($website) }}</a></li>
@@ -149,19 +149,18 @@ $name = $profile->name;
     </div> <!-- /.row -->
 
     <hr>
-
+    
     <div class="row-fluid json-field-row">
         <?php 
-        $fields = array('socialnetworks', 'tool_works_on_os', 'operatingsystems', 'devices',  );
+        $fields = array('socialnetworks',  );
         foreach ($fields as $field):
         ?>
-            <div class="span3 json-field-div">
-                @if ($field == 'socialnetworks')
+            <div class="span6 json-field-div">
+                @if ($field == 'socialnetworks' || $field == 'press')
                     <h4>{{ lang($field.'.title') }}</h4>
                 @else
                     <h4>{{ lang($field.'.title') }} <small>{{ lang('vgc.'.$field.'.tool_help') }}</small></h4>
                 @endif
-
 
                 <ul class="unstyled">
                     @if ($field == 'socialnetworks')
@@ -170,10 +169,64 @@ $name = $profile->name;
                         @for ($i = 0; $i < count($array['names']); $i++)
                             <li><a href="{{ $array['urls'][$i] }}">{{ lang($field.'.'.$array['names'][$i]) }}</a></li>
                         @endfor
+
+                    @elseif ($field == 'press')
+                        <?php $array = $profile->$field; ?>
+
+                        @for ($i = 0; $i < count($array['names']); $i++)
+                            <li><a href="{{ $array['urls'][$i] }}">{{ $array['names'][$i] }}</a></li>
+                        @endfor
+
                     @elseif ($field == 'tool_works_on_os')
                         @foreach ($profile->$field as $name)
                             <li>{{ lang('operatingsystems.'.$name) }}</li>
                         @endforeach
+
+                    @else
+                        @foreach ($profile->$field as $name)
+                            <li>{{ lang($field.'.'.$name) }}</li>
+                        @endforeach
+                    @endif
+                </ul>
+            </div>
+        @endforeach 
+    
+    </div>
+
+    <hr>
+
+    <div class="row-fluid json-field-row">
+        <?php 
+        $fields = array('tool_works_on_os', 'scriptinglanguages', 'operatingsystems', 'devices',  );
+        foreach ($fields as $field):
+        ?>
+            <div class="span3 json-field-div">
+                @if ($field == 'socialnetworks' || $field == 'press')
+                    <h4>{{ lang($field.'.title') }}</h4>
+                @else
+                    <h4>{{ lang($field.'.title') }} <small>{{ lang('vgc.'.$field.'.tool_help') }}</small></h4>
+                @endif
+
+                <ul class="unstyled">
+                    @if ($field == 'socialnetworks')
+                        <?php $array = $profile->$field; ?>
+
+                        @for ($i = 0; $i < count($array['names']); $i++)
+                            <li><a href="{{ $array['urls'][$i] }}">{{ lang($field.'.'.$array['names'][$i]) }}</a></li>
+                        @endfor
+
+                    @elseif ($field == 'press')
+                        <?php $array = $profile->$field; ?>
+
+                        @for ($i = 0; $i < count($array['names']); $i++)
+                            <li><a href="{{ $array['urls'][$i] }}">{{ $array['names'][$i] }}</a></li>
+                        @endfor
+
+                    @elseif ($field == 'tool_works_on_os')
+                        @foreach ($profile->$field as $name)
+                            <li>{{ lang('operatingsystems.'.$name) }}</li>
+                        @endforeach
+
                     @else
                         @foreach ($profile->$field as $name)
                             <li>{{ lang($field.'.'.$name) }}</li>

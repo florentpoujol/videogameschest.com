@@ -35,15 +35,7 @@ if (is_admin()) {
             </p>
 
             <?php
-            $rules = array(
-                'name' => 'required|alpha_dash_extended|min:2',
-                'email' => 'email',
-                'logo' => 'url',
-                'website' => 'url',
-                'blogfeed' => 'url',
-                'presskit' => 'url',
-                'teamsize' => 'integer|min:1'
-            );
+            $rules = Config::get('vgc.profiles_post_update_rules.developer', array());
             ?>
             {{ Former::open_vertical(route('post_profile_update', $profile_type))->rules($rules) }} 
                 {{ Form::token() }}
@@ -75,7 +67,7 @@ if (is_admin()) {
 
                         {{ Former::textarea('meta_description', lang('vgc.profile.meta_description'))->id('meta-description') }}
 
-                        {{ Former::text('meta_keywords', lang('vgc.profile.meta_keywords'))->help(lang('vgc.profile.meta_keywords_help')) }}
+                        {{ Former::text('meta_keywords', lang('vgc.profile.meta_keywords'))->placeholder(lang('vgc.profile.meta_keywords_help')) }}
                     </div>
 
                     <div class="span8">
