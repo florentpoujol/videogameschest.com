@@ -922,6 +922,18 @@ return array(
 
         The extensive filtering capabilities is the angular stone of VideoGamesChest\'s approach to discoverability and is used for the best by the discovering and promoting services.',
 
+
+        'no_search_id_help' => 'Tell us what you are looking for : ',
+        'search_id' => 'This search ID is : ',
+        'search_id_uses' => 'The search ID is uses in various places.',
+        'search_id_help' => 'The search id identifies the unique set of criteria you just selected. <br> Now, you may chose what do you want to do with this search :',
+
+        'browse_this_search' => 'Browse',
+        'browse_discover_buttons_text' => 'the profiles that match this search.',
+
+
+
+        // forms
         'i_am_looking_for' => 'I am looking for a :profile_type',
 
         'hide_show_link' => 'Show/hide the search form',
@@ -966,8 +978,7 @@ return array(
         'results' => 'Results',
         'rss_feed' => 'RSS feed for the new profiles that matches this search.',
 
-        'search_id' => 'Search ID',
-        'search_id_uses' => 'The search ID is uses in various places.',
+        
 
         'dev' => array(
             'stores_help' => 'are sold on,',
