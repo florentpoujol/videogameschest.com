@@ -6,6 +6,6 @@
     if (! isset($span_size)) $span_size = 3;
     ?>
     <div class="span{{ $span_size }}">
-        @include('partials/search_array_field')
+        @include('partials.search_array_field')
     </div>
 @endforeach

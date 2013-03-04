@@ -957,6 +957,11 @@ return array(
         'stores_help' => 'and are sold on,',
         'looks_help' => 'and looks,',
         'periods_help' => 'and take place during,',
+        'tool_works_on_os_help' => 'And who runs on',
+        'scriptinglanguages_help' => 'And can be used scripted with',
+        
+
+
         
         'results' => 'Results',
         'rss_feed' => 'RSS feed for the new profiles that matches this search.',

@@ -25,4 +25,8 @@ if (isset($search_data['array_fields'][$field])) $values = $search_data['array_f
 else $values = array();
 ?>
 
-{{ array_to_checkboxes($field, $values, 'array_fields['.$field.'][]') }}
+@if ($field == 'tool_works_on_os')
+    {{ array_to_checkboxes('operatingsystems', $values, 'array_fields['.$field.'][]') }}
+@else
+    {{ array_to_checkboxes($field, $values, 'array_fields['.$field.'][]') }}
+@endif

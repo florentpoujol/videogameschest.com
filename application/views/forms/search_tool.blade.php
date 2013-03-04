@@ -1,11 +1,11 @@
     <div class="row">
         <div class="span12">
-        And whose games<br> <br>
+        <br> <br>
         </div>
     </div>
 
     <?php
-    $fields = array('devices', );
+    $fields = Tool::$array_fields;
     $span_size = 3;
     ?>
     <div class="row">

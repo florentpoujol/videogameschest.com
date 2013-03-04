@@ -462,7 +462,7 @@ class Admin_Controller extends Base_Controller
 
 
     /**
-     * Update a list of profile id stored for a 
+     * Update a list of profile id stored for a many to many relationship
      */
     public function post_profile_many_relationship_update() 
     {
