@@ -97,8 +97,13 @@ if ( ! isset($preview_profile)) $preview_profile = false;
         </footer>
 
         <!-- JavaScript -->
-        <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
-        <script src="http://lesscss.googlecode.com/files/less-1.3.0.min.js" type="text/javascript"></script>
+        @if (Config::get('vgc.environment') == 'local')
+            {{ HTML::script('js/jquery-v1.7.1-min.js') }}
+        @else
+            <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+            <script src="http://lesscss.googlecode.com/files/less-1.3.0.min.js" type="text/javascript"></script>
+        @endif
+
         {{ HTML::script('js/bootstrap/bootstrap.min.js') }}
         @yield('jsfiles')
 
@@ -115,7 +120,7 @@ if ( ! isset($preview_profile)) $preview_profile = false;
           @yield('jscode')
         </script> <!-- /JavaScript -->
 
-        @if (Config::get('vgc.is_production_environement') === true)
+        @if (Config::get('vgc.is_production_environment') === true)
             @include('partials.googleanalytics')
         @endif
     </body>

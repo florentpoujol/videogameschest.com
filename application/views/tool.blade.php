@@ -282,7 +282,6 @@ $name = $profile->name;
 
 @section('jQuery')
     $('#medias-tabs a:first').tab('show');
-    
 
     $('.screenshots-group').colorbox({rel:"group1"});
     $('#screenshots-slider').codaSlider({
@@ -292,7 +291,6 @@ $name = $profile->name;
         autoHeightEaseDuration: 1000,
         autoSlideInterval: 1000,
     });
-
 
     $(".colorbox-videos-group").colorbox({iframe:true, innerWidth:800, innerHeight:533, rel:"group_video"});
     $('#videos-slider').codaSlider({

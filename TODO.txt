@@ -15,7 +15,7 @@ Test en staging le vendredi 22/02/2013
 DONE :
 
 new profile update system
-markdown pour les pitchs
+markdown pour les pitchs et le blog
 champs meta keyword et meta description pour les profils
 
 
@@ -24,7 +24,7 @@ champs meta keyword et meta description pour les profils
     TODO to milestone
 ------------------------------------------------------------
 
-makdown pour le blog
+
 
 ajout profils restant
     model
