@@ -3,14 +3,13 @@
 ------------------------------------------------------------
 
 
-Lundi 25 Fevrier 2013
 
 publication première mise à jour avec
 - profils outils, maps et mods
 - système d'update de profils
 - nouveau système de profils
+- nouvelle home et workflow
 
-Test en staging le vendredi 22/02/2013
 
 DONE :
 
@@ -36,6 +35,22 @@ ajout profils restant
 - refaire home
 
 ==
+
+- logo
+- nouveau design
+
+- combiner plusieur searches
+
+- crawler (parse une url et préremplit un profil) à partir de : 
+    - Indie DB
+    - App Store
+    - Touch GG
+    - Steam
+
+- lecteur de flux RSS pour obtenir le nom et l'url de profils à ajouter
+
+- vidéos embed de IndieDB
+
 
 plusieurs user peuvent éditer un même profil
 n'importe quel user peu ajouter un autre user
