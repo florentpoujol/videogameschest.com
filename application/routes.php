@@ -53,7 +53,6 @@ $layout = View::of('layout');
 
     Route::get('/', function() use ($layout)
     {
-        //return Redirect::to_route('get_home');
         return $layout->nest('page_content', 'home');
     });
 
@@ -62,26 +61,13 @@ $layout = View::of('layout');
         return $layout->nest('page_content', 'home');
     }));
 
-    Route::get('aboutjdlrotpmg', array('as' => 'get_about_page', 'do' => function() use ($layout)
-    {
-        return $layout->nest('page_content', 'about');
-    }));
-
-
-    // PARTICIPATE
-    Route::get('participate', array('as' => 'get_participate_page', 'do' => function() use ($layout)
-    {
-        return $layout->nest('page_content', 'participate');
-    }));
-
 
     // SEARCH PROFILE
-
     Route::get('search/(:num?)', array('as' => 'get_search_page', function($search_id = null) use ($layout)
     {
-        if ( ! is_null($search_id)) {
+        if ($search_id !== null) {
             $search = Search::get($search_id);
-            if ( ! is_null($search)) {
+            if ($search !== null) {
                 $profiles = Search::make($search->data)->where_privacy('public')->get();
                 return $layout->nest('page_content', 'search', array(
                     'profiles' => $profiles, 
@@ -202,6 +188,7 @@ $layout = View::of('layout');
     }));
 
     Route::get('blog/feed', array('as' => 'get_blog_feed', 'uses' => 'feed@blog_feed'));
+
 
 
 //----------------------------------------------------------------------------------

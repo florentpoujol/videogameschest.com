@@ -52,7 +52,6 @@
                 
 
                 <li{{ $home }}><a href="{{ route('get_home_page') }}">{{ lang('menu.home') }}</a></li>
-                <li{{ $participate }}><a href="{{ route('get_participate_page') }}">{{ lang('participate.title') }}</a></li>
                 <li{{ $search }}><a href="{{ route('get_search_page') }}">{{ lang('search.title') }}</a></li>
                 <li{{ $discover }}><a href="{{ route('get_discover_page') }}">{{ lang('discover.title') }}</a></li>
                 <li{{ $promote }}><a href="{{ route('get_promote_page') }}">{{ lang('promote.title') }}</a></li>
