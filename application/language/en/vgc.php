@@ -80,6 +80,17 @@ return array(
         'latest_articles' => 'Latest articles',
     ),
 
+// BROWSE
+
+    'browse' => array(
+        'title' => 'Browse',
+        'form_text_field' => 'The search ID',
+        'form_submit' => 'Browse this search ID',
+
+        'no_search_id_help' => 'Tell us what to browse by passing a <strong>search ID</strong> in the field below. <br>
+        If you don\'t have a search ID or don\'t know what it is, you may want to <a href=":search_page_url" title="Go to the search page">look at the search page</a> first.',
+    ),
+
 // COMMON
 
     'common' => array(

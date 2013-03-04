@@ -25,7 +25,7 @@
             <ul class="nav pull-right">
                 <!-- General menu -->
                 <?php 
-                $menu_items = array('home', 'participate', 'search', 'discover', 'promote'); 
+                $menu_items = array('home', 'search', 'browse', 'discover', 'promote'); 
                 foreach ($menu_items as $item) {
                     if (CONTROLLER == $item) ${$item} = ' class="active"';
                     else ${$item} = '';
@@ -53,6 +53,7 @@
 
                 <li{{ $home }}><a href="{{ route('get_home_page') }}">{{ lang('menu.home') }}</a></li>
                 <li{{ $search }}><a href="{{ route('get_search_page') }}">{{ lang('search.title') }}</a></li>
+                <li{{ $browse }}><a href="{{ route('get_browse_page') }}">{{ lang('browse.title') }}</a></li>
                 <li{{ $discover }}><a href="{{ route('get_discover_page') }}">{{ lang('discover.title') }}</a></li>
                 <li{{ $promote }}><a href="{{ route('get_promote_page') }}">{{ lang('promote.title') }}</a></li>
                 

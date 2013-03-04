@@ -85,6 +85,27 @@ $layout = View::of('layout');
 
     Route::get('search/feed/(:num)', array('as' => 'get_search_feed', 'uses' => 'feed@search_feed'));
 
+    // BROWSE
+    Route::get('browse/(:num?)', array('as' => 'get_browse_page', function($search_id = null) use ($layout)
+    {
+        if ($search_id !== null) {
+            $search = Search::get($search_id);
+            if ($search !== null) {
+                $profiles = Search::make($search->data)->where_privacy('public')->get();
+                return $layout->nest('page_content', 'browse', array(
+                    'profiles' => $profiles, 
+                    'search_data' => $search->array_data,
+                    'search_id' => $search_id,
+                ));
+            } else {
+                HTML::set_error(lang('search.msg.id_not_found', array('id'=>$search_id)));
+                return Redirect::to_route('get_browse_page');
+            }
+        }
+        
+        return $layout->nest('page_content', 'browse');
+    }));
+
 
     // DISCOVER
     Route::get('discover', array('as' => 'get_discover_page', 'uses' => 'discover@index'));
@@ -206,6 +227,10 @@ $layout = View::of('layout');
             return Redirect::to_route('get_search_page', array($search->id));
         }));
 
+        Route::post('browse', array('as' => 'post_browse', 'before' => 'csrf', function()
+        {
+            return Redirect::to_route('get_browse_page', array(Input::get('search_id')));
+        }));
 
         // user subscribe to a promotion feed or email
         Route::post('discover/feed/create', array('as' => 'post_discover_feed_create', 'uses' => 'discover@feed_create'));
