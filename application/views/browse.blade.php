@@ -9,7 +9,7 @@ $profiles
 $search_data
 $search_id
 */
-?> 
+?>
 
 <div id="browse">
     <div class="pull-right muted" id="search-icon">

@@ -358,7 +358,34 @@ $layout = View::of('layout');
         Route::get('testadmincontroller/(:num)', array('as' => 'get_testadmin_controller', 'uses' => 'discover@FeedData'));
         Route::get('test/(:all?)', function($searches = null) use ($layout)
         {
-            var_dump($searches);
+            var_dump(json_decode($searches));
+            var_dump($searches[2]);
+            $matches = array("+" => array(), "-" => array());
+            $j = 0;
+            $sign = "+";
+
+            for ($i = 0; $i < strlen($searches); $i++) {
+                $char = $searches[$i];
+                if ($char == " ") continue;
+
+                if ($char == "+" || $char == "-") {
+                    $sign = $char;
+                    $j++;
+                    continue;
+                }
+
+                if ( ! isset($matches[$sign][$j])) $matches[$sign][$j] = "";
+
+                if (is_numeric($char)) $matches[$sign][$j] .= $char;
+            }
+            
+            $matches["+"] = array_values($matches["+"]);
+            $matches["-"] = array_values($matches["-"]);
+
+            var_dump($matches);
+
+            var_dump(Search::make(1));
+
             return $layout->nest('page_content', 'test');
         });
 

@@ -11,7 +11,7 @@ class Search extends ExtendedEloquent
      * @param  array $input The search id, the array comming from the search form, or the array as json
      * @return Laravel\Database\Eloquent\Query or SearchError
      */
-    public static function make($input)
+    public static function make($input, $additional_criteria = null)
     {
         $search_id = 0;
         if (is_numeric($input)) {
@@ -26,10 +26,59 @@ class Search extends ExtendedEloquent
             }
         }
 
-        if (is_string($input)) $input = json_decode($input, true);
+        if (is_string($input)) {
+            // $input may be the search data as a json string,
+            // or a formula made of several search ids ("ID+ID-ID...")
 
-        //dd($input);
+            $input = json_decode($input, true);
+            // if $input is null, it was not a json string
 
+            if ($input === null && (strpos($input, "+") !== false || strpos($input, "-") !== false)) {
+                $matches = array("+" => array(), "-" => array());
+                $j = 0;
+                $sign = "+";
+
+                for ($i = 0; $i < strlen($searches); $i++) {
+                    $char = $searches[$i];
+                    if ($char == " ") continue;
+
+                    if ($char == "+" || $char == "-") {
+                        $sign = $char;
+                        $j++;
+                        continue;
+                    }
+
+                    if ( ! isset($matches[$sign][$j])) $matches[$sign][$j] = "";
+                    if (is_numeric($char)) $matches[$sign][$j] .= $char;
+                }
+                
+                $matches["+"] = array_values($matches["+"]);
+                $matches["-"] = array_values($matches["-"]);
+
+                //
+                $plus = array();
+                foreach ($matches["+"] as $search_id) {
+                    $plus[] = static::process_search($search_id);
+                }
+
+                $minus = array();
+                foreach ($matches["-"] as $search_id) {
+                    $minus[] = static::process_search($search_id);
+                }
+            }
+        }
+
+        return static::process_search($search_id, $input);
+    }
+
+
+    /**
+     * @param  integer $search_id   The search id in the database
+     * @param  array $input The array comming from the search form or the database
+     * @return Laravel\Database\Eloquent\Query or SearchError
+     */
+    public static function process_search($search_id, $input, $additional_criteria = null) {
+        
         // profile type
         if ( ! isset($input['profile_type'])) $input['profile_type'] = 'game';
         $profile_type = $input['profile_type'];
@@ -106,12 +155,43 @@ class Search extends ExtendedEloquent
                     });
                 }
             }
-        });
-    }
+        })
 
-    public static function get_profiles($input)
-    {   
-        return Search::make($input)->where_privacy('public')->get();
+        // And Additional criteria
+        ->where(function($query) use ($additional_criteria)
+        {
+            if (is_array($additional_criteria)) {
+                if ( ! isset($additional_criteria['where']) && ! isset($additional_criteria['or_where'])) {
+                    $additional_criteria = array('where' => $additional_criteria); 
+                }
+
+                foreach ($additional_criteria as $where_mode => $criteria) {
+                    $query->$where_mode(function($query) use ($criteria)
+                    {
+                        if ( ! isset($criteria[0])) { // $criteria is an assoc array
+                            $old_criteria = $criteria;
+                            $criteria = array();
+
+                            foreach ($old_criteria as $key => $value) {
+                                $criteria[] = array(
+                                    'where_mode' => 'where',
+                                    'field' => $key,
+                                    'comparison' => '=',
+                                    'value' => $value,
+                                );
+                            }
+                        }
+
+                        foreach ($criteria as $criterion) {
+                            if ( ! isset($criterion['where_mode'])) $criterion['where_mode'] = 'where';
+
+                            $query->$criterion['where_mode']($criterion['field'], $criterion['comparison'], $criterion['value']);
+                        }
+                    });
+                }
+            }
+        })
+        ;
     }
     
 
@@ -181,6 +261,28 @@ class Search extends ExtendedEloquent
     }
 }
 
+
+class SearchArray
+{
+    public $searches = array();
+
+    public function Add($entry)
+    {
+        $this->searches[] = $entry;
+    }
+
+    /**
+     * Handle the dynamic setting of attributes.
+     *
+     * @param  string  $key
+     * @param  mixed   $value
+     * @return void
+     */
+    public function __call($key, $value)
+    {
+        array_map(callback, $this->searches);
+    }
+}
 
 class SearchError
 {
