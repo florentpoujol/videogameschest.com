@@ -1,5 +1,5 @@
 @section('page_title')
-    {{ lang('common.site_url') }} - {{ lang('home.site_slogan_full') }}
+    {{ lang('vgc.home.site_slogan') }}
 @endsection
 
 <div id="home">
@@ -9,9 +9,7 @@
     <div class="row">
         <div class="span12">
             <div id="slogan">
-                <p id="slogan-left">{{ lang('home.site_slogan') }}</p>
-                <p id="slogan-right" class="pull-right">{{ lang('home.site_slogan2') }}</p>
-                <div class="clearfix"></div>
+               {{ lang('vgc.home.site_slogan') }}</p>
             </div>
         </div>
     </div>
@@ -19,59 +17,65 @@
     <hr>
 
     <div class="row">
-        <div class="span12" id="sub-slogan">
-            {{ lang('home.sub_slogan') }}
+        <div class="span12" id="catchphrase">
+            {{ lang('vgc.home.catchphrase') }}
         </div>
     </div>
 
+    <hr>
+
+    <!-- search -->
     <div class="row">
-        <div class="span6">
-            <h2>{{ lang('participate.title') }}</h2>
+        <div class="span12">
+            <div class="pull-right muted home-icons">
+                {{ icon('search') }}
+            </div>
+
+            <h3>{{ lang('vgc.search.title') }}</h3>
 
             <p>
-                {{ lang('participate.home_text') }}
+                {{ lang('vgc.search.home_text') }}
             </p>
-
-            <a href="{{ route('get_participate_page') }}" class="btn btn-primary">{{ lang('common.learn_more') }} {{ icon('double-angle-right') }}</a>
-        </div>
-
-        <div class="span6">
-            <h2>{{ lang('search.title') }}</h2>
-            
-            <p>
-                {{ lang('search.home_text') }}
-            </p>
-
-            <a href="{{ route('get_search_page') }}" class="btn btn-primary">{{ lang('common.learn_more') }} {{ icon('double-angle-right') }}</a>
         </div>
     </div>
 
-    <br>
-    <br>
+    <hr>
 
+    <!-- discover -->
+    <div class="row">
+        <div class="span12">
+            <div class="text-align-right">        
+                <h3>{{ lang('vgc.discover.title') }}</h3>
+
+                <p>
+                    {{ lang('vgc.discover.home_text') }}
+                </p>
+            </div>
+
+            <div class="muted home-icons">
+                {{ icon('eye-open') }}
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- promote -->
     <div class="row">
         <div class="span6">
-            <h2>{{ lang('discover.title') }}</h2>
+            <h3>{{ lang('vgc.promote.title') }}</h3>
 
             <p>
-                <?php
-                echo lang('discover.home_text', array(
-                    'search_link' => route('get_search_page'),
-                ));
-                ?>
+                {{ lang('vgc.promote.home_text') }}
             </p>
-
-            <a href="{{ route('get_discover_page') }}" class="btn btn-primary">{{ lang('common.learn_more') }} {{ icon('double-angle-right') }}</a>
         </div>
 
         <div class="span6">
-            <h2>{{ lang('promote.title') }}</h2>
+            <h3>{{ lang('vgc.crosspromotion.title') }}</h3>
 
             <p>
-                {{ lang('promote.home_text') }}
+                {{ lang('vgc.crosspromotion.home_text') }}
             </p>
-
-            <a href="{{ route('get_promote_page') }}" class="btn btn-primary btn-learn-more">{{ lang('common.learn_more') }} {{ icon('double-angle-right') }}</a>
         </div>
     </div>
 

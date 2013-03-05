@@ -71,7 +71,7 @@ $layout = View::of('layout');
                 $profiles = Search::make($search->data)->where_privacy('public')->get();
                 return $layout->nest('page_content', 'search', array(
                     'profiles' => $profiles, 
-                    'search_data' => $search->array_data,
+                    'search_data' => $search->array_data, // search_data is used by search_profiles_common
                     'search_id' => $search_id,
                 ));
             } else {
@@ -356,18 +356,15 @@ $layout = View::of('layout');
 
 
         Route::get('testadmincontroller/(:num)', array('as' => 'get_testadmin_controller', 'uses' => 'discover@FeedData'));
-        Route::get('test', function() use ($layout)
+        Route::get('test/(:all?)', function($searches = null) use ($layout)
         {
-            //return \Laravel\CLI\Command::run(array('sendpromotionnewsletters'));
-            //return Response::view('partials/feed_profile_list');
+            var_dump($searches);
             return $layout->nest('page_content', 'test');
         });
 
         Route::post('test', array('as' => 'post_test', function() use ($layout)
         {
-            Input::flash();
-
-
+            
             return $layout->nest('page_content', 'test');
         }));
 

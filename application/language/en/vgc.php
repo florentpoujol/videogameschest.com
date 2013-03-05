@@ -85,10 +85,10 @@ return array(
     'browse' => array(
         'title' => 'Browse',
         'form_text_field' => 'The search ID',
-        'form_submit' => 'Browse this search ID',
+        'form_submit' => 'Browse this search',
 
         'no_search_id_help' => 'Tell us what to browse by passing a <strong>search ID</strong> in the field below. <br>
-        If you don\'t have a search ID or don\'t know what it is, you may want to <a href=":search_page_url" title="Go to the search page">look at the search page</a> first.',
+        If you don\'t have a search ID or don\'t know what it is, you may want to <a href=":search_page_url" title="Go to the search page">visit the search page</a> first.',
     ),
 
 // COMMON
@@ -521,74 +521,12 @@ return array(
     'home' => array(
         'title' => 'Video Games Chest',
         'subtitle' => '',
-        'home_text' => 'VideoGamesChest is a <strong>participative</strong> database for everything that is video game-related : the <strong>games</strong> of course but also the <strong>developers</strong> and <strong>technologies</strong>, as well as the communities of players throught the <strong>maps</strong> and <strong>mods</strong>.<br>
-        <br>',
-
-
-
-
-        /*
-        It\'s participative because everyone can create profiles. It does not matter if the game is old
         
-        /*
-        VideoGamesChest seek to improve the visibility of games and game-related content and people with innovative solutions.
-        Jam, indie, AAA, mobile, console, social, casual, hardcore, old, old-shool, ... everyone is welcome on VideoGamesChest
-        */
+        'catchphrase' => "Treasure chest for some, Pandora's box for others, VideoGamesChest is about finding the <em>games</em>, <em>developers</em>, <em>custom levels</em>, <em>mods</em> and <em>game creation tools</em> that <strong>you are really interested about</strong>. <br>
+        <div class='pull-right'>No more random looting, <strong>we have the tools for you to get just what matters</strong> to you.</div>",
 
-        //'site_slogan' => 'The participative and searchable video games database',
-        //'site_slogan' => 'The place to hunt down for the treasures of video games',
-        'site_slogan_full' => 'The place to discover and promote everything that was, is and will be Video Games',
-
-        'site_slogan' => 'The <strong>participative</strong> place to <strong>discover</strong> and <strong>promote</strong>',
-        'site_slogan2' => 'everything that <strong>was, is and will be</strong> Video Games',
-
+        'site_slogan' => 'The place to hunt down for the treasures of video games',
         'sub_slogan' => 'VideoGamesChest seek to improve the visibility of games and game-related content and people with innovative solutions :',
-
-        /*
-        'herounit_text' => '
-        Video Games Chest tackle the problem of the discoverability of games by providing inovatives and effectives ways for the player to find games they are really interested to play
-         as well as for the developers to pitch their games only to the audience really interested in it.
-
-        ',
-
-        'participative' => array(
-            'title' => 'Participative',
-            'text' => 'It would be presumptuous to pretend that we can fill hundreds of thousand of extensive developers and games profiles in the database ourself. That\'s where <strong>you</strong> come in ! <br>
-            <br>
-            VGC allow anyone to submit a developer or game profile but ensure that the developer is in control and has reviewed the profile before it\'s published. <br>
-            <br>
-            You liked a game that is not on VGC yet ? <br>
-            The best way to show your support to the developer after bying their games is to add their profile yourself so that they gets to know VGC and everyone on VGC gets to know them. <br> 
-            Plus, they may be interested in the services we provide !',
-            
-            'submission_explanation_link' => 'Learn more about the public submission process',
-            'submission_explanation_text' => 'When a new profile is submitted via the public forms, it goes in a first peer review. It\'s a matter of checking if the email belongs to the developer and if there is no offensive or inappropriate content. <br>
-            <br>
-            Once the profile passed the review, an email is sent to the developer to let him know that someone created a profile for them. The profile is still private and the developer must review and update/complete it before sending it to a second peer review. <br>
-            <br>
-            The profile become public and is visible and searchable by everyone only when it has passed that second review. <br>
-            <br>
-            The "trusted" users (who have a public developer profile and at least one public game profile) have access to the peer reviews. They can consult the profile and accept it or issue a report if something is wrong. <br>
-            <br>
-            Profiles pass reviews when they have a minimum number of approval and no open reports.',
-
-            'adddev_link' => 'Add a developer',
-            'addgame_link' => 'Add a game',
-        ),
-
-
-
-        'searchable_title' => 'Searchable',
-        'searchable_text' => 'Any piece of information featured on the profiles can be used as a filter criterion.
-        <br>
-        That means that you can built complex searchs that return only <strong>the handfull of games you are really interested on</strong>.',
-        'searchable_link' => 'Search for a profile',
-
-
-        'services_title' => 'Services',
-        'services_text' => 'VGC also provide some cool services to game developers :',
-        */
-
     ),
 
 // LOGIN
@@ -929,10 +867,20 @@ return array(
         'title' => 'Search',
         'subtitle' => 'for games you are really intesred in',
         'subtitle' => 'for profiles you really care about',
-        'home_text' => 'You can thoroughly search for the profiles that exactly fits your needs by filtering them with dozens of relevant criteria. <br> <br>
 
-        The extensive filtering capabilities is the angular stone of VideoGamesChest\'s approach to discoverability and is used for the best by the discovering and promoting services.',
+        'home_text' => "Searching on VideoGamesChest may seems at first a little more complex than on any other websites but also ways more powerfull. <br>
 
+        VideoGamesChest gets yopou real, fully featured and comprehensive search form
+
+        <a href=':search_page_url' title='Go to the search page' class='btn btn-primary'>Learn more on the search page</a>.
+
+         : first search what you want on the search page then browse, or discover the profiles. <br>
+        It's a two-step process, first search, then browse or discover. You can also combine several searches to get something even more 
+
+
+        very thorought search form. Any informations may be used as a search criterion ",
+
+        'submit_get_search_id' => 'Get search ID',
 
         'no_search_id_help' => 'Tell us what you are looking for : ',
         'search_id' => 'This search ID is : ',

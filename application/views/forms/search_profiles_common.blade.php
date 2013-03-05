@@ -1,21 +1,17 @@
 <?php
-
-//if ( ! empty($old)) Former::populate($old);
-
 if ( ! isset($search_data)) $search_data = array();
 if ( ! empty($search_data)) {
     if (isset($search_data['profile_type']) && $search_data['profile_type'] == $profile_type) {
         Former::populate($search_data);
     }
 }
-
-//var_dump($search_data);
 ?>
-
 {{ Former::open_vertical(route('post_search')) }}
     {{ Form::token() }}
     
-    {{ Former::primary_submit(lang('search.submit')) }}
+    {{ Former::submit(lang('search.submit_get_search_id'))->class('btn pull-right') }}
+    {{ Former::primary_submit(lang('browse.title')) }}
+    {{ Former::primary_submit(lang('discover.title')) }}
 
     <hr>
     
