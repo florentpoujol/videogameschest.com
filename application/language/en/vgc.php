@@ -880,15 +880,29 @@ return array(
 
         very thorought search form. Any informations may be used as a search criterion ",
 
-        'submit_get_search_id' => 'Get search ID',
+        'search_page_quick_help' => 'For a quick search, just fill the form then hit the "Browse" button',
+        'search_page_indepth_link' => 'Learn more for a more advanced use of searches',
+        'search_page_indepth_help' => 'This page actually stores the set of criteria (the "Search") and returns its unique identifier (the "Search ID"). This is just a convenient way to carry over the set of criteria you selected to other parts of the website (like the Browse or Discover pages). <br>
+        <br>
+        The search IDs become really handy when you combine several of them to get a more custom set of profile.<br>
+        <br>
+        For intance, you can <strong>add</strong> two searches regarding different kind of profiles like "all games"+"all developers". <br>
+        Or you can <strong>substract</strong> one or more searches to a set of profile. Ie : you can substract "All FPS whose name is \'Call of Duty\'" to "All FPS". <br>
+        <br>
+        To combine search IDs, just concatenate the IDs using the + and - signs. Ie : 1+2-3',
 
-        'no_search_id_help' => 'Tell us what you are looking for : ',
-        'search_id' => 'This search ID is : ',
-        'search_id_uses' => 'The search ID is uses in various places.',
-        'search_id_help' => 'The search id identifies the unique set of criteria you just selected. <br> Now, you may chose what do you want to do with this search :',
 
-        'browse_this_search' => 'Browse',
-        'browse_discover_buttons_text' => 'the profiles that match this search.',
+
+
+        'submit_get_search_id' => 'Get the search ID',
+
+        //'no_search_id_help' => 'Tell us what you are looking for : ',
+        'search_id' => 'Current search ID : ',
+        //'search_id_uses' => 'The search ID is uses in various places.',
+        //'search_id_help' => 'The search id identifies the unique set of criteria you just selected. <br> Now, you may chose what do you want to do with this search :',
+
+        //'browse_this_search' => 'Browse',
+        //'browse_discover_buttons_text' => 'the profiles that match this search.',
 
 
 
@@ -935,7 +949,7 @@ return array(
 
         
         'results' => 'Results',
-        'rss_feed' => 'RSS feed for the new profiles that matches this search.',
+        'rss_feed' => 'RSS feed for this search.',
 
         
 

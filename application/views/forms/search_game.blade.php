@@ -3,35 +3,6 @@
             And which ...
         </div>
     </div>
-<!-- 
-    <?php
-    $fields = array('devices',  'genres', 'stores', 'technologies'  );
-    $span_size = 3;
-    ?>
-    <div class="row">
-        
-    </div>
-
-    <hr>
-
-    <?php
-    $fields = array( 'tags', 'looks', 'periods', 'viewpoints',   );
-    $span_size = 3;
-    ?>
-    <div class="row">
-        
-    </div>
-
-    <hr>
-
-    <?php
-    $fields = array( 'nbplayers', 'languages', 'operatingsystems', );
-    $span_size = 3;
-    ?>
-    <div class="row">
-        
-    </div> -->
-
 
     <hr>
 

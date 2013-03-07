@@ -78,6 +78,8 @@ if ( ! isset($preview_profile)) $preview_profile = false;
         </div> <!-- /#page_content .container -->
 
         <footer class="container">
+            <hr>
+            
             <div class="row-fluid">
                 <div class="span4">
                     <P class="muted copyright">Copyright &copy; 2013 VideoGamesChest.com</p>

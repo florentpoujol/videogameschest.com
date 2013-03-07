@@ -21,7 +21,9 @@ echo Former::radios('', lang('search.'.$field.'_help'))->radios(array(
     lang('common.array_field_where_any') => $any,
 ));
 
-if (isset($search_data['array_fields'][$field])) $values = $search_data['array_fields'][$field];
+// $current_profile_type comes from view/search
+// $profile_type comes from view/forms/search_profiles_common
+if ($current_profile_type == $profile_type && isset($search_data['array_fields'][$field])) $values = $search_data['array_fields'][$field];
 else $values = array();
 ?>
 

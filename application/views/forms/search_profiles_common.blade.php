@@ -10,8 +10,8 @@ if ( ! empty($search_data)) {
     {{ Form::token() }}
     
     {{ Former::submit(lang('search.submit_get_search_id'))->class('btn pull-right') }}
-    {{ Former::primary_submit(lang('browse.title')) }}
-    {{ Former::primary_submit(lang('discover.title')) }}
+    {{ Former::primary_submit(lang('browse.title'), array('name' => 'browse')) }}
+    {{-- Former::primary_submit(lang('discover.title')) }}
 
     <hr>
     
@@ -89,5 +89,6 @@ if ( ! empty($search_data)) {
 
     <hr>
     
-    {{ Former::primary_submit(lang('search.submit')) }}
+    {{ Former::submit(lang('search.submit_get_search_id'))->class('btn pull-right') }}
+    {{ Former::primary_submit(lang('browse.title')) }}
 {{ Former::close() }}
