@@ -65,6 +65,8 @@ return array(
     'blacklist' => array(
         'title' => 'Blacklist',
 
+        'help' => 'The blacklist is a list of profiles that you are not interested in. It\'s another level of filtering available to registered users who can remove the profiles in the blacklist from the browsed profiles or the discovery feed or newsletter.',
+
         'msg' => array(
             'delete_success' => ':num :type profiles have successfully been deleted from your blacklist.',
             'add_success' => ':num :type profiles have successfully been added to your blacklist.',
@@ -87,8 +89,7 @@ return array(
         'form_text_field' => 'The search ID',
         'form_submit' => 'Browse this search',
 
-        'no_search_id_help' => 'Tell us what to browse by passing one or several <strong>search ID(s)</strong> in the field below. <br>
-        If you don\'t have a search ID or don\'t know what it is, you may want to <a href=":search_page_url" title="Go to the search page">visit the search page</a> first.',
+        'no_search_id_help' => 'Tell us what to browse by passing one or several <strong>search ID(s)</strong> in the field below.',
 
         'submit_discover' => 'You may also <input type="submit" name="discover" class="btn btn-primary" value="Discover this search"> via Rss feed or email.'
     ),
@@ -160,6 +161,7 @@ return array(
         'reviews' => 'Reviews',
 
         'screenshots' => 'Screenshots',
+        'search_id_redirect' => 'If you don\'t have a search ID or don\'t know what it is, you may want to <a href=":search_page_url" title="Go to the search page">visit the search page</a> first.',
         'select_first_option' => 'Select below',
         'select_arrayitem_first_option' => 'Select below or select this option to delete the item',
         'site_meta_description' => 'VideoGamesChest is the participative place to search for, discover and promote everything that was, is and will be Video Games. It seek to improve the visibility of games and game-related content and people with innovative solutions.',
@@ -345,10 +347,6 @@ return array(
 // DISCOVER
 
     'discover' => array(
-        'explanation' => "",
-
-        // But you probably don't want to play to all those games.
-        // if your prefer to be passive, VGC has a couple of solution for you.
         
 
         'title' => 'Discover',
@@ -360,14 +358,23 @@ return array(
         You can subscribe to a <strong>fully customisable</strong> feed or newsletter whose sole purpose is to promote you with games or any profiles on VGC.
         ',
 
-        'page_text' => 'You can certainly find dosens of games to play each week from your social media feeds or the press. But you will probably play only to a fraction of those. <br> 
+
+        'page_text' => 'Instead of browsing all the profiles you are interesting in right now, you can get a slice of them periodically via a <strong>fully customizable</strong> RSS feed or newsletter.',
+
+        /*
+        'What if instead of browsing all the profiles you are interesting in right now, you get a slice of them periodically in your inbox or your favorite feed reader ? <br>
+        <br>
+        That\'s what you can do right here, you can subscribe to an RSS feed or a newsletter which you can fully customize.'
+         */
+        
+        /*'page_text' => 'You can certainly find dosens of games to play each week from your social media feeds or the press. But you will probably play only to a fraction of those. <br> 
         The thruth is that <strong>most of those games are just not relevant to you</strong>, because you don\'t have the device or you don\'t like the genre or how they looks. Doesn\'t it feels like wasted time and opportunities ?<br>
         <br>
         Instead, VGC allows you to sit at your computer and just wait for <strong>the profiles you are interested in</strong> to drop in your inbox or your favorite syndication feed reader. <br>
         <br>
         You can subscribe below to a <strong>fully customisable</strong> feed or newsletter whose sole purpose is to promote you with the kind of games (or any profiles) <strong>you choose</strong> to be promoted with. <br>
         You control How, When How much, and What :
-        ',
+        ',*/
 
         'page_learn_more_text' => '<strong>Feed or E-mail</strong> <br>
         Depending on your preferencies, you may choose if your are promoted via an RSS feed or via email. <br>
@@ -399,13 +406,13 @@ return array(
             A week = 168 hours.',
 
             'profile_count' => 'Profile count',
-            'profile_count_help' => 'The number of profiles that are displayed in each post/e-mail.',
+            'profile_count_help' => 'The number of profiles that are displayed in each posts in the feed or each e-mail.',
 
             'search_id' => 'Search ID',
-            'search_id_help' => 'The search ID used to filter the content.',
+            'search_id_help' => 'Remember that you may combine search IDs as described on the Seach page to get a more custom set of profiles.',
 
-            'use_blacklist' => 'Use my blacklist',
-            'blacklist_help' => 'The profiles in your blacklist will not be displayed. <a href=":blacklist_link" title="Edit your blacklist">Edit your blacklist</a>.',
+            'use_blacklist' => 'Remove the profiles from my blacklist',
+            'blacklist_help' => '<a href=":blacklist_link" title="Edit your blacklist">Edit your blacklist</a>.',
 
             'blacklist_guest_help' => 'The blacklist is another level of filtering that <a href=":register_link" title="Create a user account">registered users only</a> can benefits from. The profiles you put in your blacklist will not be displayed. ',
 
@@ -413,7 +420,7 @@ return array(
             'feed' => array(
                 'help' => 'The feed url is always the same for registered users. <br>',
                 'help_url' => 'Your feed url is : <a href=":feed_url" title="Feed url for user :username">:feed_url</a>',
-                'submit' => 'Obtain this feed\'s URL',
+                'submit' => 'Get this feed\'s URL',
                 'title' => 'Feed',
                 'type' => 'Format of the syndication feed',
             ),

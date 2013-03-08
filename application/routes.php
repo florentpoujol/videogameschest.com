@@ -108,7 +108,7 @@ $layout = View::of('layout');
 
 
     // DISCOVER
-    Route::get('discover', array('as' => 'get_discover_page', 'uses' => 'discover@index'));
+    Route::get('discover/(:num?)', array('as' => 'get_discover_page', 'uses' => 'discover@index'));
     Route::get('discover/feed', array('as' => 'get_discover_feed_page', 'uses' => 'discover@feed_page'));
     Route::get('discover/feed/(:num)', array('as' => 'get_discover_feed_data', 'uses' => 'discover@feed_data'));
     Route::get('discover/newsletter', array('as' => 'get_discover_newsletter_page', 'uses' => 'discover@newsletter_page'));

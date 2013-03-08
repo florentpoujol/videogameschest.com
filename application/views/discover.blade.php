@@ -8,11 +8,11 @@
     <hr>
 
     <p>
-        {{ lang('discover.page_text') }} <br>
-        <br>
+        {{ lang('discover.page_text') }} 
+        <!-- <br>
         <a class="accordion-toggle" data-toggle="collapse" href="#collapse-learn-more">
             {{ icon('circle-arrow-down') }} {{ lang('common.learn_more') }} 
-        </a>
+        </a> -->
     </p> 
 
     <div id="collapse-learn-more" class="collapse">

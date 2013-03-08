@@ -2,9 +2,19 @@
 
 class Discover_Controller extends Base_Controller 
 {
-    public function get_index()
+    public function get_index($search_id = null)
     {
-        // return Redirect::to_route('get_discover_feed_page');
+        if ($search_id !== null) {
+            $search = Search::get($search_id);
+            if ($search !== null) {
+                $this->layout->nest('page_content', 'discover', array('search_id' => $search_id));
+                return;
+            } else {
+                HTML::set_error(lang('search.msg.id_not_found', array('id'=>$search_id)));
+                return Redirect::to_route('get_discover_page');
+            }
+        }
+
         $this->layout->nest('page_content', 'discover');
     }
 

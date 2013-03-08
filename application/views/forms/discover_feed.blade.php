@@ -19,15 +19,19 @@ if (is_logged_in()) {
 
     <div class="row">
         <div class="span4">
-            {{-- Former::select('type', lang('discover.form.feed.type'))->options(array('rss'=>'RSS', 'atom'=>'Atom')) }}
+            {{ Former::number('frequency', lang('vgc.discover.form.frequency'))->value(24)->help(lang('vgc.discover.form.frequency_help')) }}
         </div>
 
         <div class="span4">
-            {{ Former::number('frequency', lang('discover.form.frequency'))->value(24)->help(lang('discover.form.frequency_help')) }}
+            {{ Former::number('profile_count', lang('vgc.discover.form.profile_count'))->value(10)->help(lang('vgc.discover.form.profile_count_help')) }}
         </div>
 
         <div class="span4">
-            {{ Former::number('profile_count', lang('discover.form.profile_count'))->value(10)->help(lang('discover.form.profile_count_help')) }}
+            @if (isset($search_id))
+                {{ Former::text('search_id', lang('vgc.discover.form.search_id'))->help(lang('vgc.discover.form.search_id_help'))->value($search_id) }}
+            @else
+                {{ Former::text('search_id', lang('vgc.discover.form.search_id'))->help(lang('vgc.common.search_id_redirect', array('search_page_url' => route('get_search_page'))).' <br> '.lang('vgc.discover.form.search_id_help')) }}
+            @endif
         </div>
     </div>
     
@@ -35,15 +39,11 @@ if (is_logged_in()) {
 
     <div class="row">
         <div class="span4">
-            {{ Former::text('search_id', lang('discover.form.search_id'))->help(lang('discover.form.search_id_help')) }}
-        </div>
-
-        <div class="span4">
             @if (is_logged_in())
-                {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_help', array('blacklist_link'=>route('get_user_update'))))->id('feed_blacklist') }}
+                {{ Former::checkbox('use_blacklist', '')->text(lang('vgc.discover.form.use_blacklist'))->help(lang('vgc.discover.form.blacklist_help', array('blacklist_link'=>route('get_user_update'))))->id('feed_blacklist') }}
                 </p>
             @else
-                {{ Former::checkbox('use_blacklist', '')->text(lang('discover.form.use_blacklist'))->help(lang('discover.form.blacklist_guest_help', array('register_link'=>route('get_register_page'))))->disabled() }}
+                {{ Former::checkbox('use_blacklist', '')->text(lang('vgc.discover.form.use_blacklist'))->help(lang('vgc.discover.form.blacklist_guest_help', array('register_link'=>route('get_register_page'))))->disabled() }}
             @endif
         </div>
 
@@ -51,11 +51,9 @@ if (is_logged_in()) {
             @if (isset($feed))
                 {{ Former::primary_submit(lang('common.update')) }}
             @else
-                {{ Former::primary_submit(lang('discover.form.feed.submit')) }}
+                {{ Former::primary_submit(lang('vgc.discover.form.feed.submit')) }}
             @endif
         </div>
     </div>
-
-    <hr>
     
 {{ Former::close() }}

@@ -15,18 +15,18 @@ if (is_logged_in()) $rules['email'] = 'email';
     <div class="row">
         <div class="span4">
             @if (is_logged_in())
-                {{ Former::email('email', lang('common.email'))->placeholder(lang('common.email'))->help(lang('discover.form.email.email_help'))->disabled()->value(user()->email) }}
+                {{ Former::email('email', lang('common.email'))->placeholder(lang('common.email'))->value(user()->email) }}
             @else
                 {{ Former::email('email', lang('common.email'))->placeholder(lang('common.email')) }}
             @endif
         </div>
 
         <div class="span4">
-            {{ Former::number('frequency', lang('discover.form.frequency'))->value(24)->help(lang('discover.form.frequency_help')) }}
+            {{ Former::number('frequency', lang('discover.form.frequency'))->value(168)->help(lang('discover.form.frequency_help')) }}
         </div>
 
         <div class="span4">
-            {{ Former::number('profile_count', lang('discover.form.profile_count'))->value(10)->help(lang('discover.form.profile_count_help')) }}
+            {{ Former::number('profile_count', lang('discover.form.profile_count'))->value(20)->help(lang('discover.form.profile_count_help')) }}
         </div>
     </div>
     
@@ -34,7 +34,11 @@ if (is_logged_in()) $rules['email'] = 'email';
 
     <div class="row">
         <div class="span4">
-            {{ Former::text('search_id', lang('discover.form.search_id'))->help(lang('discover.form.search_id_help')) }}
+            @if (isset($search_id))
+                {{ Former::text('search_id', lang('vgc.discover.form.search_id'))->help(lang('vgc.discover.form.search_id_help'))->value($search_id) }}
+            @else
+                {{ Former::text('search_id', lang('vgc.discover.form.search_id'))->help(lang('vgc.common.search_id_redirect', array('search_page_url' => route('get_search_page'))).' <br> '.lang('vgc.discover.form.search_id_help')) }}
+            @endif
         </div>
 
         <div class="span4">
@@ -49,7 +53,5 @@ if (is_logged_in()) $rules['email'] = 'email';
             {{ Former::primary_submit(lang('discover.form.email.submit')) }}
         </div>
     </div>
-
-    <hr>
 
 {{ Former::close() }}

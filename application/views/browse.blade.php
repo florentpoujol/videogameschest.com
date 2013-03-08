@@ -26,7 +26,8 @@ $search_id
 
     @if ( ! isset($search_id))
         <p>
-            {{ lang('vgc.browse.no_search_id_help', array('search_page_url' => route('get_search_page'))) }}
+            {{ lang('vgc.browse.no_search_id_help') }} <br>
+            {{ lang('vgc.common.search_id_redirect', array('search_page_url' => route('get_search_page'))) }}
         </p>
         <br>
     @endif
