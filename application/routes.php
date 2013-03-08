@@ -224,19 +224,17 @@ $layout = View::of('layout');
         {
             $input = Input::all();
 
-            $browse = false;
+            $action = 'search';
             if (isset($input['browse'])) {
-                $browse = true;
+                $action = 'browse';
                 unset($input['browse']);
+            } elseif (isset($input['discover'])) {
+                $action = 'discover';
+                unset($input['discover']);
             }
 
             $search = Search::create($input);
-
-            if ($browse) { // when user clicks on the browse button
-                return Redirect::to_route('get_browse_page', array($search->id));
-            } else {
-                return Redirect::to_route('get_search_page', array($search->id));
-            }
+            return Redirect::to_route('get_'.$action.'_page', array($search->id));
         }));
 
         Route::post('browse', array('as' => 'post_browse', 'before' => 'csrf', function()

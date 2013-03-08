@@ -87,7 +87,7 @@ return array(
         'form_text_field' => 'The search ID',
         'form_submit' => 'Browse this search',
 
-        'no_search_id_help' => 'Tell us what to browse by passing a <strong>search ID</strong> in the field below. <br>
+        'no_search_id_help' => 'Tell us what to browse by passing one or several <strong>search ID(s)</strong> in the field below. <br>
         If you don\'t have a search ID or don\'t know what it is, you may want to <a href=":search_page_url" title="Go to the search page">visit the search page</a> first.',
     ),
 
@@ -139,6 +139,7 @@ return array(
         'nbplayers' => 'Number of players',
 
         'operatingsystems' => 'Operating systems',
+        'or' => 'or',
 
         'pitch' => 'Pitch',
         'presskit' => 'Press Kit',
@@ -880,8 +881,9 @@ return array(
 
         very thorought search form. Any informations may be used as a search criterion ",
 
+
         'search_page_quick_help' => 'For a quick search, just fill the form then hit the "Browse" button',
-        'search_page_indepth_link' => 'Learn more for a more advanced use of searches',
+        'search_page_indepth_link' => 'Learn more for an advanced use of searches',
         'search_page_indepth_help' => 'This page actually stores the set of criteria (the "Search") and returns its unique identifier (the "Search ID"). This is just a convenient way to carry over the set of criteria you selected to other parts of the website (like the Browse or Discover pages). <br>
         <br>
         The search IDs become really handy when you combine several of them to get a more custom set of profile.<br>
@@ -893,8 +895,10 @@ return array(
 
 
 
-
-        'submit_get_search_id' => 'Get the search ID',
+        'submit_browse' => 'Browse this search',
+        'submit_discover' => 'Discover this search',
+        'submit_discover_help' => 'via RSS feed or email.',
+        'submit_get_search_id' => 'Get this search\'s ID',
 
         //'no_search_id_help' => 'Tell us what you are looking for : ',
         'search_id' => 'Current search ID : ',

@@ -9,9 +9,10 @@ if ( ! empty($search_data)) {
 {{ Former::open_vertical(route('post_search')) }}
     {{ Form::token() }}
     
-    {{ Former::submit(lang('search.submit_get_search_id'))->class('btn pull-right') }}
-    {{ Former::primary_submit(lang('browse.title'), array('name' => 'browse')) }}
-    {{-- Former::primary_submit(lang('discover.title')) }}
+    {{ Former::submit(lang('vgc.search.submit_get_search_id'))->class('btn pull-right') }}
+    {{ Former::primary_submit(lang('vgc.search.submit_browse'), array('name' => 'browse')) }} {{ lang('vgc.common.or') }}
+
+    {{ Former::primary_submit(lang('vgc.search.submit_discover'), array('name' => 'discover')) }} {{ lang('vgc.search.submit_discover_help') }}
 
     <hr>
     
@@ -21,7 +22,7 @@ if ( ! empty($search_data)) {
         <div class="span2">
             <i class="icon-quote-left icon-2x pull-left icon-muted"></i>
 
-            {{ lang('search.i_am_looking_for', array('profile_type' => $profile_type)) }}
+            {{ lang('vgc.search.i_am_looking_for', array('profile_type' => $profile_type)) }}
         </div>
         
         <div class="span2">
@@ -46,7 +47,7 @@ if ( ! empty($search_data)) {
 
             if ( ! isset($name['checked']) && ! isset($pitch['checked'])) $name['checked'] = 'checked';
 
-            echo Former::checkboxes('search_words_in[]', lang('search.name_or_pitch_help'))->checkboxes(array(
+            echo Former::checkboxes('search_words_in[]', lang('vgc.search.name_or_pitch_help'))->checkboxes(array(
                 lang('common.name') => $name,
                 lang('common.pitch') => $pitch
             ));
@@ -71,15 +72,15 @@ if ( ! empty($search_data)) {
                 ${$search_data['search_words_mode']}['checked'] = 'checked';
             } else $any['checked'] = 'checked';
 
-            echo Former::radios('', lang('search.words_contains'))->radios(array(
-                lang('search.words_contains_all') => $all,
-                lang('search.words_contains_any') => $any,
+            echo Former::radios('', lang('vgc.search.words_contains'))->radios(array(
+                lang('vgc.search.words_contains_all') => $all,
+                lang('vgc.search.words_contains_any') => $any,
             ));
             ?>
         </div>
 
         <div class="span2">
-            {{ Former::text('words_list', lang('search.words_list')) }}
+            {{ Former::text('words_list', lang('vgc.search.words_list')) }}
         </div>
     </div>
 
@@ -89,6 +90,8 @@ if ( ! empty($search_data)) {
 
     <hr>
     
-    {{ Former::submit(lang('search.submit_get_search_id'))->class('btn pull-right') }}
-    {{ Former::primary_submit(lang('browse.title')) }}
+    {{ Former::submit(lang('vgc.search.submit_get_search_id'))->class('btn pull-right') }}
+    {{ Former::primary_submit(lang('vgc.search.submit_browse'), array('name' => 'browse')) }} {{ lang('vgc.common.or') }}
+
+    {{ Former::primary_submit(lang('vgc.search.submit_discover'), array('name' => 'discover')) }} {{ lang('vgc.search.submit_discover_help') }}
 {{ Former::close() }}
