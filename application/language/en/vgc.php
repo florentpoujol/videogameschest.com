@@ -89,6 +89,8 @@ return array(
 
         'no_search_id_help' => 'Tell us what to browse by passing one or several <strong>search ID(s)</strong> in the field below. <br>
         If you don\'t have a search ID or don\'t know what it is, you may want to <a href=":search_page_url" title="Go to the search page">visit the search page</a> first.',
+
+        'submit_discover' => 'You may also <input type="submit" name="discover" class="btn btn-primary" value="Discover this search"> via Rss feed or email.'
     ),
 
 // COMMON

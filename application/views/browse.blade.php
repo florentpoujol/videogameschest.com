@@ -45,7 +45,15 @@ $search_id
 
         {{ Former::text('search_id', '')->placeholder(lang('vgc.browse.form_text_field'))->value($search_id) }}
 
-        {{ Former::submit(lang('vgc.browse.form_submit')) }}
+        {{ Former::primary_submit(lang('vgc.browse.form_submit')) }}
+
+        [Sorting options here]
+
+        @if (isset($search_id))
+            <br> <br>
+
+            {{ lang('vgc.browse.submit_discover') }}
+        @endif
     {{ Former::close() }}
 
     @if (isset($profiles))
