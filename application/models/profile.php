@@ -39,6 +39,9 @@ class Profile extends ExtendedEloquent
         if ( ! isset($input['user_id'])) $input['user_id'] = user_id();
         if ( ! isset($input['privacy'])) $input['privacy'] = 'private';
 
+        $input['in_promotion_feed'] = 1;
+        $input['in_promotion_newsletter'] = 1;
+
         $profile = parent::create($input);
         
         // msg

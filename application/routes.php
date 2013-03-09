@@ -424,6 +424,69 @@ $layout = View::of('layout');
 
             return $layout->nest('page_content', 'logged_in/updateblogpost', array('post' => $post));
         }));
+
+
+        // CRAWLER
+
+        Route::get('crawler', array('as' => 'get_crawler_page', function() use ($layout)
+        {
+            return $layout->nest('page_content', 'crawler');
+        }));
+
+
+        Route::get('crawler/auto', array('as' => 'get_crawler_auto', function() use ($layout)
+        {
+            // get the first (oldest suggested or just oldest created) link
+            $profile = ProfilesToCrawl::where_profile_id(0)->where_suggested(1)->order_by('created_at', 'asc')->first();
+
+            if ($profile === null) $profile = ProfilesToCrawl::where_profile_id(0)->order_by('created_at', 'asc')->first();
+
+            if ($profile === null) {
+                HTML::set_info("No more profile to crawl.");
+                return Redirect::to_route('get_crawler_page');
+            }
+
+            // crawl it
+            $crawler = Crawler::crawl($profile);
+
+            return $layout->nest('page_content', 'crawler', array('auto' => true));
+        }));
+
+
+        // RSS reader
+        Route::get('crawler/readrss', array('as' => 'get_crawler_read_feed_links', function() use ($layout)
+        {
+            $feed_links = json_decode(DBConfig::get('crawler_feed_links', '[]'), true);
+
+            if (empty($feed_links)) {
+                HTML::set_error("No feed links where found in the database.");
+            }
+
+            foreach ($feed_links as $link) {
+                $feed = RSSReader::read($link);
+                if (empty($feed['entries'])) {
+                    HTML::set_error("No entries in the feed link '".$link."'.");
+                    continue;
+                }
+
+                $profiles_added = 0;
+
+                foreach ($feed['entries'] as $entry) {
+                    $entry_link = $item['link'];
+
+                    if (ProfilesToCrawl::where_link($entry_link)->first() !== null) {
+                        $profile = new ProfilesToCrawl;
+                        $profile->link = $entry_link;
+                        $profile->save();
+                        $profiles_added++;
+                    }
+                }
+
+                HTML::set_success("$profiles_added links added from the feed link '".$link."'.");
+            }
+
+            return $layout->nest('page_content', 'crawler');
+        }));
     });
 
 
@@ -432,12 +495,12 @@ $layout = View::of('layout');
 //  MUST BE ADMIN AND LEGIT POST
 //----------------------------------------------------------------------------------
 
-    Route::group(array('before' => 'auth|is_admin|csrf'), function() use ($layout)
+    Route::group(array('before' => 'auth|is_admin|csrf'), function()
     {
         Route::post('user/create', array('as' => 'post_user_create', 'uses' => 'admin@user_create'));
         Route::post('reviews', array('as' => 'post_reviews', 'uses' => 'admin@reviews'));
 
-        Route::post('blog/post/create', array('as' => 'post_blog_post_create', function() use ($layout)
+        Route::post('blog/post/create', array('as' => 'post_blog_post_create', function()
         {
             $input = clean_form_input(Input::all());
             $post = BlogPost::create($input);
@@ -445,12 +508,30 @@ $layout = View::of('layout');
             return Redirect::to_route('get_blog_post_update', array($post->id));
         }));
 
-        Route::post('blog/post/update', array('as' => 'post_blog_post_update', function() use ($layout)
+        Route::post('blog/post/update', array('as' => 'post_blog_post_update', function()
         {
             $input = clean_form_input(Input::all());
             BlogPost::update($input['id'], $input);
 
             return Redirect::to_route('get_blog_post_update', array($input['id']));
+        }));
+
+
+        // CRAWLER
+
+
+
+        Route::post('crawler_add_feed_link', array('as' => 'post_crawler_add_feed_link', function()
+        {
+            $db_entry = DBConfig::where('_key', '=', 'crawler_feed_links')->first();
+            
+            $feed_links = json_decode($db_entry->value, true);
+            $feed_links[] = Input::get('feed_link');
+            
+            $db_entry->value = json_encode($feed_links);
+            $db_entry->save();
+            
+            return Redirect::to_route('get_crawler_page');
         }));
     });
 

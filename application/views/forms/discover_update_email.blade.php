@@ -37,7 +37,7 @@ Former::populate($newsletter)
     <div class="row">
         <div class="span4">
             {{ Former::text('search_id', lang('discover.form.search_id'))->help(lang('discover.form.search_id_help')) }}
-        </div>
+         </div>
 
         <div class="span4">
             @if (is_logged_in())
@@ -57,7 +57,5 @@ Former::populate($newsletter)
             <input type="submit" name="unsubscribe" value="{{ lang('common.unsubscribe') }}" class="btn btn-danger btn-mini">
         </div>
     </div>
-
-    <hr>
 
 {{ Former::close() }}

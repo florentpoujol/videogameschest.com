@@ -31,7 +31,7 @@
                     </td>
                     
                     <td>
-                        <input type="checkbox" name="ids_to_delete[]" value="{{ $profile_id }}">
+                        <input type="checkbox" name="ids_to_delete[]" value="{{ $profile->id }}">
                     </td>
                 </tr>
             @endforeach

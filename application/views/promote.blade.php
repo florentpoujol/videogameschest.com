@@ -3,25 +3,25 @@
         {{ icon('volume-up') }}
     </div>
 
-    <h1>{{ lang('promote.title') }}</h1>
+    <h1>{{ lang('vgc.promote.title') }}</h1>
 
     <hr>
 
     <p>
-        {{ lang('promote.text') }}
+        {{-- lang('vgc.promote.text') }}
     </p>
 
     <hr>
 
     <ul class="nav nav-tabs" id="main-tabs">
-        <li><a href="#feed-pane" data-toggle="tab">{{ lang('discover.feed_title') }}/{{ lang('discover.email_title') }}</a></li>
+        <li><a href="#suggest-pane" data-toggle="tab">{{ lang('vgc.promote.suggest_title') }}</a></li>
         <li><a href="#crosspromotion-pane" data-toggle="tab">{{ lang('crosspromotion.title') }}</a></li>
     </ul>
 
     <div class="tab-content">
-        <div class="tab-pane" id="feed-pane">
+        <div class="tab-pane" id="suggest-pane">
             <p>
-                {{ lang('promote.discover_text', array('discover_url' => route('get_discover_page'))) }}
+                {{ lang('vgc.promote.suggest_text') }}
             </p>
         </div> <!-- /#feed-pane .tab-pane -->
 
@@ -79,7 +79,7 @@
                         <h3>{{ lang('crosspromotion.how_it_works_title') }}</h3>
 
                         <p>
-                            {{ lang('crosspromotion.how_it_works', array('update_game_link' => route('get_game_update'))) }}
+                            {{ lang('crosspromotion.how_it_works', array('update_game_link' => route('get_profile_update', 'game'))) }}
                         </p>
                     </div>
                 </div>

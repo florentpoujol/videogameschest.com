@@ -86,6 +86,12 @@ if ( ! empty($old)) Former::populate($old);
 
         <div class="tab-pane" id="blacklist-pane">
             
+            <p>
+                {{ lang('vgc.blacklist.help') }}
+            </p>
+
+            <hr>
+            
             <ul class="nav nav-tabs" id="blacklist-tabs">
                 @foreach (Config::get('vgc.profile_types') as $profile_type)
                     <li><a href="#{{ $profile_type }}-pane" data-toggle="tab">{{ lang('common.'.$profile_type) }}</a></li>

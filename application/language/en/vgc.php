@@ -221,14 +221,14 @@ return array(
     'crosspromotion' => array(
         'title' => 'Cross-promotion',
 
-        'home_text' => 
+        /*'home_text' => 
         'VGC provides <strong>an evolutive, easy to setup and easy to use cross-promotion solution</strong> for your games. <br>
         Setup once in your game then update the promoted content  whenever you want online : <br>
         <br>
         Make sure the games you want to promote have a profile on VGC, then select them for cross-promotion in your game\'s profile. <br>
-        From your game, just query VGC to get the profiles you selected for cross-promotion in that game. <br>',
+        From your game, just query VGC to get the profiles you selected for cross-promotion in that game. <br>',*/
 
-        'home_text' => 'VideoGamesChest provides you with an evolutive, easy to setup and easy to use cross-promotion solution for your games (or other developer\'s games).',
+        'home_text' => 'What\'s the better place to promote your games than ... your games ? <br> For you game developers, VideoGamesChest provides an evolutive solution to easily cross-promote all your games or any profiles on VGC.',
 
 
         'edit_game_subscribers_help' => 
@@ -734,14 +734,14 @@ return array(
         </p>
         ',*/
 
-        'text' => "Having set up your profile is already another chance for players (and search engine bots) to find you but it's just the beginning. <br>
+        /*'text' => "Having set up your profile is already another chance for players (and search engine bots) to find you but it's just the beginning. <br>
         But don't stay passive, reach out to players, especially to <strong>those who want to hear from you</strong>.<br>
         <br>
         Advertising is a completely valid way to promote your product, but we concide that it's usually poorly executed as well as inefficient or just unaffordable. <br>
         Instead, at VideoGamesChest we believe we can <strong>make advertising non-intrusive, relevant and inexpensive</strong>. <br>
         <br>
         That's why we offers various promotion/advertising services (more coming soon) that are build to on those tree qualities so that it really benefits both the players and the developers.
-        ",
+        ",*/
 
         /*
         If players spend all those time reading video games news websites, that's because they want to find games worth of their time and money. <br>
@@ -754,13 +754,16 @@ return array(
          */
         
 
-        'discover_text' => "Players interested in discovering new games <a href=\":discover_url\" title=\"Go to the Discover page\">can subscribe</a> to a promotion feed or newsletter whose purpose is to advertise them with the profiles from VGC they are interested in.<br>
+        /*'discover_text' => "Players interested in discovering new games <a href=\":discover_url\" title=\"Go to the Discover page\">can subscribe</a> to a promotion feed or newsletter whose purpose is to advertise them with the profiles from VGC they are interested in.<br>
         <br>
         You can give a chance to any of your profile to appear in these feed or newsletter by checking the appropriate box in your profile's edit page, under the <em>Promote</em> tab. <br>
         <br>
         A profile will be displayed in a feed entry or an email only if it is randomly selected among the profiles that matches the search and based on the number of profiles the user requested to display. <br>
         That means that your profiles may not be displayed often, but every time it does, you can be pretty certain that the player will click on your link since he wanted to be advertised with your kind of profile and your link coexist only with few other.
-        ",
+        ",*/
+
+        'suggest_title' => 'Suggest a profile',
+        'suggest_text' => 'Suggest a profile to add to VGC by entering its url in the field below.',
 
         
         'title' => 'Promote',
