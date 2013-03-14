@@ -177,6 +177,7 @@ if ( ! Request::cli() and Config::get('session.driver') !== '')
 
 include_once('helpers.php');
 include_once('macros.php');
+include_once('libraries/simple_html_dom.php');
 
 
 Asset::container('nivo-slider')->add('main-css', 'css/nivo-slider/nivo-slider.css');
