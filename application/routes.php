@@ -368,6 +368,8 @@ $layout = View::of('layout');
         Route::get('testadmincontroller/(:num)', array('as' => 'get_testadmin_controller', 'uses' => 'discover@FeedData'));
         Route::get('test/(:all?)', function($searches = null) use ($layout)
         {
+            /* multiple searches
+            
             var_dump(json_decode($searches));
             var_dump($searches[2]);
             $matches = array("+" => array(), "-" => array());
@@ -394,7 +396,12 @@ $layout = View::of('layout');
 
             var_dump($matches);
 
-            var_dump(Search::make(1));
+            var_dump(Search::make(1));*/
+
+            $url = 'http://www.indiedb.com/games/minecraft';
+            $result = Crawler::crawl_game($url);
+            dd($result);
+            // echo '<pre>'.Crawler::crawl_game($url).'</pre>';;
 
             return $layout->nest('page_content', 'test');
         });
