@@ -22,6 +22,7 @@ class Crawler
         // get the type of url
         $profile = array();
 
+        // INDIE DB
         if (strpos($url, 'indiedb.com') !== false) {
             $source_code = file_get_contents($url);
 
@@ -96,7 +97,7 @@ class Crawler
                             $profile["players"] = array($span->plaintext, );
                             break;
 
-                        case "box shot" :
+                        case "boxshot" :
                             $profile["cover"] = $item->find("img", 0)->src;
                             break;
 
@@ -105,49 +106,13 @@ class Crawler
             }
 
             // twitter
-            // style
             $box = $sidecolumn->find("#twitterfeed", 0);
             $item = $box->find("div[class=table] div", 0);
             $profile['socialnetworks'] = array('names' => array('twitter'), 'urls' => array($item->find("a", 0)->href));
-
-
-
-            return $profile;
-
-            /*preg_match("#\<body(.+)\</body\>#ims", $source_code, $body);
-            
-            
-            while (true) {
-
-                preg_match("#\<script([^\<]+)\</script\>#ims", $body[0], $js_tag);
-                var_dump($js_tag);
-                if ( ! isset($js_tag[0])) break;
-                $body[0] = str_replace($js_tag[0], "", $body[0]);
-
-            }*/
-
-            //$body[0] = preg_replace("#\<script.+\</script\>#ims", "", $body[0]);
-            
-            /*$dom = new DOMDocument();
-            $dom->preserveWhiteSpace = false;
-            @$dom->loadHTML($source_code);
-
-            $xpath = new DOMXPath($dom);
-
-            $query = '//body//div[. = "headernormalbox normalbox"]//div[. = "body clear"]'
-            $query = ''
-            $NodeList = $xpath->query($query);
-            $description = "";
-            foreach ($NodeList as $node) {
-                $test = static::innerHTML($node);
-                var_dump($test);
-                $description .= $test;
-            }
-            return $description;*/
-            
-
-
         }
+
+
+        return $profile;
     }
 
     public static function innerHTML( $contentdiv ) 
