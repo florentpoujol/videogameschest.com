@@ -101,9 +101,10 @@ if ( ! isset($preview_profile)) $preview_profile = false;
         <!-- JavaScript -->
         @if (Config::get('vgc.environment') == 'local')
             {{ HTML::script('js/jquery-v1.7.1-min.js') }}
+            {{ HTML::script('js/less.js') }}
         @else
             <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
-            <script src="http://lesscss.googlecode.com/files/less-1.3.0.min.js" type="text/javascript"></script>
+            <script src="http://lesscss.googlecode.com/files/less-1.3.3.min.js" type="text/javascript"></script>
         @endif
 
         {{ HTML::script('js/bootstrap/bootstrap.min.js') }}
@@ -122,7 +123,7 @@ if ( ! isset($preview_profile)) $preview_profile = false;
           @yield('jscode')
         </script> <!-- /JavaScript -->
 
-        @if (Config::get('vgc.is_production_environment') === true)
+        @if (Config::get('vgc.environment') == 'production')
             @include('partials.googleanalytics')
         @endif
     </body>
