@@ -1,14 +1,14 @@
 @section('page_title')
-    {{ lang('vgc.reports..title') }}
+    {{ lang('vgc.reports.title') }}
 @endsection
 
 <div class="reports">
-    <h1>{{ lang('vgc.reports..title') }}</h1>
+    <h1>{{ lang('vgc.reports.title') }}</h1>
 
     <hr>
 
     <p>
-        <a href="{{ route('get_reports_feed', array(user_id(), user()->url_key)) }}" title="{{ lang('vgc.reports..rss_feed') }}">{{ icon('rss') }} {{ lang('vgc.reports..rss_feed') }}</a>
+        <a href="{{ route('get_reports_feed', array(user_id(), user()->url_key)) }}" title="{{ lang('vgc.reports.rss_feed') }}">{{ icon('rss') }} {{ lang('vgc.reports.rss_feed') }}</a>
     </p>
 
     <?php  
@@ -29,9 +29,9 @@
                 <thead>
                     <tr>
                         <th>{{ lang('common.date') }}</th>
-                        <th>{{ lang('vgc.reports..table.profile') }}</th>
-                        <th>{{ lang('vgc.reports..table.message') }}</th>
-                        <th>{{ Former::warning_submit(lang('vgc.reports..table.delete')) }}</th>
+                        <th>{{ lang('vgc.reports.table.profile') }}</th>
+                        <th>{{ lang('vgc.reports.table.message') }}</th>
+                        <th>{{ Former::warning_submit(lang('vgc.reports.table.delete')) }}</th>
                     </tr>
                 </thead>
 
@@ -61,6 +61,6 @@
             </table>
         </form>
     @else
-        {{ lang('vgc.reports..no_report') }}
+        {{ lang('vgc.reports.no_report') }}
     @endif
 </div> <!-- /#reports -->
