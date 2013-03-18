@@ -1,25 +1,9 @@
 <?php
 return array(
     
-
-    
     'admin_email' => 'contact@videogameschest.com',
     'automatic_email_from' => 'noreply@videogameschest.com',
     'automatic_email_from_name' => 'The VideoGamesChest mailer',
-    
-
-    'crosspromotion_developer_allowed_fields' => array(
-        'name', 'pitch', 'logo', 'website', 'blogfeed', 'presskit',
-        'languages', 'technologies', 'operatingsystems', 'devices',
-       'socialnetworks', 'stores',
-    ),
-
-    'crosspromotion_game_allowed_fields' => array(
-        'name', 'devstate', 'pitch', 'cover', 'website', 'blogfeed', 'presskit',
-        'publishername', 'publisherurl', 'soundtrackurl', 'languages', 'technologies', 'operatingsystems', 'devices',
-        'genres', 'themes', 'viewpoints', 'nbplayers', 'tags', 'socialnetworks', 'stores', 'screenshots', 'videos', 'reviews'
-    ),
-
 
     "date_formats" => array(
         "date_sql" => "Y-m-d",
@@ -33,16 +17,6 @@ return array(
 
     'environment' => 'common',
 
-    'profile_blog_feed_item_count' => 5,
-
-    //'dummie_password' => '', //r!&5éT[79m},D?4â+5w% temp password while user is in submission review
-
-    /*"feed" => array(
-        "pitch_extract_length" => 1000,
-        "item_count" => 20
-    ),*/
-
-
     'form_attributes_to_clean' => array('csrf_token', 'password_confirmation',
      'old_password', 'controller', 'captcha', 'recaptcha_challenge_field', 'recaptcha_response_field',
       'city'),
@@ -53,11 +27,7 @@ return array(
   
     // field that needs an admin review before their update is approved
     'profile_fields_to_review' => array(
-        'common' => array('name', 'email', 'developer_url', 'pitch', 'logo', 'website', 'blogfeed', 'presskit', 'socialnetworks', 'press', 'screenshots', 'videos', 'soundtrack'),
-        
-        'game' => array('developer_name',  'stores'),
-        'tool' => array('documentation'),
-
+        'common' => array('name', 'price', 'release_date', 'links', 'screenshots', 'videos', ),
     ),
 
 
@@ -77,24 +47,6 @@ return array(
             'cover' => 'url',
             'soundtrack' => 'url',
         ),
-
-        'developer' => array(
-            'name' => 'required|alpha_dash_extended|min:2|unique:developers',
-            'email' => 'min:5|email',
-            'logo' => 'url',
-            'website' => 'url',
-            'blogfeed' => 'url',
-            'presskit' => 'url',
-            'teamsize' => 'integer|min:1'
-        ),
-
-        'tool' => array(
-            'name' => 'required|alpha_dash_extended|min:2|unique:tools',
-            'website' => 'url',
-            'blogfeed' => 'url',
-            'background' => 'url',
-            'logo' => 'url',
-        ),
     ),
 
 
@@ -113,48 +65,15 @@ return array(
             'cover' => 'url',
             'soundtrack' => 'url',
         ),
-
-        'developer' => array(
-            'name' => 'required|alpha_dash_extended|min:2',
-            'email' => 'email',
-            'logo' => 'url',
-            'website' => 'url',
-            'blogfeed' => 'url',
-            'presskit' => 'url',
-            'teamsize' => 'integer|min:1'
-        ),
-
-        'tool' => array(
-            'name' => 'required|alpha_dash_extended|min:2',
-            'website' => 'url',
-            'blogfeed' => 'url',
-            'background' => 'url',
-            'logo' => 'url',
-        ),
     ),
 
 
-
-    'profile_types' => array('game', 'developer', 'tool'),
-
+    'profile_types' => array('game'),
 
     'privacy' => array('private', 'public'),
-    'privacy_and_reviews' => array(/*'publishing',*/ 'private', 'public'),
-
 
     'recaptcha_private_key' => '6LeL59wSAAAAAPHo33Qt8iyf71Mf0U-QGET3IlhE',
     'recaptcha_public_key' =>  '6LeL59wSAAAAAPd08fVY9Fq1loW04p0kldVFqsWS',
-
-    'review' => array(
-        'types' => array('publishing'),
-        // 'duration' => 7,
-        // 'approval_threshold' => 20,
-        // 'check_interval' => 60, // time in minutes between two review success check
-    ),
-
-    'search' => array(
-        'default_tab' => 'game',
-    ),
 
     "site_languages" => array(
         "english",
@@ -166,18 +85,9 @@ return array(
         'google+_url' => 'https://plus.google.com/104684794332555704876',
     ),
 
-    'user_types' => array('user', 'developer', 'admin'),
+    'user_types' => array('user', 'admin'),
 
-    'video' => array(
-        'default_width' => '450',
-    ),
-    
-
-
-
-    
-    
-
+ 
 
 // form
 
@@ -272,7 +182,6 @@ return array(
         "unrealengine",
         "xna",
         'yna',
-        
     ),
 
     "stores" => array(
@@ -297,43 +206,11 @@ return array(
         "xblig"
     ),
 
-    'stores_icons' => array(
-        "steam" => 'img/stores_icons/steam.jpg',
-        "desura" => 'img/stores_icons/desura.jpg',
-        "indievania" => 'img/stores_icons/indievania.jpg',
-        "gamersgate" => 'img/stores_icons/gamersgate.jpg',
-        "applestore" => 'img/stores_icons/ios_appstore.jpg',
-        "xblig" => 'img/stores_icons/xblig.jpg',
-    ),
-
-    "socialnetworks" => array(
-        "desura",
-        "facebook",
-        "googleplus",
-        "indiedb",
-        "linkedin",
-        "moddb",
-        "pinterest",
-        "reddit",
-        "slidedb",
-        "steam",
-        "twitter"
-    ),
-
     "nbplayers" => array(
         "singleplayer",
         "coop",
         "mmo",
         "multiplayer"
-    ),
-
-    "developmentstates" => array(
-        "concept",
-        "prototype",
-        "alpha",
-        "beta",
-        "released",
-        // "canceled"
     ),
 
 
@@ -350,8 +227,8 @@ return array(
         "mythology",
         "fantasy",
         "medieval",
-        "futuristic",
         "modern",
+        "futuristic",
         "scifi",
         "western",
         "twentycentury"
@@ -408,33 +285,7 @@ return array(
     ),
 
 
-    // FOR TOOLS
-
-    /*'tool_works_on_os' => array(
-        'windowsdesktop',
-        'windows8',
-        'browser',
-        'mac',
-        'linux',
-    ),*/
-
-    'scriptinglanguages' => array(
-        'actionscript',
-        'boo',
-        'c',
-        'csharp',
-        'haxe',
-        'java',
-        'javascript',
-        'lua',
-        'unityscript',
-        
-    ),
-
-
-
     // ICONS
-
 
     'icons' => array(
         'facebook' => 'img/icons/facebook-512.png',

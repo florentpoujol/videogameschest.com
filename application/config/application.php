@@ -195,7 +195,7 @@ return array(
 		'View'       	=> 'Laravel\\View',
 
 		// model
-		'Dev'			=> 'Developer',
+		//'Dev'			=> 'Developer',
 
 
 		// bundle Former
