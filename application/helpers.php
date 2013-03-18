@@ -6,7 +6,7 @@ function antiBot($text_name = 'captcha')
 
     if (is_guest()) {
         // Recaptcha
-        $html = Recaptcha\Recaptcha::recaptcha_get_html(Config::get('vgc.recaptcha_public_key'));
+        //$html = Recaptcha\Recaptcha::recaptcha_get_html(Config::get('vgc.recaptcha_public_key'));
         
         // cool captcha
         /*$html = Form::text($text_name, '', array(
@@ -94,7 +94,7 @@ function clean_form_input($input, $supl_attributes = array())
     return $input;
 }
 
-
+ 
 /**
  * strip out empty name/url in names/urls arrays (socialnetworks, stores, screenshots, videos, reviews)
  * then rebuilt it's index
@@ -123,54 +123,6 @@ function clean_names_urls_array($array)
     $array['urls'] = array_values($array['urls']);
 
     return $array;
-}
-
-
-function DisplaySoundTrack($url)
-{
-    /* 
-    bandcamp 
-    http://morusque.bandcamp.com/album/blocks-that-matter
-    <iframe width="300" height="400" style="position: relative; display: block; width: 300px; height: 410px;"
-    src="http://bandcamp.com/EmbeddedPlayer/v=2/album=519219781/size=grande3/bgcol=FFFFFF/linkcol=4285BB/"
-    allowtransparency="true" frameborder="0">
-    <a href="http://morusque.bandcamp.com/album/blocks-that-matter">Blocks that matter by Morusque</a>
-    </iframe>
-
-    https://soundcloud.com/awintory/sets/journey
-    <iframe width="100%" height="400" scrolling="no" frameborder="no" 
-    src="https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Fplaylists%2F1738337">
-    </iframe>
-    http://api.soundcloud.com/playlists/1738337
-    */
-   
-    $html = 'Error processing soundtrack url : '.$url;
-
-    if (strpos($url, 'bandcamp.com/EmbeddedPlayer') !== false) {
-        $url = preg_replace("#^(.+/album=[0-9]+)/?.*#", '$1/size=grande3/bgcol=FFFFFF/linkcol=4285BB', $url);
-
-        
-        $html = '<iframe width="500" height="540" style="position: relative; display: block;"
-        src="'.$url.'" allowtransparency="true" frameborder="0"></iframe>';
-    }
-    elseif (strpos($url, 'bandcamp.com') !== false && strpos($url, 'bandcamp.com/EmbeddedPlayer') === false) {
-        $html = '<a href="'.$url.'">Get the soundtrack on Bandcamp</a>';
-    }
-
-
-    elseif (strpos($url, 'api.soundcloud.com/') !== false && strpos($url, 'w.soundcloud.com/player') === false) {
-        $html = '<iframe width="100%" height="400" scrolling="no" frameborder="no" 
-        src="https://w.soundcloud.com/player/?url='.$url.'"></iframe>';
-    }
-    elseif (strpos($url, 'w.soundcloud.com/player') !== false) {
-        $html = '<iframe width="100%" height="400" scrolling="no" frameborder="no" 
-        src="'.$url.'"></iframe>';
-    }
-    elseif (strpos($url, 'soundcloud.com') !== false) {
-        $html = '<a href="'.$url.'">Get the soundtrack on Soundcloud</a>';
-    }
-
-    return $html;
 }
 
 
@@ -216,33 +168,15 @@ function get_language()
 
 function get_profile_types($regex_style = false)
 {
-    $profile_types = Config::get('vgc.profile_types', array());
+    return "(game)";
+    /*$profile_types = Config::get('vgc.profile_types', array());
 
     if ($regex_style) {
         $profile_types = '('.implode('|', $profile_types).')';
     }
 
-    return $profile_types;
+    return $profile_types;*/
 }
-
-
-/**
- * Return a random string of the requested length
- * @param int $length The length of the random string to be returned
- * @return string The generated string
- */
-function get_random_string($length)
-{
-    $alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&#'{([-|_@)]°}=+-*/,?;.:!§%£¤µ";
-    $string = "";
-
-    for ($i = 0; $i < $length; $i++) {
-        $string .= $alphabet[mt_rand(0, strlen($alphabet)-1)];
-    }
-    
-    return $string;
-}
-
 
 /**
  * Return the html to display an icon, whether a glyphicon or a custom icon
@@ -277,64 +211,19 @@ function is_admin()
     return ( ! Auth::guest() && Auth::user()->type == 'admin');
 }
 
-
-function is_developer()
-{
-    return ( ! Auth::guest() && Auth::user()->type == 'developer');
-}
-
 function is_guest()
 {
     return Auth::guest();
 }
-
 
 function is_logged_in()
 {
     return ( ! Auth::guest());
 }
 
-
-function is_not_admin()
-{
-    return ( ! Auth::guest() && Auth::user()->type != 'admin');
-}
-
-
-/*function is_trusted()
-{
-    return ( ! Auth::guest() && (is_admin() || Auth::user()->is_trusted == 1));
-}*/
-
-function is_standard_user()
+function is_user()
 {
     return ( ! Auth::guest() && Auth::user()->type == 'user');
-}
-
-
-/*
- * From http://stackoverflow.com/questions/1048487/phps-json-encode-does-not-escape-all-json-control-characters
- */
-function json_escape($string) 
-{   
-    $search = array("\n", "\r", "\u", "\t", "\f", "\b", "/", '"');
-    $replace = array("\\n", "\\r", "\\u", "\\t", "\\f", "\\b", "\/", '\"');
-    $string = str_replace($search, $replace, $string);
-    return $string;
-    // does not work at all for double gillemets "
-}
-
-
-/**
- * Wrapper around json_decode($data, true)
- * Decode a json string
- * @param  string  $string The json string to decode
- * @param  boolean $to_array Return the result as array or object ?
- * @return mixed          The array or object returned by json_decode()
- */
-function json_to_array($string, $to_array = true)
-{
-    return json_decode($string, $to_array);
 }
 
 
@@ -390,25 +279,6 @@ function name_to_url($name)
 
 
 /**
- * Parse bbCode
- * @param string $input the input text
- * @return string the input string with the bbCode replaced by html tags
- */
-function parse_bbcode($input)
-{
-    $input = preg_replace( "#\[b\](.+)\[/b\]#i", "<strong>$1</strong>", $input);
-    $input = preg_replace( "#\[i\](.+)\[/i\]#i", "<em>$1</em>", $input);
-    $input = preg_replace( "#\[h1\](.+)\[/h1\]#i", "<h3>$1</h3>", $input);
-    $input = preg_replace( "#\[h2\](.+)\[/h2\]#i", "<h4>$1</h4>", $input);
-    //$input = preg_replace( "#https?://[^ ]+#i", '<a href="$0">$0</a>', $input);
-    //$input = preg_replace( "#\[url\](.+)\[/url\]#", '<a href="$1">$1</a>', $input);
-    //$input = preg_replace( "#\[url=(.+)\](.+)\[/url\]#", '<a href="$1" title="$2">$2</a>', $input);
-    //$input = preg_replace( "#\[br\]#", '<br>', $input);
-    return $input;
-}
-
-
-/**
  * Pick random entries in array and return the new array
  * @param [type] $array [description]
  * @param [type] $count [description]
@@ -429,11 +299,6 @@ function PickAtRandomInArray($array, $count)
     } else return $array[$keys];
 
     return $new_array;
-}
-
-function Plural($text)
-{
-    return Str::plural($text);
 }
 
 
@@ -543,65 +408,6 @@ function SendMail($email, $subject, $body_html, $body_text = null, $priority = n
     }
 }
 
-/*function sendMail($email, $subject, $body_html, $body_text = null, $priority = null) 
-{
-    SendMail($email, $subject, $body_html, $body_text, $priority);
-}*/
-
-
-function shortenUrl($url)
-{
-    return preg_replace("#(https?://[^/]+/)(.*)#i", "$1...", $url);
-}
-
-
-function Singular($text)
-{
-    return Str::singular($text);
-}
-
-/**
- * Set the embed code for the soundtrack
- * @param  string $link 
- * @return string       The HTML code of the embeded player
- */
-function soundtrackFrame($link)
-{
-    // soundcloud
-    // standard urls : soundcloud.com/{band}/{track} or api.soundcloud.com/tracks/{track_id}
-    // embed url : https://w.soundcloud.com/player/?url=https://api.soundcloud.com/tracks/{track_id}
-    // https://w.soundcloud.com/player/?url=https://soundcloud.com/{band}/{track}
-    if (strpos($link, 'soundcloud.com') !== false) {
-        return '<iframe width="100%" height="166" scrolling="no" frameborder="no" 
-        src="https://w.soundcloud.com/player/?url='.$link.'"></iframe>';
-        
-    }
-
-    // bandcamp
-    // standard url is no good for embeding, need the album id
-    // embed url : http://bandcamp.com/EmbeddedPlayer/v=2/album=4077462542/size=grande3/bgcol=FFFFFF/linkcol=4285BB/
-    if (strpos($link, 'bandcamp.com') !== false) {
-        return '<iframe width="300" height="410" style="position: relative; display: block; width: 300px; height: 410px;" 
-        src="'.$link.'" allowtransparency="true" frameborder="0"></iframe>';
-    } 
-
-    return '<a href="'.$link.'">'.$link.'</a>';
-}
-
-
-/**
- * Wrapper around json_encode()
- * Encode an array or object to json
- * @param  mixed $data The array or object to encode
- * @return  string The json string
- */
-function to_json($data)
-{
-    if (is_string($data)) $data = json_escape($data);
-    
-    return json_encode($data);
-}
-
 
 function tooltip($text, $data_placement = 'top')
 {
@@ -689,39 +495,9 @@ function VideoFrame($link, $width = null, $height = null)
 }
 
 
-
-/*function GetVideoEmbedLink($link)
-{
-    $embed_link = "original link : $link";
-
-    if (strpos($link, 'youtu') !== false && strpos($link, 'youtube.googleapis.com') === false && strpos($link, '/embed/') === false) {
-        $embed_link = preg_replace("#(.*)(/watch\?v=|\.be/|/v/)([a-zA-Z0-9]+)((&|/)?.*)#", 'http://www.youtube.com/embed/$3', $link);
-    }
-
-    // vimeo
-    // stadard : http://vimeo.com/57183688
-    // embed : http://player.vimeo.com/video/57183688
-    elseif (strpos($link, 'vimeo.com') !== false) {
-        $embed_link = preg_replace("#(.*)(vimeo\.com/)([0-9]{8})(.*)#", 'http://player.vimeo.com/video/$3?title=0&amp;byline=0&amp;portrait=0', $link);
-    }
-
-    // dailymotion
-    // standard : http://www.dailymotion.com/video/{id}_{long text}
-    // embed : http://www.dailymotion.com/embed/video/{id}
-    elseif (strpos($link, 'dailymotion.com') !== false) {
-        $embed_link = preg_replace("#(.*)(video/)([a-zA-Z0-9]+)(_.*)#", 'http://www.dailymotion.com/embed/video/$3', $link);
-    }
-
-    return $embed_link;
-}*/
-
-
-
-
 function XssSecure($string)
 {
     if (is_string($string)) return e($string);
     else return $string;
 }
-
 
