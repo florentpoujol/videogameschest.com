@@ -11,7 +11,7 @@ $rules = array(
     
     {{ Former::text('username', '')->placeholder(lang('register.username')) }}
 
-    {{ Former::text('email', '')->placeholder(lang('common.email'))->help(lang('register.email_help')) }}
+    {{ Former::text('email', '')->placeholder(lang('common.email')) }}
     
     {{ Former::password('password', '')->placeholder(lang('register.password')) }}
 

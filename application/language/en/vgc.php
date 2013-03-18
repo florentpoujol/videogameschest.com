@@ -576,7 +576,7 @@ return array(
 // REGISTER
     
     'register' => array(
-        'email_help' => 'An e-mail will be send to this address with a link to active your account.',
+        //'email_help' => 'An e-mail will be send to this address with a link to active your account.',
         'password' => 'Choose your password',
         'password_confirmation' => 'Verify password',
         'submit' => 'Register !',
@@ -585,10 +585,11 @@ return array(
         'username' => 'Choose your user name',
 
         'msg' => array(
-            'register_success' => 'Thank you :username, your user account has been created. An email has been sent to your email adress with a link to activate your account. You will be able to login as soon as to activated your account.',
-
-            'confirmation_error' => "Unable to activate the user account because none with id ':id' and url key ':url_key' has been found, or the user account is already activated.",
-            'confirmation_success' => 'Thank you :username, you have successfully activated your user account, you may now log in.',
+            // 'register_success' => 'Thank you :username, your user account has been created. An email has been sent to your email adress with a link to activate your account. You will be able to login as soon as to activated your account.',
+            'register_success' => 'Thank you :username, your user account has been created. You may now log in.',
+            
+            //'confirmation_error' => "Unable to activate the user account because none with id ':id' and url key ':url_key' has been found, or the user account is already activated.",
+            //'confirmation_success' => 'Thank you :username, you have successfully activated your user account, you may now log in.',
         ),
     ),
 

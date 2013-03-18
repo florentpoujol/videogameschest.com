@@ -202,13 +202,12 @@ class Admin_Controller extends Base_Controller
         
         // checking form
         $rules = array(
-            'username' => 'required|min:5|unique:users',
-            'email' => 'required|min:5|unique:users|email',
+            'username' => 'required|min:5|alpha_dash_extended|unique:users',
+            'email' => 'required|min:5|email|unique:users',
             'password' => 'required|min:5|confirmed',
             'password_confirmation' => 'required|min:5',
             'type' => 'required|in:dev,admin'
         );
-
         $validation = Validator::make($input, $rules);
         
         if ($validation->passes()) {
@@ -240,18 +239,13 @@ class Admin_Controller extends Base_Controller
     public function post_user_update()
     {
         $input = Input::all();
-
         if ( ! is_admin()) $input['id'] = user_id();
-
         $user = User::find($input['id']);
         
-        // checking form
         $rules = array(
-            'username' => 'required|alpha_dash_extended|min:2',
+            'username' => 'required|min:5|alpha_dash_extended',
             'email' => 'required|min:5|email',
-            //'url_key' => 'min:10|alpha_num',
         );
-        
         $validation = Validator::make($input, $rules);
         
         if ($validation->fails() || ! User::update($input['id'], $input)) {
@@ -266,11 +260,10 @@ class Admin_Controller extends Base_Controller
     public function post_password_update()
     {
         $input = Input::all();
-        $input['password'] = trim($input['password']);
-
         if ( ! is_admin()) $input['id'] = user_id();
-
         $user = User::find($input['id']);
+
+        $input['password'] = trim($input['password']);
         
         // checking form
         if ($input['password'] != '') {
@@ -286,7 +279,6 @@ class Admin_Controller extends Base_Controller
                 'old_password' => 'required|min:5',
             );
             if (is_admin()) unset($rules['old_password']);
-
             $validation = Validator::make($input, $rules);
         
             if ($validation->fails() || $old_password_ok == false) {
@@ -304,11 +296,8 @@ class Admin_Controller extends Base_Controller
     public function post_blacklist_update()
     {
         $input = Input::all();
-
         if ( ! is_admin()) $input['id'] = user_id();
-
         User::updateBlacklist($input);
-        
         return Redirect::to_route('get_user_update');
     }
 

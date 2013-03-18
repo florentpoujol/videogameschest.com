@@ -2,8 +2,7 @@
 
 class User extends ExtendedEloquent 
 {
-
-	//----------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------
     // CRUD METHODS
 
     /**
@@ -11,54 +10,21 @@ class User extends ExtendedEloquent
      * @param  array $input data comming from the form, or the Developer::create() method
      * @return User       The user instance
      */
-	public static function create($input) 
-	{
-        $input = clean_form_input($input);
-
-        // password
+    public static function create($input) 
+    {
         if (isset($input["password"]) && trim($input["password"]) != "") {
             $input["password"] = Hash::make($input["password"]);
-        } else {
-            // not use anymore since all users set their password when registering
-
-            // dummy password
-            $input['password'] = Hash::make(Config::get('dummie_password'));
-            // the password will be updated by hand via th edituser page or
-            // when a random password will be generated when the dev profile will 
-            // have passed the submission review (in ExtendedEloquent.passed_review())
-        }
-        
+        }        
         
         $input["url_key"] = Str::random(40);
 
         if ( ! isset($input['type'])) $input['type'] = 'user';
-        if ($input['type'] == 'admin') $input['is_trusted'] = 1;
-
-        // cross promotion now always active (since it's free)
-        $input['crosspromotion_active'] = 1;
-
 
         $user = parent::create($input);
 
         // Log
         HTML::set_success(lang('register.msg.register_success', array('username'=>$user->username)));
-
         Log::write('user create success', 'New user created (id='.$user->id.') (username='.$user->username.') (email='.$user->email.')');
-
-        // email
-        $link = URL::to_route('get_register_confirmation', array(
-            'user_id' => $user->id,
-            'url_key' => $user->url_key
-        ));
-
-        $subject = lang('emails.register_confirmation.subject');
-
-        $html = lang('emails.register_confirmation.html', array(
-            'username' => $user->username,
-            'link' => $link
-        ));
-
-        sendMail($user->email, $subject, $html);
 
         return $user;
     }
@@ -71,8 +37,6 @@ class User extends ExtendedEloquent
      */
     public static function update($id, $input)
     {
-        $input = clean_form_input($input);
-
         $user = parent::find($id);
         // checking name change
         if (isset($input['username']) && $user->username != $input['username']) { // the user want to change the dev name, must check is the name is not taken
@@ -92,15 +56,14 @@ class User extends ExtendedEloquent
         if (isset($input['password']) && trim($input['password']) != '') $input['password'] = Hash::make($input['password']);
         else unset($input['password']);
 
-        //$input['url_key'] = str_replace('/', '', $input['url_key']);
-
         parent::update($id, $input);
         $user = User::find($id);
 
-        if ($user->id != user_id()) $msg = 'The user \"'.$user->username.'\" (id : '.$user->id.') has successfully been updated.';
-        else $msg = lang('user.msg.update_success');
-        HTML::set_success($msg);
-        Log::write('user update success', 'The user \"'.$user->username.'\" (id : '.$user->id.') has successfully been updated.');
+        $log_msg = "The user '".$user->username."' (id : '".$user->id."') has successfully been updated.";
+        if ($user->id != user_id()) $html_msg = $log_msg;
+        else $html_msg = lang('user.msg.update_success');
+        HTML::set_success($html_msg);
+        Log::write('user update success', $log_msg);
 
         return $user;
     }
@@ -108,17 +71,10 @@ class User extends ExtendedEloquent
 
     //----------------------------------------------------------------------------------
 
-    public function activate() 
-    {
-        $this->activated = 1;
-        $this->save();
-
-        $msg = lang('register.msg.confirmation_success', array('username' => $this->username));
-        HTML::set_success($msg);
-        Log::write('user activation confirmation success', $msg);
-    }
-
-
+    /**
+     * When the user as lost its password
+     * @param integer $step
+     */
     public function setNewPassword($step = 2) 
     {
         // step 1 : send conf email to user
@@ -242,45 +198,6 @@ class User extends ExtendedEloquent
         }
     }
 
-    /**
-     * Check if the user is now a trusted user, then send a mail if yes
-     * @param  boolean $send_mail Do send an email to the user to let him know he is now trusted ?
-     */
-    /*public function update_trusted($send_mail = false)
-    {
-        $is_trusted = false;
-
-        if ($this->dev->privacy == 'public' && ! is_null($this->dev->games)) {   
-            foreach ($this->dev->games as $game) {
-                if ($game->privacy == 'public') {
-                    $is_trusted = true;
-                    break;
-                }
-            }
-        }
-
-        $this->is_trusted = $is_trusted;
-        $this->save();
-
-        if ($is_trusted && $send_mail) {
-            // @TODO send mail "You are now a trusted user, you have acces to the peer review !"
-        }
-    }*/
-
-    /*public function update_crosspromotion($new_state)
-    {
-        $this->crosspromotion_active = $new_state;
-        $this->save();
-
-        if ($new_state == 1) {
-            HTML::set_success(lang('crosspromotion.msg.activation_success'));
-            Log::write('crosspromotion activation success', 'User "'.$this->name.' (id : '.$this->id.') activated the cross-promotion.');
-        } elseif($new_state == 0) {
-            HTML::set_success(lang('crosspromotion.msg.deactivation_success'));
-            Log::write('crosspromotion deactivation success', 'User "'.$this->name.' (id : '.$this->id.') DEactivated the cross-promotion.');
-        }
-    }*/
-
 
     //----------------------------------------------------------------------------------
     // GETTERS
@@ -327,47 +244,30 @@ class User extends ExtendedEloquent
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
 
-    public function developers()
-    {
-        return $this->has_many('Developer');
-    }
-
-    public function devs() 
-    {
-        return $this->developers();
-    }
-
     public function games()
     {
         return $this->has_many('Game');
     }
 
     /**
-     * Get all reports of the specified type for all profiles linked to this user
+     * Get all reports for all profiles linked to this user
      * 
      * NOTE : This method does not return a relationships, it's a regular method
      * So it can't be called without the parenthesis 
      * and the get() or first() methods are not needed when called with parameters
      * 
-     * @param  string $type The report type
      * @return array       The array of Report model
      */
-    public function reports($type = null, $order = 'asc')
+    public function reports($order = 'asc')
     {
-        if ($type == 'asc' || $type == 'desc') {
-            $order = $type;
-            $type = null;
-        }
-
-        $profiles = $this->devs;
-        $profiles = array_merge($profiles, $this->games);
+        $profiles = $this->games;
 
         $reports = array();
         foreach ($profiles as $profile) {
-            $reports = array_merge($reports, $profile->reports($type));
+            $reports = array_merge($reports, $profile->reports());
         }
 
-        // $reports are ordered by dev_id and game_id then report_id
+        // $reports are ordered by game_id then report_id
         
         // now we are ordering them by created_at
         $date_report = array();
@@ -395,11 +295,11 @@ class User extends ExtendedEloquent
 
     public function PromotionFeed()
     {
-        return $this->has_one('PromotionFeed');
+        return $this->has_many('PromotionFeed');
     }
 
     public function PromotionNewsletter()
     {
-        return $this->has_one('PromotionNewsletter');
+        return $this->has_many('PromotionNewsletter');
     }
 }   
