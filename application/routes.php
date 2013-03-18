@@ -113,73 +113,16 @@ $layout = View::of('layout');
     Route::get('discover/feed/(:num)', array('as' => 'get_discover_feed_data', 'uses' => 'discover@feed_data'));
     Route::get('discover/newsletter', array('as' => 'get_discover_newsletter_page', 'uses' => 'discover@newsletter_page'));
     Route::get('discover/newsletter/(:num)/(:any)', array('as' => 'get_discover_newsletter_update', 'uses' => 'discover@newsletter_page'));
-    
-
-    //VIEW PROFILE
-    Route::get(get_profile_types(true).'/view/(:all?)', array('as' => 'get_profile_view', function($profile_type, $name = null) use ($layout)
-    {
-        if (is_null($name)) return Redirect::to_route('get_search_page');
-        
-        if (is_numeric($name)) {
-            $profile = $profile_type::find($name);
-            return Redirect::to_route('get_profile_view', array($profile_type, name_to_url($profile->name)));
-        }
-
-        $profile = $profile_type::where_name(url_to_name($name))->first();
-
-        if (is_null($profile)) {
-            $field_name = 'name';
-            if (is_numeric($name)) $field_name = 'id';
-
-            HTML::set_error(lang('profile.msg.profile_not_found', array(
-                'type' => $profile_type,
-                'field_name' => $field_name,
-                'field_value' => $name
-            )));
-
-            return Redirect::to_route('get_search_page');
-        }
-
-        // display profile if :
-        // profile is public
-        // user is admin
-        // user is dev and profile is user's or in review   
-        if ($profile->privacy == 'public' || is_admin() || $profile->user_id == user_id()) {
-            return $layout
-            ->with('profile', $profile)
-            ->nest('page_content', $profile_type, array('profile' => $profile));
-        } 
-
-        HTML::set_error(lang('common.msg.access_not_allowed', array('page' => $profile_type.' profile '.$name)));
-        return Redirect::to_route('get_search_page');
-    }));
-
-
-    // SET LANGUAGE
-
-    Route::get('setlanguage/(:any?)', array('as' => 'get_set_language_page', 'do' => function($language = null) use ($layout)
-    {
-        /*if (is_null($language)) {
-            $language = Session::get('language', Config::get('language', 'en'));
-        }
-
-        Session::put('language', substr($language, 0, 2));*/
-        return Redirect::back();
-    }));
 
 
     // RSS FEEDS
     Route::get('reports/feed/(developer|admin)/(:num)/(:any)', array('as' => 'get_reports_feed', 'uses' => 'feed@reports_feed'));
-    Route::get('reviews/feed/('.implode('|', Config::get('vgc.review.types')).')/(:num)/(:any)', array('as' => 'get_reviews_feed', 'uses' => 'feed@reviews_feed'));
+    
 
 
     // PROMOTE
     Route::get('promote', array('as' => 'get_promote_page', 'uses' => 'promotion@index'));
     
-    Route::get('promote/crosspromotion', array('as' => 'get_crosspromotion_page', 'uses' => 'promotion@crosspromotion_page'));
-    // When games wants their promoted profiles
-    Route::get('promote/crosspromotion/(:num)/(:any)', array('as' => 'get_crosspromotion_from_game', 'uses' => 'promotion@crosspromotion_from_game'));
-
 
     // BLOG
     Route::get('blog', array('as' => 'get_blog_page', function() use ($layout)
@@ -259,7 +202,6 @@ $layout = View::of('layout');
         Route::get('login', array('as' => 'get_login_page', 'uses' => 'admin@login_page'));
         Route::get('lostpassword', array('as' => 'get_lostpassword_page', 'uses' => 'admin@lostpassword_page'));
         Route::get('register', array('as' => 'get_register_page', 'uses' => 'admin@register_page'));
-        Route::get('register/confirmation/(:num)/(:any)', array('as' => 'get_register_confirmation', 'uses' => 'admin@register_confirmation'));
         Route::get('user/lostpassword/(:num)/(:any)', array('as' => 'get_lostpassword_confirmation', 'uses' => 'admin@lostpassword_confirmation'));
     });
 
@@ -322,35 +264,8 @@ $layout = View::of('layout');
         Route::post(get_profile_types(true).'/select', array('as' => 'post_profile_select', 'uses' => 'admin@profile_select'));
         Route::post(get_profile_types(true).'/create', array('as' => 'post_profile_create', 'uses' => 'admin@profile_create'));
         Route::post(get_profile_types(true).'/update', array('as' => 'post_profile_update', 'uses' => 'admin@profile_update'));
-
-        Route::post('post_profile_many_relationship_update', array('as' => 'post_profile_many_relationship_update', 'uses' => 'admin@profile_many_relationship_update'));
        
         Route::post('reports/update', array('as' => 'post_reports_update', 'uses' => 'admin@reports_update'));
-
-        Route::post('promotion/crosspromotion', array('as' => 'post_crosspromotion_update', 'uses' => 'promotion@crosspromotion_update'));
-        Route::post('game/update/crosspromotion', array('as' => 'post_crosspromotion_game_update', 'uses' => 'promotion@crosspromotion_game_update'));
-    });
-
-
-
-//----------------------------------------------------------------------------------
-//  MUST BE DEVELOPER
-//----------------------------------------------------------------------------------
-
-    Route::group(array('before' => 'auth|is_developer'), function()
-    {
-        // nothing
-    });
-
-
-
-//----------------------------------------------------------------------------------
-//  MUST BE DEVELOPER IN AND LEGIT POST
-//----------------------------------------------------------------------------------
-
-    Route::group(array('before' => 'auth|is_developer|csrf'), function()
-    {
-        Route::post('promote/update_game_subscription/post', array('as' => 'post_promote_update_profile_subscription', 'uses' => 'promotion@promote_update_profile_subscription'));
     });
 
 
@@ -362,42 +277,12 @@ $layout = View::of('layout');
     Route::group(array('before' => 'auth|is_admin'), function() use ($layout)
     {
         Route::get('user/create', array('as' => 'get_user_create', 'uses' => 'admin@user_create'));
-        Route::get('reviews/(:any?)', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));
-
+        Route::get('reviews', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));
+        Route::get('reviews/feed/(:num)/(:any)', array('as' => 'get_reviews_feed', 'uses' => 'feed@reviews_feed'));
 
         Route::get('testadmincontroller/(:num)', array('as' => 'get_testadmin_controller', 'uses' => 'discover@FeedData'));
         Route::get('test/(:all?)', function($searches = null) use ($layout)
         {
-            /* multiple searches
-            
-            var_dump(json_decode($searches));
-            var_dump($searches[2]);
-            $matches = array("+" => array(), "-" => array());
-            $j = 0;
-            $sign = "+";
-
-            for ($i = 0; $i < strlen($searches); $i++) {
-                $char = $searches[$i];
-                if ($char == " ") continue;
-
-                if ($char == "+" || $char == "-") {
-                    $sign = $char;
-                    $j++;
-                    continue;
-                }
-
-                if ( ! isset($matches[$sign][$j])) $matches[$sign][$j] = "";
-
-                if (is_numeric($char)) $matches[$sign][$j] .= $char;
-            }
-            
-            $matches["+"] = array_values($matches["+"]);
-            $matches["-"] = array_values($matches["-"]);
-
-            var_dump($matches);
-
-            var_dump(Search::make(1));*/
-
             $url = 'http://www.indiedb.com/games/minecraft';
             $result = Crawler::crawl_game($url);
             dd($result);
@@ -408,7 +293,6 @@ $layout = View::of('layout');
 
         Route::post('test', array('as' => 'post_test', function() use ($layout)
         {
-            
             return $layout->nest('page_content', 'test');
         }));
 
@@ -610,7 +494,6 @@ Event::listen('500', function()
 Route::filter('before', function()
 {
     // Do stuff before every request to your application...
-    // $lang = Session::get('language', Config::get('language', 'en'));
     define("LANGUAGE", 'en');
 
     // check if user has the logged in cokkie
@@ -643,41 +526,7 @@ Route::filter('before', function()
         // when used for the first time in a condition
         // calling them here ensure that every next calls will return the array properly filled
         $games = user()->games;
-        $devs = user()->devs;
     }
-
-
-    // checking if it's time to sendpromotion email
-
-
-
-    // checking success of reviews
-    // check number of approvals
-    // will also be called by a cron tab job
-    /*$last_check_date = new DateTime(DBConfig::get('review_check_date'));
-    $interval = new DateInterval('PT'. Config::get('vgc.review.check_interval') .'M');
-    $last_check_date->add($interval);
-    $now = new DateTime();
-    
-    if ($last_check_date < $now) {
-        DBConfig::put('review_check_date', $now);
-        $reviews = Config::get('vgc.review.types');
-
-        foreach ($reviews as $review) {
-            $profiles = Game::where_privacy($review)->get();
-            $profiles = array_merge($profiles, Dev::where_privacy($review)->get());
-
-            foreach ($profiles as $profile) {
-                if (count($profile->approved_by) >= Config::get('vgc.review.approval_threshold', 1000) && 
-                    count($profile->reports('admin')) == 0
-                ) {
-                    $profile->passed_review();
-                }
-            }
-        }
-    }*/
-
-
 });
 
 Route::filter('after', function($response)
@@ -710,19 +559,6 @@ Route::filter('auth', function()
     }
 });
 
-
-Route::filter('is_developer', function()
-{
-    if (Auth::guest()) {
-        HTML::set_error(lang('common.msg.logged_in_only'));
-        return Redirect::to_route('get_login_page');
-    } else {
-        if (Auth::user()->type != 'admin' && Auth::user()->type != 'developer') {
-            HTML::set_error(lang('common.msg.developer_only'));
-            return Redirect::to_route('get_home_page');
-        }
-    }
-});
 
 Route::filter('is_admin', function()
 {
