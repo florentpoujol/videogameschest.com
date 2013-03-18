@@ -51,9 +51,7 @@ return array(
         ),
 
 
-        'menu' => array(
-            'add_developer' => 'Add a developer',
-            'edit_developer' => 'Edit a developer',
+        'menu' => array(      
             'add_game' => 'Add a game',
             'edit_game' => 'Edit a game',
             'edit_user_account' => 'Edit your user account',
@@ -216,133 +214,6 @@ return array(
         ),
     ),
 
-// CROSS PROMOTION
-
-    'crosspromotion' => array(
-        'title' => 'Cross-promotion',
-
-        /*'home_text' => 
-        'VGC provides <strong>an evolutive, easy to setup and easy to use cross-promotion solution</strong> for your games. <br>
-        Setup once in your game then update the promoted content  whenever you want online : <br>
-        <br>
-        Make sure the games you want to promote have a profile on VGC, then select them for cross-promotion in your game\'s profile. <br>
-        From your game, just query VGC to get the profiles you selected for cross-promotion in that game. <br>',*/
-
-        'home_text' => 'What\'s the better place to promote your games than ... your games ? <br> For you game developers, VideoGamesChest provides an evolutive solution to easily cross-promote all your games or any profiles on VGC.',
-
-
-        'edit_game_subscribers_help' => 
-        'Select the games you want to promote from this game. <br>
-        Then from the game query the following URL : :url',
-
- 
-
-        'non_activated_text' => 'To activate the cross-promotion service, just check the box below and click on the Update button.',
-        'activated_text' => 'To deactivate the cross-promotion service, just uncheck the box below and click on the Update button.',
-
-        'subsciption_checkbox_label' => 'Activate the cross promotion service for my games.',
-
-        'no_game' => 'Using the cross promotion service starts by <a href=":add_game_link" title="Go the the \'Add game profile\' form">creating a game profile</a>.', 
-
-
-        'what_is_it_title' => 'What\'s cross-promotion ?',
-        'what_is_it' => 
-        '<a href="http://en.wikipedia.org/wiki/Cross-promotion" title="Go the Cross-promotion Wikipedia page">Cross-promotion</a> is a kind of advertising where a product is promoted from within another product. <br>
-        <br>
-        Its two main benefits are that it\'s free since you don\'t have to rent advertising space inside you own game and it\'s <em>a priori</em> well targetted since we can imagine that players of one of your game might be interrested in your other games as well.',
-
-        /*
-        <br>
-        Classic online advertising cost so much that most small to medium sized game studios just can\'t afford it. <br>
-        Cross-promotion is a cheaper alternative that can prove effective if you promote not only your other games but also other developer\'s games. <br>
-        Creating a network of cross-promotion
-
-        if you promote a game made by another developer, tell them, they want to do the same with your game ! 
-         */
-
-        'how_it_works_title' => 'How does it works ?',
-        'how_it_works' => 
-        'You can <a href=":update_game_link" title="Update your game profiles">select profiles to promote</a> for each of your games under the tab "Cross-promotion" in the game\'s edit page. <br>
-        <br>
-        Then from within your game, you just have to query an URL to get the list of the profiles you selected in the first step. <br>
-        <br>
-        Once you properly setted up the system in your game you can just update the promoted games from your game profile on VGC without the need to update/patch your actual game.',
-
-        
-
-
-        'editgame' => array(
-            'non_subscribers_msg' => 'To easily promote other profiles from within this game <a href=":link">you need to activate</a> the cross-promotion service first.',
-            
-            'select_text' => 'Select below the profiles you want to promote from this game :',
-
-            'link_text' => 'To get the profiles you selected above from your game, you need to query the following url : <br>
-            <a href=":url">:url</a> <br>
-            <br>
-            It returns a JSON object with two top-level keys ("developers" and "games") which value is an array of objects. Each of those objects represent a profile. <br>
-            In case of errors, the object wil just contain one top-level key "errors" which contains an array of strings.
-            ',
-        ),
-
-
-
-        'msg' => array(
-            'activation_success' => 'You successfully activated the cross-promotion for your games.',
-            'deactivation_success' => 'You successfully deactivated the cross-promotion for your games.',
-            'update_profiles_success' => "The promoted profiles for your game ':game_name' have successfully been updated.",
-        ),
-    ),
-
-// DEVELOPER 
-
-    'developer' => array(
-        
-        'name_help' => 'Company name, if applicable.',
-        'email' => 'Contact email',
-
-        'pitch' => 'Explain about the developer\'s phylosophy, goals...',
-
-        'technologies_help' => 'The technologies the developer works with :',
-        'operatingsystems_help' => 'The operating systems the developer\'s games run on (not applicable for most consoles) :',
-        'devices_help' => 'The devices the developer\'s games are playable on :',
-        'stores_help' => 'The stores the developer sells their games on :',
-       
-        'add' => array(
-            'title' => 'Add a developer profile',
-
-            'required_field' => 'The developer\'s name and email are required fields.',
-            'submit' => 'Add this developer profile',
-
-            'success' => 'Thanks you, the developer has successfully been added, an email will be send to let them now. \n 
-          They must first check the data then make their account public before you can add one of their game.',
-        ),
-
-        'edit' => array(
-            'title' => 'Edit a developer',
-            'submit' => 'Edit this developer',
-            'select_profile_placeholder' => 'Name or id',
-            'select_profile_help' => 'Select the developer to edit',
-        ),
-
-        'profile' => array(
-            'title' => 'Developer',
-            'website' => 'Go to the developer\'s website',
-            'no_game' => 'This developer has no game yet',
-        ),
-
-        'msg' => array(
-            'creation_success' => "The developer profile with name ':name' (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
-            'update_success' => "The developer profile with name ':name' (id : :id) has successfully been updated.",
-
-            'select_editdev_id_not_found' => "No developer with id ':id' was found.",
-            'select_editdev_name_not_found' => "No developer with name ':name' was found.",
-
-            'profile_not_found' => "No developer profile with id ':id' was found.",
-
-            'editdev_nametaken' => "Can't rename the developer profile with name ':name' (id : :id) because the name ':newname' is already taken.",
-        ),
-
-    ),
 
 // DISCOVER
 
@@ -583,13 +454,7 @@ return array(
 
         'editdev_nametaken' => 'Can\'t rename the developer profile with name \":name\" (id : :id) because the name \":newname\" is already taken.',
         'editgame_nametaken' => 'Can\'t rename the game profile with name \":name\" (id : :id) because the name \":newname" is already taken.',
-        
-        
-        
-
-        
-        
-
+  
         'can_not_edit_others_games' => "You are not allowed to edit other developer's games.",
         'game_profile_not_found' => "Can't find the game profile with id ':profile_id'.",
 
@@ -612,11 +477,8 @@ return array(
     'menu' => array(
         'home' => 'Home',
         
-        
         'about' => 'About',
 
-
-        'adddeveloper' => 'Add a developer',
         'addgame' => 'Create a game',
         'logout' => 'Log Out',
         'languages' => 'Languages',
@@ -634,50 +496,6 @@ return array(
         'or' => 'or',
 
         'register' => 'Register',
-    ),
-
-// PARTICIPATE
-
-    'participate' => array(
-        'title' => 'Participate',
-
-        'home_text' => 'VideoGamesChest is a <strong>participative</strong> database where everyone can create a profile for their favorite <strong>game</strong>, <strong>developer</strong>, <strong>game creation tool</strong> and user-created <strong>map/level and mod</strong> (tool, map and mod are coming soon) with <strong>no discrimination</strong> on the platform, the price, the release date, or any criteria actually. <br>
-        <br> 
-        Attention has been put to showcase the content in the most advantageous way with beautiful and comprehensive profiles.',
-
-        'text' => "<strong>VideoGamesChest is the place to share your love for video games.</strong> <br>
-        <br>
-        No game, no developer, no tool is too small, too old, too bizarre, or <em>too something</em> not to be worth talking about. If it's video game-related then VGC has room for it.<br>
-        You can currently create profiles for <strong>games</strong> and <strong>developers</strong> and will soon be able to do so for game creation tools, user-created maps and levels as well as mods. <br>
-        <br>
-        All you need to begin spreading the love is a user account and the will to share what matters to you.",
-
-        'report_text' => "Creating profiles is not the only way to contribute to make this site a great place for video games. <br>
-        <br>
-        The accuracy and truthfulness of the information displayed by the profiles is very important. That's why you will find a form at the bottom of each profiles to issue reports. <br>
-        It's a simple ways to get in touch with the profile's creator or the VGC's team about something that needs attention. It can be anything from a simple broken link to real issues that needs immediate attention as inappropriate content. <br>
-        <br>
-        Whenever you created at least one profile, you have access to a page to consult the reports issued to any of your profiles.
-        ",
-
-        'ownership_title' => "Ownership",
-        'ownership_text' => "Anyone can create profiles on VideoGamesChest, that means that you may create profiles for games and things that you didn't created or you are not related to. <br>
-        But in that case, be advised that you way loose control over those profiles whenever someone actually related to them ask for it. <br>
-        No drama or karma loss involved, you just loose the ability to edit the profile and see its reports. <br>
-        <br>
-        If you are a fan and can't wait to see the profile of your favorite game, tool or developer on VideoGamesChest we would suggest as a good pratice that you reach out for the developer first to let them know about VGC and basically ask permission to create their profile if they are not ready to do so themselves. <br>
-        <br>
-        If you are related to a profile (your are part of the developer/publisher team) and want to gain control over it, you just need to register a user account and contact us from a official email address (ie : whatever@companyname.com) or social media account.
-        ",
-
-
-        'register' => 'Go register now !',
-    ),
-
-// PRESS
-
-    'press' => array(
-        'title' => 'Press',
     ),
 
 // PROFILE
@@ -700,8 +518,6 @@ return array(
         ),
 
 
-
-
         'msg' => array(
             'creation_success' => "The :profile_type profile with name ':name' (id=:id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
             
@@ -719,48 +535,6 @@ return array(
 // PROMOTE
 
     'promote' => array(
-        /*'explanation' => '
-        <p class="advertising-explanation">
-        You developed the game of your dream but you can count your followers on one hand and the press never gets back to you ? <br>
-        Maybe it\'s time to try something new. Something you even may not have tought about. <br>
-        Instead of waiting for the others to promote yourself and spread the word about your game, why don\'t you take the initiative with some advertising. <br>
-        <br>
-        <blockquote> <i class="icon-quote-left muted"></i>
-            But ads annoys everyone and it\'s way too expensive !. 
-        <i class="icon-quote-right muted"></i> </blockquote>
-        <br>
-        That\'s were we come in ! Advertising throught VGC is neither annoying for the visitors, neither expensive for you. And by <em>not expensive</em>, we actually means <strong>free</strong>. <br>
-        VGC provides you with a range of services that helps you get in contact with players .
-        </p>
-        ',*/
-
-        /*'text' => "Having set up your profile is already another chance for players (and search engine bots) to find you but it's just the beginning. <br>
-        But don't stay passive, reach out to players, especially to <strong>those who want to hear from you</strong>.<br>
-        <br>
-        Advertising is a completely valid way to promote your product, but we concide that it's usually poorly executed as well as inefficient or just unaffordable. <br>
-        Instead, at VideoGamesChest we believe we can <strong>make advertising non-intrusive, relevant and inexpensive</strong>. <br>
-        <br>
-        That's why we offers various promotion/advertising services (more coming soon) that are build to on those tree qualities so that it really benefits both the players and the developers.
-        ",*/
-
-        /*
-        If players spend all those time reading video games news websites, that's because they want to find games worth of their time and money. <br>
-        You can help them with that, and without 
-
-        
-        Advertising is a completely valid way to make people know about your product.
-        Advertising is just so badly used than porly used  it lead to situation where it's at the same time intrusive and irrelevant for the  as well as expensive for the advertiser (you)
-
-         */
-        
-
-        /*'discover_text' => "Players interested in discovering new games <a href=\":discover_url\" title=\"Go to the Discover page\">can subscribe</a> to a promotion feed or newsletter whose purpose is to advertise them with the profiles from VGC they are interested in.<br>
-        <br>
-        You can give a chance to any of your profile to appear in these feed or newsletter by checking the appropriate box in your profile's edit page, under the <em>Promote</em> tab. <br>
-        <br>
-        A profile will be displayed in a feed entry or an email only if it is randomly selected among the profiles that matches the search and based on the number of profiles the user requested to display. <br>
-        That means that your profiles may not be displayed often, but every time it does, you can be pretty certain that the player will click on your link since he wanted to be advertised with your kind of profile and your link coexist only with few other.
-        ",*/
 
         'suggest_title' => 'Suggest a profile',
         'suggest_text' => 'Suggest a profile to add to VGC by entering its url in the field below.',
@@ -995,37 +769,6 @@ return array(
         
     ),
 
-// TOOL
-
-    'tool' => array(
-        //'developer_name_help' => 'OR if the developer profile does not yet exist on VGC, you can just',
-        //'dev_not_in_list_link' => 'enter its name and website URL below :',
-        'add_game_relationship_help' => 'Add the games that have been built with your tool below :',
-        
-
-        
-        'pitch' => 'Pitch what the tool does, what are its features...',
-        
-
-
-        'profile_form_tool_works_on_os_pane_title' => 'Tool works on OS',
-        'profile_form_scriptinglanguages_pane_title' => 'Script languages',
-        'profile_form_operatingsystems_pane_title' => 'Game runs on OS',
-        'profile_form_devices_pane_title' => 'Game plays on devices',
-
-
-        'add_title' => 'Add a tool profile',
-        'edit_title' => 'Edit a tool',
-        
-        'add' => array(
-            'title' => 'Add a tool profile',
-        ),
-
-        'edit' => array(
-            'title' => 'Edit a tool',
-        ),
-
-    ),
 
 // USER
 
@@ -1206,25 +949,6 @@ return array(
         'xblig' => 'xBox Live Indie Games',
     ),
 
-// SOCIAL NETWORKS
-
-    'socialnetworks' => array(
-        'title' => 'Social Networks',
-        'short_title' => 'Social',
-
-        'desura' => 'Desura',
-        'facebook' => 'Facebook',
-        'pinterest' => 'Pinterest',
-        'reddit' => 'Reddit',
-        'steam' => 'Steam',
-        'twitter' => 'Twitter',
-        'googleplus' => 'Google+',
-        'indiedb' => 'Indie DB',
-        'slidedb' => 'Slide DB',
-        'linkedin' => 'Linked In',
-        'moddb' => 'Mod DB',
-    ),
-
 // Nb PLAYERS
 
     'nbplayers' => array(
@@ -1240,21 +964,6 @@ return array(
         'mmo_help' => 'Massively Multiplayer Online',
     ),
 
-// DEVELOPEMENT STATES
-
-    'developmentstates' => array(
-        'title' => 'Developement state',
-
-        'concept' => 'Concept/Design',
-        'prototype' => 'Prototype',
-        'alpha' => 'Alpha',
-        'beta' => 'Beta',
-        // 'earlyproduction' => '3 - Early production',
-        // 'firstgameplay' => '4 - First gameplay',
-        // 'publicplayablebuilt' => '5 - Public playable built',
-        'released' => 'Released',
-        // 'canceled' => 'Canceled',
-    ),
 
 // LOOKS
 
@@ -1351,37 +1060,6 @@ return array(
         'horror' => 'Horror',
         'mafia' => 'Mafia',
         'steampunk' => 'Steampunk',
-    ),
-
-// TOOL_WORKS_ON_os
-
-    'tool_works_on_os' => array(
-        'title' => 'Works on OS',
-        'tool_help' => 'The operating systems the tool runs on.',
-
-        'browser' => 'Browser',
-        'linux' => 'Linux',
-        'mac' => 'Mac OS',
-        'windowsdesktop' => 'Windows desktop',
-        'windowsdesktop_help' => 'Any Windows but Windows 8 Metro and Windows Phone',
-        'windows8' => 'Windows 8 Metro',
-    ),
-
-// SCRIPTING LANGUAGES
-
-    'scriptinglanguages' => array(
-        'title' => 'Script languages',
-        'tool_help' => 'The scripting languages that can be used with the tool.',
-
-        'lua' => 'Lua',
-        'csharp' => 'C#',
-        'javascript' => 'JavaScript',
-        'boo' => 'Boo',
-        'unityscript' => 'UnityScript',
-        'actionscript' => 'ActionScript',
-        'java' => 'Java',
-        'c' => 'C/C++',
-        'haxe' => 'Haxe',
     ),
 
 );
