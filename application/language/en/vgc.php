@@ -214,7 +214,6 @@ return array(
         ),
     ),
 
-
 // DISCOVER
 
     'discover' => array(
@@ -625,17 +624,15 @@ return array(
         ),
     ),
 
-// REVIEWS
+// REVIEW
 
-    'reviews' => array(
-        'title' => 'Reviews',
-        'submission_title' => 'Submission Review',
-        'publishing_title' => 'Publishing Review',
+    'review' => array(
+        'title' => 'Review',
+        
         'game_title' => 'Games',
-        'developer_title' => 'Developers',
 
-        'no_review' => 'No profile in :review review.',
-        'rss_feed' => 'RSS feed for new profiles in :review review.',
+        'no_profile_in_review' => 'No profile in review.',
+        'rss_feed' => 'RSS feed for new profiles in review.',
 
         'table' => array(
             'approve' => 'Approve',

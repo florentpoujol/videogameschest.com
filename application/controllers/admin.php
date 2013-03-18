@@ -27,7 +27,7 @@ class Admin_Controller extends Base_Controller
             'password_confirmation' => 'required|min:5|required_with:password',
 
             //'captcha' => 'required|coolcaptcha',
-            'recaptcha_response_field' => 'required|recaptcha:'.Config::get('vgc.recaptcha_private_key'),
+            // 'recaptcha_response_field' => 'required|recaptcha:'.Config::get('vgc.recaptcha_private_key'),
             'city' => 'honeypot',
         );
 
@@ -41,27 +41,6 @@ class Admin_Controller extends Base_Controller
         return Redirect::to_route('get_register_page')->with_errors($validation)->with_input();
     }
 
-    public function get_register_confirmation($user_id, $url_key) 
-    {
-        $user = User::where_id($user_id)->where_url_key($url_key)->where_activated(0)->first();
-
-        if (is_null($user)) {
-            $msg = lang('register.msg.confirmation_error', array(
-                'id' => $user_id,
-                'url_key' => $url_key,
-            ));
-
-            HTML::set_error($msg);
-            Log::write('user activation confirmation error', $msg);
-
-            return Redirect::to_route('get_home_page');
-        }
-
-        // if user is found
-        $user->activate();
-
-        return Redirect::to_route('get_login_page');
-    }
 
     //----------------------------------------------------------------------------------
     // LOGIN
@@ -77,7 +56,7 @@ class Admin_Controller extends Base_Controller
             "username" => "required|alpha_dash_extended|min:2",
             "password" => "required|min:5",
             //'captcha' => 'required|coolcaptcha',
-            //'recaptcha_response_field' => 'required|recaptcha:'.Config::get('vgc.recaptcha_private_key'),
+            // 'recaptcha_response_field' => 'required|recaptcha:'.Config::get('vgc.recaptcha_private_key'),
             'city' => 'honeypot',
         );
 
@@ -157,7 +136,7 @@ class Admin_Controller extends Base_Controller
         $rules = array(
             'lost_password_username' => 'required|min:5',
             'city' => 'honeypot',
-            'recaptcha_response_field' => 'required|recaptcha:'.Config::get('vgc.recaptcha_private_key'),
+            // 'recaptcha_response_field' => 'required|recaptcha:'.Config::get('vgc.recaptcha_private_key'),
             //'lost_password_captcha' => 'required|coolcaptcha',
         );
         
@@ -461,112 +440,7 @@ class Admin_Controller extends Base_Controller
     }
 
 
-    /**
-     * Update a list of profile id stored for a many to many relationship
-     */
-    public function post_profile_many_relationship_update() 
-    {
-        $input = Input::all();
-        $updated_profile_type = $input['updated_profile_type'];
-        $updated_profile = $updated_profile_type::find($input['updated_profile_id']);
-        $rel_profile_type = $input['relationship_profile_type'];
-
-        if ($updated_profile === null) {
-            HTML::set_error(lang('profile.msg.profile_not_found', array(
-                'profile_type' => $updated_profile_type,
-                'field_name' =>'id',
-                'field_value' => $input['updated_profile_id'],
-            )));
-
-            Log::write('profile '.$updated_profile_type.' relationship update', "User '".user()->name."' (id='".user_id()."') failed to update the many relation ship for unknow '".$input['updated_profile_type']."' profile with id '".$input['updated_profile_id']."'.");
-            
-            return Redirect::back()->with_input();
-        }
-
-        // adding profiles in the blacklist
-        if (isset($input['add'])) {
-            $names = explode(',', $input['name']);
-            $new_rel_profile_ids = array(); 
-            
-            foreach ($names as $name) {
-                $name = trim($name);
-                $rel_profile = null;
-
-                if (is_numeric($name)) {
-                    $rel_profile = $rel_profile_type::where_id($name)->first('id');
-                } elseif (is_string($name)) {
-                    $rel_profile = $rel_profile_type::where_name($name)->first('id');
-                } 
-
-                if ($rel_profile !== null) {
-                    $new_rel_profile_ids[] = $rel_profile->id;
-                }
-            }
-
-            $profiles_in_relationship = $updated_profile->{$rel_profile_type.'s'};
-            $original_count = count($profiles_in_relationship);
-
-            
-            for ($i = 0; $i < count($new_rel_profile_ids); $i++) {
-                $rel_profile_already_in_relashionship = false;
-
-                foreach ($profiles_in_relationship as $rel_profile) {
-                    if ($rel_profile->id == $new_rel_profile_ids[$i]) {
-                        $rel_profile_already_in_relashionship = true;
-                    }
-                }
-
-                
-                if ( ! $rel_profile_already_in_relashionship) {
-                    $updated_profile->{$rel_profile_type.'s'}()->attach($new_rel_profile_ids[$i]);
-                }
-            }
-            
-            // number of profiles actually added
-            $count = count($updated_profile->{$rel_profile_type.'s'}()->get()) - $original_count;
-
-            HTML::set_success(lang('profile.msg.many_relationship_add_success', array(
-                'count' => $count,
-                'rel_profile_type' => $rel_profile_type,
-                'updated_profile_type' => $updated_profile_type,
-                'name' => $updated_profile->name,
-                'id' => $updated_profile->id,
-            )));
-
-            Log::write('profile '.$updated_profile_type.' relationship add success',
-            "User '".user()->name."' (id=".user_id().") added $count $rel_profile_type profiles in the relationship with $updated_profile_type profile '".$updated_profile->name."' (id=".$updated_profile->id.").");
-
-        } elseif (isset($input['delete']) && isset($input['ids_to_delete'])) {
-            $ids_to_delete = $input['ids_to_delete'];
-
-            $profiles_in_relationship = $updated_profile->{$rel_profile_type.'s'};
-            
-            foreach ($profiles_in_relationship as $rel_profile) {
-                if (in_array($rel_profile->id, $ids_to_delete)) {
-                    
-                    $rel_profile->pivot->delete(); // delete the entry in the pivot table
-                }
-            }
-            
-
-            // number of profiles actually added
-            $count = count($profiles_in_relationship) - count($updated_profile->{$rel_profile_type.'s'}()->get());
-
-            HTML::set_success(lang('profile.msg.many_relationship_delete_success', array(
-                'count' => $count,
-                'rel_profile_type' => $rel_profile_type,
-                'updated_profile_type' => $updated_profile_type,
-                'name' => $updated_profile->name,
-                'id' => $updated_profile->id,
-            )));
-
-            Log::write('profile '.$updated_profile_type.' relationship delete success',
-            "User '".user()->name."' (id=".user_id().") deleted $count $rel_profile_type profiles from the relationship with $updated_profile_type profile '".$updated_profile->name."' (id=".$updated_profile->id.").");
-        }
-
-        return Redirect::to_route('get_profile_update', array($updated_profile_type, $updated_profile->id));
-    }
-
+    
     public function get_profile_preview($profile_type, $profile_id)
     {
         $profile = $profile_type::find($profile_id);
@@ -594,27 +468,20 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // REVIEWS
 
-    public function get_reviews($review = null)
+    public function get_review($review = null)
     {
         if ( ! is_admin()) {
-            HTML::set_error(lang('messages.user_not_trusted'));
-            return Redirect::to_route('get_admin_home');
+            HTML::set_error(lang('common.msg.admin_only'));
+            return Redirect::to_route('get_home_page');
         }
 
-        /*$review_types = Config::get('vgc.review.types');
-
-        if ( ! in_array($review, $review_types)) {
-            return Redirect::to_route('get_reviews', array(head($review_types)));
-        }*/
-        $review = 'publishing';
-        // return View::make('admin.reviews')->with();
-        $this->layout->nest('page_content', 'logged_in/reviews', array('review' => $review));
+        $this->layout->nest('page_content', 'logged_in/review');
     }
 
-    public function post_reviews()
+    public function post_review()
     {
         if ( ! is_admin()) {
-            HTML::set_error(lang('messages.user_not_trusted'));
+            HTML::set_error(lang('common.msg.admin_only'));
             return Redirect::to_route('get_home_page');
         }
 
@@ -631,10 +498,10 @@ class Admin_Controller extends Base_Controller
         }
 
         if ($num > 0) {
-            HTML::set_success(lang('reviews.msg.profiles_approved', array('num' => $num)));
+            HTML::set_success(lang('review.msg.profiles_approved', array('num' => $num)));
 
             Log::write('admin success review '.$input['review_type'],
-            user()->type." '".user()->name."' (id='".user_id()."') has approved $num profiles in ".$input['review_type']." review.");
+            user()->type." '".user()->name."' (id='".user_id()."') has approved $num profiles in review.");
         }
         
         return Redirect::back();
@@ -646,7 +513,6 @@ class Admin_Controller extends Base_Controller
 
     public function get_reports($report = null)
     {
-        $reports = array('developer', 'admin');
 
         if ( ! in_array($report, $reports) || (! is_admin() && $report != 'developer')) {
             return Redirect::to_route('get_reports', array('developer'));

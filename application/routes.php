@@ -116,13 +116,8 @@ $layout = View::of('layout');
 
 
     // RSS FEEDS
-    Route::get('reports/feed/(developer|admin)/(:num)/(:any)', array('as' => 'get_reports_feed', 'uses' => 'feed@reports_feed'));
-    
-
-
-    // PROMOTE
-    Route::get('promote', array('as' => 'get_promote_page', 'uses' => 'promotion@index'));
-    
+    Route::get('reports/feed/(:num)/(:any)', array('as' => 'get_reports_feed', 'uses' => 'feed@reports_feed'));
+        
 
     // BLOG
     Route::get('blog', array('as' => 'get_blog_page', function() use ($layout)
@@ -145,8 +140,6 @@ $layout = View::of('layout');
         } else {
             $post = BlogPost::where_title_url($post_title_url)->first();
         }
-
-
 
         return $layout->nest('page_content', 'blog', array('display_posts' => array($post)));
     }));
@@ -277,8 +270,8 @@ $layout = View::of('layout');
     Route::group(array('before' => 'auth|is_admin'), function() use ($layout)
     {
         Route::get('user/create', array('as' => 'get_user_create', 'uses' => 'admin@user_create'));
-        Route::get('reviews', array('as' => 'get_reviews', 'uses' => 'admin@reviews'));
-        Route::get('reviews/feed/(:num)/(:any)', array('as' => 'get_reviews_feed', 'uses' => 'feed@reviews_feed'));
+        Route::get('review', array('as' => 'get_review', 'uses' => 'admin@review'));
+        Route::get('review/feed/(:num)/(:any)', array('as' => 'get_review_feed', 'uses' => 'feed@review_feed'));
 
         Route::get('testadmincontroller/(:num)', array('as' => 'get_testadmin_controller', 'uses' => 'discover@FeedData'));
         Route::get('test/(:all?)', function($searches = null) use ($layout)
