@@ -527,11 +527,10 @@ class Admin_Controller extends Base_Controller
 
         $rules = array(
             'message' => 'required|min:10',
-            
         );
 
         if (is_guest()) {
-            $rules['recaptcha_response_field'] = 'required|recaptcha:'.Config::get('vgc.recaptcha_private_key');
+            //$rules['recaptcha_response_field'] = 'required|recaptcha:'.Config::get('vgc.recaptcha_private_key');
             $rules['city'] = 'honeypot';
         }
 

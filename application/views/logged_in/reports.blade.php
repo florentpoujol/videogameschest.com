@@ -1,41 +1,21 @@
 @section('page_title')
-    {{ lang('reports.title') }}
+    {{ lang('vgc.reports..title') }}
 @endsection
 
 <div class="reports">
-    <h1>{{ lang('reports.title') }}</h1>
+    <h1>{{ lang('vgc.reports..title') }}</h1>
 
     <hr>
 
-    <?php
-    $tabs = array(array(
-        'url' => route('get_reports', array('developer')),
-        'label' => lang('reports.dev_title'),
-    ));
-
-    if (is_admin()) {
-        $tabs[] = array(
-            'url' => route('get_reports', array('admin')),
-            'label' => lang('reports.admin_title'),
-        );
-    }
-    ?>
-
-    {{ Navigation::tabs($tabs) }}
-
     <p>
-        @if (is_admin())
-            <a href="{{ route('get_reports_feed', array($report_type, user_id(), user()->url_key)) }}" title="{{ lang('reports.rss_feed') }}">{{ icon('rss') }} {{ lang('reports.rss_feed') }}</a>
-        @else
-            <a href="{{ route('get_reports_feed', array('developer', user_id(), user()->url_key)) }}" title="{{ lang('reports.rss_feed') }}">{{ icon('rss') }} {{ lang('reports.rss_feed') }}</a>
-        @endif
+        <a href="{{ route('get_reports_feed', array(user_id(), user()->url_key)) }}" title="{{ lang('vgc.reports..rss_feed') }}">{{ icon('rss') }} {{ lang('vgc.reports..rss_feed') }}</a>
     </p>
 
     <?php  
     $reports = array();
     
     if (is_admin()) {
-        $reports = Report::where_type($report_type)->order_by('created_at', 'desc')->get();
+        $reports = Report::order_by('created_at', 'desc')->get();
     } else {
         $reports = user()->reports('developer');
     }
@@ -49,9 +29,9 @@
                 <thead>
                     <tr>
                         <th>{{ lang('common.date') }}</th>
-                        <th>{{ lang('reports.table.profile') }}</th>
-                        <th>{{ lang('reports.table.message') }}</th>
-                        <th>{{ Former::warning_submit(lang('reports.table.delete')) }}</th>
+                        <th>{{ lang('vgc.reports..table.profile') }}</th>
+                        <th>{{ lang('vgc.reports..table.message') }}</th>
+                        <th>{{ Former::warning_submit(lang('vgc.reports..table.delete')) }}</th>
                     </tr>
                 </thead>
 
@@ -66,7 +46,7 @@
                         </td>
 
                         <td>
-                            <a href="{{ route('get_profile_view', array($profile_name, name_to_url($profile_name))) }}">{{ $profile_name }}</a> ({{ $profile_type }})
+                            <a href="{{ route('get_profile_view', array($profile_name, name_to_url($profile_name))) }}">{{ $profile_name }}</a>
                         </td>
 
                         <td class="span5">
@@ -81,6 +61,6 @@
             </table>
         </form>
     @else
-        {{ lang('reports.no_report') }}
+        {{ lang('vgc.reports..no_report') }}
     @endif
 </div> <!-- /#reports -->
