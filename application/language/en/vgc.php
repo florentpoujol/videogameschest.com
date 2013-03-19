@@ -485,6 +485,10 @@ return array(
 
         'pitch_help' => '',
 
+        'more_infos' => "More infos",
+        "more_links" => "More links",
+        'more_medias' => "More medias",
+
 
         'msg' => array(
             'creation_success' => "The :profile_type profile with name ':name' (id=:id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
