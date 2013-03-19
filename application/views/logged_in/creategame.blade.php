@@ -46,7 +46,6 @@ if (is_admin()) {
                 {{ Former::url('developer_url', lang('vgc.common.developer_url'))->placeholder(lang('vgc.common.url')) }}
             </div>
 
-
             <div class="span4">
                 <?php
                 $countries = array_merge(
@@ -113,14 +112,14 @@ if (is_admin()) {
                 <div class="tab-content">
                     <?php
                     $nu_text = array('links', 'screenshots', 'videos');
-                    foreach ($nu_text as $fields):
-                        if (isset($old[$fields])) $values = clean_names_urls_array($old[$fields]);
+                    foreach ($nu_text as $field):
+                        if (isset($old[$field])) $values = clean_names_urls_array($old[$field]);
                         else $values = array();
                     ?>
-                        <div class="tab-pane" id="{{ $fields }}">
+                        <div class="tab-pane" id="{{ $field }}">
                             <p>
-                                @if ($fields == 'links')
-                                    {{ lang('vgc.links.form_help') }} <br>
+                                @if ($field == 'links')
+                                    {{ lang('vgc.links.form_help') }} <br> <br>
                                 @endif
                                 {{ lang('vgc.common.text_url_delete_help') }}
 
@@ -132,8 +131,8 @@ if (is_admin()) {
                                     $name = isset($values['names'][$i]) ? $values['names'][$i] : '';
                                     $url = isset($values['urls'][$i]) ? $values['urls'][$i] : '';
                                     ?>
-                                    {{ Former::text($fields.'[names][]', '')->value($name)->placeholder(lang('vgc.common.title')) }} 
-                                    {{ Former::url($fields.'[urls][]', '')->value($url)->placeholder(lang('vgc.common.url')) }}
+                                    {{ Former::text($field.'[names][]', '')->value($name)->placeholder(lang('vgc.common.title')) }} 
+                                    {{ Former::url($field.'[urls][]', '')->value($url)->placeholder(lang('vgc.common.url')) }}
                                 </div>
                             @endfor
                         </div> <!-- /.tab-pane -->

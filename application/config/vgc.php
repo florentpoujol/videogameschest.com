@@ -27,7 +27,7 @@ return array(
   
     // field that needs an admin review before their update is approved
     'profile_fields_to_review' => array(
-        'common' => array('name', 'price', 'release_date', 'links', 'screenshots', 'videos', ),
+        'common' => array('name', 'developer_name', 'developer_url', 'pitch', 'links', 'screenshots', 'videos', ),
     ),
 
 

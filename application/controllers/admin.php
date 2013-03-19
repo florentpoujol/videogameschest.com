@@ -144,7 +144,6 @@ class Admin_Controller extends Base_Controller
         return Redirect::to_route('get_login_page')->with_errors($validation)->with_input();
     }
 
-
     public function get_lostpassword_confirmation($user_id, $url_key)
     {
         $user = User::where_id($user_id)->where_url_key($url_key)->where_activated(1)->first();
@@ -382,7 +381,7 @@ class Admin_Controller extends Base_Controller
     {
         $input = Input::all();
 
-        if (is_not_admin()) {
+        if ( ! is_admin()) {
             // check that $input['id'] is one of the user's game profiles
             $forged = true;
             foreach (user()->{$profile_type} as $profile) {
