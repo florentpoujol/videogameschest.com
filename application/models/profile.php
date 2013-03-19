@@ -21,15 +21,8 @@ class Profile extends ExtendedEloquent
     //----------------------------------------------------------------------------------
     // CRUD METHODS
 
-    /**
-     * Create a new profile
-     * @param  array $old_input Data comming from the form
-     * @return Profile       The Profile instance
-     */
     public static function create($input) 
     {
-        $input = clean_form_input($input);
-
         $create_preview_version = true;
         if (isset($input['create_preview_version'])) {
             if ($input['create_preview_version'] == false) $create_preview_version = false;
@@ -38,9 +31,6 @@ class Profile extends ExtendedEloquent
 
         if ( ! isset($input['user_id'])) $input['user_id'] = user_id();
         if ( ! isset($input['privacy'])) $input['privacy'] = 'private';
-
-        $input['in_promotion_feed'] = 1;
-        $input['in_promotion_newsletter'] = 1;
 
         $profile = parent::create($input);
         
@@ -55,14 +45,16 @@ class Profile extends ExtendedEloquent
         Log::write('profile '.$profile->type.' create success', "User '".user()->name."' (id=".user_id().") has created a ".$profile->type." profile with name='".$profile->name."' and id='".$profile->id."'.");
         
         // email
-        $subject = lang('emails.profile_created.subject');
-        $html = lang('emails.profile_created.html', array(
-            'user_name' => $profile->user->name,
-            'profile_type' => $profile->type,
-            'profile_name' => $profile->name,
-        ));
+        if ( ! is_admin()) {
+            $subject = lang('emails.profile_created.subject');
+            $html = lang('emails.profile_created.html', array(
+                'user_name' => $profile->user->name,
+                'profile_type' => $profile->type,
+                'profile_name' => $profile->name,
+            ));
 
-        sendMail($profile->user->email, $subject, $html);
+            sendMail($profile->user->email, $subject, $html);
+        }
 
         // preview version
         if ($create_preview_version) {
@@ -74,15 +66,8 @@ class Profile extends ExtendedEloquent
         return $profile;
     }
 
-    /**
-     * Update a developer profile
-     * @param  int $id     The dev's id
-     * @param  array $input The dev's data
-     * @return Developer   The updated dev instance
-     */
     public static function update($id, $input)
     {
-        $input = clean_form_input($input);
         $profile = parent::find($id);
 
         $preview_data = static::strip_preview_data_from_input($input, $profile->type);
@@ -92,7 +77,6 @@ class Profile extends ExtendedEloquent
 
         $preview_profile = $profile->preview_profile;
         PreviewProfile::update($preview_profile->id, array(
-            'privacy' => 'publishing',
             'data' => $preview_data
         ));
 
@@ -125,11 +109,6 @@ class Profile extends ExtendedEloquent
         }
     }
 
-    /**
-     * Update $input at the same time
-     * @param  [type] $input [description]
-     * @return [type]        [description]
-     */
     protected static function strip_preview_data_from_input(&$input, $profile_type)
     {
         $preview_data = array();
@@ -148,12 +127,13 @@ class Profile extends ExtendedEloquent
         return $preview_data;
     }
 
+
     //----------------------------------------------------------------------------------
-    // REVIEWS
+    // REVIEW
 
     /**
      * Do stuffs when a profile passed a review
-     * Called from admin@post_reviews
+     * Called from admin@post_review
      */
     public function passed_review()
     {
@@ -165,21 +145,20 @@ class Profile extends ExtendedEloquent
         $this->save();
 
         $preview_profile = $this->preview_profile;
-        $review = $preview_profile->privacy;
 
         $preview_profile->data = array();
         $preview_profile->privacy = '';
         $preview_profile->save();
 
         $profile_type = $this->type;
-        Log::write($profile_type.' success review', $profile_type.' profile passed the '.$review.' review.');
+        Log::write($profile_type.' success review', $profile_type.' profile passed the review.');
 
         if ($send_email) {
             // email's text :
             // it explain that the profile has passed the review and what can they do with it
             $subject = lang('emails.profile_passed_publishing_review.subject');
             
-            $html = lang('emails.profile_passed_'.$review.'_review.html', array(
+            $html = lang('emails.profile_passed_review.html', array(
                 'user_name' => $this->user->name,
                 'profile_type' => $profile_type,
                 'profile_name' => $this->name,
@@ -194,38 +173,14 @@ class Profile extends ExtendedEloquent
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
 
-    public function users()
-    {
-        return $this->has_many_and_belongs_to('User');
-    }
-
     public function user()
     {
         return $this->belongs_to('User', 'user_id');
     }
 
-    public function creator()
+    public function reports()
     {
-        return $this->belongs_to('User', 'creator_id');
-    }
-
-    /*public function user()
-    {
-        return $this->creator();
-    }*/
-
-
-    /**
-     * Get all reports of the specified type linked to this profile
-     * @param  string $type The report type
-     * @return array       An array of reports
-     */
-    public function reports($report_type = null)
-    {
-        $foreign_key = $this->type.'_id';
-        
-        if (is_null($report_type)) return $this->has_many('Report', $foreign_key);
-        else return $this->has_many('Report', $foreign_key)->where_type($report_type)->get();
+        return $this->has_many('Report', $this->type.'_id');
     }
 
     public function preview_profile()
@@ -233,43 +188,4 @@ class Profile extends ExtendedEloquent
         return $preview_profile = $this->has_one("PreviewProfile");
     }
 
-
-    //----------------------------------------------------------------------------------
-    // CROSS PROMOTION
-
-    /**
-     * Sanitize the model to return an array with only relevant data for crosspromotion
-     * @return array The model, sanitized and as array
-     */
-    public function to_crosspromotion_array()
-    {
-        $profile = $this->attributes;
-        $allowed_fields = Config::get('vgc.crosspromotion_'.$this->class_name.'_allowed_fields');
-
-        foreach ($profile as $field => $value) {
-            if ( ! in_array($field, $allowed_fields)) unset($profile[$field]);
-        }
-
-        if ($this->class_name == 'game') $profile['developer_name'] = $this->developer_name;
-
-        $profile['pitch_html'] = $this->get_parsed_pitch();
-        $profile['url'] = route('get_profile_view', array($thi->type, name_to_url($this->name)));
-
-        //
-        $class_name = $this->class_name;
-        foreach ($profile as $field => $value) {
-            if (in_array($field, $class_name::$json_fields)) $profile[$field] = json_decode($value, true);
-        }
-        
-        return $profile;
-    }
-
-
-    //----------------------------------------------------------------------------------
-    // GETTERS
-
-    public function get_parsed_pitch() 
-    {
-        return Sparkdown\Markdown($this->pitch);
-    }
 }
