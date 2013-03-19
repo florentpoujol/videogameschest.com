@@ -11,5 +11,13 @@
 
     <hr>
 
-    <a href="{{ route('get_lostpassword_page') }}">{{ lang('login.lost_password') }}</a>
+    <a class="accordion-toggle" data-toggle="collapse" href="#lostpassword">
+        {{ lang('login.lost_password') }}
+    </a> 
+    
+    <div id="lostpassword" class="collapse">
+    	<br>
+        @include('forms/lostpassword')
+    </div>
+
 </div> <!-- /#login -->

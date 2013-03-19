@@ -25,12 +25,8 @@ class Admin_Controller extends Base_Controller
             'email' => 'required|min:5|email|unique:users',
             'password' => 'required|min:5|confirmed',
             'password_confirmation' => 'required|min:5|required_with:password',
-
-            //'captcha' => 'required|coolcaptcha',
-            // 'recaptcha_response_field' => 'required|recaptcha:'.Config::get('vgc.recaptcha_private_key'),
             'city' => 'honeypot',
         );
-
         $validation = Validator::make($input, $rules);
         
         if ($validation->passes()) {
@@ -124,11 +120,6 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // LOST PASSWORD
 
-    public function get_lostpassword_page() 
-    {
-        $this->layout->nest('page_content', 'lostpassword');
-    }
-
     public function post_lostpassword()
     {
         $input = Input::all();
@@ -136,10 +127,7 @@ class Admin_Controller extends Base_Controller
         $rules = array(
             'lost_password_username' => 'required|min:5',
             'city' => 'honeypot',
-            // 'recaptcha_response_field' => 'required|recaptcha:'.Config::get('vgc.recaptcha_private_key'),
-            //'lost_password_captcha' => 'required|coolcaptcha',
         );
-        
         $validation = Validator::make($input, $rules);
         
         if ($validation->passes()) {
@@ -162,7 +150,7 @@ class Admin_Controller extends Base_Controller
             }
         }
             
-        return Redirect::to_route('get_lostpassword_page')->with_errors($validation)->with_input();
+        return Redirect::to_route('get_login_page')->with_errors($validation)->with_input();
     }
 
 

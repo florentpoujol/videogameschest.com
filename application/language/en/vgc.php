@@ -585,8 +585,8 @@ return array(
 
         'username' => 'Choose your user name',
 
-        'why_register_title' => 'Why registering ?',
 
+        'why_register_title' => 'Why registering ?',
         'why_register_help' => 'As a user, you benefits from your blacklist that allows you to narrow the results of a search even more. <br>
         <br>
         If you are a game developper, it alows you to add and control yourself the profiles for your games.',

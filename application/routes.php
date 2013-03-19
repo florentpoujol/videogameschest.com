@@ -193,7 +193,6 @@ $layout = View::of('layout');
     Route::group(array('before' => 'is_guest'), function()
     {
         Route::get('login', array('as' => 'get_login_page', 'uses' => 'admin@login_page'));
-        Route::get('lostpassword', array('as' => 'get_lostpassword_page', 'uses' => 'admin@lostpassword_page'));
         Route::get('register', array('as' => 'get_register_page', 'uses' => 'admin@register_page'));
         Route::get('user/lostpassword/(:num)/(:any)', array('as' => 'get_lostpassword_confirmation', 'uses' => 'admin@lostpassword_confirmation'));
     });
