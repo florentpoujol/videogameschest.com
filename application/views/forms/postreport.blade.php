@@ -7,7 +7,7 @@ if ( ! isset($modal)) $modal = false;
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     @endif
 
-    <!-- <h3>{{ lang('reports.form_title') }}</h3> -->
+    <!-- <h3>{{ lang('vgc.reports.form_title') }}</h3> -->
 
     @if ($modal)
         </div> <!-- /.modal-header -->
@@ -21,22 +21,20 @@ if ( ! isset($modal)) $modal = false;
         {{ Former::hidden($profile->class_name.'_id', $profile->id) }}
 
         <p>
-            {{ lang('reports.help') }}
+            {{ lang('vgc.reports.help') }}
         </p>
         
-        {{ Former::textarea('message', '')->placeholder(lang('reports.message'))->rows(2)->value(Input::old('message'))->class('span4') }}
+        {{ Former::textarea('message', '')->placeholder(lang('vgc.reports.message'))->rows(2)->value(Input::old('message'))->class('span4') }}
         
         {{ antiBot() }} 
         
-
     @if ($modal)
         </div> <!-- /.modal-body -->
         <div class="modal-footer">
     @endif
-    
-        <input type="submit" value="{{ lang('reports.submit_dev') }}" class="btn btn-primary left-align"> 
-        <input type="submit" name="admin" value="{{ lang('reports.submit_admin') }}" class="btn btn-danger btn-small">
-    </form>
+        
+        {{ Former::submit(lang('vgc.common.submit')) }}
+    {{ Former::close() }}
     
     @if ($modal)
         </div> <!-- /.modal-footer -->

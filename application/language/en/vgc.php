@@ -574,8 +574,7 @@ return array(
         'title' => 'Reports',
         'form_title' => 'Report this profile',
 
-        'help' => 'You may report a profile to the developer in case of typos or broken links. <br>
-        But you may only report a profile to the administrators in case of offensive/inappropriate content.',
+        'help' => 'What\'s wrong with this profile ?',
 
         'message' => 'Your message',
         'submit_dev' => 'Send to the developer',
