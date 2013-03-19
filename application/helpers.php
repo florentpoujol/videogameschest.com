@@ -2,27 +2,17 @@
 
 function antiBot($text_name = 'captcha')
 {
-    $html = '';
+    $html = '<div id="antibot">';
 
     if (is_guest()) {
         // Recaptcha
         //$html = Recaptcha\Recaptcha::recaptcha_get_html(Config::get('vgc.recaptcha_public_key'));
-        
-        // cool captcha
-        /*$html = Form::text($text_name, '', array(
-            'class' => 'captchainput',
-            'placeholder' => lang('common.insert_captcha'),
-            'required' => true
-        ));
-        $html .= Form::image(CoolCaptcha\Captcha::img(), 'captchaimg', array('class' => 'captchaimg'));
-        $html .= '';
-        return $html;*/
 
         // honeyPot field
-        $html .= Former::text('city', '')->placeholder('The city where do you lives')->id('city_form');
+        $html .= '<div id="honeypot">'.Former::text('city', "Please don't put anything in this field")->placeholder('The city where you lives')->id('city_form').'</div>';
     }
 
-    return $html;
+    return $html.'</div> <!-- /#antibot -->';
 }
 
 
