@@ -217,7 +217,7 @@ $layout = View::of('layout');
 
 
 //----------------------------------------------------------------------------------
-//  MUST BE LOGGED IN
+//  MUST BE LOGGED IN + view profile
 //----------------------------------------------------------------------------------
 
     Route::group(array('before' => 'auth'), function()
@@ -387,7 +387,7 @@ $layout = View::of('layout');
     Route::group(array('before' => 'auth|is_admin|csrf'), function()
     {
         Route::post('user/create', array('as' => 'post_user_create', 'uses' => 'admin@user_create'));
-        Route::post('reviews', array('as' => 'post_reviews', 'uses' => 'admin@reviews'));
+        Route::post('review', array('as' => 'post_review', 'uses' => 'admin@review'));
 
         Route::post('blog/post/create', array('as' => 'post_blog_post_create', function()
         {

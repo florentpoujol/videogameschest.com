@@ -77,7 +77,8 @@ class Profile extends ExtendedEloquent
 
         $preview_profile = $profile->preview_profile;
         PreviewProfile::update($preview_profile->id, array(
-            'data' => $preview_data
+            'data' => $preview_data,
+            'in_review' => 1
         ));
 
         $msg = lang('profile.msg.update_success', array(
@@ -147,7 +148,7 @@ class Profile extends ExtendedEloquent
         $preview_profile = $this->preview_profile;
 
         $preview_profile->data = array();
-        $preview_profile->privacy = '';
+        $preview_profile->in_review = 0;
         $preview_profile->save();
 
         $profile_type = $this->type;

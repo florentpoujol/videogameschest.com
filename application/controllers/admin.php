@@ -475,21 +475,11 @@ class Admin_Controller extends Base_Controller
 
     public function get_review($review = null)
     {
-        if ( ! is_admin()) {
-            HTML::set_error(lang('common.msg.admin_only'));
-            return Redirect::to_route('get_home_page');
-        }
-
         $this->layout->nest('page_content', 'logged_in/review');
     }
 
     public function post_review()
     {
-        if ( ! is_admin()) {
-            HTML::set_error(lang('common.msg.admin_only'));
-            return Redirect::to_route('get_home_page');
-        }
-
         $input = Input::all();
 
         if ( ! isset($input['approved_profiles'])) $input['approved_profiles'] = array();
@@ -505,7 +495,7 @@ class Admin_Controller extends Base_Controller
         if ($num > 0) {
             HTML::set_success(lang('review.msg.profiles_approved', array('num' => $num)));
 
-            Log::write('admin success review '.$input['review_type'],
+            Log::write('admin success review',
             user()->type." '".user()->name."' (id='".user_id()."') has approved $num profiles in review.");
         }
         
