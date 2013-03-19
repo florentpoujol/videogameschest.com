@@ -9,6 +9,9 @@
 ------------------------------------------------------------
 
 - formulaire report,avec un seul bouton
+- ajouter profils à blacklist par url
+- state of preview profile lors de la creation ?
+- voir verif date format (release date)
 
 
 ============================================================

@@ -51,8 +51,6 @@ class Admin_Controller extends Base_Controller
         $rules = array(
             "username" => "required|alpha_dash_extended|min:2",
             "password" => "required|min:5",
-            //'captcha' => 'required|coolcaptcha',
-            // 'recaptcha_response_field' => 'required|recaptcha:'.Config::get('vgc.recaptcha_private_key'),
             'city' => 'honeypot',
         );
 
@@ -69,27 +67,20 @@ class Admin_Controller extends Base_Controller
             $user = User::where($field, '=', $username)->first();
             
             if ($user != null) {
-                if ($user->activated == 1) {
-                    if (Auth::attempt(array('username' => $user->username, 'password' => Input::get('password')))) {
-                        $keep_logged_in = Input::get('keep_logged_in', '0');
+                if (Auth::attempt(array('username' => $user->username, 'password' => Input::get('password')))) {
+                    $keep_logged_in = Input::get('keep_logged_in', '0');
 
-                        if ($keep_logged_in == '1') {
-                            Cookie::put('user_logged_in', $user->id, 43200); //43200 min = 1 month
-                        }
-
-                        HTML::set_success(lang('login.msg.login_success', array(
-                            'username' => $user->username
-                        )));
-                        Log::write('user login', 'User '.$user->username.' (id='.$user->id.') has logged in');
-                        return Redirect::to_route('get_home_page');
-                    } else {
-                        HTML::set_error(lang('login.msg.wrong_password', array(
-                            'field' => $field,
-                            'username' => $username
-                        )));
+                    if ($keep_logged_in == '1') {
+                        Cookie::put('user_logged_in', $user->id, 43200); //43200 min = 1 month
                     }
+
+                    HTML::set_success(lang('login.msg.login_success', array(
+                        'username' => $user->username
+                    )));
+                    Log::write('user login', 'User '.$user->username.' (id='.$user->id.') has logged in');
+                    return Redirect::to_route('get_home_page');
                 } else {
-                    HTML::set_error(lang('login.msg.not_activated', array(
+                    HTML::set_error(lang('login.msg.wrong_password', array(
                         'field' => $field,
                         'username' => $username
                     )));
@@ -417,6 +408,8 @@ class Admin_Controller extends Base_Controller
     }
 
 
+    //----------------------------------------------------------------------------------
+    // VIEW PROFILE
     
     public function get_profile_preview($profile_type, $profile_id)
     {
@@ -438,6 +431,42 @@ class Admin_Controller extends Base_Controller
         } else {
             HTML::set_error(lang('common.msg.access_not_allowed'));
             return Redirect::to_route('get_home_page');
+        }
+    }
+
+    public function get_profile_view($profile_type, $name = null)
+    {        
+        if ($name == 'create') {
+            return $this->get_profile_create($profile_type);
+        }
+
+        if (is_numeric($name)) {
+            $profile = $profile_type::find($name);
+            return Redirect::to_route('get_profile_view', array($profile_type, name_to_url($profile->name)));
+        }
+
+        $profile = $profile_type::where_name(url_to_name($name))->first();
+
+        if (is_null($profile)) {
+            $field_name = 'name';
+            if (is_numeric($name)) $field_name = 'id';
+
+            HTML::set_error(lang('profile.msg.profile_not_found', array(
+                'type' => $profile_type,
+                'field_name' => $field_name,
+                'field_value' => $name
+            )));
+
+            return Redirect::to_route('get_search_page');
+        }
+
+        if ($profile->privacy == 'public' || is_admin() || $profile->user_id == user_id()) {
+            $this->layout
+            ->with('profile', $profile)
+            ->nest('page_content', $profile_type, array('profile' => $profile));
+        } else {
+            HTML::set_error(lang('common.msg.access_not_allowed', array('page' => $profile_type.' profile '.$name)));
+            return Redirect::to_route('get_search_page');
         }
     }
 

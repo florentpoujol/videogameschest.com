@@ -2,16 +2,16 @@
     <div id="above-menu">
         <div class="pull-right">
             @if (is_guest())
-                <a href="{{ route('get_register_page') }}">{{ lang('menu.register') }}</a> 
-                {{ lang('menu.or') }} 
-                <a href="{{ route('get_login_page') }}" id="login-popover">{{ lang('menu.login.title') }}</a> 
+                <a href="{{ route('get_register_page') }}">{{ lang('vgc.menu.register') }}</a> 
+                {{ lang('vgc.menu.or') }} 
+                <a href="{{ route('get_login_page') }}" id="login-popover">{{ lang('vgc.menu.login.title') }}</a> 
             @else
-                {{ lang('admin.home.hello') }} {{ user()->username }}
+                {{ lang('vgc.admin.home.hello') }} {{ user()->username }}
             @endif
         </div>
 
         <div>
-            <a href="{{ route('get_blog_page') }}">{{ lang('blog.title') }}</a> 
+            <a href="{{ route('get_blog_page') }}">{{ lang('vgc.blog.title') }}</a> 
         </div>
     </div>
 
@@ -38,11 +38,10 @@
                 }
                 ?>
                 
-
-                <li{{ $home }}><a href="{{ route('get_home_page') }}">{{ lang('menu.home') }}</a></li>
-                <li{{ $search }}><a href="{{ route('get_search_page') }}">{{ lang('search.title') }}</a></li>
-                <li{{ $browse }}><a href="{{ route('get_browse_page') }}">{{ lang('browse.title') }}</a></li>
-                <li{{ $discover }}><a href="{{ route('get_discover_page') }}">{{ lang('discover.title') }}</a></li>
+                <li{{ $home }}><a href="{{ route('get_home_page') }}">{{ lang('vgc.menu.home') }}</a></li>
+                <li{{ $search }}><a href="{{ route('get_search_page') }}">{{ lang('vgc.search.title') }}</a></li>
+                <li{{ $browse }}><a href="{{ route('get_browse_page') }}">{{ lang('vgc.browse.title') }}</a></li>
+                <li{{ $discover }}><a href="{{ route('get_discover_page') }}">{{ lang('vgc.discover.title') }}</a></li>
                 
                 <!-- /general menu --> 
 
@@ -55,11 +54,11 @@
                         </a>
                         <ul class="dropdown-menu">
                             @if (is_admin())
-                                <li><a href="{{ route('get_blog_post_create') }}">{{ lang('blog.write_post') }}</a></li>
+                                <li><a href="{{ route('get_blog_post_create') }}">{{ lang('vgc.blog.write_post') }}</a></li>
                                 <li class="divider"></li>
                             @endif
 
-                            <li><a href="{{ route('get_user_update') }}">{{ icon('edit') }} {{ lang('admin.menu.edit_user_account') }}</a></li>
+                            <li><a href="{{ route('get_user_update') }}">{{ icon('edit') }} {{ lang('vgc.admin.menu.edit_user_account') }}</a></li>
                             <li class="divider"></li>
                             
                             <!-- add and edit profiles links -->
@@ -73,14 +72,14 @@
 
 
                             @if (is_admin())
-                                <li><a href="{{ route('get_reviews') }}">{{ lang('reviews.title') }}</a></li>
+                                <li><a href="{{ route('get_review') }}">{{ lang('vgc.review.title') }}</a></li>
                             @endif
                             @if ( ! empty(user()->devs) || ! empty(user()->games) || is_admin())
-                                <li><a href="{{ route('get_reports') }}">{{ icon('list-alt') }} {{ lang('reports.title') }}</a></li>
+                                <li><a href="{{ route('get_reports') }}">{{ icon('list-alt') }} {{ lang('vgc.reports.title') }}</a></li>
                                 <li class="divider"></li>
                             @endif
                             
-                            <li><a href="{{ route('get_logout') }}">{{ icon('off') }} {{ lang('menu.logout') }}</a></li>
+                            <li><a href="{{ route('get_logout') }}">{{ icon('off') }} {{ lang('vgc.menu.logout') }}</a></li>
                         </ul>
                     </li> <!-- /Admin menu -->                      
                 @endif <!-- /if logged in -->

@@ -19,7 +19,7 @@ return array(
 
     'form_attributes_to_clean' => array('csrf_token', 'password_confirmation',
      'old_password', 'controller', 'captcha', 'recaptcha_challenge_field', 'recaptcha_response_field',
-      'city'),
+      'city', 'create_preview_version'),
 
 
     'language_files' => array('vgc', 'emails'),
@@ -35,17 +35,9 @@ return array(
     'profiles_post_create_rules' => array(
         'game' => array(
             'name' => 'required|alpha_dash_extended|min:2|unique:games',
-            'developer_name' => 'required|alpha_dash_extended|min:2',
+            'developer_name' => 'alpha_dash_extended|min:2',
             'developer_url' => 'url',
-            'publisher_name' => 'min:2',
-            'publisher_url' => 'url',
-            'website' => 'url',
-            'blogfeed' => 'url',
-            'presskit' => 'url',
-
-            'profile_background' => 'url',
-            'cover' => 'url',
-            'soundtrack' => 'url',
+            'price' => 'integer|min:0',
         ),
     ),
 
@@ -53,18 +45,11 @@ return array(
     'profiles_post_update_rules' => array(
         'game' => array(
             'name' => 'required|alpha_dash_extended|min:2',
-            'developer_name' => 'required|alpha_dash_extended|min:2',
+            'developer_name' => 'alpha_dash_extended|min:2',
             'developer_url' => 'url',
-            'publisher_name' => 'min:2',
-            'publisher_url' => 'url',
-            'website' => 'url',
-            'blogfeed' => 'url',
-            'presskit' => 'url',
-
-            'profile_background' => 'url',
-            'cover' => 'url',
-            'soundtrack' => 'url',
+            'price' => 'integer|min:0',
         ),
+
     ),
 
 

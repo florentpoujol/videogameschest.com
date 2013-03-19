@@ -119,6 +119,10 @@ $layout = View::of('layout');
     Route::get('reports/feed/(:num)/(:any)', array('as' => 'get_reports_feed', 'uses' => 'feed@reports_feed'));
         
 
+    //VIEW PROFILE
+    // see after must be logged in
+    
+
     // BLOG
     Route::get('blog', array('as' => 'get_blog_page', function() use ($layout)
     {
@@ -239,6 +243,8 @@ $layout = View::of('layout');
         Route::get('reports/(:any?)', array('as' => 'get_reports', 'uses' => 'admin@reports'));
     });
 
+    //VIEW PROFILE
+    Route::get(get_profile_types(true).'/(:any)', array('as' => 'get_profile_view', 'uses' => 'admin@profile_view'));
 
 
 //----------------------------------------------------------------------------------

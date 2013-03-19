@@ -7,18 +7,14 @@ class PreviewProfile extends ExtendedEloquent
     //----------------------------------------------------------------------------------
     // CRUD METHODS
 
-    /**
-     * Create a new profile
-     * @param  object $profile The profile object
-     * @return 
-     */
     public static function create($profile) 
     {
         $input = array(
             'type' => $profile->type,
-            'privacy' => 'publishing',
             $profile->type.'_id' => $profile->id,
-            'data' => array(),
+            'data' => array(), 
+            // the preview profile is left empty during the creation because the real profile is private
+            // therer is no need for the preview profile at this time
         );
 
         return parent::create($input);

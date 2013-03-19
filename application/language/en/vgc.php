@@ -130,6 +130,7 @@ return array(
 
         'languages' => 'Languages',
         'learn_more' => 'Learn more',
+        'links' => 'Links',
         'logo' => 'Logo',
 
         'markdown_help' => 'You may style your pitch with <a href="http://daringfireball.net/projects/markdown/syntax" title="Go to the Markdown documentation">Markdown</a>.',
@@ -326,38 +327,13 @@ return array(
 // GAME 
 
     'game' => array(
-        'developer_name_help' => 'OR if the developer profile does not yet exist on VGC, you can just',
-        'dev_not_in_list_link' => 'enter its name and website URL below :',
-
-        'cover' => 'Box cover or icon',
-        'devstate' => 'Developement state',
-
-        'pitch' => 'Game pitch, story, features...',
-
-        'press_help' => "How and where the press talk about the game.",
-        'publishername' => 'Publisher name',
-        'publisherurl' => 'Publisher\'s website',
-
-        'soundtrackurl' => 'Soundtrack',
-        'soundtrack_help' => 'If the soundtrack is hosted on Bandcamp and you want the player to be displayed on the profile, you need to fill the field below with the player url instead of the standard url. <br>
-        <br>
-        When you are on the album page, click "Share/Embed" > "Embed this track" then get the content of the "src" attribute of the iframe tag. This is the player url which should looks like : <br> http://bandcamp.com/EmbeddedPlayer/v=2/album=519219781/... <br>
-        <br>
-        Same story for SoundCloud, to display the player on the profile, fill the field below with the API url. <br>
-        Click the "Share" button, the API url is the url in the Wordpress shortcode. <br>
-        It looks like : http://api.soundcloud.com/playlists/1738337 <br>
-        <br>
-        ',
-
-        'soundtrack_alert' => '<strong>DO NOT put a direct link</strong> to a soundtrack that is not meant to be downloaded or listened for free. <br>
-        IE : it\'s <strong>NOT OK</strong> to link to a rip of the soundtrack on Youtube on a random channel.',
-
-
         
-        'releasedate' => 'Release date',
-
-        'developer_name_help' => 'If the developer has a profile on VGC, its name should appear below the field as you type it. 
-        If that\'s the case, a link to the developer\'s profile will be done from the game\'s profile instead of using the URL below.',
+        'pitch' => 'The game in a few sentenses :',
+        'price' => 'Price',
+        
+        'release_date' => 'Release date',
+        'release_date_help' => 'day/month/year',
+        'country' => 'Developer\'s nationality',
 
 
         'add' => array(
@@ -374,12 +350,7 @@ return array(
 
         'profile' => array(
             'title' => 'Game',
-            'website' => 'Go to the game\'s website',
-            'blogfeed' => 'Lastest articles from the blog',
-            'soundtrack' => 'Get the soundtrack',
             'screenshots_help' => 'Click on them to view in full size',
-
-            'get_this_game_from' => 'Get this game from :store_name',
         ),
 
 
@@ -408,6 +379,13 @@ return array(
 
         'site_slogan' => 'The place to hunt down for the treasures of video games',
         'sub_slogan' => 'VideoGamesChest seek to improve the visibility of games and game-related content and people with innovative solutions :',
+    ),
+
+// LINKS
+
+    'links' => array(
+        'title' => 'Links',
+        'form_help' => 'The first link is used as the "main" link, probably the one the visitor will follow, so be sure it\'s one that matters',
     ),
 
 // LOGIN
@@ -502,20 +480,10 @@ return array(
 
     'profile' => array(
 
-        'meta_description' => 'Meta Description',
-        'meta_keywords' => 'Meta Keywords',
-        'meta_keywords_help' => 'Keywords separated by comas.',
-
-        'press_help' => "How and where the press talk about the :type.",
-        'profile_select' => 'Select the :type to edit',
-        'profile_select_placeholder' => 'Name or id',
-
         'update_help' => 'Every text fields needs to be reviewed by an administrator everytimes you update them. The modification of those fields will not be visible by everyone before they are reviewed. <br>
         You can preview how the profile looks with the modifications by clicking on the "Preview modifications" link above. You still need to save the modifications by validating the form with the "Update" button before they become visible.',
 
-        'many_relationship_list' => array(
-
-        ),
+        'pitch_help' => '',
 
 
         'msg' => array(

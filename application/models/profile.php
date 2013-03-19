@@ -24,8 +24,8 @@ class Profile extends ExtendedEloquent
     public static function create($input) 
     {
         $create_preview_version = true;
-        if (isset($input['create_preview_version'])) {
-            if ($input['create_preview_version'] == false) $create_preview_version = false;
+        if (isset($input['create_preview_version']) && $input['create_preview_version'] == false) {
+            $create_preview_version = false;
             unset($input['create_preview_version']);
         }
 

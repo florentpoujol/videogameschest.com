@@ -158,14 +158,13 @@ function get_language()
 
 function get_profile_types($regex_style = false)
 {
-    return "(game)";
-    /*$profile_types = Config::get('vgc.profile_types', array());
-
+    $profile_types = Config::get('vgc.profile_types', array());
+    
     if ($regex_style) {
         $profile_types = '('.implode('|', $profile_types).')';
     }
 
-    return $profile_types;*/
+    return $profile_types;
 }
 
 /**
