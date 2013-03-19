@@ -65,6 +65,7 @@ return array(
 
         'help' => 'The blacklist is a list of profiles that you are not interested in. It\'s another level of filtering available to registered users who can remove the profiles in the blacklist from the browsed profiles or the discovery feed or newsletter.',
 
+
         'msg' => array(
             'delete_success' => ':num :type profiles have successfully been deleted from your blacklist.',
             'add_success' => ':num :type profiles have successfully been added to your blacklist.',
@@ -583,6 +584,12 @@ return array(
         'title' => 'Create a user account',
 
         'username' => 'Choose your user name',
+
+        'why_register_title' => 'Why registering ?',
+
+        'why_register_help' => 'As a user, you benefits from your blacklist that allows you to narrow the results of a search even more. <br>
+        <br>
+        If you are a game developper, it alows you to add and control yourself the profiles for your games.',
 
         'msg' => array(
             // 'register_success' => 'Thank you :username, your user account has been created. An email has been sent to your email adress with a link to activate your account. You will be able to login as soon as to activated your account.',
