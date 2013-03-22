@@ -88,7 +88,7 @@ return array(
         'form_text_field' => 'The search ID',
         'form_submit' => 'Browse this search',
 
-        'no_search_id_help' => 'Tell us what to browse by passing one or several <strong>search ID(s)</strong> in the field below.',
+        'no_search_id_help' => 'Tell us what to browse by passing a <strong>search ID(s)</strong> in the field below.',
 
         'submit_discover' => 'You may also <input type="submit" name="discover" class="btn btn-primary" value="Discover this search"> via Rss feed or email.'
     ),
@@ -373,9 +373,8 @@ return array(
     'home' => array(
         'title' => 'Video Games Chest',
         'subtitle' => '',
-        
-        'catchphrase' => "Treasure chest for some, Pandora's box for others, VideoGamesChest is about finding the <em>games</em>, <em>developers</em>, <em>custom levels</em>, <em>mods</em> and <em>game creation tools</em> that <strong>you are really interested about</strong>. <br>
-        <div class='pull-right'>No more random looting, <strong>we have the tools for you to get just what matters</strong> to you.</div>",
+
+        'catchphrase' =>  'Find the games that really matters to you.',
 
         'site_slogan' => 'The place to hunt down for the treasures of video games',
         'sub_slogan' => 'VideoGamesChest seek to improve the visibility of games and game-related content and people with innovative solutions :',
