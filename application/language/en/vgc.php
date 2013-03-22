@@ -583,7 +583,7 @@ return array(
 
         'no_report' => 'No report to display',
         'rss_feed' => 'RSS feed for your reports.',
-        
+
         'table' => array(
             'profile' => 'Profile',
             'message' => 'Message',
@@ -738,6 +738,16 @@ return array(
         
     ),
 
+// SUGGEST
+
+    'suggest' => array(
+        'form_help' => 'do something',
+        'menu_link' => 'Suggest a game',
+
+        'msg' => array(
+            'create_success' => 'Thank you for suggesting a game !',
+        ),
+    ),
 
 // USER
 

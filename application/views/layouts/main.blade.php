@@ -39,6 +39,7 @@ if ( ! isset($preview_profile)) $preview_profile = false;
         {{ HTML::style('css/font-awesome/font-awesome-ie7.min.css') }}
         <![endif]-->
         {{ HTML::style('css/vgc/main.less', array('rel'=>'stylesheet/less')) }}
+        {{ Asset::container('colorbox')->styles() }}
         @yield('cssfiles')
         <!-- /CSS -->
 
@@ -88,6 +89,7 @@ if ( ! isset($preview_profile)) $preview_profile = false;
         @endif
         {{ HTML::script('js/less.js') }}
         {{ HTML::script('js/bootstrap/bootstrap.min.js') }}
+        {{ Asset::container('colorbox')->scripts() }}
         @yield('jsfiles')
 
         <script>
@@ -95,6 +97,9 @@ if ( ! isset($preview_profile)) $preview_profile = false;
             // common jquery
             $('i[rel=tooltip]').tooltip();
             $('i[rel=popover]').popover();
+
+            // suggest form link in the menu
+            $("#suggest_form_link").colorbox({iframe:true, width:"400px", height:"200px"});
 
             // per page jquery
             @yield('jQuery')

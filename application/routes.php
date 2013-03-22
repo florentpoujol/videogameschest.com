@@ -116,9 +116,9 @@ $layout = View::of('layout');
 
 
     // SUGGEST
-    Route::get('blog', array('as' => 'get_suggest_page', function() use ($layout)
+    Route::get('suggest', array('as' => 'get_suggest_form', function() use ($layout)
     {
-        return $layout->nest('page_content', 'blog');
+        return View::make('forms/suggest');
     }));
 
 
@@ -174,7 +174,7 @@ $layout = View::of('layout');
     {
         Route::post('reports/create', array('as' => 'post_reports_create', 'uses' => 'admin@reports_create'));
 
-        Route::post('search', array('as' => 'post_search', 'before' => 'csrf', function()
+        Route::post('search', array('as' => 'post_search', function()
         {
             $input = Input::all();
 
@@ -191,7 +191,7 @@ $layout = View::of('layout');
             return Redirect::to_route('get_'.$action.'_page', array($search->id));
         }));
 
-        Route::post('browse', array('as' => 'post_browse', 'before' => 'csrf', function()
+        Route::post('browse', array('as' => 'post_browse', function()
         {
             return Redirect::to_route('get_browse_page', array(Input::get('search_id')));
         }));
@@ -200,6 +200,24 @@ $layout = View::of('layout');
         Route::post('discover/feed/create', array('as' => 'post_discover_feed_create', 'uses' => 'discover@feed_create'));
         Route::post('discover/newsletter/create', array('as' => 'post_discover_newsletter_create', 'uses' => 'discover@newsletter_create'));
         Route::post('discover/newsletter/update', array('as' => 'post_discover_newsletter_update', 'uses' => 'discover@newsletter_update'));
+
+        // Suggest
+        Route::post('suggest', array('as' => 'post_suggest', function()
+        {
+            
+            $validation = Validator::make(Input::all(), array('url' => 'required|url'));
+
+            if ($validation->passes()) {
+                $input = array(
+                    'url' => Input::get('url'),
+                    'source' => 'user',
+                );
+                
+                SuggestedProfile::create($input);
+            }
+
+            return Redirect::back()->with_input()->with_errors($validation);
+        }));
     });
 
 

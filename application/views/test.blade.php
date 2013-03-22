@@ -3,19 +3,14 @@
 /*
 report form via colorbox
 
-<a href="#" id="link">link</a>
-$("#link").colorbox({href:"{{ route('get_report_form', array($profile->id)) }}" });
+<a href="http://the link" id="theid">link</a>
+$("#theid").colorbox({iframe:true, width:"400px", height:"200px"});
  */
 
 ?>
 
 
-@section('cssfiles')
-   {{ Asset::container('colorbox')->styles() }}
-@endsection 
-@section('jsfiles')
-   {{ Asset::container('colorbox')->scripts() }}
-@endsection 
+
 
 @section('jQuery')
     
