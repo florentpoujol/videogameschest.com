@@ -264,7 +264,7 @@ class User extends ExtendedEloquent
 
         $reports = array();
         foreach ($profiles as $profile) {
-            $reports = array_merge($reports, $profile->reports());
+            $reports = array_merge($reports, $profile->reports);
         }
 
         // $reports are ordered by game_id then report_id

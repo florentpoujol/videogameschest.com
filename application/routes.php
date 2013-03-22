@@ -222,25 +222,19 @@ $layout = View::of('layout');
 
     Route::group(array('before' => 'auth'), function()
     {
-        //admin routes
-        Route::get('admin', array('as' => 'get_admin_home', 'uses' => 'admin@index'));
-
         Route::get('user', function()
         {
             return Redirect::to_route('get_user_update');
         });
+        Route::get('user/update/(:num?)', array('as' => 'get_user_update', 'uses' => 'admin@user_update'));
 
         Route::get('logout', array('as' => 'get_logout', 'uses' => 'admin@logout'));
-
-        Route::get('user/update/(:num?)', array('as' => 'get_user_update', 'uses' => 'admin@user_update'));
         
         Route::get(get_profile_types(true).'/create', array('as' => 'get_profile_create', 'uses' => 'admin@profile_create'));
         Route::get(get_profile_types(true).'/update/(:num?)', array('as' => 'get_profile_update', 'uses' => 'admin@profile_update'));
         Route::get(get_profile_types(true).'/preview/(:num)', array('as' => 'get_profile_preview', 'uses' => 'admin@profile_preview'));
-        // I could also use
-        // Route::get('(add|edit)developer', 'admin@(:1)developer');
 
-        Route::get('reports/(:any?)', array('as' => 'get_reports', 'uses' => 'admin@reports'));
+        Route::get('reports', array('as' => 'get_reports', 'uses' => 'admin@reports'));
     });
 
     //VIEW PROFILE

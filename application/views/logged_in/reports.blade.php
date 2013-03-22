@@ -17,7 +17,7 @@
     if (is_admin()) {
         $reports = Report::order_by('created_at', 'desc')->get();
     } else {
-        $reports = user()->reports('developer');
+        $reports = user()->reports();
     }
     ?>
 
@@ -46,7 +46,7 @@
                         </td>
 
                         <td>
-                            <a href="{{ route('get_profile_view', array($profile_name, name_to_url($profile_name))) }}">{{ $profile_name }}</a>
+                            <a href="{{ route('get_profile_view', array($profile_type, name_to_url($profile_name))) }}">{{ $profile_name }}</a>
                         </td>
 
                         <td class="span5">

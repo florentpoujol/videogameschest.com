@@ -181,12 +181,12 @@ class Profile extends ExtendedEloquent
 
     public function reports()
     {
-        return $this->has_many('Report', $this->type.'_id');
+        return $this->has_many('Report', 'profile_id')->where_profile_type($this->type);
     }
 
     public function preview_profile()
     {
-        return $preview_profile = $this->has_one("PreviewProfile");
+        return $this->has_one("PreviewProfile");
     }
 
 }

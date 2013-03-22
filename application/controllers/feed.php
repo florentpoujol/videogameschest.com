@@ -38,7 +38,7 @@ class Feed_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
 
 
-    public function get_reports_feed($report_type, $user_id, $url_key)
+    public function get_reports_feed($user_id, $url_key)
     {
         $feed_type = 'rss';
         $user = User::where_id($user_id)->where_url_key($url_key)->first();
@@ -46,18 +46,14 @@ class Feed_Controller extends Base_Controller
         
         if ( ! is_null($user)) {
             if ($user->type == 'admin') {
-                if ( ! is_null($report_type)) {
-                    $reports = Report::where_type($report_type)->order_by('created_at', 'desc')->get();
-                } else {
-                    $reports = Report::order_by('created_at', 'desc')->get();
-                }
+                $reports = Report::order_by('created_at', 'desc')->get();
             } else {
-                $reports = $user->reports('developer');
+                $reports = $user->reports();
             }
 
             $feed = $this->getFeed()
                 ->title('Report feed for user '.$user->username)
-                ->permalink(route('get_reports_feed', array($feed_type, $report_type, $user_id, $url_key)));
+                ->permalink(route('get_reports_feed', array($user_id, $url_key)));
 
             foreach ($reports as $report) {
                 $feed->entry()
@@ -65,7 +61,7 @@ class Feed_Controller extends Base_Controller
                     ->updated($report->updated_at)
                     ->permalink('report id '.$report->id)
 
-                    ->title('New report on '.$report->profile->class_name.' profile "'.$report->profile->name.'"')
+                    ->title('New report on '.$report->profile->type.' profile "'.$report->profile->name.'"')
 
                     ->content()
                         ->add('text', 

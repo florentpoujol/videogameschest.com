@@ -579,18 +579,11 @@ return array(
         'form_title' => 'Report this profile',
 
         'help' => 'What\'s wrong with this profile ?',
-
-        'message' => 'Your message',
-        'submit_dev' => 'Send to the developer',
-        'submit_admin' => 'Send to the administrators',
-
-        'dev_title' => 'Developer reports',
-        'admin_title' => 'Admin reports',
+        'message' => 'At least 10 characters.',
 
         'no_report' => 'No report to display',
-
         'rss_feed' => 'RSS feed for your reports.',
-
+        
         'table' => array(
             'profile' => 'Profile',
             'message' => 'Message',

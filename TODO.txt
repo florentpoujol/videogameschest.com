@@ -8,7 +8,6 @@
     TODO to milestone
 ------------------------------------------------------------
 
-- formulaire report,avec un seul bouton
 - ajouter profils à blacklist par url
 
 - voir verif date format (release date)
@@ -21,4 +20,5 @@
     DONE
 ------------------------------------------------------------
 
+- formulaire report,avec un seul bouton
 

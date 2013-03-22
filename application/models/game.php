@@ -92,5 +92,5 @@ class Game extends Profile
 
     //----------------------------------------------------------------------------------
     // RELATIONSHIPS
-    // user and reports relationships are in Profile model
+    // user, reports and preview_profile relationships are in Profile model
 }

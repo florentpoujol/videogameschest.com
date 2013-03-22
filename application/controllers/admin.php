@@ -506,29 +506,18 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // REPORTS
 
-    public function get_reports($report = null)
+    public function get_reports()
     {
-
-        if ( ! in_array($report, $reports) || (! is_admin() && $report != 'developer')) {
-            return Redirect::to_route('get_reports', array('developer'));
-        }
-
-        $this->layout->nest('page_content', 'logged_in/reports', array('report_type' => $report));
+        $this->layout->nest('page_content', 'logged_in/reports');
     }
 
     public function post_reports_create()
     {
         $input = Input::all();
-
         $rules = array(
             'message' => 'required|min:10',
         );
-
-        if (is_guest()) {
-            //$rules['recaptcha_response_field'] = 'required|recaptcha:'.Config::get('vgc.recaptcha_private_key');
-            $rules['city'] = 'honeypot';
-        }
-
+        if (is_guest()) $rules['city'] = 'honeypot';
         $validation = Validator::make($input, $rules);
 
         if ($validation->passes()) {
@@ -543,13 +532,17 @@ class Admin_Controller extends Base_Controller
     {
         $reports = Input::get('reports', array());
 
-        if (! empty($reports)) {
+        if ( ! empty($reports)) {
+            $count = 0;
             foreach ($reports as $report_id) {
                 Report::find($report_id)->delete();
+                $count++;
             }
             
             HTML::set_success(lang('reports.msg.delete_success'));
+            Log::write('report delete success', "User with name='".user()->name."' and id=".user_id()." deleted $count reports.");
         }
+        
         return Redirect::back();
     }
 
