@@ -12,8 +12,10 @@
 
 - voir verif date format (release date)
 
-
 - voir pour group colobox
+- voir pour colorbox avec html (report)
+
+-
 
 
 ============================================================

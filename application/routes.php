@@ -115,6 +115,13 @@ $layout = View::of('layout');
     Route::get('discover/newsletter/(:num)/(:any)', array('as' => 'get_discover_newsletter_update', 'uses' => 'discover@newsletter_page'));
 
 
+    // SUGGEST
+    Route::get('blog', array('as' => 'get_suggest_page', function() use ($layout)
+    {
+        return $layout->nest('page_content', 'blog');
+    }));
+
+
     // RSS FEEDS
     Route::get('reports/feed/(:num)/(:any)', array('as' => 'get_reports_feed', 'uses' => 'feed@reports_feed'));
         
@@ -122,6 +129,13 @@ $layout = View::of('layout');
     //VIEW PROFILE
     // see after must be logged in
     
+    // REPORT FORM
+    // for use by the colorbox
+    Route::get('postreport/(:num)', array('as' => 'get_report_form', function($profile_id)
+    {
+        return View::make('forms/postreport', array('profile' => Game::find($profile_id)));
+    }));
+
 
     // BLOG
     Route::get('blog', array('as' => 'get_blog_page', function() use ($layout)
@@ -275,9 +289,9 @@ $layout = View::of('layout');
         Route::get('testadmincontroller/(:num)', array('as' => 'get_testadmin_controller', 'uses' => 'discover@FeedData'));
         Route::get('test/(:all?)', function($searches = null) use ($layout)
         {
-            $url = 'http://www.indiedb.com/games/minecraft';
+            /*$url = 'http://www.indiedb.com/games/minecraft';
             $result = Crawler::crawl_game($url);
-            dd($result);
+            dd($result);*/
             // echo '<pre>'.Crawler::crawl_game($url).'</pre>';;
 
             return $layout->nest('page_content', 'test');
