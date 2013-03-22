@@ -153,10 +153,11 @@ function get_assoc_array($array)
 function get_category_name($search_id)
 {
     if (is_guest()) {
-        $names = Cookie::get('vgc_category_names', array());
+        $names = json_decode(Cookie::get('vgc_category_names', '{}'), true);
     } else {
         $names = user()->category_names;
         if ($names != '') $names = json_decode($names, true);
+        else $names = array();
     }
 
     if (isset($names[$search_id])) return $names[$search_id];

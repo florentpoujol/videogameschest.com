@@ -10,32 +10,23 @@ $search_data
 $search_id
 */
 
-$current_profile_type = 'game';
-if (isset($search_data) && isset($search_data['profile_type'])) {
-    $current_profile_type = $search_data['profile_type'];
-}
 ?> 
 
-<div id="search-profiles">
+<div id="search-page">
     <div class="pull-right muted" id="search-icon">
         {{ icon('search') }}
     </div>
 
-    <h1>{{ lang('vgc.search.title') }}
-
-        @if (isset($search_id))
-            <small>{{ $search_id }}</small>
-        @endif
-    </h1>
+    <h1>{{ lang('vgc.search.title') }} <small>{{ lang('vgc.search.subtitle') }}</small></h1>
     
     <hr>
  
     <p>
-        {{ lang('vgc.search.search_page_quick_help') }} <br>
-        <br>
+        {{ lang('vgc.search.search_help') }} <br>
+        <!-- <br>
         <a class="accordion-toggle" data-toggle="collapse" href="#collapse-learn-more">
             {{ icon('circle-arrow-down') }} {{ lang('vgc.search.search_page_indepth_link') }} 
-        </a>
+        </a> -->
     </p> 
 
     <div id="collapse-learn-more" class="collapse">
@@ -45,40 +36,48 @@ if (isset($search_data) && isset($search_data['profile_type'])) {
     <hr>
   
     @if (isset($search_id))
-        
         <div class="pull-right">
             <a href="{{ route('get_search_feed', array($search_id)) }}" title="{{ lang('vgc.search.rss_feed') }}">{{ icon('rss') }} {{ lang('vgc.search.rss_feed') }}</a><br>
         </div>
 
         <p>
-            {{ lang('vgc.search.search_id') }} <strong>{{ $search_id }}</strong> <br>
+            <?php
+            $category_name = get_category_name($search_id);
+
+
+            ?>
+            {{ lang('vgc.search.current_category_id') }} <strong>{{ $search_id }}</strong>
+            
+            {{ Former::open_inline(route('post_category_name'))->rules(array('category_name' => 'required|min:5')) }}
+                {{ Form::token() }}
+                {{ Form::hidden('search_id', $search_id) }}
+
+                @if ($category_name !== null)
+                    You named this category 
+                    {{ Former::text('category_name')->value($category_name) }}
+                    {{ Former::submit(lang('vgc.common.update')) }}
+                @else
+                    {{ Former::text('category_name') }}
+                    {{ Former::submit(lang('vgc.search.submit_give_category_name')) }}
+                @endif
+
+                {{ antiBot() }}
+            {{ Former::close() }}
         </p>
 
         <br>
     @endif
-
+       
+    <?php
+    $old = Input::old();
+    $profile_type = 'game';
+    $current_profile_type = 'game';
+    // form populating in forms.search_profile_common
+    ?> 
     
-    
-    <ul class="nav nav-tabs" id="main-tabs">
-        @foreach (get_profile_types() as $profile_type)
-            <li><a href="#{{ $profile_type }}-pane" data-toggle="tab">{{ lang('common.'.$profile_type) }}</a></li>
-        @endforeach
-    </ul>
-
-    <div class="tab-content">      
-        <?php
-        $old = Input::old();
-        // form populating in forms.search_profile_common
-        ?> 
-        @foreach (get_profile_types() as $profile_type)
-            <div class="tab-pane" id="{{ $profile_type }}-pane">
-                @include('forms.search_profiles_common')
-            </div> <!-- /#{{ $profile_type }}-pane .tab-pane -->
-        @endforeach
-    </div> <!-- /.tab-content -->
+    @include('forms.search_profiles_common')
 </div> <!-- /#search-profiles -->
 
 @section('jQuery')
-$('#main-tabs a[href="#{{ $current_profile_type }}-pane"]').tab('show');
 $('#game-tabs a:first').tab('show');
 @endsection

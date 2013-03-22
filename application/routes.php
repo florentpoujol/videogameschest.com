@@ -191,6 +191,39 @@ $layout = View::of('layout');
             return Redirect::to_route('get_'.$action.'_page', array($search->id));
         }));
 
+        
+        Route::post('post_category_name', array('as' => 'post_category_name', function()
+        {
+            $input = Input::all();
+            $rules = array(
+                'category_name' => 'required|min:5',
+            );
+            $validation = Validator::make($input, $rules);
+
+            if ($validation->passes()) {
+                if (is_guest()) {
+                    $names = json_decode(Cookie::get('vgc_category_names', '{}'), true);
+                    $names[$input['search_id']] = $input['category_name'];
+                    Cookie::put('vgc_category_names', json_encode($names), 999999); // 999999 min = 694.4 days
+                } else {
+                    $names = user()->category_names;
+                    //var_dump($names);
+                    if ($names != '') $names = json_decode($names, true);
+                    else $names = array();
+                    //dd($names);
+                    $names[$input['search_id']] = $input['category_name'];
+                    user()->category_names = json_encode($names);
+                    user()->save();
+                }
+
+                HTML::set_success(lang('vgc.search.msg.update_category_name_success', array('category_id' => $input['search_id'])));
+                return Redirect::back();
+            }
+            
+            return Redirect::back()->with_input()->with_errors($validation);
+        }));
+
+
         Route::post('browse', array('as' => 'post_browse', function()
         {
             return Redirect::to_route('get_browse_page', array(Input::get('search_id')));
