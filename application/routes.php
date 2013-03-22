@@ -63,9 +63,13 @@ $layout = View::of('layout');
 
 
     // SEARCH PROFILE
-    Route::get('search/(:num?)', array('as' => 'get_search_page', function($search_id = null) use ($layout)
+    Route::get('search/(:any?)', array('as' => 'get_search_page', function($search_id = null) use ($layout)
     {
         if ($search_id !== null) {
+            if (is_string($search_id)) {
+                $search_id = get_category_id($search_id);
+            }
+
             $search = Search::get($search_id);
             if ($search !== null) {
                 $profiles = Search::make($search->data)->where_privacy('public')->get();
@@ -86,9 +90,13 @@ $layout = View::of('layout');
     Route::get('search/feed/(:num)', array('as' => 'get_search_feed', 'uses' => 'feed@search_feed'));
 
     // BROWSE
-    Route::get('browse/(:num?)', array('as' => 'get_browse_page', function($search_id = null) use ($layout)
+    Route::get('browse/(:any?)', array('as' => 'get_browse_page', function($search_id = null) use ($layout)
     {
         if ($search_id !== null) {
+            if (is_string($search_id)) {
+                $search_id = get_category_id($search_id);
+            }
+            
             $search = Search::get($search_id);
             if ($search !== null) {
                 $profiles = Search::make($search->data)->where_privacy('public')->get();
@@ -196,7 +204,7 @@ $layout = View::of('layout');
         {
             $input = Input::all();
             $rules = array(
-                'category_name' => 'required|min:5',
+                'category_name' => 'required|min:5|alpha_dash',
             );
             $validation = Validator::make($input, $rules);
 

@@ -164,6 +164,23 @@ function get_category_name($search_id)
     return null;
 }
 
+function get_category_id($name)
+{
+    if (is_guest()) {
+        $names = json_decode(Cookie::get('vgc_category_names', '{}'), true);
+    } else {
+        $names = user()->category_names;
+        if ($names != '') $names = json_decode($names, true);
+        else $names = array();
+    }
+
+    foreach ($names as $id => $_name) {
+        if ($name == $_name) return $id;
+    }
+    
+    return null;
+}
+
 
 function get_language()
 {

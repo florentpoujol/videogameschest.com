@@ -48,7 +48,7 @@ $search_id
             ?>
             {{ lang('vgc.search.current_category_id') }} <strong>{{ $search_id }}</strong>
             
-            {{ Former::open_inline(route('post_category_name'))->rules(array('category_name' => 'required|min:5')) }}
+            {{ Former::open_inline(route('post_category_name'))->rules(array('category_name' => 'required|min:5|alpha_dash')) }}
                 {{ Form::token() }}
                 {{ Form::hidden('search_id', $search_id) }}
 
