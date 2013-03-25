@@ -91,28 +91,19 @@ function clean_form_input($input, $supl_attributes = array())
  * @param assocarray $array
  * @return the cleaned up array
  */
-function clean_names_urls_array($array)
+function clean_names_urls_array($items)
 {
-    if ( ! isset($array['names']) || ! isset($array['urls'])) return $array;
-
-    $max_count = count($array['names']);
-
-    for ($i = 0; $i < $max_count; $i++) {
-        if (
-            (isset($array['names'][$i]) && trim($array['names'][$i]) == '') ||
-            (isset($array['urls'][$i]) && trim($array['urls'][$i]) == '')
-        ) {
-            unset($array['names'][$i]);
-            unset($array['urls'][$i]);
-            $i--; // go back one index since unsetting change the size of the array
+    $new_items = $items;
+    foreach ($items as $index => $item) {
+        if (trim($item['name']) == '' || trim($item['url']) == '') {
+            unset($new_items[$index]);
         }
     }
 
     // rebuilt indexes so that json_encode consider them as array an not as object
-    $array['names'] = array_values($array['names']);
-    $array['urls'] = array_values($array['urls']);
+    $new_items = array_values($new_items);
 
-    return $array;
+    return $new_items;
 }
 
 

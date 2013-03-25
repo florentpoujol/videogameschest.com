@@ -7,8 +7,10 @@ report form via colorbox
 $("#theid").colorbox({iframe:true, width:"400px", height:"200px"});
  */
 
-$profile = Crawler::crawl_game("http://www.indiedb.com/games/minecraft");
-Game::create($profile);
+
+
+// $profile = Crawler::crawl_game("http://www.indiedb.com/games/minecraft");
+// Game::create($profile);
 
 // var_dump(Crawler::get_indiedb_profile_url_from_news('http://www.indiedb.com/news/dev-log-05-damn'));
 
