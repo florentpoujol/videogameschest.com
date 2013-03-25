@@ -9,7 +9,7 @@ class Crawler
     
     public static function crawl($profile_to_crawl)
     {
-        $link = $profile_to_crawl->link;
+        $link = $profile_to_crawl->url;
         $profile_type = $profile_to_crawl->profile_type;
 
         $func_name = "crawl_$profile_type";
@@ -17,10 +17,34 @@ class Crawler
     }
 
 
+    public static function get_indiedb_profile_url_from_news($url) {
+        $game_url = '';
+
+        $html = file_get_html($url);
+        $body = $html->find("body", 0);
+        $sidecolumn = $body->find("div[class=sidecolumn]", 0);
+        $boxes = $sidecolumn->find("div[class=normalbox]");
+
+        foreach ($boxes as $box) {
+            $heading = $box->find("div[class=title] span[class=heading]", 0);
+            
+            if (trim($heading->plaintext) == "Related Games") {
+                $row = $box->find("div[class=row]", 0);
+                $game_url = "http://www.indiedb.com".$row->find('a', 0)->href;
+                break;
+            }
+        }
+
+        return $game_url;
+    }
+
     public static function crawl_game($url)
     {
         // get the type of url
-        $profile = array();
+        $profile = array(
+            'links' => array('IndieDB' => $url),
+            'screenshots' => array(),
+        );
 
         // INDIE DB
         if (strpos($url, 'indiedb.com') !== false) {
@@ -28,21 +52,14 @@ class Crawler
 
             preg_match("#/games/([^/]+)(/.*)?^#i", $url, $name);
             if (isset($name[1]))
-                $profile['name'] = ucfirst($name[1]);
-
-            preg_match("#".static::$patterns['meta_keywords']."#i", $source_code, $keywords);
-            if (isset($keywords[1])) $profile['meta_keywords'] = $keywords[1];
-
-            preg_match("#".static::$patterns['meta_description']."#i", $source_code, $meta_description);
-            if (isset($meta_description[1])) $profile['meta_description'] = $meta_description[1];
-
+                $profile['name'] = ucfirst(url_to_name($name[1]));
 
             // use simple_html_dom_parser
             $html = file_get_html($url);
             $body = $html->find("body", 0);
 
             $description_block = $body->find("div[class=headernormalbox normalbox] div[class=inner] div[class=body]", 0);
-            $profile['prich'] = trim($description_block->plaintext);
+            $profile['pitch'] = trim($description_block->plaintext);
 
             $sidecolumn = $body->find("div[class=sidecolumn]", 0);
             
@@ -63,7 +80,7 @@ class Crawler
                             break;
 
                         case "official page" :
-                            $profile['website'] = $link->href;
+                            $profile['links']['website'] = $link->href;
                             break;
 
                         case "release date":
@@ -98,7 +115,7 @@ class Crawler
                             break;
 
                         case "boxshot" :
-                            $profile["cover"] = $item->find("img", 0)->src;
+                            $profile["screenshots"]["Boxshot"] = $item->find("img", 0)->src;
                             break;
 
                     }
@@ -107,8 +124,10 @@ class Crawler
 
             // twitter
             $box = $sidecolumn->find("#twitterfeed", 0);
-            $item = $box->find("div[class=table] div", 0);
-            $profile['socialnetworks'] = array('names' => array('twitter'), 'urls' => array($item->find("a", 0)->href));
+            if ($box !== null) {
+                $item = $box->find("div[class=table] div", 0);
+                $profile['links']['Twitter'] = $item->find("a", 0)->href;
+            }
         }
 
 

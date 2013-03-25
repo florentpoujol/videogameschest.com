@@ -390,12 +390,12 @@ $layout = View::of('layout');
         }));
 
 
-        Route::get('crawler/auto', array('as' => 'get_crawler_auto', function() use ($layout)
+        /*Route::get('crawler/auto', array('as' => 'get_crawler_auto', function() use ($layout)
         {
             // get the first (oldest suggested or just oldest created) link
-            $profile = ProfilesToCrawl::where_profile_id(0)->where_suggested(1)->order_by('created_at', 'asc')->first();
+            $profile = SuggestedProfile::where_profile_id(0)->where_suggested(1)->order_by('created_at', 'asc')->first();
 
-            if ($profile === null) $profile = ProfilesToCrawl::where_profile_id(0)->order_by('created_at', 'asc')->first();
+            if ($profile === null) $profile = SuggestedProfile::where_profile_id(0)->order_by('created_at', 'asc')->first();
 
             if ($profile === null) {
                 HTML::set_info("No more profile to crawl.");
@@ -406,43 +406,53 @@ $layout = View::of('layout');
             $crawler = Crawler::crawl($profile);
 
             return $layout->nest('page_content', 'crawler', array('auto' => true));
-        }));
+        }));*/
 
 
         // RSS reader
-        Route::get('crawler/readrss', array('as' => 'get_crawler_read_feed_links', function() use ($layout)
+        Route::get('crawler/readrss', array('as' => 'get_crawler_read_feed_urls', function() use ($layout)
         {
-            $feed_links = json_decode(DBConfig::get('crawler_feed_links', '[]'), true);
+            $feed_urls = json_decode(DBConfig::get('crawler_feed_urls', '[]'), true);
 
-            if (empty($feed_links)) {
-                HTML::set_error("No feed links where found in the database.");
+            if (empty($feed_urls)) {
+                HTML::set_error("No feed urls where found in the database.");
             }
 
-            foreach ($feed_links as $link) {
-                $feed = RSSReader::read($link);
-                if (empty($feed['entries'])) {
-                    HTML::set_error("No entries in the feed link '".$link."'.");
+            foreach ($feed_urls as $url) {
+                $feed = RSSReader::read($url);
+                if (empty($feed['items'])) {
+                    HTML::set_error("No items in the feed url '".$url."'.");
                     continue;
                 }
 
                 $profiles_added = 0;
 
-                foreach ($feed['entries'] as $entry) {
-                    $entry_link = $item['link'];
+                foreach ($feed['items'] as $item) {
+                    $item_url = $item['link'];
 
-                    if (ProfilesToCrawl::where_link($entry_link)->first() !== null) {
-                        $profile = new ProfilesToCrawl;
-                        $profile->link = $entry_link;
+                    if (SuggestedProfile::where_url($item_url)->first() === null) {
+                        if (strpos($item_url, 'indiedb.com') && strpos($item_url, '/news/')) {
+                            // need to get the url of the game instead of the news
+                            $item_url = Crawler::get_indiedb_profile_url_from_news($item_url);
+                        }
+
+                        $profile = new SuggestedProfile;
+                        $profile->url = $item_url;
+                        $profile->source = 'rss';
+                        $profile->statut = 'waiting';
                         $profile->save();
                         $profiles_added++;
                     }
                 }
 
-                HTML::set_success("$profiles_added links added from the feed link '".$link."'.");
+                HTML::set_success("$profiles_added urls added from the feed url '".$url."'.");
             }
 
-            return $layout->nest('page_content', 'crawler');
+            return Redirect::to_route('get_crawler_page');
         }));
+
+
+
     });
 
 
@@ -475,17 +485,39 @@ $layout = View::of('layout');
 
         // CRAWLER
 
-
-
-        Route::post('crawler_add_feed_link', array('as' => 'post_crawler_add_feed_link', function()
+        // post new rss url
+        Route::post('crawler_add_feed_url', array('as' => 'post_crawler_add_feed_url', function()
         {
-            $db_entry = DBConfig::where('_key', '=', 'crawler_feed_links')->first();
+            $db_entry = DBConfig::where('_key', '=', 'crawler_feed_urls')->first();
             
-            $feed_links = json_decode($db_entry->value, true);
-            $feed_links[] = Input::get('feed_link');
+            $feed_urls = json_decode($db_entry->value, true);
+            $feed_urls[] = Input::get('feed_url');
             
-            $db_entry->value = json_encode($feed_links);
+            $db_entry->value = json_encode($feed_urls);
             $db_entry->save();
+            
+            return Redirect::to_route('get_crawler_page');
+        }));
+
+        Route::post('crawler_perform_actions', array('as' => 'post_crawler_perform_actions', function()
+        {
+            $profiles = Input::get('profiles');
+
+            foreach ($profiles as $id => $profile) {
+                if ($profile['action'] == 'add') {
+                    $profile_data = Crawler::crawl_game($profile['url']);
+                    
+                    $game = Game::create($profile_data);
+
+                    $suggested_profile = SuggestedProfile::find($id);
+                    $suggested_profile->statut = 'added';
+                    $suggested_profile->profile_type = 'game';
+                    $suggested_profile->profile_id = $game->id;
+                    $suggested_profile->save();
+                } elseif ($profile['action']  == 'discard') {
+                    SuggestedProfile::update($id, array('statut' => 'discarded'));
+                }   
+            }
             
             return Redirect::to_route('get_crawler_page');
         }));

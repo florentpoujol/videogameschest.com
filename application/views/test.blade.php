@@ -6,7 +6,7 @@ report form via colorbox
 <a href="http://the link" id="theid">link</a>
 $("#theid").colorbox({iframe:true, width:"400px", height:"200px"});
  */
-
+var_dump(Crawler::crawl_game("http://www.indiedb.com/games/bloom-memories"));
 ?>
 
 <a href="{{ route('get_suggest_form') }}" id="colorbox-ajax1" data-height="100px" data-width="500px">lien</a> 
