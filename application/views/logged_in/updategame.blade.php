@@ -144,20 +144,21 @@ if (is_admin()) {
                             <?php
                             if (isset($old[$field])) $values = clean_names_urls_array($old[$field]);
                             else $values = $profile->$field;
-
-                            $length = count($values['names']);
+                            
+                            $length = count($values);
                             for ($i = 0; $i < $length; $i++):
                             ?>
+
                                 <div class="control-group-inline">
-                                    {{ Former::text($field.'[names][]', '')->value($values['names'][$i])->placeholder(lang('vgc.common.title')) }} 
-                                    {{ Former::url($field.'[urls][]', '')->value($values['urls'][$i])->placeholder(lang('vgc.common.url')) }}
+                                    {{ Former::text($field.'['.$i.'][name]', '')->value($values[$i]['name'])->placeholder(lang('vgc.common.title')) }} 
+                                    {{ Former::url($field.'['.$i.'][url]', '')->value($values[$i]['url'])->placeholder(lang('vgc.common.url')) }}
                                 </div>
                             @endfor
 
-                            @for ($i = 0; $i < 4; $i++)
+                            @for ($i = $length; $i < $length+4; $i++)
                                 <div class="control-group-inline">
-                                    {{ Former::text($field.'[names][]', '')->placeholder(lang('vgc.common.title')) }} 
-                                    {{ Former::url($field.'[urls][]', '')->placeholder(lang('vgc.common.url')) }}
+                                    {{ Former::text($field.'['.$i.'][name]', '')->placeholder(lang('vgc.common.title')) }} 
+                                    {{ Former::url($field.'['.$i.'][url]', '')->placeholder(lang('vgc.common.url')) }}
                                 </div>
                             @endfor
                         </div>

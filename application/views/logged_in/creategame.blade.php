@@ -128,11 +128,11 @@ if (is_admin()) {
                             @for ($i = 0; $i < 4; $i++)
                                 <div class="control-group-inline">
                                     <?php
-                                    $name = isset($values['names'][$i]) ? $values['names'][$i] : '';
-                                    $url = isset($values['urls'][$i]) ? $values['urls'][$i] : '';
+                                    $name = isset($values[$i]) ? $values[$i]['name'] : '';
+                                    $url = isset($values[$i]) ? $values[$i]['url'] : '';
                                     ?>
-                                    {{ Former::text($field.'[names][]', '')->value($name)->placeholder(lang('vgc.common.title')) }} 
-                                    {{ Former::url($field.'[urls][]', '')->value($url)->placeholder(lang('vgc.common.url')) }}
+                                    {{ Former::text($field.'['.$i.'][name]', '')->value($name)->placeholder(lang('vgc.common.title')) }} 
+                                    {{ Former::url($field.'['.$i.'][url]', '')->value($url)->placeholder(lang('vgc.common.url')) }}
                                 </div>
                             @endfor
                         </div> <!-- /.tab-pane -->

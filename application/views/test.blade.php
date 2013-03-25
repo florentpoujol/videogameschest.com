@@ -7,7 +7,29 @@ report form via colorbox
 $("#theid").colorbox({iframe:true, width:"400px", height:"200px"});
  */
 
+/*function convert($array)
+{
+    if (!isset($array['names'])) return $array;
+    $items  = array();
+    for ($i=0; $i < count($array['names']); $i++) { 
+        $items[] = array(
+            'name' => $array['names'][$i],
+            'url' => $array['urls'][$i],
+        );
+    }
+    return $items;
+}
 
+$games = Game::all();
+
+foreach ($games as $game) {
+    $game->screenshots = convert($game->screenshots);
+    $game->videos = convert($game->videos);
+    $game->links = convert($game->links);
+    $game->save();
+}*/
+
+var_dump(Game::find(2)->screenshots);
 
 // $profile = Crawler::crawl_game("http://www.indiedb.com/games/minecraft");
 // Game::create($profile);

@@ -95,7 +95,9 @@ function clean_names_urls_array($items)
 {
     $new_items = $items;
     foreach ($items as $index => $item) {
-        if (trim($item['name']) == '' || trim($item['url']) == '') {
+        if (
+            (isset($item['name']) && trim($item['name']) == '') || 
+            (isset($item['url']) && trim($item['url']) == '')) {
             unset($new_items[$index]);
         }
     }
