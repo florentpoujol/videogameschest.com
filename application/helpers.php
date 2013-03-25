@@ -86,7 +86,7 @@ function clean_form_input($input, $supl_attributes = array())
 
  
 /**
- * strip out empty name/url in names/urls arrays (socialnetworks, stores, screenshots, videos, reviews)
+ * strip out empty name/url in names/urls arrays (screenshots, videos, links)
  * then rebuilt it's index
  * @param assocarray $array
  * @return the cleaned up array
