@@ -31,9 +31,7 @@ class Video
         if (strpos($link, 'youtu') !== false) {
             $this->id = preg_replace("#.*(/watch\?v=|\.be/|/v/|/embed/)([a-zA-Z0-9]+)(&|/)?.*#", '$2', $link);
             $this->embed_url = 'http://www.youtube.com/embed/'.$this->id;
-            $this->thumbnail_url = 'http://img.youtube.com/vi/'.$this->id.'/maxresdefault.jpg';
-
-
+            // $this->thumbnail_url = 'http://img.youtube.com/vi/'.$this->id.'/maxresdefault.jpg';
         } 
 
 
@@ -46,8 +44,8 @@ class Video
         elseif (strpos($link, 'vimeo.com') !== false) {
             $this->id = preg_replace("#.*vimeo\.com/(video/)?([0-9]{8}).*#", '$2', $link);
             $this->embed_url = 'http://player.vimeo.com/video/'.$this->id.'?title=0&amp;byline=0&amp;portrait=0';
-            $json = json_decode(file_get_contents('http://vimeo.com/api/v2/video/'.$this->id.'.json'), true);
-            $this->thumbnail_url = $json[0]['thumbnail_large'];
+            // $json = json_decode(file_get_contents('http://vimeo.com/api/v2/video/'.$this->id.'.json'), true);
+            // $this->thumbnail_url = $json[0]['thumbnail_large'];
         }
 
 
@@ -59,8 +57,24 @@ class Video
         elseif (strpos($link, 'dailymotion.com') !== false) {
             $this->id = preg_replace("#.*video/([a-zA-Z0-9]+)(_.*)?#", '$1', $link);
             $this->embed_url = 'http://www.dailymotion.com/embed/video/'.$this->id;
-            $json = json_decode(file_get_contents('https://api.dailymotion.com/video/'.$this->id.'?fields=thumbnail_large_url'), true);
-            $this->thumbnail_url = $json['thumbnail_large_url'];
+            // $json = json_decode(file_get_contents('https://api.dailymotion.com/video/'.$this->id.'?fields=thumbnail_large_url'), true);
+            // $this->thumbnail_url = $json['thumbnail_large_url'];
+        }
+
+
+        // dailymotion
+        // standard : http://www.indiedb.com/games/{name}/videos/{video_name}
+        // embed : http://www.indiedb.com/media/iframe/{video_id}
+        // the video embed link is on the video's page 
+        // <meta property="og:video" content="http://www.indiedb.com/media/embed/721445" />
+        /*
+        $videos_html = file_get_html($url.'/videos');
+            $links = $videos_html->find('#imagebox a');
+         */
+        elseif (strpos($link, 'indiedb.com') !== false && strpos($link, '/media/iframe/') === false) {
+            $this->id = Str::random(5);
+            $this->embed_url = '';
+            
         }
     }
 
