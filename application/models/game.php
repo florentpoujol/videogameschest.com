@@ -3,13 +3,12 @@
 class Game extends Profile
 {
     // fields which data is stored as json
-    public static $json_fields = array(
-        'languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'looks', 'periods',
+    public static $json_fields = array('languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'looks', 'periods',
         'viewpoints', 'nbplayers', 'tags', 'links', 'screenshots', 'videos');
     
     // text fields which data is stored as json array
-    public static $array_fields = array('devices', 'operatingsystems', 'genres', 'looks', 'periods',
-     'viewpoints', 'nbplayers', 'tags', 'languages', 'technologies',  );
+    public static $array_fields = array('languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'looks', 'periods',
+        'viewpoints', 'nbplayers', 'tags' );
 
     // text fields which data is stored as json object with a 'names' and 'urls' keys containing an array ot items
     public static $names_urls_fields = array('links', 'screenshots', 'videos');

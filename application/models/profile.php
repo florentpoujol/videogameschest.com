@@ -60,7 +60,9 @@ class Profile extends ExtendedEloquent
         if ($create_preview_version) {
             $preview_profile = PreviewProfile::create($profile);
 
-            Log::write('profile '.$preview_profile->type.' create success', "Preview version of ".$profile->type." profile with name='".$profile->name."' and id='".$profile->id."' has been created with id='".$preview_profile->id."'.");
+            $msg = "Preview version of ".$profile->type." profile with name='".$profile->name."' and id='".$profile->id."' has been created with id='".$preview_profile->id."'.";
+            if (is_admin()) HTML::set_success($msg);
+            Log::write('profile '.$preview_profile->type.' create success', $msg);
         }
 
         return $profile;

@@ -12,6 +12,7 @@ class PreviewProfile extends ExtendedEloquent
         $input = array(
             'type' => $profile->type,
             $profile->type.'_id' => $profile->id,
+            'in_review' => 1,
             'data' => array(), 
             // the preview profile is left empty during the creation because the real profile is private
             // therer is no need for the preview profile at this time
