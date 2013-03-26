@@ -383,65 +383,8 @@ $layout = View::of('layout');
 
 
         // CRAWLER
-
-        Route::get('crawler', array('as' => 'get_crawler_page', function() use ($layout)
-        {
-            return $layout->nest('page_content', 'crawler');
-        }));
-
-
-        // RSS reader
-        Route::get('crawler/readrss', array('as' => 'get_crawler_read_feed_urls', function() use ($layout)
-        {
-            $feed_urls = json_decode(DBConfig::get('crawler_feed_urls', '[]'), true);
-
-            if (empty($feed_urls)) {
-                HTML::set_error("No feed urls where found in the database.");
-            }
-
-            foreach ($feed_urls as $url) {
-                $feed = RSSReader::read($url);
-                if (empty($feed['items'])) {
-                    HTML::set_error("No items in the feed url '".$url."'.");
-                    continue;
-                }
-
-                $profiles_added = 0;
-
-                foreach ($feed['items'] as $item) {
-                    $item_url = $item['link'];
-                    $guid = $item['guid'];
-
-                    if (SuggestedProfile::where_url($item_url)->first() === null && SuggestedProfile::where_guid($guid)->first() === null) {
-                        if (strpos($item_url, 'edb.com') !== false && strpos($item_url, '/news/') !== false) {
-                            // slidedb.com
-                            // indiedb.com
-                            // need to get the url of the game instead of the news
-                            $relativ_game_url = Crawler::get_indiedb_profile_url_from_news($item_url);
-                            if ($relativ_game_url == '') continue; // the news was not about a game
-                            $item_url = "http://www.indiedb.com".$relativ_game_url;
-                            // all slide db profile have an indie db profile
-                        }
-
-                        $profile = new SuggestedProfile;
-                        $profile->url = $item_url;
-                        $profile->guid = $guid;
-                        $profile->source = 'rss';
-                        $profile->source_feed = $url;
-                        $profile->statut = 'waiting';
-                        $profile->save();
-                        $profiles_added++;
-                    }
-                }
-
-                HTML::set_success("$profiles_added urls added from the feed url '".$url."'.");
-            }
-
-            return Redirect::to_route('get_crawler_page');
-        }));
-
-
-
+        Route::get('crawler', array('as' => 'get_crawler_page', 'uses' => 'crawler@index'));
+        Route::get('crawler/readrss', array('as' => 'get_crawler_read_feed_urls', 'uses' => 'crawler@read_feed_urls'));
     });
 
 
@@ -473,43 +416,8 @@ $layout = View::of('layout');
 
 
         // CRAWLER
-
-        // post new rss url
-        Route::post('crawler_add_feed_url', array('as' => 'post_crawler_add_feed_url', function()
-        {
-            $db_entry = DBConfig::where('_key', '=', 'crawler_feed_urls')->first();
-            
-            $feed_urls = json_decode($db_entry->value, true);
-            $feed_urls[] = Input::get('feed_url');
-            
-            $db_entry->value = json_encode($feed_urls);
-            $db_entry->save();
-            
-            return Redirect::to_route('get_crawler_page');
-        }));
-
-        Route::post('crawler_perform_actions', array('as' => 'post_crawler_perform_actions', function()
-        {
-            $profiles = Input::get('profiles');
-
-            foreach ($profiles as $id => $profile) {
-                if ($profile['action'] == 'add') {
-                    $profile_data = Crawler::crawl_game($profile['url']);
-                    
-                    $game = Game::create($profile_data);
-
-                    $suggested_profile = SuggestedProfile::find($id);
-                    $suggested_profile->statut = 'added';
-                    $suggested_profile->profile_type = 'game';
-                    $suggested_profile->profile_id = $game->id;
-                    $suggested_profile->save();
-                } elseif ($profile['action']  == 'discard') {
-                    SuggestedProfile::update($id, array('statut' => 'discarded'));
-                }   
-            }
-            
-            return Redirect::to_route('get_crawler_page');
-        }));
+        Route::post('crawler_add_feed_url', array('as' => 'post_crawler_add_feed_url', 'uses' => 'crawler@add_feed_url'));
+        Route::post('crawler_perform_actions', array('as' => 'post_crawler_perform_actions', 'uses' => 'crawler@perform_actions'));
     });
 
 
