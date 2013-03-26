@@ -60,7 +60,13 @@ $actions = array(
         <tr>
             <td>{{ $profile->id }}</td>
             <td> 
-                <a href="{{ $profile->url }}">Click</a>
+                <a href="{{ $profile->url }}">
+                @if (strpos($profile->url, 'indiedb'))
+                    {{ ucfirst(url_to_name(str_replace("http://www.indiedb.com/games/", "", $profile->url))) }}
+                @else
+                    Click
+                @endif
+                </a>
                 {{ Former::text('profiles['.$profile->id.'][url]', '')->value($profile->url) }}
             </td>
             <td>

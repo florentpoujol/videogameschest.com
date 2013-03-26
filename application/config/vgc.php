@@ -145,6 +145,7 @@ return array(
         "adventuregamestudio",
         "air",
         "blender",
+        "cocos2d",
         "construct",
         "craftstudio",
         "cryengine",
@@ -185,7 +186,8 @@ return array(
         'realist',
         'minimalist',
         'celshading',
-        
+        'horror',
+        'gore',
     ),
 
     'periods' => array( 
@@ -196,7 +198,7 @@ return array(
         "twentycentury",
         "modern",
         "futuristic",
-        "scifi",
+        "sci-fi",
     ),
 
     "genres" => array(
@@ -206,6 +208,7 @@ return array(
         "citybuilding",
         "fighting",
         "hackandslash",
+        "party",
         "platformer",
         "pointandclick",
         "puzzle",
@@ -238,15 +241,17 @@ return array(
         "physics",
         "sidescrolling",
         "turnbased",
+        "realtime",
         "topdown",
         
         "onegameamonth",
         'ludumdare',
         'globalgamejam',
         'fuckthisjam',
-        "horror",
+        
         "mafia",
         "steampunk",
+        "tactical",
     ),
 
 
