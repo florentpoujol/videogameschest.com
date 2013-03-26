@@ -145,6 +145,7 @@ return array(
         "adventuregamestudio",
         "air",
         "blender",
+        "construct",
         "craftstudio",
         "cryengine",
         "custom",

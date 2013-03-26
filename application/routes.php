@@ -390,25 +390,6 @@ $layout = View::of('layout');
         }));
 
 
-        /*Route::get('crawler/auto', array('as' => 'get_crawler_auto', function() use ($layout)
-        {
-            // get the first (oldest suggested or just oldest created) link
-            $profile = SuggestedProfile::where_profile_id(0)->where_suggested(1)->order_by('created_at', 'asc')->first();
-
-            if ($profile === null) $profile = SuggestedProfile::where_profile_id(0)->order_by('created_at', 'asc')->first();
-
-            if ($profile === null) {
-                HTML::set_info("No more profile to crawl.");
-                return Redirect::to_route('get_crawler_page');
-            }
-
-            // crawl it
-            $crawler = Crawler::crawl($profile);
-
-            return $layout->nest('page_content', 'crawler', array('auto' => true));
-        }));*/
-
-
         // RSS reader
         Route::get('crawler/readrss', array('as' => 'get_crawler_read_feed_urls', function() use ($layout)
         {
@@ -429,16 +410,24 @@ $layout = View::of('layout');
 
                 foreach ($feed['items'] as $item) {
                     $item_url = $item['link'];
+                    $guid = $item['guid'];
 
-                    if (SuggestedProfile::where_url($item_url)->first() === null) {
-                        if (strpos($item_url, 'indiedb.com') && strpos($item_url, '/news/')) {
+                    if (SuggestedProfile::where_url($item_url)->first() === null && SuggestedProfile::where_guid($guid)->first() === null) {
+                        if (strpos($item_url, 'edb.com') !== false && strpos($item_url, '/news/') !== false) {
+                            // slidedb.com
+                            // indiedb.com
                             // need to get the url of the game instead of the news
-                            $item_url = Crawler::get_indiedb_profile_url_from_news($item_url);
+                            $relativ_game_url = Crawler::get_indiedb_profile_url_from_news($item_url);
+                            if ($relativ_game_url == '') continue; // the news was not about a game
+                            $item_url = "http://www.indiedb.com".$relativ_game_url;
+                            // all slide db profile have an indie db profile
                         }
 
                         $profile = new SuggestedProfile;
                         $profile->url = $item_url;
+                        $profile->guid = $guid;
                         $profile->source = 'rss';
+                        $profile->source_feed = $url;
                         $profile->statut = 'waiting';
                         $profile->save();
                         $profiles_added++;

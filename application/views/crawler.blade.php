@@ -40,33 +40,37 @@ $actions = array(
 
 {{ Former::open_vertical(route('post_crawler_perform_actions')) }}
     {{ Form::token() }}
-     {{ Former::primary_submit('Submit actions') }}
-<table class="table table-striped table-bordered">
-    <thead>
+    {{ Former::primary_submit('Submit actions') }}
+    <br>
+    
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>url</th>
+                <th>Action</th>
+                <th>statut</th>
+                <th>source</th>
+                <th>created</th>
+            </tr>
+        </thead>
+    @foreach ($profiles as $profile)
         <tr>
-            <th>ID</th>
-            <th>url</th>
-            <th>Action</th>
-            <th>statut</th>
-            <th>source</th>
-            <th>created</th>
+            <td>{{ $profile->id }}</td>
+            <td> 
+                <a href="{{ $profile->url }}">Click</a>
+                {{ Former::text('profiles['.$profile->id.'][url]', '')->value($profile->url) }}
+            </td>
+            <td>
+                {{ Former::select('profiles['.$profile->id.'][action]', '')->options($actions) }}
+            </td>
+            <td>{{ $profile->statut }}</td>
+            <td>{{ $profile->source }}</td>
+            <td>{{ $profile->created_at }}</td>
         </tr>
-    </thead>
-@foreach ($profiles as $profile)
-    <tr>
-        <td>{{ $profile->id }}</td>
-        <td> 
-            <a href="{{ $profile->url }}">Click</a>
-            {{ Former::text('profiles['.$profile->id.'][url]', '')->value($profile->url) }}
-        </td>
-        <td>
-            {{ Former::select('profiles['.$profile->id.'][action]', '')->options($actions) }}
-        </td>
-        <td>{{ $profile->statut }}</td>
-        <td>{{ $profile->source }}</td>
-        <td>{{ $profile->created_at }}</td>
-    </tr>
-@endforeach
-</table>
+    @endforeach
+    </table>
+
+    {{ Former::primary_submit('Submit actions') }}
 
 {{ Former::close() }}
