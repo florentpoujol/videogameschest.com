@@ -102,18 +102,17 @@ class Crawler
                             if ($rd != 'TBD') {
                                 $rd = str_replace('Coming ', '', $rd);
                                 $rd = str_replace('Released ', '', $rd);
-                                $profile['release_date'] = DateTime::createFromFormat ('M j, Y', $rd);
+                                $profile['release_date'] = DateTime::createFromFormat('M j, Y', $rd)->format(Config::get('vgc.date_formats.datetime_sql'));
                             }
                             break;
 
                         case "platforms":
                             $as = $item->find('span[class=summary] a');
-                            $platforms = array();
                             $profile['operatingsystems'] = array();
                             $profile['devices'] = array();
 
                             foreach ($as as $a) {
-                                $platform = strtolower(str_replace("/platforms/set/", "", $a->href));
+                                $platform = trim(strtolower(str_replace("/platforms/set/", "", $a->href)));
                                 
                                 switch ($platform) {
                                     case "pc":
@@ -175,11 +174,16 @@ class Crawler
                                     break;
 
                                     default:
+                                        $found = false;
                                         if (in_array($platform, Config::get('vgc.devices'))) {
                                             $profile['devices'][] = $platform;
+                                            $found = true;
                                         } elseif (in_array($platform, Config::get('vgc.operatingsystems'))) {
                                             $profile['operatingsystems'][] = $platform;
+                                            $found = true;
                                         }
+
+                                        if ($found == false) Log::write('crawler text-no-fields', "Text '$platform' was not found in the 'devices' or 'operatingsystems' array fields for the game '".$profile['name']."'.");
                                     break;
                                 }
                             } // end foreach $as
@@ -190,7 +194,7 @@ class Crawler
                             break;
 
                         case "engine":
-                            $engine = strtolower(str_replace("/engines/", "", $item->find('span[class=summary] a', 0)->href));
+                            $engine = trim(strtolower(str_replace("/engines/", "", $item->find('span[class=summary] a', 0)->href)));
                             $profile['technologies'] = array();
                             
                             switch ($engine) {
@@ -204,10 +208,6 @@ class Crawler
 
                                 case 'unity':
                                     $profile['technologies'][] = 'unity3d';
-                                    break;
-
-                                case 'source':
-                                    $profile['technologies'][] = 'source';
                                     break;
 
                                 case 'unreal-development-kit':
@@ -231,9 +231,12 @@ class Crawler
                                     break;
                                                                     
                                 default:
+                                    $found = false;
                                     if (in_array($engine, Config::get('vgc.technologies'))) {
-                                        $profile['technologies'][] = $platform;
+                                        $profile['technologies'][] = $engine;
+                                        $found = true;
                                     } 
+                                    if ($found == false) Log::write('crawler text-no-fields', "Text '$engine' was not found in the 'technologies' array fields for the game '".$profile['name']."'.");
                                     break;
                             }
 
@@ -256,27 +259,16 @@ class Crawler
                 if (isset($h5)) {
                     $category = $h5->plaintext;
                     $span = $item->find("span", 0);
+                    $text = trim(strtolower($span->plaintext));
 
                     switch (strtolower($category)) {
-                        case "genre":
-                            $profile["genres"] = array(strtolower($span->plaintext), );
-                            break;
-
-                        case "theme" :
-                            $profile["looks"] = array(strtolower($span->plaintext), );
-                            break;
-
                         case "players" :
-                            $players = strtolower($span->plaintext);
-
-                            if ($players = 'single &amp; multiplayer') {
-                                $profile["players"] = array('singleplayer', 'multiplayer');
+                            if ($text = 'single &amp; multiplayer') {
+                                $text = array('singleplayer', 'multiplayer');
                             } elseif ($players = 'single &amp; co-op') {
-                                $profile["players"] = array('singleplayer', 'coop');
+                                $text = array('singleplayer', 'coop');
                             } elseif ($players == 'single player') {
-                                $profile["players"] = array('singleplayer');
-                            } else {
-                                $profile["players"] = array($players);
+                                $text = 'singleplayer';
                             }
                             break;
 
@@ -286,8 +278,9 @@ class Crawler
                                 'url' => $item->find("img", 0)->src
                             );
                             break;
-
                     }
+
+                    $profile = static::register_field_text($text, $profile);
                 }
             }
 
@@ -316,7 +309,7 @@ class Crawler
             $links = $videos_html->find('#imagebox a');
             
             foreach($links as $a) {
-                // get the video embed's url (so that it is no done later, when the profiles are loaded)
+                // get the video embed's url (so that it is not done later, when the profiles are loaded)
                 $page_url = str_replace("#imagebox", '', "http://www.indiedb.com".$a->href);
                 $video_html = file_get_html($page_url);
                 // <meta property="og:video" content="http://www.indiedb.com/media/embed/721445">
@@ -331,40 +324,28 @@ class Crawler
             }
         } // end Indie DB
 
-
         return $profile;
     }
 
-    public static function innerHTML( $contentdiv ) 
+
+    public static function register_field_text($texts, $profile)
     {
-        $r = '';
-        //$elements = $contentdiv->childNodes;
-        foreach( $contentdiv as $element ) { 
-            if ( $element->nodeType == XML_TEXT_NODE ) {
-                $text = $element->nodeValue;
-                // IIRC the next line was for working around a
-                // WordPress bug
-                //$text = str_replace( '<', '&lt;', $text );
-                $r .= $text;
-            }    
-            // FIXME we should return comments as well
-            elseif ( $element->nodeType == XML_COMMENT_NODE ) {
-                $r .= '';
-            }    
-            else {
-                $r .= '<';
-                $r .= $element->nodeName;
-                if ( $element->hasAttributes() ) { 
-                    $attributes = $element->attributes;
-                    foreach ( $attributes as $attribute )
-                        $r .= " {$attribute->nodeName}='{$attribute->nodeValue}'" ;
-                }    
-                $r .= '>';
-                $r .= innerHTML( $element );
-                $r .= "</{$element->nodeName}>";
-            }    
-        }    
-        return $r;
+        if (is_string($texts)) $texts = array($texts);
+
+        foreach ($texts as $text) {
+            $found = false;
+            foreach (Game::$array_fields as $field) {
+                if (in_array($text, Config::get('vgc.'.$field))) {
+                    if ( ! isset($profile[$field])) $profile[$field] = array();
+                    $profile[$field][] = $text;
+                    $found = true;
+                }
+            }
+
+            if ($found == false) Log::write('crawler text-no-fields', "Text '$text' was not found in any array fields for the game '".$profile['name']."'.");
+        }
+
+        return $profile;
     }
 }
 

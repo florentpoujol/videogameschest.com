@@ -4,10 +4,11 @@ class Crawler_Controller extends Base_Controller
 {
     public function get_index()
     {
-        $thhis->layout->nest('page_content', 'crawler');
+        $this->layout->nest('page_content', 'crawler');
     }
 
     // READ RSS FEED
+    // read the rss feed then extract unknow games
     public function get_read_feed_urls() 
     {
         $feed_urls = json_decode(DBConfig::get('crawler_feed_urls', '[]'), true);
@@ -31,13 +32,16 @@ class Crawler_Controller extends Base_Controller
 
                 if (SuggestedProfile::where_url($item_url)->first() === null && SuggestedProfile::where_guid($guid)->first() === null) {
                     if (strpos($item_url, 'edb.com') !== false && strpos($item_url, '/news/') !== false) {
-                        // slidedb.com
-                        // indiedb.com
+                        // this a news from indiedb or slidedb
                         // need to get the url of the game instead of the news
                         $relativ_game_url = Crawler::get_indiedb_profile_url_from_news($item_url);
                         if ($relativ_game_url == '') continue; // the news was not about a game
-                        $item_url = "http://www.indiedb.com".$relativ_game_url;
-                        // all slide db profile have an indie db profile
+                        $item_url = "http://www.indiedb.com".$relativ_game_url; // all slide db profile have an indie db profile
+
+                        if (SuggestedProfile::where_url($item_url)->first() !== null) continue;
+
+                        $name = ucfirst(url_to_name(rtrim(str_replace("http://www.indiedb.com/games/", "", $item_url), '/')));
+                        if (Game::where_name($name)->first() !== null) continue;
                     }
 
                     $profile = new SuggestedProfile;
@@ -57,7 +61,7 @@ class Crawler_Controller extends Base_Controller
         return Redirect::to_route('get_crawler_page');
     }
 
-
+    // add a feed url in the config table
     public function post_add_feed_url()
     {
         $db_entry = DBConfig::where('_key', '=', 'crawler_feed_urls')->first();
@@ -71,25 +75,43 @@ class Crawler_Controller extends Base_Controller
         return Redirect::to_route('get_crawler_page');
     }
 
-
-    public function pos_perform_actions()
+    // action :
+    // "discard" : the game is not woth adding to the list
+    // "add" : the game page is crawled
+    public function post_perform_actions()
     {
         $profiles = Input::get('profiles');
+        $profiles_to_crawl = array();
 
         foreach ($profiles as $id => $profile) {
-            if ($profile['action'] == 'add') {
-                $profile_data = Crawler::crawl_game($profile['url']);
-                
-                $game = Game::create($profile_data);
+            $action = $profile['action'];
+            $url = $profile['url'];
 
-                $suggested_profile = SuggestedProfile::find($id);
-                $suggested_profile->statut = 'added';
-                $suggested_profile->profile_type = 'game';
-                $suggested_profile->profile_id = $game->id;
-                $suggested_profile->save();
-            } elseif ($profile['action']  == 'discard') {
-                SuggestedProfile::update($id, array('statut' => 'discarded'));
-            }   
+            if ($action  == 'discard' || $action  == 'manually-added') {
+                SuggestedProfile::update($id, array(
+                    'url' => $url,
+                    'statut' => $action,
+                ));
+            } elseif ($action == 'delete') {
+                SuggestedProfile::find($id)->delete();
+            }
+            elseif ($action == 'crawl') {
+                $profiles_to_crawl[$id] = $profile;
+            }
+        }
+
+        foreach ($profiles_to_crawl as $id => $profile) {
+            $url = $profile['url'];
+
+            $profile_data = Crawler::crawl_game($url);
+            $game = Game::create($profile_data);
+
+            SuggestedProfile::update($id, array(
+                'url' => $url,
+                'statut' => 'crawled',
+                'profile_type' => 'game',
+                'profile_id' => $game->id,
+            ));
         }
         
         return Redirect::to_route('get_crawler_page');

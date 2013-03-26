@@ -170,27 +170,6 @@ return array(
         'yna',
     ),
 
-    "stores" => array(
-        "amazonmarket",
-        "androidmarket",
-        "applestore",
-        "armorgames",
-        "desura",
-        "gameolith",
-        "gamersgate",
-        "googleplay",
-        "greenmangaming",
-        "impulse",
-        "indiecity",
-        "indievania",
-        "kongregate",
-        "newsground",
-        "steam",
-        "website",
-        "windowsstore",
-        "xbla",
-        "xblig"
-    ),
 
     "nbplayers" => array(
         "singleplayer",
@@ -210,14 +189,14 @@ return array(
     ),
 
     'periods' => array( 
-        "mythology",
         "fantasy",
+        "mythology",
         "medieval",
+        "western",
+        "twentycentury",
         "modern",
         "futuristic",
         "scifi",
-        "western",
-        "twentycentury"
     ),
 
     "genres" => array(

@@ -33,8 +33,10 @@ $profiles = array_merge(
 
 $actions = array(
     '' => 'Choose',
-    'add' => 'Add',
-    'discard' => 'Discard'
+    'crawl' => 'Crawl',
+    'manually-added' => 'Mannually added',
+    'discard' => 'Discard',
+    'delete' => 'DELETE',
 );
 ?>
 
