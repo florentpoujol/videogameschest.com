@@ -63,9 +63,13 @@ $layout = View::of('layout');
 
 
     // SEARCH PROFILE
-    Route::get('search/(:num?)', array('as' => 'get_search_page', function($search_id = null) use ($layout)
+    Route::get('search/(:any?)', array('as' => 'get_search_page', function($search_id = null) use ($layout)
     {
         if ($search_id !== null) {
+            if (is_string($search_id)) {
+                $search_id = get_category_id($search_id);
+            }
+
             $search = Search::get($search_id);
             if ($search !== null) {
                 $profiles = Search::make($search->data)->where_privacy('public')->get();
@@ -86,9 +90,13 @@ $layout = View::of('layout');
     Route::get('search/feed/(:num)', array('as' => 'get_search_feed', 'uses' => 'feed@search_feed'));
 
     // BROWSE
-    Route::get('browse/(:num?)', array('as' => 'get_browse_page', function($search_id = null) use ($layout)
+    Route::get('browse/(:any?)', array('as' => 'get_browse_page', function($search_id = null) use ($layout)
     {
         if ($search_id !== null) {
+            if (is_string($search_id)) {
+                $search_id = get_category_id($search_id);
+            }
+            
             $search = Search::get($search_id);
             if ($search !== null) {
                 $profiles = Search::make($search->data)->where_privacy('public')->get();
@@ -190,6 +198,39 @@ $layout = View::of('layout');
             $search = Search::create($input);
             return Redirect::to_route('get_'.$action.'_page', array($search->id));
         }));
+
+        
+        Route::post('post_category_name', array('as' => 'post_category_name', function()
+        {
+            $input = Input::all();
+            $rules = array(
+                'category_name' => 'required|min:5|alpha_dash',
+            );
+            $validation = Validator::make($input, $rules);
+
+            if ($validation->passes()) {
+                if (is_guest()) {
+                    $names = json_decode(Cookie::get('vgc_category_names', '{}'), true);
+                    $names[$input['search_id']] = $input['category_name'];
+                    Cookie::put('vgc_category_names', json_encode($names), 999999); // 999999 min = 694.4 days
+                } else {
+                    $names = user()->category_names;
+                    //var_dump($names);
+                    if ($names != '') $names = json_decode($names, true);
+                    else $names = array();
+                    //dd($names);
+                    $names[$input['search_id']] = $input['category_name'];
+                    user()->category_names = json_encode($names);
+                    user()->save();
+                }
+
+                HTML::set_success(lang('vgc.search.msg.update_category_name_success', array('category_id' => $input['search_id'])));
+                return Redirect::back();
+            }
+            
+            return Redirect::back()->with_input()->with_errors($validation);
+        }));
+
 
         Route::post('browse', array('as' => 'post_browse', function()
         {

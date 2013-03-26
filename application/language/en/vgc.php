@@ -10,6 +10,7 @@ return array(
 
     'about' => array(
         'title' => 'About',
+
         'text' => 
         'VideoGamesChest seek to improve the visibility of games and game-related content and people with innovative solutions. <br>
         <br>
@@ -88,7 +89,7 @@ return array(
         'form_text_field' => 'The search ID',
         'form_submit' => 'Browse this search',
 
-        'no_search_id_help' => 'Tell us what to browse by passing one or several <strong>search ID(s)</strong> in the field below.',
+        'no_search_id_help' => 'Tell us what to browse by passing a <strong>search ID(s)</strong> in the field below.',
 
         'submit_discover' => 'You may also <input type="submit" name="discover" class="btn btn-primary" value="Discover this search"> via Rss feed or email.'
     ),
@@ -373,9 +374,8 @@ return array(
     'home' => array(
         'title' => 'Video Games Chest',
         'subtitle' => '',
-        
-        'catchphrase' => "Treasure chest for some, Pandora's box for others, VideoGamesChest is about finding the <em>games</em>, <em>developers</em>, <em>custom levels</em>, <em>mods</em> and <em>game creation tools</em> that <strong>you are really interested about</strong>. <br>
-        <div class='pull-right'>No more random looting, <strong>we have the tools for you to get just what matters</strong> to you.</div>",
+
+        'catchphrase' =>  'Find the games that really matters to you.',
 
         'site_slogan' => 'The place to hunt down for the treasures of video games',
         'sub_slogan' => 'VideoGamesChest seek to improve the visibility of games and game-related content and people with innovative solutions :',
@@ -621,47 +621,47 @@ return array(
 
     'search' => array(
         'title' => 'Search',
-        'subtitle' => 'for games you are really intesred in',
-        'subtitle' => 'for profiles you really care about',
+        'subtitle' => 'Create your own categories',
+        
 
-        'home_text' => "Searching on VideoGamesChest may seems at first a little more complex than on any other websites but also ways more powerfull. <br>
+        'search_help' => 'On this page, you get to create you own custom categories by filling the form. <br>
+        Once this is done you will be able to browse or discover the profiles that matches your categories criteria. <br>
+        <br>
+        Your categories have a unique identifier which is just a number by defult (its ID), but you may give them a name instead. <br>
+        Ba advised that if you are not a registered user, the name is stored on your computer with a cookie.',
 
-        VideoGamesChest gets yopou real, fully featured and comprehensive search form
+        /*<br>
+        <br>
+        The categories you create automatically gets a unique identifier that you can [remplacer] by a name instead
 
-        <a href=':search_page_url' title='Go to the search page' class='btn btn-primary'>Learn more on the search page</a>.
-
-         : first search what you want on the search page then browse, or discover the profiles. <br>
-        It's a two-step process, first search, then browse or discover. You can also combine several searches to get something even more 
-
-
-        very thorought search form. Any informations may be used as a search criterion ",
+        your category will have its unique identifier',
+        'search_page_quick_help' => 'For a quick search, just fill the form then hit the "Browse" button',*/
 
 
-        'search_page_quick_help' => 'For a quick search, just fill the form then hit the "Browse" button',
         'search_page_indepth_link' => 'Learn more for an advanced use of searches',
-        'search_page_indepth_help' => 'This page actually stores the set of criteria (the "Search") and returns its unique identifier (the "Search ID"). This is just a convenient way to carry over the set of criteria you selected to other parts of the website (like the Browse or Discover pages). <br>
-        <br>
-        The search IDs become really handy when you combine several of them to get a more custom set of profile.<br>
-        <br>
-        For intance, you can <strong>add</strong> two searches regarding different kind of profiles like "all games"+"all developers". <br>
-        Or you can <strong>substract</strong> one or more searches to a set of profile. Ie : you can substract "All FPS whose name is \'Call of Duty\'" to "All FPS". <br>
-        <br>
-        To combine search IDs, just concatenate the IDs using the + and - signs. Ie : 1+2-3',
+        'search_page_indepth_help' => 'Your categories have a unique identifier which is just a number by defult, but you may give them a name instead. <br>
+        Ba advised that f you are not a registered user, the name is stored on your computer with a cookie.
 
 
 
-        'submit_browse' => 'Browse this search',
+        This is just a convenient way to carry over the set of criteria you selected to other parts of the website (like the Browse or Discover pages). <br>
+        <br>
+        Optionally, you can give a name to any searches name a search so that you can use its name instead of it\'s id
+        <br>
+        ',
+
+
+        'current_category_id' => 'Current category ID : ',
+
+        'submit_category' => 'Create this category',
+        'submit_give_category_name' => 'Give this category a name',
+
         'submit_discover' => 'Discover this search',
         'submit_discover_help' => 'via RSS feed or email.',
         'submit_get_search_id' => 'Get this search\'s ID',
 
-        //'no_search_id_help' => 'Tell us what you are looking for : ',
-        'search_id' => 'Current search ID : ',
-        //'search_id_uses' => 'The search ID is uses in various places.',
-        //'search_id_help' => 'The search id identifies the unique set of criteria you just selected. <br> Now, you may chose what do you want to do with this search :',
-
-        //'browse_this_search' => 'Browse',
-        //'browse_discover_buttons_text' => 'the profiles that match this search.',
+        
+        
 
 
 
@@ -732,7 +732,8 @@ return array(
 
 
         'msg' => array(
-            'id_not_found' => 'The search with id [:id] has not been found !',
+            'id_not_found' => 'The category with id [:id] has not been found !',
+            'update_category_name_success' => "You successfully updated the name of the category with id ':category_id'.",
         ),
 
         

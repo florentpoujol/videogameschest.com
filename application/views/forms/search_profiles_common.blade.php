@@ -9,11 +9,7 @@ if ( ! empty($search_data)) {
 {{ Former::open_vertical(route('post_search')) }}
     {{ Form::token() }}
     
-    {{ Former::submit(lang('vgc.search.submit_get_search_id'))->class('btn pull-right') }}
-    {{ Former::primary_submit(lang('vgc.search.submit_browse'), array('name' => 'browse')) }} {{ lang('vgc.common.or') }}
-
-    {{ Former::primary_submit(lang('vgc.search.submit_discover'), array('name' => 'discover')) }} {{ lang('vgc.search.submit_discover_help') }}
-
+    {{ Former::primary_submit(lang('vgc.search.submit_category')) }}
     <hr>
     
     <div class="row">
@@ -90,8 +86,5 @@ if ( ! empty($search_data)) {
 
     <hr>
     
-    {{ Former::submit(lang('vgc.search.submit_get_search_id'))->class('btn pull-right') }}
-    {{ Former::primary_submit(lang('vgc.search.submit_browse'), array('name' => 'browse')) }} {{ lang('vgc.common.or') }}
-
-    {{ Former::primary_submit(lang('vgc.search.submit_discover'), array('name' => 'discover')) }} {{ lang('vgc.search.submit_discover_help') }}
+    {{ Former::primary_submit(lang('vgc.search.submit_category')) }}
 {{ Former::close() }}

@@ -13,10 +13,18 @@
 - voir verif date format (release date)
 
 - voir pour group colobox
-- voir pour colorbox avec html (report)
 
--
+- supprimer notion de combiner search id
 
+- critère de filtration sur la pag browse :
+	- blacklist
+	- nom asc-desc
+	- release date asc desc
+	- price asc desc
+	- date d'ajout
+		- voir s'il est possible de classer par plusieurs critères à la fois 
+
+- helper pour générer un lien colorbo ajax
 
 ============================================================
     DONE

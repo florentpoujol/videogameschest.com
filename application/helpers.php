@@ -143,6 +143,38 @@ function get_assoc_array($array)
 }
 
 
+function get_category_name($search_id)
+{
+    if (is_guest()) {
+        $names = json_decode(Cookie::get('vgc_category_names', '{}'), true);
+    } else {
+        $names = user()->category_names;
+        if ($names != '') $names = json_decode($names, true);
+        else $names = array();
+    }
+
+    if (isset($names[$search_id])) return $names[$search_id];
+    return null;
+}
+
+function get_category_id($name)
+{
+    if (is_guest()) {
+        $names = json_decode(Cookie::get('vgc_category_names', '{}'), true);
+    } else {
+        $names = user()->category_names;
+        if ($names != '') $names = json_decode($names, true);
+        else $names = array();
+    }
+
+    foreach ($names as $id => $_name) {
+        if ($name == $_name) return $id;
+    }
+    
+    return null;
+}
+
+
 function get_language()
 {
     return Session::get('language', Config::get('language', 'en'));
