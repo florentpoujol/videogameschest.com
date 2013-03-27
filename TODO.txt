@@ -17,7 +17,6 @@
 - ajouter liens vers convertiseur de monnaie dans game form
 - vérif format date pour vérification du game form
 
-- refactorer code blacklist dans model + page user
 - ajouter lien ajout profil dans blacklist dans menu + profil non solo
 
 - critère de filtration sur la pag browse :

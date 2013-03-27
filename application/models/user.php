@@ -123,81 +123,96 @@ class User extends ExtendedEloquent
      */
     public static function updateBlacklist($input)
     {
-        $user = User::find($input['id']);
+        $user = User::find($input['user_id']);
         $profile_type = $input['profile_type'];
         $profile_type_plural = $profile_type.'s';
+        $blacklist = $user->blacklist;
 
         // adding profiles in the blacklist
         if (isset($input['add'])) {
             $ids = array();
-            $names = explode(',', $input['name']);
-            $names = array_map('trim', $names);
+            $names = explode(',', $input['profile_names']);
 
             foreach ($names as $name) {
-                
+                $name = trim($name);
+
                 if (is_numeric($name)) {
                     $profile = $profile_type::where_id($name)->first('id');
-                }
-                elseif (is_string($name)) {
+                } elseif (is_string($name)) {
                     $profile = $profile_type::where_name($name)->first('id');
-                } 
+                }
 
-                if ( ! is_null($profile)) {
+                if ($profile !== null) {
                     $ids[] = $profile->id;
                 } else {
-                    // message
+                    $msg = lang('vgc.blacklist.msg.profile_name_or_id_not_found', array(
+                        'profile_type' => $profile_type,
+                        'name' => $name,
+                    ));
+                    HTML::set_error($msg);
+
+                    if (is_guest()) {
+                        Log::write('user blacklist add error', "User with id=".$input['user_id']." (guest, form url) : ".$msg);
+                    } else {
+                        Log::write('user blacklist add error', "User with name='".user()->name."' and id=".user_id()." : ".$msg);
+                    }
                 }
             }
 
-            $list = $user->blacklist;
-            $original_count = count($list[$profile_type_plural]);
-
-            for ($i = 0; $i < count($ids); $i++) { 
-                if ( ! in_array($ids[$i], $list[$profile_type_plural])) {
-                    $list[$profile_type_plural][] = $ids[$i];
+            $original_count = count($blacklist[$profile_type_plural]);
+            foreach ($ids as $id) {
+                if ( ! in_array($id, $blacklist[$profile_type_plural])) {
+                    $blacklist[$profile_type_plural][] = $id;
                 }
             }
-            
-            $diff = count($list[$profile_type_plural]) - $original_count;
-            
-            $user->blacklist = $list;
+            $diff = count($blacklist[$profile_type_plural]) - $original_count;
+            $user->blacklist = $blacklist;
             $user->save();
 
-            HTML::set_success(lang('blacklist.msg.add_success', array(
+            $action = 'set_success';
+            if ($diff == 0) $action = 'set_info';
+            HTML::$action(lang('blacklist.msg.add_success', array(
                 'num' => $diff,
                 'type' => $profile_type,
             )));
 
-            Log::write('user blacklist add success', 'User (name : '.user()->name.') (id : '.user_id().') added '.$diff.' '.$profile_type.' to the blacklist of user (name : '.$user->username.') (id : '.$user->id.').');
+            if (is_guest()) {
+                Log::write('user blacklist add success', "User with id=".$input['user_id']." (guest, form url) added $diff $profile_type to the blacklist of user with id=".$input['user_id'].".");
+            } elseif (is_admin()) {
+                Log::write('user blacklist add success', "Admin with name='".user()->name."' and id=".user_id()." added $diff $profile_type to the blacklist of user with id=".$input['user_id'].".");
+            } else {
+                Log::write('user blacklist add success', "User with name='".user()->name."' and id=".user_id()." added $diff $profile_type to its blacklist.");
+            }
         }
 
         if (isset($input['delete']) && isset($input['ids_to_delete'])) {
             $ids = $input['ids_to_delete'];
-
-            $list = $user->blacklist;
-            $original_count = count($list[$profile_type_plural]);
-
-            for ($i = 0; $i < count($ids); $i++) { 
-                $key = array_search($ids[$i], $list[$profile_type_plural]);
-
+            $original_count = count($blacklist[$profile_type_plural]);
+            foreach ($ids as $id) {
+                $key = array_search($id, $blacklist[$profile_type_plural]);
                 if ($key !== false) { // the value was found
-                    unset($list[$profile_type_plural][$key]);
+                    unset($blacklist[$profile_type_plural][$key]);
                 }
             }
-
-            $list[$profile_type_plural] = array_values($list[$profile_type_plural]); // rebuilt the indexes
-
-            $diff = $original_count - count($list[$profile_type_plural]);
-
-            $user->blacklist = $list;
+            $blacklist[$profile_type_plural] = array_values($blacklist[$profile_type_plural]); // rebuilt the indexes
+            $diff = $original_count - count($blacklist[$profile_type_plural]);
+            $user->blacklist = $blacklist;
             $user->save();
 
-            HTML::set_success(lang('blacklist.msg.delete_success', array(
+            $action = 'set_success';
+            if ($diff == 0) $action = 'set_info';
+            HTML::$action(lang('blacklist.msg.delete_success', array(
                 'num' => $diff,
                 'type' => $profile_type,
             )));
 
-            Log::write('user blacklist delete success', 'User (name : '.user()->name.') (id : '.user_id().') deleted '.$diff.' '.$profile_type.' from the blacklist of user (name : '.$user->username.') (id : '.$user->id.').');
+            if (is_guest()) {
+                Log::write('user blacklist delete success', "User with id=".$input['user_id']." (guest, form url) deleted $diff $profile_type from the blacklist of user with id=".$input['user_id'].".");
+            } elseif (is_admin()) {
+                Log::write('user blacklist delete success', "Admin with name='".user()->name."' and id=".user_id()." deleted $diff $profile_type from the blacklist of user with id=".$input['user_id'].".");
+            } else {
+                Log::write('user blacklist delete success', "User with name='".user()->name."' and id=".user_id()." deleted $diff $profile_type from its blacklist.");
+            }
         }
     }
 
@@ -221,6 +236,11 @@ class User extends ExtendedEloquent
         }
 
         return $list;
+    }
+
+    public function set_blacklist($blacklist)
+    {
+        $this->set_attribute('blacklist', json_encode($blacklist));
     }
 
 

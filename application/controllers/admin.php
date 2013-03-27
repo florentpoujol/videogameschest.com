@@ -302,7 +302,7 @@ class Admin_Controller extends Base_Controller
         );
 
         if ($action == 'add') {
-            $input['name'] = $profile_id;
+            $input['profile_names'] = $profile_id;
         } elseif ($action == 'delete') {
             $input['ids_to_delete'] = array($profile_id);
         }

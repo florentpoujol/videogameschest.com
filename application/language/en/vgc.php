@@ -70,6 +70,7 @@ return array(
         'msg' => array(
             'delete_success' => ':num :type profiles have successfully been deleted from your blacklist.',
             'add_success' => ':num :type profiles have successfully been added to your blacklist.',
+            'profile_name_or_id_not_found' => ":profile_type profile with name or id ':name' was not found.",
         ),
     ),
 
