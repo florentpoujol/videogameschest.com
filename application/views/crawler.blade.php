@@ -23,7 +23,7 @@ $profiles = array_merge(
 $actions = array(
     '' => 'Choose',
     'crawl' => 'Crawl',
-    'manually-added' => 'Mannually added',
+    'manually-added' => 'Manually added',
     'discard' => 'Discard',
     'delete' => 'DELETE',
 );
@@ -48,12 +48,13 @@ $actions = array(
     @foreach ($profiles as $profile)
         <tr>
             <td>{{ $profile->id }}</td>
-            <td> 
+            <td>
+                @{{ $profile->source_feed}} <br>
                 <a href="{{ $profile->url }}">
                 @if (strpos($profile->url, 'indiedb'))
-                    {{ ucfirst(url_to_name(str_replace("http://www.indiedb.com/games/", "", $profile->url))) }}
+                    {{ substr(ucfirst(url_to_name(str_replace("http://www.indiedb.com/games/", "", $profile->url))), 0, 40) }}
                 @else
-                    Click
+                    {{ substr($profile->url, 0, 40) }}
                 @endif
                 </a>
                 {{ Former::text('profiles['.$profile->id.'][url]', '')->value($profile->url) }}
