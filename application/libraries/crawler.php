@@ -19,9 +19,9 @@ class Crawler
         $game_url = '';
 
         // try to find the game name in the url
-        preg_match("#.+(/games/[^/]+)/?#", $url, $game_url);
-        if (isset($game_url[1])) {
-            $game_url = $game_url[1];
+        preg_match("#(/games/[^/]+)/?#", $url, $game_name);
+        if (isset($game_name[1])) {
+            $game_url = $game_name[1];
         } else {
             // fetch the new's related games
             $html = file_get_html($url);
@@ -145,12 +145,12 @@ class Crawler
                                     }
                                     break;
 
-                                case "boxshot" :
+                                /*case "boxshot" :
                                     $profile["screenshots"][] = array(
                                         'name' => "Boxshot",
                                         'url' => $row->find("img", 0)->src
                                     );
-                                    break;
+                                    break;*/
 
                                 case "platforms":
                                     $as = $row->find('span[class=summary] a');
@@ -381,6 +381,37 @@ class Crawler
                         'name' => $a->title,
                         'url' => $video_url[1],
                     );
+                }
+            }
+
+            // price (in a banner for Desura)
+            $desura_banner = $body->find("#desuraisawesome", 0);
+            if ($desura_banner !== null) {
+                $profile['links'][] = array(
+                    'name' => 'Play on Desura',
+                    'url' => str_replace("indiedb", "desura", $url),
+                );
+                $price = $desura_banner->find("span[class=desuratexttwo]", 0)->plaintext;
+                // price may be :
+                // Only 3,99€
+                // 50% off - now 3,99€
+                // The easiest way to play => free
+
+                if (strpos($price, "The easiest way to play") !== false) {
+                    $profile['price'] = 0;
+                } 
+                elseif (strpos($price, "Only") !== false) {
+                    preg_match("#([0-9,]+)#", $price, $price);
+                    if (isset($price[1])) $profile['price'] = $price[1];
+                } 
+                elseif (strpos($price, "now") !== false) {
+                    preg_match("#([0-9]+)%#", $price, $percentage);
+                    preg_match("#now ([0-9,]+)#", $price, $price);
+
+                    if (isset($percentage[1]) && isset($price[1])) {
+                        $percentage = (int)$percentage[1] / 100.0;
+                        $profile['price'] = (float)str_replace(',', '.', $price[1]) / $percentage;
+                    }
                 }
             }
         } // end Indie DB
