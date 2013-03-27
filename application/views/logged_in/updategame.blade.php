@@ -83,7 +83,7 @@ if (is_admin()) {
             </div>
 
             <div class="span4">
-                {{ Former::number('price', lang('vgc.game.price')) }}
+                {{ Former::number('price', lang('vgc.game.price'))->step('0.01') }}
             </div>
 
             <div class="span4">
