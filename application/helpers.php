@@ -107,6 +107,28 @@ function clean_names_urls_array($items)
 
     return $new_items;
 }
+/*
+// update the names urls array
+$games = Game::all();
+
+foreach ($games as $game) {
+    foreach (array('links', 'videos', 'screenshots') as $field) {
+        $new_data = array();
+        $data = $game->$field;
+        if (isset($data['names'])) {
+            foreach ($data['names'] as $i => $value) {
+                $new_data[] = array(
+                    'name' => $value,
+                    'url' => $data['urls'][$i],
+                );
+            }
+
+            $game->$field = $new_data;
+            $game->save();
+        }
+
+    }
+}*/
 
 
 /**

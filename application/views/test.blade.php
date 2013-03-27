@@ -8,10 +8,10 @@ $("#theid").colorbox({iframe:true, width:"400px", height:"200px"});
  */
 
 
-$url = "http://www.indiedb.com/games/piratehell";
+// $url = "http://www.indiedb.com/games/piratehell";
 
-$game = Crawler::make($url);
-// Game::create($game);
-var_dump($game);
+// $game = Crawler::make($url);
+// // Game::create($game);
+// var_dump($game);
 
 ?>
