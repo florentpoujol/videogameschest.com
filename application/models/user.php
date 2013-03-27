@@ -210,37 +210,17 @@ class User extends ExtendedEloquent
         return $this->get_attribute('username');
     }
 
-
     public function get_blacklist()
     {
         $list = json_decode($this->get_attribute('blacklist'), true);
-        
-        if (is_array($list)) {
-            foreach (Config::get('vgc.profile_types') as $type) {
-                $type .= 's';
+        if ( ! is_array($list)) $list = array();
 
-                if ( ! array_key_exists($type, $list)) {
-                    $list[$type] = array();
-                }
-            }
-
-            return $list;
-        }
-
-        return array('developers' => array(), 'games' => array());
-    }
-
-    public function set_blacklist($list)
-    {
         foreach (Config::get('vgc.profile_types') as $type) {
             $type .= 's';
-
-            if ( ! array_key_exists($type, $list)) {
-                $list[$type] = array();
-            }
+            if ( ! isset($list[$type])) $list[$type] = array();
         }
 
-        $this->set_attribute('blacklist', json_encode($list));
+        return $list;
     }
 
 
