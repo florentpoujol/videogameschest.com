@@ -1,5 +1,5 @@
 @section('page_title')
-    {{ lang('user.edit_title') }}
+    {{ lang('vgc.user.edit_title') }}
 @endsection
 
 <?php
@@ -11,13 +11,13 @@ $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
 ?>
 <div id="edituser">
-    <h1>{{ lang('user.edit_title') }} <small>{{ $user->username }}</small></h1>
+    <h1>{{ lang('vgc.user.edit_title') }} <small>{{ $user->username }}</small></h1>
 
     <hr>
 
     <ul class="nav nav-tabs" id="main-tabs">
-        <li><a href="#profile-pane" data-toggle="tab">{{ lang('common.profile') }}</a></li>
-        <li><a href="#blacklist-pane" data-toggle="tab">{{ lang('blacklist.title') }}</a></li>
+        <li><a href="#profile-pane" data-toggle="tab">{{ lang('vgc.common.profile') }}</a></li>
+        <li><a href="#blacklist-pane" data-toggle="tab">{{ lang('vgc.blacklist.title') }}</a></li>
     </ul>
 
     <div class="tab-content">
@@ -37,21 +37,21 @@ if ( ! empty($old)) Former::populate($old);
                             {{ Former::hidden('id', $user->id) }}
                         @endif
 
-                        {{ lang('user.id') }} : {{ $user->id }} <br>
+                        {{ lang('vgc.user.id') }} : {{ $user->id }} <br>
                         
                         <br>
 
-                        {{ Former::text('username', lang('common.name')) }}
+                        {{ Former::text('username', lang('vgc.common.name')) }}
 
-                        {{ Former::email('email', lang('common.email')) }}
+                        {{ Former::email('email', lang('vgc.common.email')) }}
 
-                        {{-- Former::text('url_key', 'Url key')->help(lang('user.url_key_help')) --}}
+                        {{-- Former::text('url_key', 'Url key')->help(lang('vgc.user.url_key_help')) --}}
 
                         @if (is_admin())
                             {{ Former::text('type', 'Account type')->help('"user," "developer" or "admin"') }}
                         @endif
 
-                        {{ Former::primary_submit(lang('user.edit_title')) }} 
+                        {{ Former::primary_submit(lang('vgc.user.edit_title')) }} 
                     {{ Former::close() }} 
                 </div>
 
@@ -76,9 +76,9 @@ if ( ! empty($old)) Former::populate($old);
 
                         {{ Former::password('password_confirmation', 'Password Confirmation') }}
 
-                        {{ Former::password('old_password', 'Old password')->help(lang('user.old_password_help')) }}
+                        {{ Former::password('old_password', 'Old password')->help(lang('vgc.user.old_password_help')) }}
 
-                        {{ Former::primary_submit(lang('user.edit_password')) }}     
+                        {{ Former::primary_submit(lang('vgc.user.edit_password')) }}     
                     {{ Former::close() }}
                 </div>
             </div>
@@ -92,33 +92,22 @@ if ( ! empty($old)) Former::populate($old);
 
             <hr>
             
-            <ul class="nav nav-tabs" id="blacklist-tabs">
-                @foreach (Config::get('vgc.profile_types') as $profile_type)
-                    <li><a href="#{{ $profile_type }}-pane" data-toggle="tab">{{ lang('common.'.$profile_type) }}</a></li>
-                @endforeach
-            </ul>
+            <?php
+            $rules = array('')
+            ?>
+            {{ Former::open_vertical(route('post_blacklist_update'))->rules($rules) }}    
+                {{ Form::token() }}
+                
+                @if (is_admin())
+                    {{ Former::hidden('user_id', $user->id) }}
+                @endif
 
-            <div class="tab-content">
                 <?php
-                $rules = array('')
+                $profile_list = $user->blacklist['games'];
+                $profile_type = "game";
                 ?>
-                @foreach (Config::get('vgc.profile_types') as $profile_type)
-                    <div class="tab-pane" id="{{ $profile_type }}-pane">
-                        {{ Former::open_vertical(route('post_blacklist_update'))->rules($rules) }}    
-                            {{ Form::token() }}
-                            
-                            @if (is_admin())
-                                {{ Former::hidden('id', $user->id) }}
-                            @endif
-
-                            <?php
-                            $profile_list = $user->blacklist[$profile_type.'s'];
-                            ?>
-                            @include('forms/profile_list')
-                        {{ Former::close() }}
-                    </div> <!-- /#{{ $profile_type }}-pane .tab-pane -->
-                @endforeach
-            </div> <!-- /.tab-content -->
+                @include('forms/profile_list')
+            {{ Former::close() }}
         </div> <!-- /#blacklist-pane .tab-pane -->
     </div> <!-- /.tab-content -->
 </div> <!-- /#edituser --> 

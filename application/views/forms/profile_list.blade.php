@@ -6,9 +6,9 @@
 
     {{ Former::hidden('profile_type', $profile_type) }}
 
-    {{ Former::text('name', lang('common.name'))->help(lang('common.profile_list_add_names_help'), array('profile_type' => $profile_type)) }}
+    {{ Former::text('profile_names', lang('vgc.common.name'))->help(lang('vgc.common.profile_list_add_names_help', array('profile_type' => $profile_type))) }}
 
-    <input type="submit" name="add" value="{{ lang('common.add_profile') }}" class="btn btn-success">
+    <input type="submit" name="add" value="{{ lang('vgc.common.add_profile') }}" class="btn btn-success">
 
     <hr>
 
@@ -16,8 +16,8 @@
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th>{{ lang('common.name') }}</th>
-                    <th><input type="submit" name="delete" value="{{ lang('common.delete') }}" class="btn btn-warning"></th>
+                    <th>{{ lang('vgc.common.name') }}</th>
+                    <th><input type="submit" name="delete" value="{{ lang('vgc.common.delete') }}" class="btn btn-warning"></th>
                 </tr>
             </thead>
 
@@ -27,7 +27,7 @@
                 ?>
                 <tr>
                     <td>
-                        <a href="{{ route('get_profile_view', array($profile->type, name_to_url($profile->name))) }}">{{ $profile->name }}</a> ({{ $profile->type }})
+                        <a href="{{ route('get_profile_view', array($profile->type, name_to_url($profile->name))) }}">{{ $profile->name }}</a>
                     </td>
                     
                     <td>
@@ -38,7 +38,7 @@
         </table>
     @else
         <p>
-            {{ lang('common.profile_list_empty', array('profile_type' => $profile_type)) }}
+            {{ lang('vgc.common.profile_list_empty', array('profile_type' => $profile_type)) }}
         </p>
     @endif
 </div>

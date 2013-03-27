@@ -154,7 +154,7 @@ return array(
         'profile_background' => 'Background image',
         'profile_background_help' => 'Background image for the profile\'s header. Max-height : 250px. Ideal min-width : 1000px.',
         'profile_blogfeed' => 'Latest articles',
-        'profile_list_add_names_help' => 'One or several (comma separated) :profile_type names or ids.',
+        'profile_list_add_names_help' => 'One or several (comma separated) :profile_type names.',
         'profile_list_empty' => 'No :profile_type to display',
         'publisher' => 'Publisher',
         'publisher_name' => 'Publisher\'s name',

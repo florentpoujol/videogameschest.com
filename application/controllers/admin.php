@@ -296,8 +296,8 @@ class Admin_Controller extends Base_Controller
         }
 
         $input = array(
-            'id' => $user_id,
-            'profile_type' => 'game',
+            'user_id' => $user_id,
+            'profile_type' => $profile_type,
             $action => '',
         );
 
