@@ -118,6 +118,9 @@ class User extends ExtendedEloquent
     }
 
 
+    /**
+     * 
+     */
     public static function updateBlacklist($input)
     {
         $user = User::find($input['id']);

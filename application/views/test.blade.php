@@ -14,4 +14,6 @@ $("#theid").colorbox({iframe:true, width:"400px", height:"200px"});
 // // Game::create($game);
 // var_dump($game);
 
+
 ?>
+<a href="{{ route('get_blacklist_update', array(user_id(), user()->url_key, 'add', 25))}}">click</a>

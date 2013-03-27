@@ -2,6 +2,8 @@
 
 class BlogPost extends ExtendedEloquent
 {
+    //----------------------------------------------------------------------------------
+    // CRUD METHODS
     public static function create($input)
     {
 
@@ -14,6 +16,10 @@ class BlogPost extends ExtendedEloquent
 
         return parent::create($input);
     }
+    
+
+    //----------------------------------------------------------------------------------
+    // GETTERS
     
     public function get_date()
     {

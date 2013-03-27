@@ -146,7 +146,7 @@ class Admin_Controller extends Base_Controller
 
     public function get_lostpassword_confirmation($user_id, $url_key)
     {
-        $user = User::where_id($user_id)->where_url_key($url_key)->where_activated(1)->first();
+        $user = User::where_id($user_id)->where_url_key($url_key)->first();
 
         if (is_null($user)) {
             $msg = lang('lostpassword.msg.confirmation_error', array(
@@ -277,6 +277,37 @@ class Admin_Controller extends Base_Controller
         if ( ! is_admin()) $input['id'] = user_id();
         User::updateBlacklist($input);
         return Redirect::to_route('get_user_update');
+    }
+
+    public function get_blacklist_update($user_id, $url_key, $action, $profile_id)
+    {
+        $profile_type = 'game';
+        $user = User::where_id($user_id)->where_url_key($url_key)->first();
+
+        if ($user === null) {
+            $msg = lang('vgc.user.msg.id_and_url_key_do_not_match', array(
+                'id' => $user_id,
+                'url_key' => $url_key,
+            ));
+            HTML::set_error($msg);
+            Log::write('user blacklist update error', $msg);
+
+            return Redirect::to_route('get_home_page');
+        }
+
+        $input = array(
+            'id' => $user_id,
+            'profile_type' => 'game',
+            $action => '',
+        );
+
+        if ($action == 'add') {
+            $input['name'] = $profile_id;
+        } elseif ($action == 'delete') {
+            $input['ids_to_delete'] = array($profile_id);
+        }
+
+        User::updateBlacklist($input);
     }
 
 
