@@ -1,12 +1,10 @@
 <html>
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="robots" content="noindex,nofollow">
+
     {{ HTML::style('css/bootstrap/bootstrap.min.css') }}
-    {{ HTML::style('css/font-awesome/font-awesome.min.css') }}
-    <!--[if IE 7]>
-    {{ HTML::style('css/font-awesome/font-awesome-ie7.min.css') }}
-    <![endif]-->
     {{ HTML::style('css/vgc/main.less', array('rel'=>'stylesheet/less')) }}
-    
 </head>
 <body id="colorbox-layout">
     @yield('colorbox_content')

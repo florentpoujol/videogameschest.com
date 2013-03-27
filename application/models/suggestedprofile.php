@@ -7,6 +7,7 @@ class SuggestedProfile extends ExtendedEloquent
 
     public static function create($input)
     {
+        if ( ! isset($input['statut'])) $input['statut'] = "waiting";
         $profile = parent::create($input);
 
         if ($profile->source == 'user') {

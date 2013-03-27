@@ -42,7 +42,8 @@
                 <li{{ $search }}><a href="{{ route('get_search_page') }}">{{ lang('vgc.search.title') }}</a></li>
                 <li{{ $browse }}><a href="{{ route('get_browse_page') }}">{{ lang('vgc.browse.title') }}</a></li>
                 <li{{ $discover }}><a href="{{ route('get_discover_page') }}">{{ lang('vgc.discover.title') }}</a></li>
-                <li><a href="{{ route('get_suggest_form') }}" id="suggest_form_link">{{ lang('vgc.suggest.menu_link') }}</a></li>
+                <li><a href="{{ route('get_suggest_page') }}" id="suggest_form_link">{{ lang('vgc.suggest.menu_link') }}</a></li>
+                <!-- <li><a href="{{ route('get_suggest_page_colorbox') }}" id="suggest_form_link">{{ lang('vgc.suggest.menu_link') }}</a></li> -->
                 
                 <!-- /general menu --> 
 

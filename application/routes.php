@@ -124,9 +124,13 @@ $layout = View::of('layout');
 
 
     // SUGGEST
-    Route::get('suggest', array('as' => 'get_suggest_form', function() use ($layout)
+    Route::get('suggest', array('as' => 'get_suggest_page', function() use ($layout)
     {
-        return View::make('forms/suggest');
+        return $layout->nest('page_content', 'suggest');
+    }));
+    Route::get('suggest_colorbox', array('as' => 'get_suggest_page_colorbox', function()
+    {
+        return View::make('suggest_colorbox');
     }));
 
 
@@ -137,6 +141,7 @@ $layout = View::of('layout');
     //VIEW PROFILE
     // see after must be logged in
     
+
     // REPORT FORM
     // for use by the colorbox
     Route::get('postreport/(:num)', array('as' => 'get_report_form', function($profile_id)
@@ -171,6 +176,10 @@ $layout = View::of('layout');
     }));
 
     Route::get('blog/feed', array('as' => 'get_blog_feed', 'uses' => 'feed@blog_feed'));
+
+    // USER BLACKLIST
+    // allow to update the blackilist via url
+    Route::get('user/(:num)/(:any)/updateblacklist/(add|delete)/(:num)', array('as' => 'get_blacklist_update', 'uses' => 'admin@blacklist_update'));
 
 
 
@@ -245,16 +254,17 @@ $layout = View::of('layout');
         // Suggest
         Route::post('suggest', array('as' => 'post_suggest', function()
         {
-            
-            $validation = Validator::make(Input::all(), array('url' => 'required|url'));
-
+            $url = Input::get('url');
+            $validation = Validator::make(Input::all(), array('url' => 'required|url|min:10'));
             if ($validation->passes()) {
-                $input = array(
-                    'url' => Input::get('url'),
-                    'source' => 'user',
-                );
-                
-                SuggestedProfile::create($input);
+                if (SuggestedProfile::where_url($url)->first() !== null) {
+                    HTML::set_error(lang('vgc.suggest.msg.url_already_suggested'));
+                } else {
+                    SuggestedProfile::create(array(
+                        'url' => $url,
+                        'source' => 'user',
+                    ));
+                }
             }
 
             return Redirect::back()->with_input()->with_errors($validation);

@@ -421,7 +421,7 @@ return array(
 
         'msg' => array(
             'confirmation_email_sent' => 'An email with a confirmation link has been sent to your email adress. Click the link in that email to generate a new temporary password.',
-            'confirmation_error' => 'Unable to generate a new password because no user account with id ":id" and url key ":url_key" has been found, or the user account is not activated.',
+            'confirmation_error' => 'Unable to generate a new password because no user account with id ":id" and url key ":url_key" has been found.',
             'new_password_success' => 'A new password has been successfully generated and sent to your email adress.',
 
         ),
@@ -748,11 +748,13 @@ return array(
 // SUGGEST
 
     'suggest' => array(
-        'form_help' => 'do something',
+        'title' => 'Suggest a game',
+        'form_help' => 'Just pass an url in the field below. It can be any link about the game you want to suggest (its website, its profile on a portal, an article about it, ...).',
         'menu_link' => 'Suggest a game',
 
         'msg' => array(
             'create_success' => 'Thank you for suggesting a game !',
+            'url_already_suggested' => 'Thanks you but this url has already been suggested.',
         ),
     ),
 
@@ -778,7 +780,8 @@ return array(
             'wrong_old_password' => 'The old password does not match your current password.',
             'update_success' => 'Your user account has successfully been updated.',
             'edituser_nametaken' => "Can't rename the user ':username' (id : :id) because the name ':newname' is already taken.",
-            'user_not_found' => "Sorry the user with id ':id' has not been found."
+            'user_not_found' => "Sorry the user with id ':id' has not been found.",
+            'id_and_url_key_do_not_match' => 'No user account with id ":id" and url key ":url_key" has been found',
         ),
 
     ),

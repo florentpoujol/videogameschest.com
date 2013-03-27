@@ -17,6 +17,8 @@
 - ajouter liens vers convertiseur de monnaie dans game form
 - vérif format date pour vérification du game form
 
+- refactorer code blacklist dans model + page user
+
 - critère de filtration sur la pag browse :
 	- blacklist
 	- nom asc-desc
@@ -24,8 +26,6 @@
 	- price asc desc
 	- date d'ajout
 		- voir s'il est possible de classer par plusieurs critères à la fois 
-
-- helper pour générer un lien colorbo ajax
 
 ============================================================
     DONE
