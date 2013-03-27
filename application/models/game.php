@@ -25,10 +25,11 @@ class Game extends Profile
             if (parent::where_name($input['name'])->first() != null) {
                 HTML::set_error(
                     lang('profile.msg.update_nametaken', array(
-                        'profile_type' => 'game',
-                        'name' => $game->name,
-                        'id' => $game->id,
-                        'newname' => $input['name'])
+                                                            'profile_type' => 'game',
+                                                            'name' => $game->name,
+                                                            'id' => $game->id,
+                                                            'newname' => $input['name']
+                                                        )
                     )
                 );
 
@@ -42,6 +43,15 @@ class Game extends Profile
         
         $game = parent::update($id, $input);
         return true;
+    }
+
+
+    //----------------------------------------------------------------------------------
+    // GETTERS
+
+    public function set_price($price)
+    {
+        $this->set_attribute('price', str_replace(",", ".", $price));
     }
 
 
@@ -81,7 +91,9 @@ class Game extends Profile
                 $attr = '[]'; // make sure $attr is a json array and not an empty string, so that json_decode return an array
             }
 
-            return json_decode($attr, true);
+            $data = json_decode($attr, true);
+            if ($data === null) $data = array();
+            return $data;
         }
 
         return XssSecure(parent::__get($key));
