@@ -11,11 +11,11 @@ class Crawler_Controller extends Base_Controller
     // read the rss feed then extract unknow games
     public function get_read_feed_urls() 
     {
-        $feed_urls = json_decode(DBConfig::get('crawler_feed_urls', '[]'), true);
+        $feed_urls = array(
+            "http://rss.indiedb.com/articles/feed/rss.xml",
+            "http://rss.slidedb.com/articles/feed/rss.xml",
 
-        if (empty($feed_urls)) {
-            HTML::set_error("No feed urls where found in the database.");
-        }
+        );
 
         foreach ($feed_urls as $url) {
             $feed = RSSReader::read($url);
@@ -31,10 +31,11 @@ class Crawler_Controller extends Base_Controller
                 $guid = $item['guid'];
 
                 if (SuggestedProfile::where_url($item_url)->first() === null && SuggestedProfile::where_guid($guid)->first() === null) {
+                    // IndieDB, SlideDB
                     if (strpos($item_url, 'edb.com') !== false && strpos($item_url, '/news/') !== false) {
                         // this a news from indiedb or slidedb
                         // need to get the url of the game instead of the news
-                        $relativ_game_url = Crawler::get_indiedb_profile_url_from_news($item_url);
+                        $relativ_game_url = Crawler::get_indiedb_game_url_from_news($item_url);
                         if ($relativ_game_url == '') continue; // the news was not about a game
                         $item_url = "http://www.indiedb.com".$relativ_game_url; // all slide db profile have an indie db profile
 
@@ -61,19 +62,6 @@ class Crawler_Controller extends Base_Controller
         return Redirect::to_route('get_crawler_page');
     }
 
-    // add a feed url in the config table
-    public function post_add_feed_url()
-    {
-        $db_entry = DBConfig::where('_key', '=', 'crawler_feed_urls')->first();
-        
-        $feed_urls = json_decode($db_entry->value, true);
-        $feed_urls[] = Input::get('feed_url');
-        
-        $db_entry->value = json_encode($feed_urls);
-        $db_entry->save();
-        
-        return Redirect::to_route('get_crawler_page');
-    }
 
     // action :
     // "discard" : the game is not woth adding to the list
@@ -103,7 +91,7 @@ class Crawler_Controller extends Base_Controller
         foreach ($profiles_to_crawl as $id => $profile) {
             $url = $profile['url'];
 
-            $profile_data = Crawler::crawl_game($url);
+            $profile_data = Crawler::make($url);
             $game = Game::create($profile_data);
 
             SuggestedProfile::update($id, array(

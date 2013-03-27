@@ -7,17 +7,6 @@ Crawler
 <hr>
 
 <p>
-    {{ Former::open_inline(route('post_crawler_add_feed_url')) }}
-        {{ Form::token() }}
-        Add a url to the RSS feed urls : 
-        {{ Former::text('feed_url', 'Add a url to the RSS feed urls') }}
-        {{ Former::submit() }}
-    {{ Former::close() }}
-    <ul>
-    @foreach (json_decode(DBConfig::get('crawler_feed_urls'), true) as $url)
-        <li>{{ $url }} </li>
-    @endforeach
-    </ul>
     <a href="{{ route('get_crawler_read_feed_urls') }}" class="btn btn-primary">Read the feeds</a> <br>
 </p>
 

@@ -7,38 +7,43 @@ class Crawler
         'meta_description' => '\<meta name="description" content="(.*)"',
     );
     
-    public static function crawl($profile_to_crawl)
+    public static function make($url)
     {
-        $link = $profile_to_crawl->url;
-        $profile_type = $profile_to_crawl->profile_type;
-
-        $func_name = "crawl_$profile_type";
-        return static::$func_name($link);
+        if (strpos($url, "indiedb.com") !== false) {
+            return static::crawl_indiedb($url);
+        }
     }
 
-
-    public static function get_indiedb_profile_url_from_news($url) {
+    // find the game RELATIVE url (/games/[name]) from a game news @indiedb
+    public static function get_indiedb_game_url_from_news($url) {
         $game_url = '';
 
-        $html = file_get_html($url);
-        $body = $html->find("body", 0);
-        $sidecolumn = $body->find("div[class=sidecolumn]", 0);
-        $boxes = $sidecolumn->find("div[class=normalbox]");
+        // try to find the game name in the url
+        preg_match("#.+(/games/[^/]+)/?#", $url, $game_url);
+        if (isset($game_url[1])) {
+            $game_url = $game_url[1];
+        } else {
+            // fetch the new's related games
+            $html = file_get_html($url);
+            $body = $html->find("body", 0);
+            $sidecolumn = $body->find("div[class=sidecolumn]", 0);
+            $boxes = $sidecolumn->find("div[class=normalbox]");
 
-        foreach ($boxes as $box) {
-            $heading = $box->find("div[class=title] span[class=heading]", 0);
-            
-            if (trim($heading->plaintext) == "Related Games") {
-                $row = $box->find("div[class=row]", 0);
-                $game_url = $row->find('a', 0)->href;
-                break;
+            foreach ($boxes as $box) {
+                $heading = $box->find("div[class=title] span[class=heading]", 0);
+                
+                if (trim($heading->plaintext) == "Related Games") {
+                    $row = $box->find("div[class=row]", 0);
+                    $game_url = $row->find('a', 0)->href;
+                    break;
+                }
             }
         }
 
         return $game_url;
     }
 
-    public static function crawl_game($url)
+    public static function crawl_indiedb($url)
     {
         // get the type of url
         $profile = array(

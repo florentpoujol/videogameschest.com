@@ -416,7 +416,6 @@ $layout = View::of('layout');
 
 
         // CRAWLER
-        Route::post('crawler_add_feed_url', array('as' => 'post_crawler_add_feed_url', 'uses' => 'crawler@add_feed_url'));
         Route::post('crawler_perform_actions', array('as' => 'post_crawler_perform_actions', 'uses' => 'crawler@perform_actions'));
     });
 
