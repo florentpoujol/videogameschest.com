@@ -11,7 +11,7 @@ class Search extends ExtendedEloquent
      * @param  array $input The search id, the array comming from the search form, or the array as json
      * @return Laravel\Database\Eloquent\Query or SearchError
      */
-    public static function make($input, $additional_criteria = null)
+    public static function make($input)
     {
         $search_id = 0;
         if (is_numeric($input)) {
@@ -20,51 +20,18 @@ class Search extends ExtendedEloquent
 
             if ( ! is_null($search)) $input = $search->data;
             else {
-                $msg = lang('search.msg.id_not_found', array('id'=>$input));
+                $msg = lang('vgc.search.msg.id_not_found', array('id'=>$input));
                 HTML::set_error($msg);
                 return new SearchError($msg);
             }
-        }
-
-        if (is_string($input)) {
-            // $input may be the search data as a json string,
-            // or a formula made of several search ids ("ID+ID-ID...")
-
+        } elseif (is_string($input)) {
+            // $input is the search data as a json string,
             $input = json_decode($input, true);
-            // if $input is null, it was not a json string
 
-            if ($input === null && (strpos($input, "+") !== false || strpos($input, "-") !== false)) {
-                $matches = array("+" => array(), "-" => array());
-                $j = 0;
-                $sign = "+";
-
-                for ($i = 0; $i < strlen($searches); $i++) {
-                    $char = $searches[$i];
-                    if ($char == " ") continue;
-
-                    if ($char == "+" || $char == "-") {
-                        $sign = $char;
-                        $j++;
-                        continue;
-                    }
-
-                    if ( ! isset($matches[$sign][$j])) $matches[$sign][$j] = "";
-                    if (is_numeric($char)) $matches[$sign][$j] .= $char;
-                }
-                
-                $matches["+"] = array_values($matches["+"]);
-                $matches["-"] = array_values($matches["-"]);
-
-                //
-                $plus = array();
-                foreach ($matches["+"] as $search_id) {
-                    $plus[] = static::process_search($search_id);
-                }
-
-                $minus = array();
-                foreach ($matches["-"] as $search_id) {
-                    $minus[] = static::process_search($search_id);
-                }
+            if ($input === null) {
+                $msg = "Error with search input '$input'";
+                HTML::set_error($msg);
+                return new SearchError($msg);
             }
         }
 
@@ -77,7 +44,7 @@ class Search extends ExtendedEloquent
      * @param  array $input The array comming from the search form or the database
      * @return Laravel\Database\Eloquent\Query or SearchError
      */
-    public static function process_search($search_id, $input, $additional_criteria = null) {
+    public static function process_search($input, $search_id) {
         
         // profile type
         if ( ! isset($input['profile_type'])) $input['profile_type'] = 'game';
@@ -85,7 +52,7 @@ class Search extends ExtendedEloquent
 
         if ( ! in_array($profile_type, get_profile_types())) {
             Log::write('search error', "Wrong class '$profile_type' for search id='$search_id'");
-            HTML::set_error(lang('common.msg.error'));
+            HTML::set_error(lang('vgc.common.msg.error'));
             return new SearchError("Wrong class '$profile_type' for search id='$search_id'");
         }
 
@@ -157,53 +124,17 @@ class Search extends ExtendedEloquent
             }
         })
 
-        // And Additional criteria
-        ->where(function($query) use ($additional_criteria)
-        {
-            if (is_array($additional_criteria)) {
-                if ( ! isset($additional_criteria['where']) && ! isset($additional_criteria['or_where'])) {
-                    $additional_criteria = array('where' => $additional_criteria); 
-                }
-
-                foreach ($additional_criteria as $where_mode => $criteria) {
-                    $query->$where_mode(function($query) use ($criteria)
-                    {
-                        if ( ! isset($criteria[0])) { // $criteria is an assoc array
-                            $old_criteria = $criteria;
-                            $criteria = array();
-
-                            foreach ($old_criteria as $key => $value) {
-                                $criteria[] = array(
-                                    'where_mode' => 'where',
-                                    'field' => $key,
-                                    'comparison' => '=',
-                                    'value' => $value,
-                                );
-                            }
-                        }
-
-                        foreach ($criteria as $criterion) {
-                            if ( ! isset($criterion['where_mode'])) $criterion['where_mode'] = 'where';
-
-                            $query->$criterion['where_mode']($criterion['field'], $criterion['comparison'], $criterion['value']);
-                        }
-                    });
-                }
-            }
-        })
+        
         ;
     }
     
 
-
     /**
-     * Check if a search exists
-     * @param  mixed  $search The search id, or search data as array or json
-     * @return mixed     null if the search does not exists, or the Search model
+     * @param  mixed $search The search id, or search data as array or json
+     * @return Search The Search model, or null
      */
     public static function get($search) 
-    {   
-        // if search is a search id
+    {
         if (is_numeric($search)) {
             $search = parent::find($search);
         } else {
@@ -218,7 +149,6 @@ class Search extends ExtendedEloquent
     {   
         // if search is a search id
         $search = static::get($search);
-
         if (is_null($search)) return false;
         else return true;
     }
@@ -227,12 +157,13 @@ class Search extends ExtendedEloquent
      * Add a search in the DB if it does not exists yet
      * Returns the search id
      * @param  mixed $data The search input (array or json)
-     * @return id       The search id
+     * @return Search The search model
      */
     public static function create($data)
     {
         if (is_array($data)) {
-            // removes entry in array_fields_where when same key in array_field in not there
+            // removes entry in array_fields_where when same key is in array_field in not there
+            // 27/03/2013 ??????
             foreach ($data['array_fields_where'] as $field => $value) {
                 if ( ! isset($data['array_fields'][$field])) {
                     unset($data['array_fields_where'][$field]);
@@ -336,3 +267,40 @@ class SearchError
         });
     }
 }*/
+
+/*
+// And Additional criteria
+        ->where(function($query) use ($additional_criteria)
+        {
+            if (is_array($additional_criteria)) {
+                if ( ! isset($additional_criteria['where']) && ! isset($additional_criteria['or_where'])) {
+                    $additional_criteria = array('where' => $additional_criteria); 
+                }
+
+                foreach ($additional_criteria as $where_mode => $criteria) {
+                    $query->$where_mode(function($query) use ($criteria)
+                    {
+                        if ( ! isset($criteria[0])) { // $criteria is an assoc array
+                            $old_criteria = $criteria;
+                            $criteria = array();
+
+                            foreach ($old_criteria as $key => $value) {
+                                $criteria[] = array(
+                                    'where_mode' => 'where',
+                                    'field' => $key,
+                                    'comparison' => '=',
+                                    'value' => $value,
+                                );
+                            }
+                        }
+
+                        foreach ($criteria as $criterion) {
+                            if ( ! isset($criterion['where_mode'])) $criterion['where_mode'] = 'where';
+
+                            $query->$criterion['where_mode']($criterion['field'], $criterion['comparison'], $criterion['value']);
+                        }
+                    });
+                }
+            }
+        })
+        */
