@@ -314,6 +314,7 @@ $layout = View::of('layout');
     Route::get(get_profile_types(true).'/(:any)', array('as' => 'get_profile_view', 'uses' => 'admin@profile_view'));
 
 
+
 //----------------------------------------------------------------------------------
 //  MUST BE LOGGED IN AND LEGIT POST
 //----------------------------------------------------------------------------------

@@ -99,8 +99,8 @@ if ( ! isset($preview_profile)) $preview_profile = false;
             $('i[rel=popover]').popover();
 
             // suggest form link in the menu
-            $("#suggest_form_link").colorbox({iframe:true, width:"400px", height:"200px"});
-            $(".colorbox-iframe").colorbox({iframe:true, width:"400px", height:"200px"});
+            $("#suggest_form_link").colorbox({iframe:true, width:"600px", height:"600px"});
+            $(".colorbox-iframe").colorbox({iframe:true, width:"600px", height:"600px"});
 
             // per page jquery
             @yield('jQuery')

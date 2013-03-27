@@ -148,6 +148,8 @@ return array(
         'pitch' => 'Pitch',
         'presskit' => 'Press Kit',
         'preview_profile_modifications' => 'Preview modifications',
+        'price' => 'Price',
+        'price_free' => 'Free',
         'profile' => 'Profile',
         'profile_background' => 'Background image',
         'profile_background_help' => 'Background image for the profile\'s header. Max-height : 250px. Ideal min-width : 1000px.',
@@ -158,6 +160,7 @@ return array(
         'publisher_name' => 'Publisher\'s name',
         'publisher_url' => 'Publisher\'s website',
 
+        'release_date' => 'Release date',
         'report_profile_link' => 'Report this profile',
         'reviews' => 'Reviews',
 
@@ -330,10 +333,10 @@ return array(
     'game' => array(
         
         'pitch' => 'The game in a few sentenses :',
-        'price' => 'Price',
+        'price_help' => 'Price in US dollars. <a href="">Convert your price in $US here</a>.',
         
         'release_date' => 'Release date',
-        'release_date_help' => 'day/month/year',
+        'release_date_help' => 'Allowed format : Day/Month/Year',
         'country' => 'Developer\'s nationality',
 
 
@@ -479,6 +482,9 @@ return array(
 // PROFILE
 
     'profile' => array(
+
+        'profile_select' => 'Select the :profile_type to update',
+        'profile_select_placeholder' => 'Name or ID',
 
         'update_help' => 'Every text fields needs to be reviewed by an administrator everytimes you update them. The modification of those fields will not be visible by everyone before they are reviewed. <br>
         You can preview how the profile looks with the modifications by clicking on the "Preview modifications" link above. You still need to save the modifications by validating the form with the "Update" button before they become visible.',
