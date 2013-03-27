@@ -37,7 +37,9 @@ return array(
             'name' => 'required|alpha_dash_extended|min:2|unique:games',
             'developer_name' => 'alpha_dash_extended|min:2',
             'developer_url' => 'url',
-            'price' => 'min:0.00',
+            'price' => 'min:0',
+            'release_date' => 'date_format:d/m/Y',
+
         ),
     ),
 
@@ -47,7 +49,8 @@ return array(
             'name' => 'required|alpha_dash_extended|min:2',
             'developer_name' => 'alpha_dash_extended|min:2',
             'developer_url' => 'url',
-            'price' => 'min:0.00',
+            'price' => 'min:0',
+            'release_date' => 'date_format:d/m/Y',
         ),
 
     ),
