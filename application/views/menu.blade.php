@@ -55,11 +55,6 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu">
-                            @if (is_admin())
-                                <li><a href="{{ route('get_blog_post_create') }}">{{ lang('vgc.blog.write_post') }}</a></li>
-                                <li class="divider"></li>
-                            @endif
-
                             <li><a href="{{ route('get_user_update') }}">{{ icon('edit') }} {{ lang('vgc.admin.menu.edit_user_account') }}</a></li>
                             <li class="divider"></li>
                             
@@ -72,12 +67,13 @@
                                 <li class="divider"></li>
                             @endforeach
 
-
                             @if (is_admin())
+                                <li><a href="{{ route('get_blog_post_create') }}">{{ lang('vgc.blog.write_post') }}</a></li>
+                                <li><a href="{{ route('get_crawler_page') }}">Crawler</a></li>
                                 <li><a href="{{ route('get_review') }}">{{ lang('vgc.review.title') }}</a></li>
                             @endif
                             @if ( ! empty(user()->devs) || ! empty(user()->games) || is_admin())
-                                <li><a href="{{ route('get_reports') }}">{{ icon('list-alt') }} {{ lang('vgc.reports.title') }}</a></li>
+                                <li><a href="{{ route('get_reports') }}">{{ lang('vgc.reports.title') }}</a></li>
                                 <li class="divider"></li>
                             @endif
                             
