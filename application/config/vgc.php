@@ -75,7 +75,8 @@ return array(
 
     'user_types' => array('user', 'admin'),
 
- 
+    'currency_converter_url' => 'http://www.xe.com/currencyconverter/',
+
 
 // form
 
@@ -139,7 +140,7 @@ return array(
         'ps4',
         "psp",
         "psvita",
-        
+
         "surface",
         "wii",
         "wiiu",

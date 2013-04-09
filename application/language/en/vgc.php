@@ -334,7 +334,7 @@ return array(
     'game' => array(
         
         'pitch' => 'The game in a few sentenses :',
-        'price_help' => 'Price in US dollars. <a href="">Convert your price in $US here</a>.',
+        'price_help' => 'Price in US dollars. <a href=":currency_converter_url">Convert your price in $US here</a>.',
         
         'release_date' => 'Release date',
         'release_date_help' => 'Allowed format : Day/Month/Year',

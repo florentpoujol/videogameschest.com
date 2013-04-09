@@ -65,7 +65,7 @@ if (is_admin()) {
             </div>
 
             <div class="span4">
-                {{ Former::text('price', lang('vgc.common.price'))->help(lang('vgc.game.price_help')) }}
+                {{ Former::text('price', lang('vgc.common.price'))->help(lang('vgc.game.price_help', array('currency_converter_url' => Config::get('vgc.currency_converter_url')))) }}
             </div>
 
             <div class="span4">
