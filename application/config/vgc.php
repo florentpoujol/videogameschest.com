@@ -82,7 +82,11 @@ return array(
     "languages" => array(
         "chinese",
         "english",
+        "french",
+        "german",
+        "italian",
         "japonese",
+        "spanish",
         "russian",
         
     ),
@@ -135,10 +139,12 @@ return array(
         'ps4',
         "psp",
         "psvita",
+        
+        "surface",
         "wii",
         "wiiu",
-        "windowsphonetablet",
-        "windowsphonesmartphone",
+        "windowstablet",
+        "windowssmartphone",
         "xbox360",
         "xperiaplay",
         "xperiasmartphone"
@@ -194,7 +200,7 @@ return array(
     ),
 
     'periods' => array( 
-        "fantasy",
+        
         "mythology",
         "medieval",
         "western",
@@ -238,23 +244,26 @@ return array(
     "tags" => array(
         "3d",
         "casual",
+        'crowdfunded',
+        "fantasy",
+        'fuckthisjam',
         "fun",
+        'globalgamejam',
         "hardcore",
         "leveleditor",
-        "physics",
-        "sidescrolling",
-        "turnbased",
-        "realtime",
-        "topdown",
-        
-        "onegameamonth",
         'ludumdare',
-        'globalgamejam',
-        'fuckthisjam',
-        
         "mafia",
+        "onegameamonth",
+        "physics",
+        "postapocalyptic",
+        "sidescrolling",
         "steampunk",
         "tactical",
+        "topdown",
+        "turnbased",
+        "realtime",
+        
+        
     ),
 
 

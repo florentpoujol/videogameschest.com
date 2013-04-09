@@ -635,14 +635,7 @@ return array(
         Once this is done you will be able to browse or discover the profiles that matches your categories criteria. <br>
         <br>
         Your categories have a unique identifier which is just a number by defult (its ID), but you may give them a name instead. <br>
-        Ba advised that if you are not a registered user, the name is stored on your computer with a cookie.',
-
-        /*<br>
-        <br>
-        The categories you create automatically gets a unique identifier that you can [remplacer] by a name instead
-
-        your category will have its unique identifier',
-        'search_page_quick_help' => 'For a quick search, just fill the form then hit the "Browse" button',*/
+        Be advised that if you are not a logged-in user, the name is stored on your computer with a cookie.',
 
 
         'search_page_indepth_link' => 'Learn more for an advanced use of searches',
@@ -870,10 +863,12 @@ return array(
         'ps4' => 'PlayStation 4',
         'psp' => 'PSP',
         'psvita' => 'PS Vita',
+        'steambox' => 'Steambox',
+        'surface' => 'Surface',
         'wii' => 'Wii',
         'wiiu' => 'Wii U',
-        'windowsphonetablet' => 'Windows Phone Tablet',
-        'windowsphonesmartphone' => 'Windows Phone Smartphone',
+        'windowstablet' => 'Windows Tablet',
+        'windowssmartphone' => 'Windows Smartphone',
         'xbox360' => 'xBox 360',
         'xperiaplay' => 'Xperia Play',
         'xperiasmartphone' => 'Xperia Smartphone',
@@ -893,6 +888,8 @@ return array(
         'stencyl' => 'Stencyl',
         'adventuregamestudio' => 'Adventure Games Studio',
         'air' => 'Adobe AIR',
+        'construct' => 'Construct',
+        'cocos2d' => 'Cocos 2D',
         'craftstudio' => 'CraftStudio',
         'cryengine' => 'Cry Engine',
         'custom' => 'Custom-built/In-house',
@@ -966,6 +963,8 @@ return array(
         'realist' => 'Realist',
         'minimalist' => 'Minimalist',
         'celshading' => 'Cel Shading',
+        'horror' => 'Horror',
+        'gore' => 'Gore',
     ),
 
 // PERIODS
@@ -975,13 +974,13 @@ return array(
         'help' => 'When is the action supposed to take palce. No need to check any boxes if the game is timeless.',
 
         'mythology' => 'Mythology',
-        'fantasy' => 'Fantasy',
+        
         'medieval' => 'Medieval',
         'cartoon' => 'Cartoon',
         'futuristic' => 'Futuristic',
         'futuristic_help' => 'Up until a hundred year or so from now. After that, Sci-fi is more appropriate.',
         'modern' => 'Modern',
-        'scifi' => 'Sci-fi',
+        'sci-fi' => 'Sci-fi',
         'western' => 'Western',
         'twentycentury' => '20th century',
         'twentycentury_help' => 'Include the Wold War I and WWII',
@@ -1004,6 +1003,7 @@ return array(
         'sport' => 'Sport',
         'strategy' => 'Strategy',
         'citybuilding' => 'City Building',
+        'party' => 'Party game',
         'pointandclick' => 'Point-and-Click',
         'resources' => 'Resources Management',
         'roguelike' => 'Rogue-like',
@@ -1033,23 +1033,28 @@ return array(
     'tags' => array(
         'title' => 'Tags',
 
+
         '3d' => '3D',
         'casual' => 'Casual',
-        'fun' => 'Fun',
-        'hardcore' => 'Hardcore',
-        'leveleditor' => 'Level Editor',
-        'physics' => 'Physics',
-        'sidescrolling' => 'Side-Scrolling',
-        'turnbased' => 'Turn-Based',
-        'topdown' => 'Top-Down',
         'crowdfunded' => 'Crowdfunded',
-        "onegameamonth" => 'One Game A Month',
-        'ludumdare' => 'Ludum Dare',
-        'globalgamejam' => 'Global Game Jam',
+        'fantasy' => 'Fantasy',
         'fuckthisjam' => 'Fuck this Jam',
+        'fun' => 'Fun',
+        'globalgamejam' => 'Global Game Jam',
+        'hardcore' => 'Hardcore',
         'horror' => 'Horror',
+        'leveleditor' => 'Level Editor',
+        'ludumdare' => 'Ludum Dare',
         'mafia' => 'Mafia',
+        "onegameamonth" => 'One Game A Month',
+        'physics' => 'Physics',
+        'postapocalyptic' => 'Post-Apocalyptic',
+        'realtime' => 'Real time',
+        'sidescrolling' => 'Side-Scrolling',
         'steampunk' => 'Steampunk',
+        'tactical' => 'Tactical',
+        'topdown' => 'Top-Down',
+        'turnbased' => 'Turn-Based',
     ),
 
 );
