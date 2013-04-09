@@ -5,6 +5,8 @@ return array(
     'automatic_email_from' => 'noreply@videogameschest.com',
     'automatic_email_from_name' => 'The VideoGamesChest mailer',
 
+    'currency_converter_url' => 'http://www.xe.com/currencyconverter/',
+
     "date_formats" => array(
         "date_sql" => "Y-m-d",
         "datetime_sql" => "Y-m-d H:i:s",
@@ -30,6 +32,7 @@ return array(
         'common' => array('name', 'developer_name', 'developer_url', 'pitch', 'links', 'screenshots', 'videos', ),
     ),
 
+    'profile_pitch_length' => 500,
 
 
     'profiles_post_create_rules' => array(
@@ -50,7 +53,7 @@ return array(
             'developer_name' => 'alpha_dash_extended|min:2',
             'developer_url' => 'url',
             'price' => 'min:0',
-            'release_date' => 'date_format:d/m/Y',
+            'release_date' => 'date_format:Y-m-d',
         ),
 
     ),
@@ -75,7 +78,7 @@ return array(
 
     'user_types' => array('user', 'admin'),
 
-    'currency_converter_url' => 'http://www.xe.com/currencyconverter/',
+    
 
 
 // form

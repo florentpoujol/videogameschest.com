@@ -411,7 +411,7 @@ class Admin_Controller extends Base_Controller
     public function post_profile_update($profile_type) 
     {
         $input = Input::all();
-
+        
         if ( ! is_admin()) {
             // check that $input['id'] is one of the user's game profiles
             $forged = true;

@@ -337,7 +337,7 @@ return array(
         'price_help' => 'Price in US dollars. <a href=":currency_converter_url">Convert your price in $US here</a>.',
         
         'release_date' => 'Release date',
-        'release_date_help' => 'Allowed format : Day/Month/Year',
+        'release_date_help' => 'Format : year-month-day',
         'country' => 'Developer\'s nationality',
 
 
