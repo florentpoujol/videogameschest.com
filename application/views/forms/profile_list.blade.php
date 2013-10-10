@@ -23,7 +23,7 @@
 
             @foreach ($profile_list as $profile)
                 <?php
-                if (is_numeric($profile)) $profile = $profile_type::find($profile);
+                if (is_numeric($profile)) $profile = Profile::find($profile);
                 ?>
                 <tr>
                     <td>

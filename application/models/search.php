@@ -86,7 +86,7 @@ class Search extends ExtendedEloquent
 
 
         // proceed...
-        return $profile_type::
+        return Profile::
         where(function($query) use ($words_where_mode, $search_words_in)
         {
             // words
@@ -106,7 +106,7 @@ class Search extends ExtendedEloquent
             // array fields
             foreach ($array_fields as $field => $values) {
                 
-                if (in_array($field, $profile_type::$array_fields)) {
+                if (in_array($field, Profile::$array_fields)) {
                     
                     $query->where(function($query) use ($array_fields, $array_fields_where, $field, $values)
                     {

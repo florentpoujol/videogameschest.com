@@ -25,45 +25,29 @@ return array(
       'city', 'create_preview_version'),
 
 
+    // used by helper lang()
     'language_files' => array('vgc', 'emails'),
 
-  
-    // field that needs an admin review before their update is approved
-    // 'profile_fields_to_review' => array(
-    //     'common' => array('name', 'developer_name', 'developer_url', 'pitch', 'links', 'screenshots', 'videos', ),
-    // ),
 
     'profile_pitch_length' => 500,
 
 
     'profiles_post_create_rules' => array(
-        'name' => 'required|alpha_dash_extended|min:2|unique:games',
-        'developer_name' => 'alpha_dash_extended|min:2',
-        'developer_url' => 'url',
-        'price' => 'min:0',
+        'name' => 'required|alpha_dash_extended|min:2',
         'release_date' => 'date_format:d/m/Y',
     ),
 
 
     'profiles_post_update_rules' => array(
         'name' => 'required|alpha_dash_extended|min:2',
-        'developer_name' => 'alpha_dash_extended|min:2',
-        'developer_url' => 'url',
-        'price' => 'min:0',
         'release_date' => 'date_format:Y-m-d',
     ),
 
-
-    // 'profile_types' => array('game'),
 
     'privacy' => array('private', 'public'),
 
     'recaptcha_private_key' => '6LeL59wSAAAAAPHo33Qt8iyf71Mf0U-QGET3IlhE',
     'recaptcha_public_key' =>  '6LeL59wSAAAAAPd08fVY9Fq1loW04p0kldVFqsWS',
-
-    /*"site_languages" => array(
-        "english",
-    ),*/
 
     'social' => array(
         'twitter_url' => 'https://twitter.com/videogameschest',
@@ -71,9 +55,6 @@ return array(
         'google+_url' => 'https://plus.google.com/104684794332555704876',
     ),
 
-    // 'user_types' => array('user', 'admin'),
-
-    
 
 
 // form

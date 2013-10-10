@@ -208,27 +208,11 @@ function lang($key, $replacements = array(), $language = null)
         $default_string = $replacements;
         $replacements = array();
     }
-
-    $default_language = Config::get('application.language', 'en');
-    // if the language is not set, look in the session first
-    // then look in the config, or in last resort default to 'en'
-    if (is_null($language)) $language = Session::get('language', $default_language);
     
     $key_parts = explode('.', $key);
     if ( ! in_array($key_parts[0], Config::get('vgc.language_files'))) $key = 'vgc.'.$key;
 
-    $string = Lang::line($key, $replacements, $language)->get();
-
-    if ($string == $key) {
-        // if the key is not found in the current language, look for it the default language
-        $string = Lang::line($key, $replacements, $default_language)->get();
-
-        if ($string == $key) {
-            // then if it is still not found, look for the 'language_key_not_found' key in the current language,
-            if (isset($default_string)) $string = $default_string;
-            else $string = "[language key '$key' not found]";
-        }
-    }
+    $string = Lang::line($key, $replacements, 'en')->get();
     
     return $string;
 }

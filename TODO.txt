@@ -52,7 +52,10 @@ Enter tags like : like http://harvesthq.github.io/chosen/
 + a wall of tags that the user can click to add to the list
 
 Tags are stored in the DB in their own table, one tag + the number of profile that use it on two field
-or are stored as one entry in the config table as json table key=tag value=nb profiles
+
+The profile keeps tags in a tags collumn, as a JSON array of ids (tags ids)
+OR
+use laravel's many to many relationship
 
 
 ==========
@@ -66,3 +69,6 @@ Remove
 
 
 Upgrade to Laravel 4
+Upgrade to Bootstrap 3
+
+- éditeur de tags dans l'admin (table tags dans bdd, Tag model)

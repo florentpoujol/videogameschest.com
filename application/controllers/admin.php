@@ -241,45 +241,6 @@ class Admin_Controller extends Base_Controller
         return Redirect::to_route('get_user_update', array($user->id));
     }
 
-    public function post_blacklist_update()
-    {
-        $input = Input::all();
-        if ( ! is_admin()) $input['id'] = user_id();
-        User::updateBlacklist($input);
-        return Redirect::to_route('get_user_update');
-    }
-
-    public function get_blacklist_update($user_id, $url_key, $action, $profile_id)
-    {
-        $profile_type = 'game';
-        $user = User::where_id($user_id)->where_url_key($url_key)->first();
-
-        if ($user === null) {
-            $msg = lang('vgc.user.msg.id_and_url_key_do_not_match', array(
-                'id' => $user_id,
-                'url_key' => $url_key,
-            ));
-            HTML::set_error($msg);
-            Log::write('user blacklist update error', $msg);
-
-            return Redirect::to_route('get_home_page');
-        }
-
-        $input = array(
-            'user_id' => $user_id,
-            'profile_type' => $profile_type,
-            $action => '',
-        );
-
-        if ($action == 'add') {
-            $input['profile_names'] = $profile_id;
-        } elseif ($action == 'delete') {
-            $input['ids_to_delete'] = array($profile_id);
-        }
-
-        User::updateBlacklist($input);
-    }
-
 
     //----------------------------------------------------------------------------------
     // ADD PROFILE
@@ -316,7 +277,6 @@ class Admin_Controller extends Base_Controller
         if (is_numeric($name)) {
             if (Profile::find($name) === null) {
                 HTML::set_error(lang('profile.msg.profile_not_found', array(
-                    'profile_type' => '',
                     'field_name' => 'id',
                     'field_value' => $id,
                 )));
@@ -328,7 +288,6 @@ class Admin_Controller extends Base_Controller
             
             if ($profile === null) {
                 HTML::set_error(lang('profile.msg.profile_not_found', array(
-                    'profile_type' => '',
                     'field_name' => 'name',
                     'field_value' => $name,
                 )));
@@ -342,10 +301,6 @@ class Admin_Controller extends Base_Controller
 
     public function get_profile_update($profile_id = null)
     {
-        if ( ! is_admin()) {
-            return Redirect::to_route('get_home');
-        }
-
         if ($profile_id == null) {
             $this->layout->nest('page_content', 'forms/profile_select');
             return;
@@ -355,16 +310,10 @@ class Admin_Controller extends Base_Controller
 
         if ($profile === null) {
             HTML::set_error(lang('profile.msg.profile_not_found', array(
-                'profile_type' => '',
                 'field_name' => 'id',
                 'field_value' => $profile_id
             )));
 
-            return Redirect::to_route('get_profile_update');
-        }
-
-        if ( ! is_admin() && $profile->user_id != user_id()) {
-            HTML::set_error(lang('common.msg.edit_other_users_profile_not_allowed'));
             return Redirect::to_route('get_profile_update');
         }
 
@@ -375,125 +324,44 @@ class Admin_Controller extends Base_Controller
     {
         $input = Input::all();
         
-        if ( ! is_admin()) {
-            // check that $input['id'] is one of the user's game profiles
-            $forged = true;
-            foreach (user()->{$profile_type} as $profile) {
-                if ($profile->id == $input['id']) $forged = false;
-            }
-
-            if ($forged) { // a user try to edit a dev profile which does not own
-                HTML::set_error(lang('common.msg.edit_other_users_proile_not_allowed'));
-                return Redirect::back();
-            }
-        }
 
         // checking form
-        $rules = Config::get('vgc.profiles_post_update_rules.'.$profile_type);
+        $rules = Config::get('vgc.profiles_post_update_rules');
         $validation = Validator::make($input, $rules);
         
         if ( ! $validation->passes() || ! Profile::update($input['id'], $input)) {
             Input::flash();
-            return Redirect::to_route('get_profile_update', array($profile_type, $input['id']))->with_errors($validation);
+            return Redirect::to_route('get_profile_update', array($input['id']))->with_errors($validation);
         }
 
-        return Redirect::to_route('get_profile_update', array($profile_type, $input['id']));
+        return Redirect::to_route('get_profile_update', array($input['id']));
     }
 
 
     //----------------------------------------------------------------------------------
     // VIEW PROFILE
-    
-    public function get_profile_preview($profile_id)
-    {
-        $profile = Profile::find($profile_id);
-        $preview_profile = $profile->preview_profile;
 
-        if ($preview_profile === null) {
-            HTML::set_error("Preview profile not found for $profile_type profile '".$profile->name."' (id='".$profile->id."').");
-            return Redirect::to_route('get_home_page');
-        }
-
-        if (is_admin() || $profile->user_id == user_id()) {
-            $profile->update_with_preview_data();
-
-            $this->layout
-            ->with('preview_profile', true) // for the layout
-            ->with('profile', $profile)
-            ->nest('page_content', $profile_type, array('profile' => $profile, 'preview' => true));
-        } else {
-            HTML::set_error(lang('common.msg.access_not_allowed'));
-            return Redirect::to_route('get_home_page');
-        }
-    }
-
-    public function get_profile_view($name = null)
+    public function get_profile_view($profile_id = null)
     {        
-        if ($name == 'create') {
-            return $this->get_profile_create($profile_type);
-        }
-
-        if (is_numeric($name)) {
-            $profile = Profile::find($name);
-            return Redirect::to_route('get_profile_view', array($profile_type, name_to_url($profile->name)));
-        }
-
-        $profile = Profile::where_name(url_to_name($name))->first();
-
+        $profile = Profile::find($id);
+        
         if (is_null($profile)) {
-            $field_name = 'name';
-            if (is_numeric($name)) $field_name = 'id';
-
             HTML::set_error(lang('profile.msg.profile_not_found', array(
-                'type' => $profile_type,
-                'field_name' => $field_name,
-                'field_value' => $name
+                'field_name' => 'id',
+                'field_value' => $profile_id
             )));
 
-            return Redirect::to_route('get_search_page');
+            return Redirect::to_route('get_home_page');
         }
 
-        if ($profile->privacy == 'public' || is_admin() || $profile->user_id == user_id()) {
+        if ($profile->is_public || is_admin()) {
             $this->layout
             ->with('profile', $profile)
-            ->nest('page_content', $profile_type, array('profile' => $profile));
+            ->nest('page_content', 'profile', array('profile' => $profile));
         } else {
-            HTML::set_error(lang('common.msg.access_not_allowed', array('page' => $profile_type.' profile '.$name)));
-            return Redirect::to_route('get_search_page');
+            HTML::set_error(lang('common.msg.access_not_allowed', array('page' => ' profile '.$profile_id)));
+            return Redirect::to_route('get_home_page');
         }
-    }
-
-
-    //----------------------------------------------------------------------------------
-    // REVIEWS
-
-    public function get_review($review = null)
-    {
-        $this->layout->nest('page_content', 'logged_in/review');
-    }
-
-    public function post_review()
-    {
-        $input = Input::all();
-
-        if ( ! isset($input['approved_profiles'])) $input['approved_profiles'] = array();
-
-        $num = 0;
-        foreach ($input['approved_profiles'] as $profile_type => $approved_profiles) {
-            foreach ($approved_profiles as $id) {
-                Profile::find($id)->passed_review();
-                $num++;
-            }
-        }
-
-        if ($num > 0) {
-            HTML::set_success(lang('review.msg.profiles_approved', array('num' => $num)));
-
-            Log::write('admin success review',
-            user()->type." '".user()->name."' (id='".user_id()."') has approved $num profiles in review.");
-        }
-        
-        return Redirect::back();
     }
 
 

@@ -170,24 +170,12 @@ $layout = View::of('layout');
 
 
 //----------------------------------------------------------------------------------
-//  MUST BE LOGGED IN + view profile
+//  MUST BE LOGGED IN
 //----------------------------------------------------------------------------------
 
     Route::group(array('before' => 'auth'), function()
     {
-        Route::get('user', function()
-        {
-            return Redirect::to_route('get_user_update'); // no regular profile user
-        });
-        Route::get('user/update/(:num?)', array('as' => 'get_user_update', 'uses' => 'admin@user_update'));
-
-        Route::get('logout', array('as' => 'get_logout', 'uses' => 'admin@logout'));
         
-        Route::get('profiles/create', array('as' => 'get_profile_create', 'uses' => 'admin@profile_create'));
-        Route::get('profiles/update/(:num?)', array('as' => 'get_profile_update', 'uses' => 'admin@profile_update'));
-        Route::get('profiles/preview/(:num)', array('as' => 'get_profile_preview', 'uses' => 'admin@profile_preview'));
-
-        Route::get('reports', array('as' => 'get_reports', 'uses' => 'admin@reports'));
     });
 
 
@@ -198,16 +186,7 @@ $layout = View::of('layout');
 
     Route::group(array('before' => 'auth|csrf'), function()
     {
-        Route::post('user/update', array('as' => 'post_user_update', 'uses' => 'admin@user_update'));
-        Route::post('user/updatepassword', array('as' => 'post_password_update', 'uses' => 'admin@password_update'));
         
-        // get_profile_types(true) returns something like "(developer|game)"
-        // it is used here to pass the profile type as argument of the method that handle the post request
-        Route::post('profiles/select', array('as' => 'post_profile_select', 'uses' => 'admin@profile_select'));
-        Route::post('profiles/create', array('as' => 'post_profile_create', 'uses' => 'admin@profile_create'));
-        Route::post('profiles/update', array('as' => 'post_profile_update', 'uses' => 'admin@profile_update'));
-       
-        Route::post('reports/update', array('as' => 'post_reports_update', 'uses' => 'admin@reports_update'));
     });
 
 
@@ -218,7 +197,20 @@ $layout = View::of('layout');
 
     Route::group(array('before' => 'auth|is_admin'), function() use ($layout)
     {
+        Route::get('user', function()
+        {
+            return Redirect::to_route('get_user_update'); // no regular profile user
+        });
         Route::get('user/create', array('as' => 'get_user_create', 'uses' => 'admin@user_create'));
+        Route::get('user/update/(:num?)', array('as' => 'get_user_update', 'uses' => 'admin@user_update'));
+
+        Route::get('logout', array('as' => 'get_logout', 'uses' => 'admin@logout'));
+        
+        Route::get('profiles/create', array('as' => 'get_profile_create', 'uses' => 'admin@profile_create'));
+        Route::get('profiles/update/(:num?)', array('as' => 'get_profile_update', 'uses' => 'admin@profile_update'));
+        Route::get('profiles/preview/(:num)', array('as' => 'get_profile_preview', 'uses' => 'admin@profile_preview'));
+
+        Route::get('reports', array('as' => 'get_reports', 'uses' => 'admin@reports'));
         Route::get('review', array('as' => 'get_review', 'uses' => 'admin@review'));
 
         Route::get('testadmincontroller/(:num)', array('as' => 'get_testadmin_controller', 'uses' => 'discover@FeedData'));
@@ -251,7 +243,16 @@ $layout = View::of('layout');
     Route::group(array('before' => 'auth|is_admin|csrf'), function()
     {
         Route::post('user/create', array('as' => 'post_user_create', 'uses' => 'admin@user_create'));
+        Route::post('user/update', array('as' => 'post_user_update', 'uses' => 'admin@user_update'));
+        Route::post('user/updatepassword', array('as' => 'post_password_update', 'uses' => 'admin@password_update'));
+        
         Route::post('review', array('as' => 'post_review', 'uses' => 'admin@review'));
+
+        Route::post('profiles/select', array('as' => 'post_profile_select', 'uses' => 'admin@profile_select'));
+        Route::post('profiles/create', array('as' => 'post_profile_create', 'uses' => 'admin@profile_create'));
+        Route::post('profiles/update', array('as' => 'post_profile_update', 'uses' => 'admin@profile_update'));
+       
+        Route::post('reports/update', array('as' => 'post_reports_update', 'uses' => 'admin@reports_update'));
 
         // CRAWLER
         Route::post('crawler_perform_actions', array('as' => 'post_crawler_perform_actions', 'uses' => 'crawler@perform_actions'));

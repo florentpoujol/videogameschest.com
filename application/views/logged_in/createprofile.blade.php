@@ -1,75 +1,41 @@
 @section('page_title')
-    {{ lang('vgc.game.add.title') }}
+    {{ lang('profile.add.title') }}
 @endsection
 <?php
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
 
-if (is_admin()) {
-    $privacy = array_set_values_as_keys(Config::get('vgc.privacy'));
-}
 ?>
-<div id="addgame" class="profile-form create-profile-form">
-    <h1>{{ lang('vgc.game.add.title') }}</h1>
+<div id="addprofile" class="profile-form create-profile-form">
+    <h1>{{ lang('profile.add.title') }}</h1>
 
     <hr>
 
     <?php
-    $rules = Config::get('vgc.profiles_post_create_rules.game', array());
+    $rules = Config::get('profiles_post_create_rules', array());
     ?>
-    {{ Former::open_vertical(route('post_profile_create', array('game')))->rules($rules) }} 
+    {{ Former::open_vertical(route('post_profile_create'))->rules($rules) }} 
         {{ Form::token() }}
 
-        {{ Former::primary_submit(lang('vgc.common.add_profile')) }}
+        {{ Former::primary_submit(lang('common.add_profile')) }}
 
         <hr>
 
-        @if (is_admin())
-            {{ Former::select('privacy')->options($privacy) }}
-
-            <hr>
-        @endif
-
         <div class="row">
             <div class="span4">
-                {{ Former::text('name', lang('vgc.common.name')) }}
+                {{ Former::text('name', lang('common.name')) }}
             </div> 
         </div>
 
-        <div class="row">
-
-            <div class="span4">
-                {{ Former::text('developer_name', lang('vgc.common.developer_name')) }}
-            </div>
-
-            <div class="span4">
-                {{ Former::url('developer_url', lang('vgc.common.developer_url'))->placeholder(lang('vgc.common.url')) }}
-            </div>
-
-            <div class="span4">
-                <?php
-                $countries = array_merge(
-                    array('' => lang('vgc.common.select_first_option')),
-                    get_array_lang(Config::get('vgc.countries'), 'countries.')
-                );
-                ?>
-                {{ Former::select('country', lang('vgc.game.country'))->options($countries) }}
-            </div>
-        </div> <!-- /.row -->
-
         <hr>
 
         <div class="row">
             <div class="span4">
-                {{ Former::textarea('pitch', lang('vgc.game.pitch')) }}
+                {{ Former::textarea('description', lang('profile.pitch')) }}
             </div>
 
             <div class="span4">
-                {{ Former::text('price', lang('vgc.common.price'))->help(lang('vgc.game.price_help', array('currency_converter_url' => Config::get('vgc.currency_converter_url')))) }}
-            </div>
-
-            <div class="span4">
-                {{ Former::date('release_date', lang('vgc.game.release_date'))->help(lang('vgc.game.release_date_help')) }}
+                {{ Former::date('release_date', lang('profile.release_date'))->help(lang('profile.release_date_help')) }}
             </div>
         </div> <!-- /.row -->
 
@@ -77,41 +43,18 @@ if (is_admin()) {
 
         <div class="row">
             <div class="span6">
-                <!-- array items -->
-                <div class="tabbable tabs-left">
-                    <ul class="nav nav-tabs nav-stacked" id="array-fields-tabs">
-                        @foreach (Game::$array_fields as $field)
-                            <li><a href="#{{ $field }}" data-toggle="tab">{{ lang($field.'.title') }}</a></li>
-                        @endforeach
-                    </ul>
-
-                    <div class="tab-content">
-                        <?php
-                        foreach (Game::$array_fields as $field):
-                            if (isset($old[$field])) $values = $old[$field];
-                            else $values = array();
-                        ?>
-                            <div class="tab-pane" id="{{ $field }}">
-                                <p>{{ lang($field.'.help', '') }}</p>
-
-                                {{ array_to_checkboxes($field, $values) }}
-                            </div>
-                        @endforeach
-                    </div>
-                </div> <!-- /.tabbable -->
-                <!-- /array items -->
+                Tags <br>
             </div>
-
+            
             <div class="span6">
                 <ul class="nav nav-tabs" id="medias-tabs">
-                    <li><a href="#links" data-toggle="tab">{{ lang('vgc.common.links') }}</a></li>
-                    <li><a href="#screenshots" data-toggle="tab">{{ lang('vgc.common.screenshots') }}</a></li>
-                    <li><a href="#videos" data-toggle="tab">{{ lang('vgc.common.videos') }}</a></li>
+                    <li><a href="#links" data-toggle="tab">{{ lang('common.links') }}</a></li>
+                    <li><a href="#medias" data-toggle="tab">{{ lang('common.medias') }}</a></li>
                 </ul>
 
                 <div class="tab-content">
                     <?php
-                    $nu_text = array('links', 'screenshots', 'videos');
+                    $nu_text = array('links', 'medias');
                     foreach ($nu_text as $field):
                         if (isset($old[$field])) $values = clean_names_urls_array($old[$field]);
                         else $values = array();
@@ -119,9 +62,9 @@ if (is_admin()) {
                         <div class="tab-pane" id="{{ $field }}">
                             <p>
                                 @if ($field == 'links')
-                                    {{ lang('vgc.links.form_help') }} <br> <br>
+                                    {{ lang('links.form_help') }} <br> <br>
                                 @endif
-                                {{ lang('vgc.common.text_url_delete_help') }}
+                                {{ lang('common.text_url_delete_help') }}
 
                             </p>
 
@@ -131,8 +74,8 @@ if (is_admin()) {
                                     $name = isset($values[$i]) ? $values[$i]['name'] : '';
                                     $url = isset($values[$i]) ? $values[$i]['url'] : '';
                                     ?>
-                                    {{ Former::text($field.'['.$i.'][name]', '')->value($name)->placeholder(lang('vgc.common.title')) }} 
-                                    {{ Former::url($field.'['.$i.'][url]', '')->value($url)->placeholder(lang('vgc.common.url')) }}
+                                    {{ Former::text($field.'['.$i.'][name]', '')->value($name)->placeholder(lang('common.title')) }} 
+                                    {{ Former::url($field.'['.$i.'][url]', '')->value($url)->placeholder(lang('common.url')) }}
                                 </div>
                             @endfor
                         </div> <!-- /.tab-pane -->
@@ -143,13 +86,12 @@ if (is_admin()) {
 
         <hr>
 
-        {{ Former::primary_submit(lang('vgc.common.add_profile')) }}
+        {{ Former::primary_submit(lang('common.add_profile')) }}
 
     {{ Former::close() }}
 </div> <!-- /#addgame --> 
 
 @section('jQuery')
-// from addgame
-$('#array-fields-tabs a:first').tab('show');
+// from addprofile
 $('#medias-tabs a:first').tab('show');
 @endsection

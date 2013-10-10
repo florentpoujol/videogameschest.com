@@ -131,8 +131,8 @@ return array(
         'profile_background' => 'Background image',
         'profile_background_help' => 'Background image for the profile\'s header. Max-height : 250px. Ideal min-width : 1000px.',
         'profile_blogfeed' => 'Latest articles',
-        'profile_list_add_names_help' => 'One or several (comma separated) :profile_type names.',
-        'profile_list_empty' => 'No :profile_type to display',
+        'profile_list_add_names_help' => 'One or several (comma separated) profile names.',
+        'profile_list_empty' => 'No profile to display',
         'publisher' => 'Publisher',
         'publisher_name' => 'Publisher\'s name',
         'publisher_url' => 'Publisher\'s website',
@@ -271,20 +271,46 @@ return array(
             'screenshots_help' => 'Click on them to view in full size',
         ),
 
+        'profile_select' => 'Select the profile to update',
+        'profile_select_placeholder' => 'Name or ID',
+
+        'update_help' => 'Every text fields needs to be reviewed by an administrator everytimes you update them. The modification of those fields will not be visible by everyone before they are reviewed. <br>
+        You can preview how the profile looks with the modifications by clicking on the "Preview modifications" link above. You still need to save the modifications by validating the form with the "Update" button before they become visible.',
+
+        'pitch_help' => '',
+
+        'more_infos' => "More infos",
+        "more_links" => "More links",
+        'more_medias' => "More medias",
+
 
         'msg' => array(
-            'addgame_success' => "The profile with name ':name' (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
-            'editgame_success' => "The profile with name ':name' (id : :id) has successfully been updated.",
+            'add_success' => "The profile with name ':name' (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
+            'edit_success' => "The profile with name ':name' (id : :id) has successfully been updated.",
 
-            'select_editgame_id_not_found' => "No profile with id ':id' was found.",
-            'select_editgame_name_not_found' => "No profile with name ':name' was found.",
+            'select_edit_id_not_found' => "No profile with id ':id' was found.",
+            'select_edit_name_not_found' => "No profile with name ':name' was found.",
 
             'profile_not_found' => "No profile with id ':id' was found.",
 
-            'editgame_nametaken' => "Can't rename the profile with name ':name' (id : :id) because the name ':newname' is already taken.",
+            'edit_nametaken' => "Can't rename the profile with name ':name' (id : :id) because the name ':newname' is already taken.",
+
+
+
+            'creation_success' => "The profile with name ':name' (id=:id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
+            
+            'profile_not_found' => "No profile with :field_name ':field_value' was found.",
+
+            'update_nametaken' => "Can't rename the profile with name ':name' (id : :id) because the name ':newname' is already taken.",
+            'update_success' => "The profile with name ':name' (id=:id) has successfully been updated.",
+
+            'many_relationship_add_success' => "You successfully added :count :rel_profile_type profiles in the relationship with your :updated_profile_type profile ':name' (id=:id).",
+
+            'many_relationship_delete_success' => "You successfully deleted :count :rel_profile_type profiles from the relationship with your :updated_profile_type profile ':name' (id=:id).",
         ),
 
     ), // end of profile
+
 
 // HOME
 
@@ -393,36 +419,6 @@ return array(
         'register' => 'Register',
     ),
 
-// PROFILE
-
-    'profile' => array(
-
-        'profile_select' => 'Select the :profile_type to update',
-        'profile_select_placeholder' => 'Name or ID',
-
-        'update_help' => 'Every text fields needs to be reviewed by an administrator everytimes you update them. The modification of those fields will not be visible by everyone before they are reviewed. <br>
-        You can preview how the profile looks with the modifications by clicking on the "Preview modifications" link above. You still need to save the modifications by validating the form with the "Update" button before they become visible.',
-
-        'pitch_help' => '',
-
-        'more_infos' => "More infos",
-        "more_links" => "More links",
-        'more_medias' => "More medias",
-
-
-        'msg' => array(
-            'creation_success' => "The :profile_type profile with name ':name' (id=:id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
-            
-            'profile_not_found' => "No :profile_type profile with :field_name ':field_value' was found.",
-
-            'update_nametaken' => "Can't rename the :profile_type profile with name ':name' (id : :id) because the name ':newname' is already taken.",
-            'update_success' => "The :profile_type profile with name ':name' (id=:id) has successfully been updated.",
-
-            'many_relationship_add_success' => "You successfully added :count :rel_profile_type profiles in the relationship with your :updated_profile_type profile ':name' (id=:id).",
-
-            'many_relationship_delete_success' => "You successfully deleted :count :rel_profile_type profiles from the relationship with your :updated_profile_type profile ':name' (id=:id).",
-        ),
-    ),
 
 // REPORTS
 

@@ -1,5 +1,5 @@
 @section('page_title')
-    {{ lang('vgc.reports.title') }}
+    {{ lang('reports.title') }}
 @endsection
 
 <div class="reports">
@@ -8,7 +8,7 @@
     <hr>
 
     <p>
-        <a href="{{ route('get_reports_feed', array(user_id(), user()->url_key)) }}" title="{{ lang('vgc.reports.rss_feed') }}">{{ icon('rss') }} {{ lang('vgc.reports.rss_feed') }}</a>
+        <a href="{{ route('get_reports_feed', array(user_id(), user()->url_key)) }}" title="{{ lang('reports.rss_feed') }}">{{ icon('rss') }} {{ lang('reports.rss_feed') }}</a>
     </p>
 
     <?php  
@@ -29,15 +29,14 @@
                 <thead>
                     <tr>
                         <th>{{ lang('common.date') }}</th>
-                        <th>{{ lang('vgc.reports.table.profile') }}</th>
-                        <th>{{ lang('vgc.reports.table.message') }}</th>
-                        <th>{{ Former::warning_submit(lang('vgc.reports.table.delete')) }}</th>
+                        <th>{{ lang('reports.table.profile') }}</th>
+                        <th>{{ lang('reports.table.message') }}</th>
+                        <th>{{ Former::warning_submit(lang('reports.table.delete')) }}</th>
                     </tr>
                 </thead>
 
                 @foreach ($reports as $report)
                     <?php
-                    $profile_type = $report->profile->type;
                     $profile_name = $report->profile->name;
                     ?>
                     <tr>
@@ -46,7 +45,7 @@
                         </td>
 
                         <td>
-                            <a href="{{ route('get_profile_view', array($profile_type, name_to_url($profile_name))) }}">{{ $profile_name }}</a>
+                            <a href="{{ route('get_profile_view', array($report->profile->id))) }}">{{ $profile_name }}</a>
                         </td>
 
                         <td class="span5">
@@ -61,6 +60,6 @@
             </table>
         </form>
     @else
-        {{ lang('vgc.reports.no_report') }}
+        {{ lang('reports.no_report') }}
     @endif
 </div> <!-- /#reports -->

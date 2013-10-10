@@ -8,7 +8,8 @@ if ( ! isset($page_title)) {
 if ( ! isset($page_content)) $page_content = '';
 $page_content .= Section::yield('page_content');
 
-if ( ! isset($preview_profile)) $preview_profile = false;
+$is_profile_public = true;
+if (isset($profile)) $is_profile_public = $profile->is_public;
 ?><!DOCTYPE html>
 <html lang="en"> 
     <!-- ENVIRONEMENT : {{ Config::get('vgc.environment') }} -->
@@ -18,7 +19,7 @@ if ( ! isset($preview_profile)) $preview_profile = false;
         <!-- Meta --> 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         
-        @if (Config::get('vgc.environment') == 'production' && $preview_profile == false)
+        @if (Config::get('vgc.environment') == 'production' && $is_profile_public)
             <meta name="robots" content="index,follow">
             <?php
             $meta_description = lang('vgc.common.site_meta_description');
