@@ -1,33 +1,12 @@
-============================================================
-    MILESTONE
-------------------------------------------------------------
+==========
+IDEAS
 
 
+==========
+TODO
 
-============================================================
-    TODO to milestone
-------------------------------------------------------------
+Remove
+- blog
+- localization choice, hardcode english as default and only language but keep using language files
 
-
-- voir pour group colobox
-
-- vérif format date pour vérification du game form
-
-- ajouter lien ajout profil dans blacklist dans menu + profil non solo
-
-- critère de filtration sur la pag browse :
-    - blacklist
-    - nom asc-desc
-    - release date asc desc
-    - price asc desc
-    - date d'ajout
-        - voir s'il est possible de classer par plusieurs critères à la fois 
-
-============================================================
-    DONE
-------------------------------------------------------------
-
-- formulaire report,avec un seul bouton
-- ajouter profils à blacklist par url
-- supprimer notion de combiner search id
-- ajouter liens vers convertiseur de monnaie dans game form
+Upgrade to Laravel 4
