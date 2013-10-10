@@ -68,8 +68,8 @@ function array_to_checkboxes($field_name, $values = null, $name = null)
 
 
 /**
- * Remove from the $input
- * usually called from a model
+ * Remove some keys from the $input array
+ * usually called from a model to removes keys added by a form but nt needed nor wanted by the models and DB
  * @param  array $input The input array (often the)
  * @param  array $sup_attrs Supplementary attributes to remove from the înput array
  * @return array        The cleaned input
@@ -79,7 +79,8 @@ function clean_form_input($input, $supl_attributes = array())
     $attributes_to_clean = Config::get('vgc.form_attributes_to_clean');
     $attributes_to_clean = array_merge($attributes_to_clean, $supl_attributes);
     
-    foreach ($attributes_to_clean as $attr) unset($input[$attr]);
+    foreach ($attributes_to_clean as $attr) 
+        unset($input[$attr]);
 
     return $input;
 }
@@ -107,28 +108,6 @@ function clean_names_urls_array($items)
 
     return $new_items;
 }
-/*
-// update the names urls array
-$games = Game::all();
-
-foreach ($games as $game) {
-    foreach (array('links', 'videos', 'screenshots') as $field) {
-        $new_data = array();
-        $data = $game->$field;
-        if (isset($data['names'])) {
-            foreach ($data['names'] as $i => $value) {
-                $new_data[] = array(
-                    'name' => $value,
-                    'url' => $data['urls'][$i],
-                );
-            }
-
-            $game->$field = $new_data;
-            $game->save();
-        }
-
-    }
-}*/
 
 
 /**
@@ -165,54 +144,6 @@ function get_assoc_array($array)
 }
 
 
-function get_category_name($search_id)
-{
-    if (is_guest()) {
-        $names = json_decode(Cookie::get('vgc_category_names', '{}'), true);
-    } else {
-        $names = user()->category_names;
-        if ($names != '') $names = json_decode($names, true);
-        else $names = array();
-    }
-
-    if (isset($names[$search_id])) return $names[$search_id];
-    return null;
-}
-
-function get_category_id($name)
-{
-    if (is_guest()) {
-        $names = json_decode(Cookie::get('vgc_category_names', '{}'), true);
-    } else {
-        $names = user()->category_names;
-        if ($names != '') $names = json_decode($names, true);
-        else $names = array();
-    }
-
-    foreach ($names as $id => $_name) {
-        if ($name == $_name) return $id;
-    }
-    
-    return null;
-}
-
-
-function get_language()
-{
-    return Session::get('language', Config::get('language', 'en'));
-}
-
-
-function get_profile_types($regex_style = false)
-{
-    $profile_types = Config::get('vgc.profile_types', array());
-    
-    if ($regex_style) {
-        $profile_types = '('.implode('|', $profile_types).')';
-    }
-
-    return $profile_types;
-}
 
 /**
  * Return the html to display an icon, whether a glyphicon or a custom icon

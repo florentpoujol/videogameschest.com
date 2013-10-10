@@ -10,7 +10,7 @@ $page_content .= Section::yield('page_content');
 
 if ( ! isset($preview_profile)) $preview_profile = false;
 ?><!DOCTYPE html>
-<html lang="{{ LANGUAGE }}"> 
+<html lang="en"> 
     <!-- ENVIRONEMENT : {{ Config::get('vgc.environment') }} -->
     <head>
         <title>{{ $page_title }} - VideoGamesChest.com</title>
@@ -42,8 +42,6 @@ if ( ! isset($preview_profile)) $preview_profile = false;
         {{ Asset::container('colorbox')->styles() }}
         @yield('cssfiles')
         <!-- /CSS -->
-
-        <link rel="alternate" href="{{ route('get_blog_feed') }}" title="Blog feed" type="application/rss+xml">
     </head>
     
     <body>
@@ -70,7 +68,6 @@ if ( ! isset($preview_profile)) $preview_profile = false;
 
                 <div class="span3 offset5">
                     <p>
-                        <a href="{{ route('get_blog_feed') }}" title="Blog feed">{{ icon('rss', null, 27) }}</a> 
                         <a href="{{ Config::get('vgc.social.twitter_url') }}" title="Follow us on Twitter">{{ icon('twitter', null, 30) }}</a> 
                         <a href="{{ Config::get('vgc.social.facebook_url') }}" title="Like us on Facebook">{{ icon('facebook', null, 30) }}</a>
                         <a href="{{ Config::get('vgc.social.google+_url') }}" title="Add us on Google+">{{ icon('google+', null, 26) }}</a>

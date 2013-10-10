@@ -59,30 +59,6 @@ return array(
         ),
     ),
 
-// BLACKLIST
-
-    'blacklist' => array(
-        'title' => 'Blacklist',
-
-        'help' => 'The blacklist is a list of profiles that you are not interested in. It\'s another level of filtering available to registered users who can remove the profiles in the blacklist from the browsed profiles or the discovery feed or newsletter.',
-
-
-        'msg' => array(
-            'delete_success' => ':num :type profiles have successfully been deleted from your blacklist.',
-            'add_success' => ':num :type profiles have successfully been added to your blacklist.',
-            'profile_name_or_id_not_found' => ":profile_type profile with name or id ':name' was not found.",
-        ),
-    ),
-
-// BLOG
-
-    'blog' => array(
-        'title' => 'Blog',
-        'write_post' => 'Write a blog post',
-        'update_post' => 'Edit a blog post',
-        'latest_articles' => 'Latest articles',
-    ),
-
 // BROWSE
 
     'browse' => array(
@@ -221,113 +197,6 @@ return array(
         ),
     ),
 
-// DISCOVER
-
-    'discover' => array(
-        
-
-        'title' => 'Discover',
-        'subtitle' => 'profiles you are really interested about',
-
-        'home_text' => 'Too busy to <a href=":search_link">search for what you like</a> ? <br>
-        Then just sit at your computer and wait for <strong>the profiles you are interested in</strong> to drop in your inbox or your favorite syndication feed reader. <br>
-        <br>
-        You can subscribe to a <strong>fully customisable</strong> feed or newsletter whose sole purpose is to promote you with games or any profiles on VGC.
-        ',
-
-
-        'page_text' => 'Instead of browsing all the profiles you are interesting in right now, you can get a slice of them periodically via a <strong>fully customizable</strong> RSS feed or newsletter.',
-
-        /*
-        'What if instead of browsing all the profiles you are interesting in right now, you get a slice of them periodically in your inbox or your favorite feed reader ? <br>
-        <br>
-        That\'s what you can do right here, you can subscribe to an RSS feed or a newsletter which you can fully customize.'
-         */
-        
-        /*'page_text' => 'You can certainly find dosens of games to play each week from your social media feeds or the press. But you will probably play only to a fraction of those. <br> 
-        The thruth is that <strong>most of those games are just not relevant to you</strong>, because you don\'t have the device or you don\'t like the genre or how they looks. Doesn\'t it feels like wasted time and opportunities ?<br>
-        <br>
-        Instead, VGC allows you to sit at your computer and just wait for <strong>the profiles you are interested in</strong> to drop in your inbox or your favorite syndication feed reader. <br>
-        <br>
-        You can subscribe below to a <strong>fully customisable</strong> feed or newsletter whose sole purpose is to promote you with the kind of games (or any profiles) <strong>you choose</strong> to be promoted with. <br>
-        You control How, When How much, and What :
-        ',*/
-
-        'page_learn_more_text' => '<strong>Feed or E-mail</strong> <br>
-        Depending on your preferencies, you may choose if your are promoted via an RSS feed or via email. <br>
-        <br>
-        <strong>Frequency</strong> <br>
-        You get to choose the frequency at which a post in the feed or an email is issued.<br>
-        <br>
-        <strong>Profile Count</strong> <br>
-        You also get to choose how many profiles are displayed in each entries/email. <br>
-        If the number of profiles that could be displayed after being filtered by the search and the blacklist is superior to this number, the profiles that made it to the entry/email are chosen randomly amongs them. <br>
-        <br>
-        <strong>Search ID</strong> <br>
-        Each searches that you can perform via <a href=":search_url" title="Go to the search form">the search form</a> has a unique ID with which you must fill the appropriate field below. <br>
-        It will makes the content of the feed entry or email match that search so that you are promoted only with <strong>content that match your criteria</strong>. <br>
-        <br>
-        <strong>Blacklist</strong> <br>
-        Even throught some profiles matches your criteria, you might not be interested in every single one of them, or you already poccess some of them. Either case, you don\'t want to be promoted for thoses profiles. <br>
-        That\'s why registered users may filter the promoted content again with a blacklist of profiles that you can edit on your "Edit User" page. If you choose to "Use your blacklist" by checking the checkbox below, the profiles that you put in the blacklist won\'t be displayed in the promoted content, leaving room for undiscovered awesomeness. <br>
-        ',
-
-
-        'feed_title' => 'Feed',
-        'email_title' => 'Newsletter',
-
-        'form' => array(
-
-            'frequency' => 'Frequency',
-            'frequency_help' => 'This is the time interval, in hours, between each posts in the feed or each e-mail (min : 12, max : 744). <br>
-            A week = 168 hours.',
-
-            'profile_count' => 'Profile count',
-            'profile_count_help' => 'The number of profiles that are displayed in each posts in the feed or each e-mail.',
-
-            'search_id' => 'Search ID',
-            'search_id_help' => 'Remember that you may combine search IDs as described on the Seach page to get a more custom set of profiles.',
-
-            'use_blacklist' => 'Remove the profiles from my blacklist',
-            'blacklist_help' => '<a href=":blacklist_link" title="Edit your blacklist">Edit your blacklist</a>.',
-
-            'blacklist_guest_help' => 'The blacklist is another level of filtering that <a href=":register_link" title="Create a user account">registered users only</a> can benefits from. The profiles you put in your blacklist will not be displayed. ',
-
-
-            'feed' => array(
-                'help' => 'The feed url is always the same for registered users. <br>',
-                'help_url' => 'Your feed url is : <a href=":feed_url" title="Feed url for user :username">:feed_url</a>',
-                'submit' => 'Get this feed\'s URL',
-                'title' => 'Feed',
-                'type' => 'Format of the syndication feed',
-            ),
-
-            'email' => array(
-                'email_help' => 'That\'s you user account email. You must log out if you want to use another email adress.',
-                'help' => 'Once subscribed, you will be able to edit your preferencies or unsubscribe via a link you can find in all e-mails you will get.',
-                'submit' => 'Subscribe',
-                'title' => 'Newsletter',
-            ),
-        ),
-
-        'msg' => array(
-            // feeed
-            'create_feed_success' => 'You successfully created a promotion feed. The url should be displayed below.',
-            'update_feed_success' => 'You successfully updated your promotion feed. The feed URL has not changed.',
-            'feed_url' => 'Your feed url is : :feed_url',
-
-            // email
-            'email_id_key_no_match' => 'The provided newsletter id and url key do not match any promotion newsletter subscription.',
-
-            'email_subscription_success' => 'You successfully subscribed to the promotion newsletter. You will receive a confirmation email soon.',
-            'email_update_success' => 'You successfully updated your promotion newsletter',
-            'email_unsubscription_success' => 'You successfully unsubscribed from the promotion newsletter.',
-
-
-
-        ),
-
-    ),
 
 // GAME 
 
@@ -372,6 +241,50 @@ return array(
         ),
 
     ), // end of game
+
+// PROFILE
+
+    'profile' => array(
+        
+        'pitch' => 'The game in a few sentenses :',
+        'price_help' => 'Price in US dollars. <a href=":currency_converter_url">Convert your price in $US here</a>.',
+        
+        'release_date' => 'Release date',
+        'release_date_help' => 'Format : year-month-day',
+        'country' => 'Developer\'s nationality',
+
+
+        'add' => array(
+            'title' => 'Add a profile',
+            'submit' => 'Submit this profile',
+        ),
+
+        'edit' => array(
+            'title' => 'Edit a game',
+            'submit' => 'Edit this game',
+            'select_profile_placeholder' => 'Name or id',
+            'select_profile_help' => 'Select the game to edit',
+        ),
+
+        'profile' => array(
+            'title' => 'Game',
+            'screenshots_help' => 'Click on them to view in full size',
+        ),
+
+
+        'msg' => array(
+            'addgame_success' => "The profile with name ':name' (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
+            'editgame_success' => "The profile with name ':name' (id : :id) has successfully been updated.",
+
+            'select_editgame_id_not_found' => "No profile with id ':id' was found.",
+            'select_editgame_name_not_found' => "No profile with name ':name' was found.",
+
+            'profile_not_found' => "No profile with id ':id' was found.",
+
+            'editgame_nametaken' => "Can't rename the profile with name ':name' (id : :id) because the name ':newname' is already taken.",
+        ),
+
+    ), // end of profile
 
 // HOME
 
@@ -432,13 +345,13 @@ return array(
 
     'messages' => array(
         
-        'addgame_success' => 'The game profile with name \":name\" has successfully been submitted.',
+        'addgame_success' => 'The profile with name \":name\" has successfully been submitted.',
 
-        'editdev_nametaken' => 'Can\'t rename the developer profile with name \":name\" (id : :id) because the name \":newname\" is already taken.',
-        'editgame_nametaken' => 'Can\'t rename the game profile with name \":name\" (id : :id) because the name \":newname" is already taken.',
+        
+        'editgame_nametaken' => 'Can\'t rename the profile with name \":name\" (id : :id) because the name \":newname" is already taken.',
   
         'can_not_edit_others_games' => "You are not allowed to edit other developer's games.",
-        'game_profile_not_found' => "Can't find the game profile with id ':profile_id'.",
+        'game_profile_not_found' => "Can't find the profile with id ':profile_id'.",
 
         'user_not_trusted' => 'You can\'t acces this page because you are not a trusted user.',
        
@@ -450,8 +363,8 @@ return array(
         'developer_profile_name_not_found' => "Can't find the developper profile with name ':name'.",
         'developer_profile_id_not_found' => "Can't find the developper profile with id ':id'.",
 
-        'game_profile_name_not_found' => "Can't find the game profile with name ':name'.",
-        'game_profile_id_not_found' => "Can't find the game profile with id ':id'.",
+        'game_profile_name_not_found' => "Can't find the profile with name ':name'.",
+        'game_profile_id_not_found' => "Can't find the profile with id ':id'.",
     ),
 
 // MENU
@@ -508,74 +421,6 @@ return array(
             'many_relationship_add_success' => "You successfully added :count :rel_profile_type profiles in the relationship with your :updated_profile_type profile ':name' (id=:id).",
 
             'many_relationship_delete_success' => "You successfully deleted :count :rel_profile_type profiles from the relationship with your :updated_profile_type profile ':name' (id=:id).",
-        ),
-    ),
-
-// PROMOTE
-
-    'promote' => array(
-
-        'suggest_title' => 'Suggest a profile',
-        'suggest_text' => 'Suggest a profile to add to VGC by entering its url in the field below.',
-
-        
-        'title' => 'Promote',
-        'subtitle' => 'to the audience that cares',
-        // 'subtitle' => 'by advertising with our help',
-        'home_text' => 'In addition to the full featured profiles and the comprehensive capacity given to the players to search for you, VideoGamesChest brings you innovatives ways to reach out specifically to the audience that cares about you.
-        ',
-        /*
-            VideoGamesChest is the perfect place to showcase your products and promote them in various ways.
-
-         You have got games to tell the world about but the traditionnal ways are are to expensive for your indie budget or not working out as planned ? <br>
-        <br>
-
-        The point of the process is that they get to choose what they are advertised for, which means they are interested 
-        */
-
-
-        'email' => array(
-            'title' => 'E-mail',
-        ),
-
-        'feed' => array(
-            'title' => 'RSS Feed',
-        ),
-
-
-        'profile_allow_promote_in_feed' => 'Allow this profile to appear in the promotion feed',
-        'profile_allow_promote_in_newsletter' => 'Allow this profile to appear in the promotion newsletter',
-
-
-        'msg' => array(
-            'success_profile_subscription_updated' => 'The promotion subscription have successfully been updated.',
-        ),
-
-    ),
-
-// REGISTER
-    
-    'register' => array(
-        //'email_help' => 'An e-mail will be send to this address with a link to active your account.',
-        'password' => 'Choose your password',
-        'password_confirmation' => 'Verify password',
-        'submit' => 'Register !',
-        'title' => 'Create a user account',
-
-        'username' => 'Choose your user name',
-
-
-        'why_register_title' => 'Why registering ?',
-        'why_register_help' => 'As a user, you benefits from your blacklist that allows you to narrow the results of a search even more. <br>
-        <br>
-        If you are a game developper, it alows you to add and control yourself the profiles for your games.',
-
-        'msg' => array(
-            // 'register_success' => 'Thank you :username, your user account has been created. An email has been sent to your email adress with a link to activate your account. You will be able to login as soon as to activated your account.',
-            'register_success' => 'Thank you :username, your user account has been created. You may now log in.',
-            
-            //'confirmation_error' => "Unable to activate the user account because none with id ':id' and url key ':url_key' has been found, or the user account is already activated.",
-            //'confirmation_success' => 'Thank you :username, you have successfully activated your user account, you may now log in.',
         ),
     ),
 

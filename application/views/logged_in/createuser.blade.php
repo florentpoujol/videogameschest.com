@@ -13,7 +13,7 @@ $rules = array(
 		<legend>Add a user account</legend>
 		{{ Form::token() }}
 
-		{{ Former::text('type', 'Account type')->help('"dev" or "admin"')->value('dev') }}
+		{{ Former::text('type', 'Account type')->help('"dev" or "admin"')->value('admin') }}
 
 		{{ Former::text('username', 'User name') }}
 

@@ -42,7 +42,8 @@ $search_id
 
         <p>
             <?php
-            $category_name = get_category_name($search_id);
+            $category_name = "category name (old)";
+            // $category_name = get_category_name($search_id);
 
 
             ?>

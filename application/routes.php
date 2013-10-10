@@ -62,84 +62,23 @@ $layout = View::of('layout');
     }));
 
 
-    // SEARCH PROFILE
-    Route::get('search/(:any?)', array('as' => 'get_search_page', function($search_id = null) use ($layout)
-    {
-        if ($search_id !== null) {
-            if (is_string($search_id)) {
-                $search_id = get_category_id($search_id);
-            }
-
-            $search = Search::get($search_id);
-            if ($search !== null) {
-                $profiles = Search::make($search->data)->where_privacy('public')->get();
-                return $layout->nest('page_content', 'search', array(
-                    'profiles' => $profiles, 
-                    'search_data' => $search->array_data, // search_data is used by search_profiles_common
-                    'search_id' => $search_id,
-                ));
-            } else {
-                HTML::set_error(lang('search.msg.id_not_found', array('id'=>$search_id)));
-                return Redirect::to_route('get_search_page');
-            }
-        }
-        
-        return $layout->nest('page_content', 'search');
-    }));
-
-    Route::get('search/feed/(:num)', array('as' => 'get_search_feed', 'uses' => 'feed@search_feed'));
-
-    // BROWSE
-    Route::get('browse/(:any?)', array('as' => 'get_browse_page', function($search_id = null) use ($layout)
-    {
-        if ($search_id !== null) {
-            if (is_string($search_id)) {
-                $search_id = get_category_id($search_id);
-            }
-            
-            $search = Search::get($search_id);
-            if ($search !== null) {
-                $profiles = Search::make($search->data)->where_privacy('public')->get();
-                return $layout->nest('page_content', 'browse', array(
-                    'profiles' => $profiles, 
-                    'search_data' => $search->array_data,
-                    'search_id' => $search_id,
-                ));
-            } else {
-                HTML::set_error(lang('search.msg.id_not_found', array('id'=>$search_id)));
-                return Redirect::to_route('get_browse_page');
-            }
-        }
-        
-        return $layout->nest('page_content', 'browse');
-    }));
-
-
-    // DISCOVER
-    Route::get('discover/(:num?)', array('as' => 'get_discover_page', 'uses' => 'discover@index'));
-    Route::get('discover/feed', array('as' => 'get_discover_feed_page', 'uses' => 'discover@feed_page'));
-    Route::get('discover/feed/(:num)', array('as' => 'get_discover_feed_data', 'uses' => 'discover@feed_data'));
-    Route::get('discover/newsletter', array('as' => 'get_discover_newsletter_page', 'uses' => 'discover@newsletter_page'));
-    Route::get('discover/newsletter/(:num)/(:any)', array('as' => 'get_discover_newsletter_update', 'uses' => 'discover@newsletter_page'));
-
-
     // SUGGEST
     Route::get('suggest', array('as' => 'get_suggest_page', function() use ($layout)
     {
         return $layout->nest('page_content', 'suggest');
     }));
-    Route::get('suggest_colorbox', array('as' => 'get_suggest_page_colorbox', function()
-    {
-        return View::make('suggest_colorbox');
-    }));
 
 
     // RSS FEEDS
-    Route::get('reports/feed/(:num)/(:any)', array('as' => 'get_reports_feed', 'uses' => 'feed@reports_feed'));
+    // 10/10/13 why is that in public space ?
+    // > because rss agregators aren't loged in
+    // the parameter is a user's url_key
+    Route::get('reports/feed/(:any)', array('as' => 'get_reports_feed', 'uses' => 'feed@reports_feed'));
         
 
     //VIEW PROFILE
-    // see after must be logged in
+    Route::get('profiles/(:num)', array('as' => 'get_profile_view', 'uses' => 'admin@profile_view'));
+    
     
 
     // REPORT FORM
@@ -148,38 +87,6 @@ $layout = View::of('layout');
     {
         return View::make('forms/postreport', array('profile' => Game::find($profile_id)));
     }));
-
-
-    // BLOG
-    Route::get('blog', array('as' => 'get_blog_page', function() use ($layout)
-    {
-        return $layout->nest('page_content', 'blog');
-    }));
-
-    Route::get('blog/post', function()
-    {
-        return Redirect::to_route('get_blog_page');
-    });
-
-    Route::get('blog/post/(:any)', array('as' => 'get_blog_post', function($post_title_url) use ($layout)
-    {
-        // $post_title_url may be the post id
-        $post = null;
-
-        if (is_numeric($post_title_url)) {
-            $post = BlogPost::find($post_title_url);
-        } else {
-            $post = BlogPost::where_title_url($post_title_url)->first();
-        }
-
-        return $layout->nest('page_content', 'blog', array('display_posts' => array($post)));
-    }));
-
-    Route::get('blog/feed', array('as' => 'get_blog_feed', 'uses' => 'feed@blog_feed'));
-
-    // USER BLACKLIST
-    // allow to update the blackilist via url
-    Route::get('user/(:num)/(:any)/updateblacklist/(add|delete)/(:num)', array('as' => 'get_blacklist_update', 'uses' => 'admin@blacklist_update'));
 
 
 
@@ -208,49 +115,12 @@ $layout = View::of('layout');
             return Redirect::to_route('get_'.$action.'_page', array($search->id));
         }));
 
-        
-        Route::post('post_category_name', array('as' => 'post_category_name', function()
-        {
-            $input = Input::all();
-            $rules = array(
-                'category_name' => 'required|min:5|alpha_dash',
-            );
-            $validation = Validator::make($input, $rules);
-
-            if ($validation->passes()) {
-                if (is_guest()) {
-                    $names = json_decode(Cookie::get('vgc_category_names', '{}'), true);
-                    $names[$input['search_id']] = $input['category_name'];
-                    Cookie::put('vgc_category_names', json_encode($names), 999999); // 999999 min = 694.4 days
-                } else {
-                    $names = user()->category_names;
-                    //var_dump($names);
-                    if ($names != '') $names = json_decode($names, true);
-                    else $names = array();
-                    //dd($names);
-                    $names[$input['search_id']] = $input['category_name'];
-                    user()->category_names = json_encode($names);
-                    user()->save();
-                }
-
-                HTML::set_success(lang('vgc.search.msg.update_category_name_success', array('category_id' => $input['search_id'])));
-                return Redirect::back();
-            }
-            
-            return Redirect::back()->with_input()->with_errors($validation);
-        }));
-
 
         Route::post('browse', array('as' => 'post_browse', function()
         {
             return Redirect::to_route('get_browse_page', array(Input::get('search_id')));
         }));
-
-        // user subscribe to a promotion feed or email
-        Route::post('discover/feed/create', array('as' => 'post_discover_feed_create', 'uses' => 'discover@feed_create'));
-        Route::post('discover/newsletter/create', array('as' => 'post_discover_newsletter_create', 'uses' => 'discover@newsletter_create'));
-        Route::post('discover/newsletter/update', array('as' => 'post_discover_newsletter_update', 'uses' => 'discover@newsletter_update'));
-
+        
         // Suggest
         Route::post('suggest', array('as' => 'post_suggest', function()
         {
@@ -280,7 +150,7 @@ $layout = View::of('layout');
     Route::group(array('before' => 'is_guest'), function()
     {
         Route::get('login', array('as' => 'get_login_page', 'uses' => 'admin@login_page'));
-        Route::get('register', array('as' => 'get_register_page', 'uses' => 'admin@register_page'));
+        // Route::get('register', array('as' => 'get_register_page', 'uses' => 'admin@register_page'));
         Route::get('user/lostpassword/(:num)/(:any)', array('as' => 'get_lostpassword_confirmation', 'uses' => 'admin@lostpassword_confirmation'));
     });
 
@@ -292,7 +162,7 @@ $layout = View::of('layout');
 
     Route::group(array('before' => 'is_guest|csrf'), function()
     {
-        Route::post('register', array('as' => 'post_register', 'uses' => 'admin@register'));
+        // Route::post('register', array('as' => 'post_register', 'uses' => 'admin@register'));
         Route::post('login', array('as' => 'post_login', 'uses' => 'admin@login'));
         Route::post('lostpassword', array('as' => 'post_lostpassword', 'uses' => 'admin@lostpassword'));
     });
@@ -307,21 +177,18 @@ $layout = View::of('layout');
     {
         Route::get('user', function()
         {
-            return Redirect::to_route('get_user_update');
+            return Redirect::to_route('get_user_update'); // no regular profile user
         });
         Route::get('user/update/(:num?)', array('as' => 'get_user_update', 'uses' => 'admin@user_update'));
 
         Route::get('logout', array('as' => 'get_logout', 'uses' => 'admin@logout'));
         
-        Route::get(get_profile_types(true).'/create', array('as' => 'get_profile_create', 'uses' => 'admin@profile_create'));
-        Route::get(get_profile_types(true).'/update/(:num?)', array('as' => 'get_profile_update', 'uses' => 'admin@profile_update'));
-        Route::get(get_profile_types(true).'/preview/(:num)', array('as' => 'get_profile_preview', 'uses' => 'admin@profile_preview'));
+        Route::get('profiles/create', array('as' => 'get_profile_create', 'uses' => 'admin@profile_create'));
+        Route::get('profiles/update/(:num?)', array('as' => 'get_profile_update', 'uses' => 'admin@profile_update'));
+        Route::get('profiles/preview/(:num)', array('as' => 'get_profile_preview', 'uses' => 'admin@profile_preview'));
 
         Route::get('reports', array('as' => 'get_reports', 'uses' => 'admin@reports'));
     });
-
-    //VIEW PROFILE
-    Route::get(get_profile_types(true).'/(:any)', array('as' => 'get_profile_view', 'uses' => 'admin@profile_view'));
 
 
 
@@ -333,13 +200,12 @@ $layout = View::of('layout');
     {
         Route::post('user/update', array('as' => 'post_user_update', 'uses' => 'admin@user_update'));
         Route::post('user/updatepassword', array('as' => 'post_password_update', 'uses' => 'admin@password_update'));
-        Route::post('user/updateblacklist', array('as' => 'post_blacklist_update', 'uses' => 'admin@blacklist_update'));
-
+        
         // get_profile_types(true) returns something like "(developer|game)"
         // it is used here to pass the profile type as argument of the method that handle the post request
-        Route::post(get_profile_types(true).'/select', array('as' => 'post_profile_select', 'uses' => 'admin@profile_select'));
-        Route::post(get_profile_types(true).'/create', array('as' => 'post_profile_create', 'uses' => 'admin@profile_create'));
-        Route::post(get_profile_types(true).'/update', array('as' => 'post_profile_update', 'uses' => 'admin@profile_update'));
+        Route::post('profiles/select', array('as' => 'post_profile_select', 'uses' => 'admin@profile_select'));
+        Route::post('profiles/create', array('as' => 'post_profile_create', 'uses' => 'admin@profile_create'));
+        Route::post('profiles/update', array('as' => 'post_profile_update', 'uses' => 'admin@profile_update'));
        
         Route::post('reports/update', array('as' => 'post_reports_update', 'uses' => 'admin@reports_update'));
     });
@@ -354,7 +220,6 @@ $layout = View::of('layout');
     {
         Route::get('user/create', array('as' => 'get_user_create', 'uses' => 'admin@user_create'));
         Route::get('review', array('as' => 'get_review', 'uses' => 'admin@review'));
-        Route::get('review/feed/(:num)/(:any)', array('as' => 'get_review_feed', 'uses' => 'feed@review_feed'));
 
         Route::get('testadmincontroller/(:num)', array('as' => 'get_testadmin_controller', 'uses' => 'discover@FeedData'));
         Route::get('test/(:all?)', function($searches = null) use ($layout)
@@ -372,27 +237,6 @@ $layout = View::of('layout');
             return $layout->nest('page_content', 'test');
         }));
 
-
-        // BLOG
-
-        Route::get('blog/post/create', array('as' => 'get_blog_post_create', function() use ($layout)
-        {
-            return $layout->nest('page_content', 'logged_in/createblogpost');
-        }));
-
-        Route::get('blog/post/update/(:any)', array('as' => 'get_blog_post_update', function($post_id) use ($layout)
-        {
-            $post = BlogPost::find($post_id);
-            
-            if (is_null($post)) {
-                HTML::set_error("Blog post id '$post_id' not found.");
-                return Redirect::to_route('get_blog_post_create');
-            }
-
-            return $layout->nest('page_content', 'logged_in/updateblogpost', array('post' => $post));
-        }));
-
-
         // CRAWLER
         Route::get('crawler', array('as' => 'get_crawler_page', 'uses' => 'crawler@index'));
         Route::get('crawler/readrss', array('as' => 'get_crawler_read_feed_urls', 'uses' => 'crawler@read_feed_urls'));
@@ -408,23 +252,6 @@ $layout = View::of('layout');
     {
         Route::post('user/create', array('as' => 'post_user_create', 'uses' => 'admin@user_create'));
         Route::post('review', array('as' => 'post_review', 'uses' => 'admin@review'));
-
-        Route::post('blog/post/create', array('as' => 'post_blog_post_create', function()
-        {
-            $input = clean_form_input(Input::all());
-            $post = BlogPost::create($input);
-
-            return Redirect::to_route('get_blog_post_update', array($post->id));
-        }));
-
-        Route::post('blog/post/update', array('as' => 'post_blog_post_update', function()
-        {
-            $input = clean_form_input(Input::all());
-            BlogPost::update($input['id'], $input);
-
-            return Redirect::to_route('get_blog_post_update', array($input['id']));
-        }));
-
 
         // CRAWLER
         Route::post('crawler_perform_actions', array('as' => 'post_crawler_perform_actions', 'uses' => 'crawler@perform_actions'));
@@ -498,20 +325,17 @@ Event::listen('500', function()
 Route::filter('before', function()
 {
     // Do stuff before every request to your application...
-    define("LANGUAGE", 'en');
 
     // check if user has the logged in cokkie
-    $logged_in = Cookie::get('user_logged_in', '0');
+    $logged_in = Cookie::get('vgc_user_logged_in', '0');
     if ($logged_in != '0') Auth::login((int) $logged_in);
 
 
     $route = Request::$route;
-    // 01 feb 2013
-    // ACTION does not seems to be used anywhere
-    // but CONTROLLER is sometimes
+    // CONTROLLER is used in views/layouts/main and views/menu
     if ($route->controller != null) { // seems to never be the case ??
         define('CONTROLLER', $route->controller);
-        define('ACTION', $route->controller_action);
+
     } else {
         $uri = $route->uri;
         $segments = preg_split('#/#', $route->uri);
@@ -520,16 +344,6 @@ Route::filter('before', function()
         
         if ( ! isset($segments[1]))
             $segments[1] = 'index';
-
-        define('ACTION', $segments[1]);
-    }
-
-
-    if (is_logged_in()) {
-        // I do that here since user()->games and user()->devs would return an empty array (or the equivalent)
-        // when used for the first time in a condition
-        // calling them here ensure that every next calls will return the array properly filled
-        $games = user()->games;
     }
 });
 
@@ -576,3 +390,58 @@ Route::filter('is_admin', function()
         }
     }
 });
+
+
+// OLD :
+
+// SEARCH PROFILE
+    /*Route::get('search/(:any?)', array('as' => 'get_search_page', function($search_id = null) use ($layout)
+    {
+        if ($search_id !== null) {
+            if (is_string($search_id)) {
+                $search_id = get_category_id($search_id);
+            }
+
+            $search = Search::get($search_id);
+            if ($search !== null) {
+                $profiles = Search::make($search->data)->where_privacy('public')->get();
+                return $layout->nest('page_content', 'search', array(
+                    'profiles' => $profiles, 
+                    'search_data' => $search->array_data, // search_data is used by search_profiles_common
+                    'search_id' => $search_id,
+                ));
+            } else {
+                HTML::set_error(lang('search.msg.id_not_found', array('id'=>$search_id)));
+                return Redirect::to_route('get_search_page');
+            }
+        }
+        
+        return $layout->nest('page_content', 'search');
+    }));*/
+
+    // Route::get('search/feed/(:num)', array('as' => 'get_search_feed', 'uses' => 'feed@search_feed'));
+
+    // BROWSE
+    /*Route::get('browse/(:any?)', array('as' => 'get_browse_page', function($search_id = null) use ($layout)
+    {
+        if ($search_id !== null) {
+            if (is_string($search_id)) {
+                $search_id = get_category_id($search_id);
+            }
+            
+            $search = Search::get($search_id);
+            if ($search !== null) {
+                $profiles = Search::make($search->data)->where_privacy('public')->get();
+                return $layout->nest('page_content', 'browse', array(
+                    'profiles' => $profiles, 
+                    'search_data' => $search->array_data,
+                    'search_id' => $search_id,
+                ));
+            } else {
+                HTML::set_error(lang('search.msg.id_not_found', array('id'=>$search_id)));
+                return Redirect::to_route('get_browse_page');
+            }
+        }
+        
+        return $layout->nest('page_content', 'browse');
+    }));*/

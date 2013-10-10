@@ -9,36 +9,6 @@ class Admin_Controller extends Base_Controller
 
 
     //----------------------------------------------------------------------------------
-    // REGISTER USER ACCOUNT
-
-    public function get_register_page() 
-    {
-        $this->layout->nest('page_content', 'register');
-    }
-
-    public function post_register() 
-    {
-        $input = Input::all();
-
-        $rules = array(
-            'username' => 'required|alpha_dash_extended|min:2|unique:users',
-            'email' => 'required|min:5|email|unique:users',
-            'password' => 'required|min:5|confirmed',
-            'password_confirmation' => 'required|min:5|required_with:password',
-            'city' => 'honeypot',
-        );
-        $validation = Validator::make($input, $rules);
-        
-        if ($validation->passes()) {
-            $user = User::create($input);
-            return Redirect::to_route('get_home_page');
-        }
-        
-        return Redirect::to_route('get_register_page')->with_errors($validation)->with_input();
-    }
-
-
-    //----------------------------------------------------------------------------------
     // LOGIN
 
     public function get_login_page() 
@@ -71,7 +41,7 @@ class Admin_Controller extends Base_Controller
                     $keep_logged_in = Input::get('keep_logged_in', '0');
 
                     if ($keep_logged_in == '1') {
-                        Cookie::put('user_logged_in', $user->id, 43200); //43200 min = 1 month
+                        Cookie::put('vgc_user_logged_in', $user->id, 43200); //43200 min = 1 month
                     }
 
                     HTML::set_success(lang('login.msg.login_success', array(
@@ -103,7 +73,7 @@ class Admin_Controller extends Base_Controller
         $user = user();
         Log::write('user logout', 'User '.$user->username.' (id='.$user->id.') has logged out.');
 
-        Cookie::forget('user_logged_in');
+        Cookie::forget('vgc_user_logged_in');
         Auth::logout();
         return Redirect::to_route('get_login_page');
     }
@@ -314,20 +284,20 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // ADD PROFILE
     
-    public function get_profile_create($profile_type)
+    public function get_profile_create()
     {
-        $this->layout->nest('page_content', 'logged_in/create'.$profile_type);
+        $this->layout->nest('page_content', 'logged_in/createprofile');
     }
 
-    public function post_profile_create($profile_type)
+    public function post_profile_create()
     {
         $input = Input::all();
-        $rules = Config::get('profiles_post_create_rules.'.$profile_type, array());
+        $rules = Config::get('profiles_post_create_rules', array());
         $validation = Validator::make($input, $rules);
         
         if ($validation->passes()) {
-            $profile = $profile_type::create($input);
-            return Redirect::to_route('get_profile_update', array($profile_type, $profile->id));
+            $profile = Profile::create($input);
+            return Redirect::to_route('get_profile_update', array($profile->id));
         }
 
         return Redirect::back()->with_errors($validation)->with_input();
@@ -337,16 +307,16 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // EDIT PROFILE
 
-    public function post_profile_select($profile_type)
+    public function post_profile_select()
     {
         $input = Input::all();
         $name = $input['name'];
         $id = null;
         
         if (is_numeric($name)) {
-            if ($profile_type::find($name) === null) {
+            if (Profile::find($name) === null) {
                 HTML::set_error(lang('profile.msg.profile_not_found', array(
-                    'profile_type' => $profile_type,
+                    'profile_type' => '',
                     'field_name' => 'id',
                     'field_value' => $id,
                 )));
@@ -354,11 +324,11 @@ class Admin_Controller extends Base_Controller
                 $id = $name;
             }
         } else {
-            $profile = $profile_type::where_name($name)->first();
+            $profile = Profile::where_name($name)->first();
             
             if ($profile === null) {
                 HTML::set_error(lang('profile.msg.profile_not_found', array(
-                    'profile_type' => $profile_type,
+                    'profile_type' => '',
                     'field_name' => 'name',
                     'field_value' => $name,
                 )));
@@ -367,48 +337,41 @@ class Admin_Controller extends Base_Controller
             }
         }
 
-        return Redirect::to_route('get_profile_update', array($profile_type, $id));
+        return Redirect::to_route('get_profile_update', array($id));
     }
 
-    public function get_profile_update($profile_type, $profile_id = null)
+    public function get_profile_update($profile_id = null)
     {
-        $profiles = user()->{$profile_type.'s'}; 
-        // can't use user()->profiles in the condition because it would always return an empty array
-
-        if ( ! is_admin() && empty($profiles)) {
-            return Redirect::to_route('get_profile_create', $profile_type);
+        if ( ! is_admin()) {
+            return Redirect::to_route('get_home');
         }
 
         if ($profile_id == null) {
-            if ( ! is_admin() && count($profiles) == 1) {
-                return Redirect::to_route('get_profile_update', array($profile_type, $profiles[0]->id));
-            }
-
-            $this->layout->nest('page_content', 'forms/profile_select', array('profile_type' => $profile_type));
+            $this->layout->nest('page_content', 'forms/profile_select');
             return;
         }
 
-        $profile = $profile_type::find($profile_id);
+        $profile = Profile::find($profile_id);
 
         if ($profile === null) {
             HTML::set_error(lang('profile.msg.profile_not_found', array(
-                'profile_type' => $profile_type,
+                'profile_type' => '',
                 'field_name' => 'id',
                 'field_value' => $profile_id
             )));
 
-            return Redirect::to_route('get_profile_update', $profile_type);
+            return Redirect::to_route('get_profile_update');
         }
 
         if ( ! is_admin() && $profile->user_id != user_id()) {
             HTML::set_error(lang('common.msg.edit_other_users_profile_not_allowed'));
-            return Redirect::to_route('get_profile_update', $profile_type);
+            return Redirect::to_route('get_profile_update');
         }
 
-        $this->layout->nest('page_content', 'logged_in/update'.$profile_type, array('profile_id' => $profile_id));
+        $this->layout->nest('page_content', 'logged_in/updateprofile', array('profile_id' => $profile_id));
     }
 
-    public function post_profile_update($profile_type) 
+    public function post_profile_update() 
     {
         $input = Input::all();
         
@@ -429,7 +392,7 @@ class Admin_Controller extends Base_Controller
         $rules = Config::get('vgc.profiles_post_update_rules.'.$profile_type);
         $validation = Validator::make($input, $rules);
         
-        if ( ! $validation->passes() || ! $profile_type::update($input['id'], $input)) {
+        if ( ! $validation->passes() || ! Profile::update($input['id'], $input)) {
             Input::flash();
             return Redirect::to_route('get_profile_update', array($profile_type, $input['id']))->with_errors($validation);
         }
@@ -441,9 +404,9 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // VIEW PROFILE
     
-    public function get_profile_preview($profile_type, $profile_id)
+    public function get_profile_preview($profile_id)
     {
-        $profile = $profile_type::find($profile_id);
+        $profile = Profile::find($profile_id);
         $preview_profile = $profile->preview_profile;
 
         if ($preview_profile === null) {
@@ -464,18 +427,18 @@ class Admin_Controller extends Base_Controller
         }
     }
 
-    public function get_profile_view($profile_type, $name = null)
+    public function get_profile_view($name = null)
     {        
         if ($name == 'create') {
             return $this->get_profile_create($profile_type);
         }
 
         if (is_numeric($name)) {
-            $profile = $profile_type::find($name);
+            $profile = Profile::find($name);
             return Redirect::to_route('get_profile_view', array($profile_type, name_to_url($profile->name)));
         }
 
-        $profile = $profile_type::where_name(url_to_name($name))->first();
+        $profile = Profile::where_name(url_to_name($name))->first();
 
         if (is_null($profile)) {
             $field_name = 'name';
@@ -518,7 +481,7 @@ class Admin_Controller extends Base_Controller
         $num = 0;
         foreach ($input['approved_profiles'] as $profile_type => $approved_profiles) {
             foreach ($approved_profiles as $id) {
-                $profile_type::find($id)->passed_review();
+                Profile::find($id)->passed_review();
                 $num++;
             }
         }

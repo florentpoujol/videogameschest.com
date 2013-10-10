@@ -5,6 +5,16 @@ class Profile extends ExtendedEloquent
     public $type = 'profile';
     public $types = 'profiles';
 
+    // fields which data is stored as json
+    public static $json_fields = array('languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'looks', 'periods',
+        'viewpoints', 'nbplayers', 'tags', 'links', 'screenshots', 'videos');
+    
+    // text fields which data is stored as json array
+    public static $array_fields = array('languages', 'technologies', 'operatingsystems', 'devices', 'genres', 'looks', 'periods',
+        'viewpoints', 'nbplayers', 'tags' );
+
+    // text fields which data is stored as json object with a 'names' and 'urls' keys containing an array ot items
+    public static $names_urls_fields = array('links', 'screenshots', 'videos');
 
     //----------------------------------------------------------------------------------
     // CONSTRUCTOR
@@ -191,4 +201,48 @@ class Profile extends ExtendedEloquent
         return $this->has_one("PreviewProfile");
     }
 
+
+    //----------------------------------------------------------------------------------
+    // MAGIC METHODS
+
+    /**
+     * Handle the dynamic setting of attributes.
+     *
+     * @param  string  $key
+     * @param  mixed   $value
+     * @return void
+     */
+    public function __set($key, $value)
+    {
+        if (in_array($key, static::$json_fields)) {
+            if (in_array($key, static::$names_urls_fields)) {
+                $value = clean_names_urls_array($value);
+            }
+
+            $this->set_attribute($key, json_encode($value));
+        } else parent::__set($key, $value);
+    }
+
+    /**
+     * Handle the dynamic retrieval of attributes and associations.
+     *
+     * @param  string  $key
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        if (in_array($key, static::$json_fields)) {
+            $attr = $this->get_attribute($key);
+
+            if (in_array($key, static::$array_fields) && trim($attr) == '') {
+                $attr = '[]'; // make sure $attr is a json array and not an empty string, so that json_decode return an array
+            }
+
+            $data = json_decode($attr, true);
+            if ($data === null) $data = array();
+            return $data;
+        }
+
+        return XssSecure(parent::__get($key));
+    }
 }
