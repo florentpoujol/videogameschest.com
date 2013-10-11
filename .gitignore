@@ -1,19 +1,6 @@
-
-
-nbproject/
-gitignore/
-application/cache/
-application/config/local/
-application/views/test.blade.php
-bundles/
-
-############
-## Windows
-############
-
-# Windows image file caches
-Thumbs.db
-
-# Folder config file
-Desktop.ini
-
+/bootstrap/compiled.php
+/vendor
+composer.phar
+composer.lock
+.DS_Store
+/gitignore
