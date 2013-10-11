@@ -8,7 +8,7 @@
     <hr>
 
     <p>
-        <a href="{{ route('get_reports_feed', array(user_id(), user()->url_key)) }}" title="{{ lang('reports.rss_feed') }}">{{ icon('rss') }} {{ lang('reports.rss_feed') }}</a>
+        <a href="{{ route('get_reports_feed', array(user()->url_key)) }}" title="{{ lang('reports.rss_feed') }}">{{ icon('rss') }} {{ lang('reports.rss_feed') }}</a>
     </p>
 
     <?php  
@@ -45,7 +45,7 @@
                         </td>
 
                         <td>
-                            <a href="{{ route('get_profile_view', array($report->profile->id))) }}">{{ $profile_name }}</a>
+                            <a href="{{ route('get_profile_view', array($report->profile->id)) }}">{{ $profile_name }}</a>
                         </td>
 
                         <td class="span5">

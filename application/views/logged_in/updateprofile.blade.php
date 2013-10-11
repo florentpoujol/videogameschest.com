@@ -27,12 +27,6 @@ if ( ! empty($old)) Former::populate($old);
         {{ Form::hidden('id', $profile->id) }}
 
         {{ Former::primary_submit(lang('common.update')) }}
-        
-        <br>
-        <br>
-        <div class="alert alert-info">
-            {{ lang('profile.update_help') }}
-        </div>
 
         <hr>
 
@@ -43,14 +37,12 @@ if ( ! empty($old)) Former::populate($old);
         <div class="row">
             <div class="span4">
                 {{ Former::text('name', lang('common.name')) }}
-            </div>
-
-            <div class="span4">
-                {{ Former::textarea('description', lang('profile.pitch')) }}
-            </div>
-
-            <div class="span4">
+            
                 {{ Former::date('release_date', lang('profile.release_date'))->help(lang('profile.release_date_help')) }}
+            </div>
+
+            <div class="span8">
+                {{ Former::textarea('description', lang('profile.pitch')) }}
             </div>
         </div>
 

@@ -5,12 +5,12 @@
 <div id="game" class="profile-page mini-profile">
     <div class="row-fluid">
         <?php
-        $screenshots = $profile->screenshots;
-        //var_dump($screenshots);
+        $medias = $profile->medias;
+        // dd($medias);
         ?>
-        @if ( ! empty($screenshots))
+        @if ( ! empty($medias))
             <div class="span4">
-                <img src="{{ $screenshots[0]['url'] }}" alt="{{ $screenshots[0]['name'] }}" >
+                <img src="{{ $medias[0]['url'] }}" alt="{{ $medias[0]['name'] }}" >
             </div>
         @endif
 
@@ -18,9 +18,9 @@
             <?php
             $colorbox_group = "colorbox_group_".Str::random(20);
             ?>
-            @foreach ($screenshots as $screenshot)
-                <a href="{{ $screenshot['url'] }}" title="{{ $screenshot['name'] }}" rel="{{ $colorbox_group }}">
-                    <img src="{{ $screenshot['url'] }}" alt="{{ $screenshot['name'] }}">
+            @foreach ($medias as $media)
+                <a href="{{ $media['url'] }}" title="{{ $media['name'] }}" rel="{{ $colorbox_group }}">
+                    <img src="{{ $media['url'] }}" alt="{{ $media['name'] }}">
                 </a>
             @endforeach
 
@@ -45,7 +45,7 @@
                 <div class="span12">
                     <blockquote id="pitch">
                         <p>
-                            {{ substr($profile->pitch, 0, Config::get("vgc.profile_pitch_length"))." ..." }}
+                            {{ substr($profile->description, 0, Config::get("vgc.profile_pitch_length"))." ..." }}
                         </p>
                     </blockquote>
                 </div>
@@ -63,25 +63,6 @@
                             {{ lang('vgc.profile.more_infos') }}
                         </a>
                         <ul class="dropdown-menu">
-                            @if ($profile->developer_name != '' && $profile->developer_url != '')
-                                <li>{{ lang('vgc.common.developer') }} : <a href="{{ $profile->developer_url }}" title="{{ $profile->developer_name }}">{{ $profile->developer_name }}</a></li>
-                            @elseif ($profile->developer_name != '' && $profile->developer_url == '')
-                                <li>{{ lang('vgc.common.developer') }} : {{ $profile->developer_name }}</li>
-                            @elseif ($profile->developer_name == '' && $profile->developer_url != '')
-                                <li><a href="{{ $profile->developer_url }}" title="{{ lang('vgc.common.developer') }}">{{ lang('vgc.common.developer') }}</a></li>
-                            @endif
-
-                            @if ($profile->price != '')
-                                <li>{{ lang('vgc.common.price') }} : 
-
-                                @if ((float)$profile->price == 0.0)
-                                    {{ lang('vgc.common.price_free') }}
-                                @else
-                                    {{ $profile->price }}
-                                @endif
-                                $
-                            @endif
-
                             @if ($profile->release_date != '' && $profile->release_date != '0000-00-00 00:00:00')
                                 <li>{{ lang('vgc.common.release_date') }} : {{ date_create($profile->release_date)->format(Config::get('vgc.date_formats.blog')) }}</li>
                             @endif

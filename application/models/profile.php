@@ -3,13 +3,13 @@
 class Profile extends ExtendedEloquent
 {
     // fields which data is stored as json
-    public static $json_fields = array('links', 'screenshots', 'videos');
+    public static $json_fields = array('links', 'medias');
     
     // text fields which data is stored as json array
     public static $array_fields = array( );
 
     // text fields which data is stored as json object with a 'names' and 'urls' keys containing an array ot items
-    public static $names_urls_fields = array('links');
+    public static $names_urls_fields = array('links', 'medias');
 
     //----------------------------------------------------------------------------------
     // CONSTRUCTOR

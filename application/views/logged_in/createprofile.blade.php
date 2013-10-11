@@ -24,22 +24,15 @@ if ( ! empty($old)) Former::populate($old);
         <div class="row">
             <div class="span4">
                 {{ Former::text('name', lang('common.name')) }}
+
+                {{ Former::date('release_date', lang('profile.release_date'))->help(lang('profile.release_date_help')) }}
             </div> 
-        </div>
 
-        <hr>
-
-        <div class="row">
-            <div class="span4">
+            <div class="span8">
                 {{ Former::textarea('description', lang('profile.pitch')) }}
             </div>
 
-            <div class="span4">
-                {{ Former::date('release_date', lang('profile.release_date'))->help(lang('profile.release_date_help')) }}
-            </div>
-        </div> <!-- /.row -->
-
-        <hr>
+        </div>
 
         <div class="row">
             <div class="span6">

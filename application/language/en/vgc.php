@@ -260,10 +260,10 @@ return array(
         ),
 
         'edit' => array(
-            'title' => 'Edit a game',
-            'submit' => 'Edit this game',
+            'title' => 'Edit a profile',
+            'submit' => 'Edit this profile',
             'select_profile_placeholder' => 'Name or id',
-            'select_profile_help' => 'Select the game to edit',
+            'select_profile_help' => 'Select the profile to edit',
         ),
 
         'profile' => array(

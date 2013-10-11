@@ -343,7 +343,7 @@ class Admin_Controller extends Base_Controller
 
     public function get_profile_view($profile_id = null)
     {        
-        $profile = Profile::find($id);
+        $profile = Profile::find($profile_id);
         
         if (is_null($profile)) {
             HTML::set_error(lang('profile.msg.profile_not_found', array(
