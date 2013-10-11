@@ -5,18 +5,6 @@
 | Application Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register all of the routes for an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the Closure to execute when that URI is requested.
-|
-*/
-
-
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
 | Simply tell Laravel the HTTP verbs and URIs it should respond to. It is a
 | breeze to setup your application using Laravel's RESTful routing and it
 | is perfectly suited for building large applications and simple APIs.
@@ -85,8 +73,7 @@ $layout = View::of('layout');
     // 10/10/13 why is that in public space ?
     // > because rss agregators aren't loged in
     // the parameter is a user's url_key
-    Route::get('reports/feed/{url_key}', array('as' => 'get_reports_feed', 'uses' => 'feed@reports_feed'))
-    ->where('url_key', '[A-Za-z_]+');
+    Route::get('reports/feed/(:any)', array('as' => 'get_reports_feed', 'uses' => 'feed@reports_feed'));
         
 
     //VIEW PROFILE
@@ -96,10 +83,10 @@ $layout = View::of('layout');
 
     // REPORT FORM
     // for use by the colorbox
-    /*Route::get('postreport/(:num)', array('as' => 'get_report_form', function($profile_id)
+    Route::get('postreport/(:num)', array('as' => 'get_report_form', function($profile_id)
     {
         return View::make('forms/postreport', array('profile' => Game::find($profile_id)));
-    }));*/
+    }));
 
 
 
@@ -160,12 +147,11 @@ $layout = View::of('layout');
 //  MUST BE GUEST
 //----------------------------------------------------------------------------------
 
-    Route::group(array('before' => 'guest'), function()
+    Route::group(array('before' => 'is_guest'), function()
     {
         Route::get('login', array('as' => 'get_login_page', 'uses' => 'admin@login_page'));
         // Route::get('register', array('as' => 'get_register_page', 'uses' => 'admin@register_page'));
-        Route::get('user/lostpassword/{user_id}/{url_key}', array('as' => 'get_lostpassword_confirmation', 'uses' => 'admin@lostpassword_confirmation'))
-        ->where(array('user_id' => '[0-9]+', 'url_key' => '[A-Za-z_]+'));
+        Route::get('user/lostpassword/(:num)/(:any)', array('as' => 'get_lostpassword_confirmation', 'uses' => 'admin@lostpassword_confirmation'));
     });
 
 
@@ -174,7 +160,7 @@ $layout = View::of('layout');
 //  MUST BE GUEST AND LEGIT POST
 //----------------------------------------------------------------------------------
 
-    Route::group(array('before' => 'guest|csrf'), function()
+    Route::group(array('before' => 'is_guest|csrf'), function()
     {
         // Route::post('register', array('as' => 'post_register', 'uses' => 'admin@register'));
         Route::post('login', array('as' => 'post_login', 'uses' => 'admin@login'));
@@ -216,20 +202,19 @@ $layout = View::of('layout');
             return Redirect::to_route('get_user_update'); // no regular profile user
         });
         Route::get('user/create', array('as' => 'get_user_create', 'uses' => 'admin@user_create'));
-        Route::get('user/update/{user_id?}', array('as' => 'get_user_update', 'uses' => 'admin@user_update'))
-        ->where(array('user_id' => '[0-9]+'));
+        Route::get('user/update/(:num?)', array('as' => 'get_user_update', 'uses' => 'admin@user_update'));
 
         Route::get('logout', array('as' => 'get_logout', 'uses' => 'admin@logout'));
         
         Route::get('profiles/create', array('as' => 'get_profile_create', 'uses' => 'admin@profile_create'));
-        Route::get('profiles/update/{id?}', array('as' => 'get_profile_update', 'uses' => 'admin@profile_update'))
-        ->where(array('id' => '[0-9]+'));
+        Route::get('profiles/update/(:num?)', array('as' => 'get_profile_update', 'uses' => 'admin@profile_update'));
+        Route::get('profiles/preview/(:num)', array('as' => 'get_profile_preview', 'uses' => 'admin@profile_preview'));
 
         Route::get('reports', array('as' => 'get_reports', 'uses' => 'admin@reports'));
         Route::get('review', array('as' => 'get_review', 'uses' => 'admin@review'));
 
-        Route::get('testadmincontroller', array('as' => 'get_testadmin_controller', 'uses' => 'discover@FeedData'));
-        Route::get('test/{data?}', function($data = null) use ($layout)
+        Route::get('testadmincontroller/(:num)', array('as' => 'get_testadmin_controller', 'uses' => 'discover@FeedData'));
+        Route::get('test/(:all?)', function($searches = null) use ($layout)
         {
             /*$url = 'http://www.indiedb.com/games/minecraft';
             $result = Crawler::crawl_game($url);
@@ -282,6 +267,20 @@ Event::listen('laravel.query', function($sql, $bindings, $time) {
 
 
 
+/*
+|--------------------------------------------------------------------------
+| Application 404 & 500 Error Handlers
+|--------------------------------------------------------------------------
+|
+| To centralize and simplify 404 handling, Laravel uses an awesome event
+| system to retrieve the response. Feel free to modify this function to
+| your tastes and the needs of your application.
+|
+| Similarly, we use an event to handle the display of 500 level errors
+| within the application. These errors are fired when there is an
+| uncaught exception thrown in the application.
+|
+*/
 
 Event::listen('404', function()
 {
@@ -296,3 +295,154 @@ Event::listen('500', function()
     return Response::error('500');
 });
 
+/*
+|--------------------------------------------------------------------------
+| Route Filters
+|--------------------------------------------------------------------------
+|
+| Filters provide a convenient method for attaching functionality to your
+| routes. The built-in before and after filters are called before and
+| after every request to your application, and you may even create
+| other filters that can be attached to individual routes.
+|
+| Let's walk through an example...
+|
+| First, define a filter:
+|
+|       Route::filter('filter', function()
+|       {
+|           return 'Filtered!';
+|       });
+|
+| Next, attach the filter to a route:
+|
+|       Router::register('GET /', array('before' => 'filter', function()
+|       {
+|           return 'Hello World!';
+|       }));
+|
+*/
+
+Route::filter('before', function()
+{
+    // Do stuff before every request to your application...
+
+    // check if user has the logged in cokkie
+    $logged_in = Cookie::get('vgc_user_logged_in', '0');
+    if ($logged_in != '0') Auth::login((int) $logged_in);
+
+
+    $route = Request::$route;
+    // CONTROLLER is used in views/layouts/main and views/menu
+    if ($route->controller != null) { // seems to never be the case ??
+        define('CONTROLLER', $route->controller);
+
+    } else {
+        $uri = $route->uri;
+        $segments = preg_split('#/#', $route->uri);
+        
+        define('CONTROLLER', $segments[0]);
+        
+        if ( ! isset($segments[1]))
+            $segments[1] = 'index';
+    }
+});
+
+Route::filter('after', function($response)
+{
+    // Do stuff after every request to your application...
+});
+
+Route::filter('csrf', function()
+{
+    if (Request::forged()) {
+        return Response::error('500');
+    }
+});
+
+
+Route::filter('is_guest', function()
+{
+    if ( ! Auth::guest()) {
+        HTML::set_error(lang('common.msg.guest_only'));
+        return Redirect::to_route('get_home_page');
+    }
+});
+
+
+Route::filter('auth', function()
+{
+    if (Auth::guest()) {
+        HTML::set_error(lang('common.msg.logged_in_only'));
+        return Redirect::to_route('get_login_page');
+    }
+});
+
+
+Route::filter('is_admin', function()
+{
+    if (Auth::guest()) {
+        HTML::set_error(lang('common.msg.logged_in_only'));
+        return Redirect::to_route('get_login_page');
+    } else {
+        if (Auth::user()->type != 'admin') {
+            HTML::set_error(lang('common.msg.admin_only'));
+            return Redirect::to_route('get_home_page');
+        }
+    }
+});
+
+
+// OLD :
+
+// SEARCH PROFILE
+    /*Route::get('search/(:any?)', array('as' => 'get_search_page', function($search_id = null) use ($layout)
+    {
+        if ($search_id !== null) {
+            if (is_string($search_id)) {
+                $search_id = get_category_id($search_id);
+            }
+
+            $search = Search::get($search_id);
+            if ($search !== null) {
+                $profiles = Search::make($search->data)->where_privacy('public')->get();
+                return $layout->nest('page_content', 'search', array(
+                    'profiles' => $profiles, 
+                    'search_data' => $search->array_data, // search_data is used by search_profiles_common
+                    'search_id' => $search_id,
+                ));
+            } else {
+                HTML::set_error(lang('search.msg.id_not_found', array('id'=>$search_id)));
+                return Redirect::to_route('get_search_page');
+            }
+        }
+        
+        return $layout->nest('page_content', 'search');
+    }));*/
+
+    // Route::get('search/feed/(:num)', array('as' => 'get_search_feed', 'uses' => 'feed@search_feed'));
+
+    // BROWSE
+    /*Route::get('browse/(:any?)', array('as' => 'get_browse_page', function($search_id = null) use ($layout)
+    {
+        if ($search_id !== null) {
+            if (is_string($search_id)) {
+                $search_id = get_category_id($search_id);
+            }
+            
+            $search = Search::get($search_id);
+            if ($search !== null) {
+                $profiles = Search::make($search->data)->where_privacy('public')->get();
+                return $layout->nest('page_content', 'browse', array(
+                    'profiles' => $profiles, 
+                    'search_data' => $search->array_data,
+                    'search_id' => $search_id,
+                ));
+            } else {
+                HTML::set_error(lang('search.msg.id_not_found', array('id'=>$search_id)));
+                return Redirect::to_route('get_browse_page');
+            }
+        }
+        
+        return $layout->nest('page_content', 'browse');
+    }));*/

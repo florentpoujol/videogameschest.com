@@ -1,0 +1,411 @@
+<?php
+
+class Admin_Controller extends Base_Controller 
+{
+    public function get_index()
+    {
+        $this->layout->nest('page_content', 'logged_in/adminhome');
+    }
+
+
+    //----------------------------------------------------------------------------------
+    // LOGIN
+
+    public function get_login_page() 
+    {
+        $this->layout->nest('page_content', 'login');
+    }
+
+    public function post_login() 
+    {
+        $rules = array(
+            "username" => "required|alpha_dash_extended|min:2",
+            "password" => "required|min:5",
+            'city' => 'honeypot',
+        );
+
+        $validation = Validator::make(Input::all(), $rules);
+          
+        if ($validation->passes()) {
+            $username = Input::get("username", '');
+            $field = "username";
+
+            if (strpos($username, "@")) { // the name is actually an email
+                $field = "email";
+            }
+
+            $user = User::where($field, '=', $username)->first();
+            
+            if ($user != null) {
+                if (Auth::attempt(array('username' => $user->username, 'password' => Input::get('password')))) {
+                    $keep_logged_in = Input::get('keep_logged_in', '0');
+
+                    if ($keep_logged_in == '1') {
+                        Cookie::put('vgc_user_logged_in', $user->id, 43200); //43200 min = 1 month
+                    }
+
+                    HTML::set_success(lang('login.msg.login_success', array(
+                        'username' => $user->username
+                    )));
+                    Log::write('user login', 'User '.$user->username.' (id='.$user->id.') has logged in');
+                    return Redirect::to_route('get_home_page');
+                } else {
+                    HTML::set_error(lang('login.msg.wrong_password', array(
+                        'field' => $field,
+                        'username' => $username
+                    )));
+                }
+            } else {
+                HTML::set_error(lang('login.msg.user_not_found', array(
+                    'field' => $field,
+                    'username' => $username
+                )));
+            }
+        }
+
+        return Redirect::to_route('get_login_page')->with_errors($validation)->with_input();
+    }
+
+    public function get_logout()
+    {
+        HTML::set_success(lang('login.msg.logout_success'));
+
+        $user = user();
+        Log::write('user logout', 'User '.$user->username.' (id='.$user->id.') has logged out.');
+
+        Cookie::forget('vgc_user_logged_in');
+        Auth::logout();
+        return Redirect::to_route('get_login_page');
+    }
+
+    //----------------------------------------------------------------------------------
+    // LOST PASSWORD
+
+    public function post_lostpassword()
+    {
+        $input = Input::all();
+        
+        $rules = array(
+            'lost_password_username' => 'required|min:5',
+            'city' => 'honeypot',
+        );
+        $validation = Validator::make($input, $rules);
+        
+        if ($validation->passes()) {
+            $username = $input["lost_password_username"];
+            $field = "username";
+
+            if (strpos($username, "@")) { // the name is actually an email
+                $field = "email";
+            }
+            
+            $user = User::where($field, '=', $username)->first();
+            
+            if ($user != null) {
+                $user->setNewPassword(1); // step 1 : send conf email to user
+            } else {
+                HTML::set_error(lang('login.msg.user_not_found', array(
+                    'field' => $field,
+                    'username' => $username
+                )));
+            }
+        }
+            
+        return Redirect::to_route('get_login_page')->with_errors($validation)->with_input();
+    }
+
+    public function get_lostpassword_confirmation($user_id, $url_key)
+    {
+        $user = User::where_id($user_id)->where_url_key($url_key)->first();
+
+        if (is_null($user)) {
+            $msg = lang('lostpassword.msg.confirmation_error', array(
+                'id' => $user_id,
+                'url_key' => $url_key,
+            ));
+            HTML::set_error($msg);
+            Log::write('user lostpassword confirmation error', $msg);
+
+            return Redirect::to_route('get_home_page');
+        }
+
+        // if user is found
+        $user->setNewPassword(2); // setp 2 : generate new password then send by mail
+
+        return Redirect::to_route('get_login_page');
+    }
+
+
+    // ----------------------------------------------------------------------------------
+    // ADD USER
+
+    public function get_user_create()
+    {
+        $this->layout->nest('page_content', 'logged_in/createuser');
+    }
+
+    public function post_user_create()
+    {
+        $input = Input::all();
+        
+        // checking form
+        $rules = array(
+            'username' => 'required|min:5|alpha_dash_extended|unique:users',
+            'email' => 'required|min:5|email|unique:users',
+            'password' => 'required|min:5|confirmed',
+            'password_confirmation' => 'required|min:5',
+            'type' => 'required|in:dev,admin'
+        );
+        $validation = Validator::make($input, $rules);
+        
+        if ($validation->passes()) {
+            $user = User::create($input);
+            return Redirect::to_route('get_user_update', array($user->id));
+        } else {
+            Former::withErrors($validation);
+            $this->layout->nest('page_content', 'logged_in/createuser');
+        }
+    }
+
+
+    //----------------------------------------------------------------------------------
+    // EDIT USER
+
+    public function get_user_update($user_id = null)
+    {
+        if ($user_id == null || ( ! is_admin() && $user_id != user_id()))
+            return Redirect::to_route('get_user_update', array(user_id()));
+
+        if (User::find($user_id) == null) {
+            HTML::set_error("Can't find user with id '$user_id' ! Using your user id '".user_id()."'.");
+            return Redirect::to_route('get_user_update', array(user_id()));
+        }
+
+        $this->layout->nest('page_content', 'logged_in/updateuser', array('user_id'=>$user_id));
+    }
+
+    public function post_user_update()
+    {
+        $input = Input::all();
+        if ( ! is_admin()) $input['id'] = user_id();
+        $user = User::find($input['id']);
+        
+        $rules = array(
+            'username' => 'required|min:5|alpha_dash_extended',
+            'email' => 'required|min:5|email',
+        );
+        $validation = Validator::make($input, $rules);
+        
+        if ($validation->fails() || ! User::update($input['id'], $input)) {
+            return Redirect::to_route('get_user_update', array($user->id))
+            ->with_errors($validation)
+            ->with_input('except', array('password', 'password_confirmation', 'old_password'));
+        }
+
+        return Redirect::to_route('get_user_update', array($user->id));
+    }
+
+    public function post_password_update()
+    {
+        $input = Input::all();
+        if ( ! is_admin()) $input['id'] = user_id();
+        $user = User::find($input['id']);
+
+        $input['password'] = trim($input['password']);
+        
+        // checking form
+        if ($input['password'] != '') {
+            $old_password_ok = true;
+            if ( ! is_admin() && ! Hash::check($input['old_password'], $user->password)) {
+                $old_password_ok = false;
+                HTML::set_error(lang('user.msg.wrong_old_password'));
+            }
+
+            $rules = array(
+                'password' => 'required|min:5|confirmed',
+                'password_confirmation' => 'required|min:5',
+                'old_password' => 'required|min:5',
+            );
+            if (is_admin()) unset($rules['old_password']);
+            $validation = Validator::make($input, $rules);
+        
+            if ($validation->fails() || $old_password_ok == false) {
+                return Redirect::to_route('get_user_update', array($user->id))
+                ->with_errors($validation)
+                ->with_input('except', array('password', 'password_confirmation', 'old_password'));
+            }
+
+            User::update($input['id'], $input);
+        }
+
+        return Redirect::to_route('get_user_update', array($user->id));
+    }
+
+
+    //----------------------------------------------------------------------------------
+    // ADD PROFILE
+    
+    public function get_profile_create()
+    {
+        $this->layout->nest('page_content', 'logged_in/createprofile');
+    }
+
+    public function post_profile_create()
+    {
+        $input = Input::all();
+        $rules = Config::get('profiles_post_create_rules', array());
+        $validation = Validator::make($input, $rules);
+        
+        if ($validation->passes()) {
+            $profile = Profile::create($input);
+            return Redirect::to_route('get_profile_update', array($profile->id));
+        }
+
+        return Redirect::back()->with_errors($validation)->with_input();
+    }
+
+
+    //----------------------------------------------------------------------------------
+    // EDIT PROFILE
+
+    public function post_profile_select()
+    {
+        $input = Input::all();
+        $name = $input['name'];
+        $id = null;
+        
+        if (is_numeric($name)) {
+            if (Profile::find($name) === null) {
+                HTML::set_error(lang('profile.msg.profile_not_found', array(
+                    'field_name' => 'id',
+                    'field_value' => $id,
+                )));
+            } else { // $id is set in an else block so that it stays null when there is an error, and user is redirected to the select form
+                $id = $name;
+            }
+        } else {
+            $profile = Profile::where_name($name)->first();
+            
+            if ($profile === null) {
+                HTML::set_error(lang('profile.msg.profile_not_found', array(
+                    'field_name' => 'name',
+                    'field_value' => $name,
+                )));
+            } else {
+                $id = $profile->id;
+            }
+        }
+
+        return Redirect::to_route('get_profile_update', array($id));
+    }
+
+    public function get_profile_update($profile_id = null)
+    {
+        if ($profile_id == null) {
+            $this->layout->nest('page_content', 'forms/profile_select');
+            return;
+        }
+
+        $profile = Profile::find($profile_id);
+
+        if ($profile === null) {
+            HTML::set_error(lang('profile.msg.profile_not_found', array(
+                'field_name' => 'id',
+                'field_value' => $profile_id
+            )));
+
+            return Redirect::to_route('get_profile_update');
+        }
+
+        $this->layout->nest('page_content', 'logged_in/updateprofile', array('profile_id' => $profile_id));
+    }
+
+    public function post_profile_update() 
+    {
+        $input = Input::all();
+        
+
+        // checking form
+        $rules = Config::get('vgc.profiles_post_update_rules');
+        $validation = Validator::make($input, $rules);
+        
+        if ( ! $validation->passes() || ! Profile::update($input['id'], $input)) {
+            Input::flash();
+            return Redirect::to_route('get_profile_update', array($input['id']))->with_errors($validation);
+        }
+
+        return Redirect::to_route('get_profile_update', array($input['id']));
+    }
+
+
+    //----------------------------------------------------------------------------------
+    // VIEW PROFILE
+
+    public function get_profile_view($profile_id = null)
+    {        
+        $profile = Profile::find($profile_id);
+        
+        if (is_null($profile)) {
+            HTML::set_error(lang('profile.msg.profile_not_found', array(
+                'field_name' => 'id',
+                'field_value' => $profile_id
+            )));
+
+            return Redirect::to_route('get_home_page');
+        }
+
+        if ($profile->is_public || is_admin()) {
+            $this->layout
+            ->with('profile', $profile)
+            ->nest('page_content', 'profile', array('profile' => $profile));
+        } else {
+            HTML::set_error(lang('common.msg.access_not_allowed', array('page' => ' profile '.$profile_id)));
+            return Redirect::to_route('get_home_page');
+        }
+    }
+
+
+    //----------------------------------------------------------------------------------
+    // REPORTS
+
+    public function get_reports()
+    {
+        $this->layout->nest('page_content', 'logged_in/reports');
+    }
+
+    public function post_reports_create()
+    {
+        $input = Input::all();
+        $rules = array(
+            'message' => 'required|min:10',
+        );
+        if (is_guest()) $rules['city'] = 'honeypot';
+        $validation = Validator::make($input, $rules);
+
+        if ($validation->passes()) {
+            Report::create($input);
+            return Redirect::back();
+        }
+
+        return Redirect::back()->with_errors($validation)->with_input();
+    }
+
+    public function post_reports_update()
+    {
+        $reports = Input::get('reports', array());
+
+        if ( ! empty($reports)) {
+            $count = 0;
+            foreach ($reports as $report_id) {
+                Report::find($report_id)->delete();
+                $count++;
+            }
+            
+            HTML::set_success(lang('reports.msg.delete_success'));
+            Log::write('report delete success', "User with name='".user()->name."' and id=".user_id()." deleted $count reports.");
+        }
+        
+        return Redirect::back();
+    }
+
+} // end of Admin controller class

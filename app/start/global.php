@@ -18,6 +18,7 @@ ClassLoader::addDirectories(array(
 	app_path().'/models',
 	app_path().'/database/seeds',
 
+    app_path().'/libraries', // added for VGC
 ));
 
 /*
@@ -81,3 +82,59 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+
+
+/* below this point the file has been edited for VideoGamesChest.com */
+
+
+include_once('helpers.php');
+include_once('macros.php');
+// include_once('libraries/simple_html_dom.php');
+
+
+// Asset::container('nivo-slider')->add('main-css', 'css/nivo-slider/nivo-slider.css');
+// Asset::container('nivo-slider')->add('default-theme', 'css/nivo-slider/themes/default/default.css');
+// Asset::container('nivo-slider')->add('js-pack', 'js/nivo-slider/jquery.nivo.slider.pack.js');
+// Asset::container('nivo-slider')->add('bar-theme', 'css/nivo-slider/themes/bar/bar.css');
+// Asset::container('nivo-slider')->add('dark-theme', 'css/nivo-slider/themes/dark/dark.css');
+// Asset::container('nivo-slider')->add('light-theme', 'css/nivo-slider/themes/light/light.css');
+
+// Asset::container('colorbox')->add('colorbox-css', 'css/colorbox/colorbox.css');
+// Asset::container('colorbox')->add('colorbox-js', 'js/colorbox/jquery.colorbox-min.js');
+
+// Asset::container('slidesjs')->add('slidesjs-css', 'css/slidesjs/global.css');
+// Asset::container('slidesjs')->add('slidesjs-js', 'js/slidesjs/slides.min.jquery.js');
+
+// Asset::container('coda-slider')->add('css', 'css/coda-slider.css');
+// Asset::container('coda-slider')->add('jquery-ui', 'js/jquery-ui-1.10.0.custom.min.js');
+// Asset::container('coda-slider')->add('js', 'js/jquery.coda-slider-3.0.min.js');
+
+
+// new validation rule
+/*Laravel\Validator::register('no_slashes', function($attribute, $value, $parameters)
+{
+    if (strpos($value, '/') === false && strpos($value, "\\") === false) return true;
+    else return false;
+});*/
+
+Laravel\Validator::register('alpha_dash_extended', function($attribute, $value, $parameters)
+{
+    $alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_- ";
+
+    for ($i = 0; $i < strlen($value); $i++) {
+        if (strpos($alphabet, $value[$i]) === false) { // current carac not found in aphabet
+            return false;
+        }
+    }
+
+    return true;
+});
+
+
+Laravel\Validator::register('honeypot', function($attribute, $value, $parameters)
+{
+    if (strlen($value) > 0) {
+        Log::write('error honeypot bot', 'The honeypot was filled with value "'.$value.'". IP : '.Request::ip());
+        return Response::error('500');
+    } else return true;
+});
