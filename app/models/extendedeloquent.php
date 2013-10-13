@@ -21,8 +21,7 @@ class ExtendedEloquent extends Eloquent
     // for Former bundle
     public function __toString()
     {
-        if ($this instanceof User) return $this->username;
-        elseif ($this instanceof Developer || $this instanceof Game) return $this->name;
+        if ($this instanceof Profile) return $this->name;
         else return static::$table;
     }
 }

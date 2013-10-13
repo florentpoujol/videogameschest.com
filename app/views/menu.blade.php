@@ -12,8 +12,8 @@
                 <!-- General menu -->
                 <?php 
                 $home = '';
-                if (CONTROLLER == '' || CONTROLLER == 'home') 
-                    $home = ' class="active"';
+                // if (CONTROLLER == '' || CONTROLLER == 'home') 
+                    // $home = ' class="active"';
 
                 $admin = 'active';
                 if ($home != '')
@@ -24,7 +24,6 @@
                 <li><a href="{{ route('get_suggest_page') }}" id="suggest_form_link">{{ lang('suggest.menu_link') }}</a></li>
                 
                 <!-- /general menu --> 
-
                 @if (is_logged_in())
                     <!-- Admin menu -->
                     <li class="dropdown {{ $admin }}">

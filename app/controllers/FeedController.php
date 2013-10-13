@@ -1,6 +1,6 @@
 <?php
 
-class Feed_Controller extends Base_Controller
+class FeedController extends BaseController
 {
     public $layout = null; // prevent the main layout to be automatically included
 

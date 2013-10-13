@@ -14,7 +14,7 @@ class SuggestedProfile extends ExtendedEloquent
             HTML::set_success(lang('vgc.suggest.msg.create_success'));
         }
 
-        Log::write('sugestedprofile create success', "New suggested profile with url='".$profile->url."' and source='".$profile->source."'.");
+        // Log::write('sugestedprofile create success', "New suggested profile with url='".$profile->url."' and source='".$profile->source."'.");
         return $profile;
     }
     

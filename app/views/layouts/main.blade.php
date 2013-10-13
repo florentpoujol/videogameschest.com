@@ -1,20 +1,19 @@
 <?php
-if ( ! isset($page_title)) {
-    $page_title = Section::yield('page_title');
-    
-    if ($page_title == '') $page_title = ucfirst(CONTROLLER);
-}
+if ( ! isset($page_title)) $page_title = '';
+if ( $page_title != '' )
+    $page_title .= " - ";
+
 
 if ( ! isset($page_content)) $page_content = '';
-$page_content .= Section::yield('page_content');
 
 $is_profile_public = true;
-if (isset($profile)) $is_profile_public = $profile->is_public;
+if (isset($profile))
+    $is_profile_public = $profile->is_public;
 ?><!DOCTYPE html>
 <html lang="en"> 
     <!-- ENVIRONEMENT : {{ Config::get('vgc.environment') }} -->
     <head>
-        <title>{{ $page_title }} - VideoGamesChest.com</title>
+        <title>{{ $page_title }}VideoGamesChest.com</title>
 
         <!-- Meta --> 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -30,17 +29,13 @@ if (isset($profile)) $is_profile_public = $profile->is_public;
         @else
             <meta name="robots" content="noindex,nofollow">
         @endif
-        
         <!-- /Meta -->
 
         <!-- CSS -->        
         {{ HTML::style('css/bootstrap/bootstrap.min.css') }}
         {{ HTML::style('css/font-awesome/font-awesome.min.css') }}
-        <!--[if IE 7]>
-        {{ HTML::style('css/font-awesome/font-awesome-ie7.min.css') }}
-        <![endif]-->
-        {{ HTML::style('css/vgc/main.less', array('rel'=>'stylesheet/less')) }}
-        {{-- Asset::container('colorbox')->styles() }}
+        
+        {{HTML::style('css/vgc/main.less', array('rel'=>'stylesheet/less')) }}
         @yield('cssfiles')
         <!-- /CSS -->
     </head>
@@ -56,7 +51,6 @@ if (isset($profile)) $is_profile_public = $profile->is_public;
             </div>
             
             {{ $page_content }}
-            
         </div> <!-- /#page_content .container -->
 
         <footer class="container">
@@ -87,7 +81,6 @@ if (isset($profile)) $is_profile_public = $profile->is_public;
         @endif
         {{ HTML::script('js/less.js') }}
         {{ HTML::script('js/bootstrap/bootstrap.min.js') }}
-        {{ Asset::container('colorbox')->scripts() }}
         @yield('jsfiles')
 
         <script>
@@ -104,7 +97,7 @@ if (isset($profile)) $is_profile_public = $profile->is_public;
             @yield('jQuery')
           })
 
-          @yield('jscode')
+          // @yield('jscode') 
         </script> <!-- /JavaScript -->
 
         @if (Config::get('vgc.environment') == 'production')

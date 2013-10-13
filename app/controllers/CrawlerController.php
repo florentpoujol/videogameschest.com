@@ -1,6 +1,6 @@
 <?php
 
-class Crawler_Controller extends Base_Controller 
+class CrawlerController extends BaseController 
 {
     public function get_index()
     {
@@ -93,7 +93,7 @@ class Crawler_Controller extends Base_Controller
             HTML::set_success("$profiles_added urls added from the feed '".$feed_name."'.");
         }
 
-        return Redirect::to_route('get_crawler_page');
+        return Redirect::route('get_crawler_page');
     }
 
 
@@ -136,6 +136,6 @@ class Crawler_Controller extends Base_Controller
             ));
         }
         
-        return Redirect::to_route('get_crawler_page');
+        return Redirect::route('get_crawler_page');
     }
 }

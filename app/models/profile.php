@@ -35,14 +35,14 @@ class Profile extends ExtendedEloquent
         ));
 
         HTML::set_success($msg);
-        Log::write('profile create success', "User '".user()->name."' (id=".user_id().") has created a profile with name='".$profile->name."' and id='".$profile->id."'.");
+        // Log::write('profile create success', "User '".user()->name."' (id=".user_id().") has created a profile with name='".$profile->name."' and id='".$profile->id."'.");
         
         return $profile;
     }
 
     public static function update($id, $input)
     {
-        $profile = parent::find($id);
+        $profile = Profile::find($id);
         
         $input = clean_form_input($input);
 
@@ -60,7 +60,7 @@ class Profile extends ExtendedEloquent
 
         HTML::set_success($msg);
 
-        Log::write('profile update success', "User '".user()->name."' (id=".user_id().") has updated the profile with name='".$profile->name."' and id='".$profile->id."'.");
+        // Log::write('profile update success', "User '".user()->name."' (id=".user_id().") has updated the profile with name='".$profile->name."' and id='".$profile->id."'.");
         return $profile;
     }
 
@@ -71,7 +71,12 @@ class Profile extends ExtendedEloquent
 
     public function reports()
     {
-        return $this->has_many('Report', 'profile_id');
+        return $this->hasMany('Report');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany('Tags');
     }
 
 

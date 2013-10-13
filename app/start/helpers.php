@@ -175,7 +175,12 @@ function icon($icon, $title = null, $size = null)
 
 function is_admin()
 {
-    return ( ! Auth::guest() && Auth::user()->type == 'admin');
+    return (Auth::check() && Auth::user()->type == 'admin');
+}
+
+function is_user()
+{
+    return (Auth::check() && Auth::user()->type == 'user');
 }
 
 function is_guest()
@@ -185,13 +190,9 @@ function is_guest()
 
 function is_logged_in()
 {
-    return ( ! Auth::guest());
+    return Auth::check();
 }
 
-function is_user()
-{
-    return ( ! Auth::guest() && Auth::user()->type == 'user');
-}
 
 
 /**
@@ -212,7 +213,7 @@ function lang($key, $replacements = array(), $language = null)
     $key_parts = explode('.', $key);
     if ( ! in_array($key_parts[0], Config::get('vgc.language_files'))) $key = 'vgc.'.$key;
 
-    $string = Lang::line($key, $replacements, 'en')->get();
+    $string = Lang::get($key, $replacements, 'en');
     
     return $string;
 }
@@ -267,7 +268,7 @@ function ProcessBlacklist($profiles, $user_id = null)
     $user = User::find($user_id);
 
     if (is_null($user)) {
-        Log::write('blacklist error', 'Tried to process blacklist of an unknow user id='.$user_id);
+        // Log::write('blacklist error', 'Tried to process blacklist of an unknow user id='.$user_id);
         return $profiles;
     }
 
@@ -286,77 +287,25 @@ function ProcessBlacklist($profiles, $user_id = null)
 
 
 /**
- * Wrapper around the SwiftMailer bundle
+ * Wrapper around the Mailer class
+ * only used by user model
  */
-function SendMail($email, $subject, $body_html, $body_text = null, $priority = null) 
+function send_mail($email, $subject, $body_html) 
 {
-    if (is_null($body_text)) $body_text = $body_html;
-
+    $function = "send";
     $env = Config::get('vgc.environment');
-
     if ($env == 'local') {
         HTML::set_info($body_html);
-        return;
+        $function = "pretend";
     }
 
-    //Using SwiftMailer
-
-    // transport
-    $transport = Swift_MailTransport::newInstance();
-    // note : with Gandi, there is no need to set an smtp transport, because
-    // IT SEEMS that the PHP mail function will take care of smtp with Gandi by itself
-    /* $transport = Swift_SmtpTransport::newInstance($smtp_server, Config::get('vgc.smtp.server_port'))
-            ->setUsername(Config::get('vgc.smtp.username'))
-            ->setPassword(Config::get('vgc.smtp.password'));*/
-    
-    // check early if the trnsport is going to throw an exception
-    try {
-        $transport->start();
-    } 
-    catch (Exception $e) {
-        var_dump($e);
-        Log::write('email error', 'transport exception :'.$e);
-    }
-
-    // new mailer instance
-    $mailer = Swift_Mailer::newInstance($transport);    
-    // the laravel bundle doc suggest :
-    // $mailer = IoC::resolve('mailer');
-
-    // Construct the message
-    $message = Swift_Message::newInstance()
-        ->setFrom(array(Config::get('vgc.automatic_email_from') => Config::get('vgc.automatic_email_from_name')))
-        ->setTo($email)
-        ->setSubject($subject)
-        ->setBody($body_html,'text/html')
-        ->addPart($body_text,'text/plain');
-
-    if (is_integer($priority)) $message->setPriority($priority);
-        
-    // Send the email
-    $failures = array();
-    $num_sent = $mailer->send($message, $failures);
-
-    //HTML::set_info('Email sent : (to='.$email.') (subject='.$subject.') (body_text='.$body_text.')');
-    if ($num_sent > 0) {
-        Log::write('email', 'Email sent : (to='.$email.') (subject='.$subject.') (body_text='.$body_text.') (body_html='.$body_html.')');
-    } else {
-        Log::write('email error', 'Email NOT SENT : (to='.$email.') (subject='.$subject.') (body_text='.$body_text.') (body_html='.$body_html.')');
-    }
-
-    if ( ! empty($failures)) {
-        $msg = 'The following adresses failed : '.implode(',', $failures).' <br>
-        <br>
-        ___________ <br>
-        <br>
-        subject : '.$subject.' <br>
-        <br>
-        body : <br>
-        '.$body_html;
-
-        Log::write('email error', $msg);
-        sendMail(Config::get('admin_email'), 'Send mail recipient failures', $msg, $msg, 1);
-    }
+    Mail::$function(array('html' => 'email', 'text' => 'email'), array('email_body' => $body_html), function($message)
+    {
+        $message
+        ->from(Config::get('vgc.automatic_email_from'), Config::get('vgc.automatic_email_from_name'))
+        ->to($email)
+        ->subject($subject);
+    });
 }
 
 

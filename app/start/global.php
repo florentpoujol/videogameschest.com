@@ -111,30 +111,12 @@ include_once('macros.php');
 
 
 // new validation rule
-/*Laravel\Validator::register('no_slashes', function($attribute, $value, $parameters)
-{
-    if (strpos($value, '/') === false && strpos($value, "\\") === false) return true;
-    else return false;
-});*/
-
-Laravel\Validator::register('alpha_dash_extended', function($attribute, $value, $parameters)
-{
-    $alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_- ";
-
-    for ($i = 0; $i < strlen($value); $i++) {
-        if (strpos($alphabet, $value[$i]) === false) { // current carac not found in aphabet
-            return false;
-        }
-    }
-
-    return true;
-});
 
 
-Laravel\Validator::register('honeypot', function($attribute, $value, $parameters)
+Validator::extend('honeypot', function($attribute, $value, $parameters)
 {
     if (strlen($value) > 0) {
-        Log::write('error honeypot bot', 'The honeypot was filled with value "'.$value.'". IP : '.Request::ip());
+        // Log::write('error honeypot bot', 'The honeypot was filled with value "'.$value.'". IP : '.Request::ip());
         return Response::error('500');
     } else return true;
 });

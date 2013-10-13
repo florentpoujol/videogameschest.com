@@ -51,7 +51,7 @@ class Search extends ExtendedEloquent
         $profile_type = $input['profile_type'];
 
         if ( ! in_array($profile_type, get_profile_types())) {
-            Log::write('search error', "Wrong class '$profile_type' for search id='$search_id'");
+            // Log::write('search error', "Wrong class '$profile_type' for search id='$search_id'");
             HTML::set_error(lang('vgc.common.msg.error'));
             return new SearchError("Wrong class '$profile_type' for search id='$search_id'");
         }

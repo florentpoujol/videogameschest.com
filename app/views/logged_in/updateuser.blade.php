@@ -19,7 +19,7 @@ if ( ! empty($old)) Former::populate($old);
         <div class="span6">
             <?php
             $rules = array(
-                'username' => 'required|alpha_dash_extended|min:2',
+                'username' => 'required|alpha_dash|min:2',
                 'email' => 'required|min:5|email',
             );
             ?>

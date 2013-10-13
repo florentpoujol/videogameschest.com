@@ -20,7 +20,7 @@ return array(
     'environment' => 'common',
 
     // get by helper clean_form_input()
-    'form_attributes_to_clean' => array('csrf_token', 'password_confirmation',
+    'form_attributes_to_clean' => array('_token', 'password_confirmation',
      'old_password', 'controller', 'captcha', 'recaptcha_challenge_field', 'recaptcha_response_field',
       'city', 'create_preview_version'),
 
@@ -33,13 +33,13 @@ return array(
 
 
     'profiles_post_create_rules' => array(
-        'name' => 'required|alpha_dash_extended|min:2',
+        'name' => 'required|alpha_dash|min:2',
         'release_date' => 'date_format:d/m/Y',
     ),
 
 
     'profiles_post_update_rules' => array(
-        'name' => 'required|alpha_dash_extended|min:2',
+        'name' => 'required|alpha_dash|min:2',
         'release_date' => 'date_format:Y-m-d',
     ),
 

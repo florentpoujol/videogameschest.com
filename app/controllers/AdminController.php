@@ -1,8 +1,8 @@
 <?php
 
-class Admin_Controller extends Base_Controller 
+class AdminController extends BaseController 
 {
-    public function get_index()
+    public function getIndex()
     {
         $this->layout->nest('page_content', 'logged_in/adminhome');
     }
@@ -11,44 +11,45 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // LOGIN
 
-    public function get_login_page() 
+    public function getLoginPage() 
     {
         $this->layout->nest('page_content', 'login');
     }
 
-    public function post_login() 
+    public function postLogin() 
     {
         $rules = array(
-            "username" => "required|alpha_dash_extended|min:2",
+            "username" => "required|min:2",
             "password" => "required|min:5",
-            'city' => 'honeypot',
         );
 
         $validation = Validator::make(Input::all(), $rules);
-          
+       
         if ($validation->passes()) {
+            var_dump("valid ok");
+             
             $username = Input::get("username", '');
             $field = "username";
-
+            
             if (strpos($username, "@")) { // the name is actually an email
                 $field = "email";
             }
-
-            $user = User::where($field, '=', $username)->first();
             
+            $user = User::where($field, '=', $username)->first();
+            // var_dump($user);
             if ($user != null) {
                 if (Auth::attempt(array('username' => $user->username, 'password' => Input::get('password')))) {
                     $keep_logged_in = Input::get('keep_logged_in', '0');
 
                     if ($keep_logged_in == '1') {
-                        Cookie::put('vgc_user_logged_in', $user->id, 43200); //43200 min = 1 month
+                        Cookie::make('vgc_user_logged_in', $user->id, 43200); //43200 min = 1 month
                     }
 
                     HTML::set_success(lang('login.msg.login_success', array(
                         'username' => $user->username
                     )));
-                    Log::write('user login', 'User '.$user->username.' (id='.$user->id.') has logged in');
-                    return Redirect::to_route('get_home_page');
+                    // Log::write('user login', 'User '.$user->username.' (id='.$user->id.') has logged in');
+                    return Redirect::route('get_home_page');
                 } else {
                     HTML::set_error(lang('login.msg.wrong_password', array(
                         'field' => $field,
@@ -62,26 +63,28 @@ class Admin_Controller extends Base_Controller
                 )));
             }
         }
-
-        return Redirect::to_route('get_login_page')->with_errors($validation)->with_input();
+ 
+        return Redirect::route('get_login_page')->withErrors($validation)->withInput();
     }
 
-    public function get_logout()
+    public function getLogout()
     {
         HTML::set_success(lang('login.msg.logout_success'));
-
+        var_dump("logout 1");
         $user = user();
-        Log::write('user logout', 'User '.$user->username.' (id='.$user->id.') has logged out.');
-
+        // Log::write('user logout', 'User '.$user->username.' (id='.$user->id.') has logged out.');
+        var_dump("logout 2");
         Cookie::forget('vgc_user_logged_in');
+        var_dump("logout 3");
         Auth::logout();
-        return Redirect::to_route('get_login_page');
+        var_dump("logout 4");
+        return Redirect::route('get_login_page');
     }
 
     //----------------------------------------------------------------------------------
     // LOST PASSWORD
 
-    public function post_lostpassword()
+    public function postLostpassword()
     {
         $input = Input::all();
         
@@ -111,10 +114,10 @@ class Admin_Controller extends Base_Controller
             }
         }
             
-        return Redirect::to_route('get_login_page')->with_errors($validation)->with_input();
+        return Redirect::route('get_login_page')->withErrors($validation)->withInput();
     }
 
-    public function get_lostpassword_confirmation($user_id, $url_key)
+    public function getLostpasswordConfirmation($user_id, $url_key)
     {
         $user = User::where_id($user_id)->where_url_key($url_key)->first();
 
@@ -124,43 +127,44 @@ class Admin_Controller extends Base_Controller
                 'url_key' => $url_key,
             ));
             HTML::set_error($msg);
-            Log::write('user lostpassword confirmation error', $msg);
+            // Log::write('user lostpassword confirmation error', $msg);
 
-            return Redirect::to_route('get_home_page');
+            return Redirect::route('get_home_page');
         }
 
         // if user is found
         $user->setNewPassword(2); // setp 2 : generate new password then send by mail
 
-        return Redirect::to_route('get_login_page');
+        return Redirect::route('get_login_page');
     }
 
 
     // ----------------------------------------------------------------------------------
     // ADD USER
 
-    public function get_user_create()
+    public function getUserCreate()
     {
         $this->layout->nest('page_content', 'logged_in/createuser');
     }
 
-    public function post_user_create()
+    public function postUserCreate()
     {
         $input = Input::all();
         
         // checking form
         $rules = array(
-            'username' => 'required|min:5|alpha_dash_extended|unique:users',
+            'username' => 'required|min:5|alpha_dash|unique:users',
             'email' => 'required|min:5|email|unique:users',
             'password' => 'required|min:5|confirmed',
             'password_confirmation' => 'required|min:5',
-            'type' => 'required|in:dev,admin'
+            // 'type' => 'required|in:dev,admin'
         );
         $validation = Validator::make($input, $rules);
         
         if ($validation->passes()) {
-            $user = User::create($input);
-            return Redirect::to_route('get_user_update', array($user->id));
+            $user = new User;
+            $user->createFromInput( $input );
+            return Redirect::route('get_user_update', array($user->id));
         } else {
             Former::withErrors($validation);
             $this->layout->nest('page_content', 'logged_in/createuser');
@@ -171,41 +175,44 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // EDIT USER
 
-    public function get_user_update($user_id = null)
+    public function getUserUpdate($user_id = null)
     {
         if ($user_id == null || ( ! is_admin() && $user_id != user_id()))
-            return Redirect::to_route('get_user_update', array(user_id()));
+            return Redirect::route('get_user_update', array(user_id()));
 
         if (User::find($user_id) == null) {
             HTML::set_error("Can't find user with id '$user_id' ! Using your user id '".user_id()."'.");
-            return Redirect::to_route('get_user_update', array(user_id()));
+            return Redirect::route('get_user_update', array(user_id()));
         }
 
         $this->layout->nest('page_content', 'logged_in/updateuser', array('user_id'=>$user_id));
     }
 
-    public function post_user_update()
+    public function postUserUpdate()
     {
         $input = Input::all();
         if ( ! is_admin()) $input['id'] = user_id();
         $user = User::find($input['id']);
         
         $rules = array(
-            'username' => 'required|min:5|alpha_dash_extended',
+            'username' => 'required|min:5|alpha_dash',
             'email' => 'required|min:5|email',
         );
         $validation = Validator::make($input, $rules);
         
-        if ($validation->fails() || ! User::update($input['id'], $input)) {
-            return Redirect::to_route('get_user_update', array($user->id))
-            ->with_errors($validation)
-            ->with_input('except', array('password', 'password_confirmation', 'old_password'));
+        if ($validation->fails()) {
+            return Redirect::route('get_user_update', array($user->id))
+            ->withErrors($validation)
+            ->withInput('except', array('password', 'password_confirmation', 'old_password'));
+        }
+        else {
+            $user->updateFromInput( $input );
         }
 
-        return Redirect::to_route('get_user_update', array($user->id));
+        return Redirect::route('get_user_update', array($user->id));
     }
 
-    public function post_password_update()
+    public function postPasswordUpdate()
     {
         $input = Input::all();
         if ( ! is_admin()) $input['id'] = user_id();
@@ -230,27 +237,27 @@ class Admin_Controller extends Base_Controller
             $validation = Validator::make($input, $rules);
         
             if ($validation->fails() || $old_password_ok == false) {
-                return Redirect::to_route('get_user_update', array($user->id))
-                ->with_errors($validation)
-                ->with_input('except', array('password', 'password_confirmation', 'old_password'));
+                return Redirect::route('get_user_update', array($user->id))
+                ->withErrors($validation)
+                ->withInput('except', array('password', 'password_confirmation', 'old_password'));
             }
 
             User::update($input['id'], $input);
         }
 
-        return Redirect::to_route('get_user_update', array($user->id));
+        return Redirect::route('get_user_update', array($user->id));
     }
 
 
     //----------------------------------------------------------------------------------
     // ADD PROFILE
     
-    public function get_profile_create()
+    public function getProfileCreate()
     {
         $this->layout->nest('page_content', 'logged_in/createprofile');
     }
 
-    public function post_profile_create()
+    public function postProfileCreate()
     {
         $input = Input::all();
         $rules = Config::get('profiles_post_create_rules', array());
@@ -258,17 +265,17 @@ class Admin_Controller extends Base_Controller
         
         if ($validation->passes()) {
             $profile = Profile::create($input);
-            return Redirect::to_route('get_profile_update', array($profile->id));
+            return Redirect::route('get_profile_update', array($profile->id));
         }
 
-        return Redirect::back()->with_errors($validation)->with_input();
+        return Redirect::back()->withErrors($validation)->withInput();
     }
 
 
     //----------------------------------------------------------------------------------
     // EDIT PROFILE
 
-    public function post_profile_select()
+    public function postProfileSelect()
     {
         $input = Input::all();
         $name = $input['name'];
@@ -296,10 +303,10 @@ class Admin_Controller extends Base_Controller
             }
         }
 
-        return Redirect::to_route('get_profile_update', array($id));
+        return Redirect::route('get_profile_update', array($id));
     }
 
-    public function get_profile_update($profile_id = null)
+    public function getProfileUpdate($profile_id = null)
     {
         if ($profile_id == null) {
             $this->layout->nest('page_content', 'forms/profile_select');
@@ -314,13 +321,13 @@ class Admin_Controller extends Base_Controller
                 'field_value' => $profile_id
             )));
 
-            return Redirect::to_route('get_profile_update');
+            return Redirect::route('get_profile_update');
         }
 
         $this->layout->nest('page_content', 'logged_in/updateprofile', array('profile_id' => $profile_id));
     }
 
-    public function post_profile_update() 
+    public function posProfileUpdate() 
     {
         $input = Input::all();
         
@@ -331,17 +338,17 @@ class Admin_Controller extends Base_Controller
         
         if ( ! $validation->passes() || ! Profile::update($input['id'], $input)) {
             Input::flash();
-            return Redirect::to_route('get_profile_update', array($input['id']))->with_errors($validation);
+            return Redirect::route('get_profile_update', array($input['id']))->withErrors($validation);
         }
 
-        return Redirect::to_route('get_profile_update', array($input['id']));
+        return Redirect::route('get_profile_update', array($input['id']));
     }
 
 
     //----------------------------------------------------------------------------------
     // VIEW PROFILE
 
-    public function get_profile_view($profile_id = null)
+    public function getProfileView($profile_id = null)
     {        
         $profile = Profile::find($profile_id);
         
@@ -351,7 +358,7 @@ class Admin_Controller extends Base_Controller
                 'field_value' => $profile_id
             )));
 
-            return Redirect::to_route('get_home_page');
+            return Redirect::route('get_home_page');
         }
 
         if ($profile->is_public || is_admin()) {
@@ -360,7 +367,7 @@ class Admin_Controller extends Base_Controller
             ->nest('page_content', 'profile', array('profile' => $profile));
         } else {
             HTML::set_error(lang('common.msg.access_not_allowed', array('page' => ' profile '.$profile_id)));
-            return Redirect::to_route('get_home_page');
+            return Redirect::route('get_home_page');
         }
     }
 
@@ -368,12 +375,12 @@ class Admin_Controller extends Base_Controller
     //----------------------------------------------------------------------------------
     // REPORTS
 
-    public function get_reports()
+    public function getReports()
     {
         $this->layout->nest('page_content', 'logged_in/reports');
     }
 
-    public function post_reports_create()
+    public function postReportsCreate()
     {
         $input = Input::all();
         $rules = array(
@@ -387,10 +394,10 @@ class Admin_Controller extends Base_Controller
             return Redirect::back();
         }
 
-        return Redirect::back()->with_errors($validation)->with_input();
+        return Redirect::back()->withErrors($validation)->withInput();
     }
 
-    public function post_reports_update()
+    public function postReportsUpdate()
     {
         $reports = Input::get('reports', array());
 
@@ -402,7 +409,7 @@ class Admin_Controller extends Base_Controller
             }
             
             HTML::set_success(lang('reports.msg.delete_success'));
-            Log::write('report delete success', "User with name='".user()->name."' and id=".user_id()." deleted $count reports.");
+            // Log::write('report delete success', "User with name='".user()->name."' and id=".user_id()." deleted $count reports.");
         }
         
         return Redirect::back();

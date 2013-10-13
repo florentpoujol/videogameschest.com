@@ -53,26 +53,20 @@
 */
 
 
-View::name('layouts.main', 'layout');
-$layout = View::of('layout');
+$layout = View::make('layouts.main');
 
 
 //----------------------------------------------------------------------------------
-// NO FILTERS (display profiles below 'must be logged in')
+// NO FILTERS
 //----------------------------------------------------------------------------------
 
     // HOME
 
-    Route::get('/', function() use ($layout)
+    Route::get('/', array('as' => 'get_home_page', function() use ($layout)
     {
-        return $layout->nest('page_content', 'home');
-    });
-
-    Route::get('home', array('as' => 'get_home_page', 'do' => function() use ($layout)
-    {
+        // return View::make('layouts.main2');
         return $layout->nest('page_content', 'home');
     }));
-
 
     // SUGGEST
     Route::get('suggest', array('as' => 'get_suggest_page', function() use ($layout)
@@ -85,12 +79,12 @@ $layout = View::of('layout');
     // 10/10/13 why is that in public space ?
     // > because rss agregators aren't loged in
     // the parameter is a user's url_key
-    Route::get('reports/feed/{url_key}', array('as' => 'get_reports_feed', 'uses' => 'feed@reports_feed'))
+    Route::get('reports/feed/{url_key}', array('as' => 'get_reports_feed', 'uses' => 'FeedController@getReportsFeed'))
     ->where('url_key', '[A-Za-z_]+');
         
 
     //VIEW PROFILE
-    Route::get('profiles/(:num)', array('as' => 'get_profile_view', 'uses' => 'admin@profile_view'));
+    Route::get('profiles/(:num)', array('as' => 'get_profile_view', 'uses' => 'AdminController@getProfileView'));
     
     
 
@@ -109,7 +103,7 @@ $layout = View::of('layout');
 
     Route::group(array('before' => 'csrf'), function()
     {
-        Route::post('reports/create', array('as' => 'post_reports_create', 'uses' => 'admin@reports_create'));
+        Route::post('reports/create', array('as' => 'post_reports_create', 'uses' => 'AdminController@postReportsCreate'));
 
         Route::post('search', array('as' => 'post_search', function()
         {
@@ -125,13 +119,13 @@ $layout = View::of('layout');
             }
 
             $search = Search::create($input);
-            return Redirect::to_route('get_'.$action.'_page', array($search->id));
+            return Redirect::route('get_'.$action.'_page', array($search->id));
         }));
 
 
         Route::post('browse', array('as' => 'post_browse', function()
         {
-            return Redirect::to_route('get_browse_page', array(Input::get('search_id')));
+            return Redirect::route('get_browse_page', array(Input::get('search_id')));
         }));
         
         // Suggest
@@ -150,7 +144,7 @@ $layout = View::of('layout');
                 }
             }
 
-            return Redirect::back()->with_input()->with_errors($validation);
+            return Redirect::back()->withInput()->withErrors($validation);
         }));
     });
 
@@ -162,9 +156,8 @@ $layout = View::of('layout');
 
     Route::group(array('before' => 'guest'), function()
     {
-        Route::get('login', array('as' => 'get_login_page', 'uses' => 'admin@login_page'));
-        // Route::get('register', array('as' => 'get_register_page', 'uses' => 'admin@register_page'));
-        Route::get('user/lostpassword/{user_id}/{url_key}', array('as' => 'get_lostpassword_confirmation', 'uses' => 'admin@lostpassword_confirmation'))
+        Route::get('login', array('as' => 'get_login_page', 'uses' => 'AdminController@getLoginPage'));
+        Route::get('user/lostpassword/{user_id}/{url_key}', array('as' => 'get_lostpassword_confirmation', 'uses' => 'AdminController@getLostpasswordConfirmation'))
         ->where(array('user_id' => '[0-9]+', 'url_key' => '[A-Za-z_]+'));
     });
 
@@ -176,33 +169,20 @@ $layout = View::of('layout');
 
     Route::group(array('before' => 'guest|csrf'), function()
     {
-        // Route::post('register', array('as' => 'post_register', 'uses' => 'admin@register'));
-        Route::post('login', array('as' => 'post_login', 'uses' => 'admin@login'));
-        Route::post('lostpassword', array('as' => 'post_lostpassword', 'uses' => 'admin@lostpassword'));
+        // Route::post('register', array('as' => 'post_register', 'uses' => 'AdminController@register'));
+        Route::post('login', array('as' => 'post_login', 'uses' => 'AdminController@postLogin'));
+        Route::post('lostpassword', array('as' => 'post_lostpassword', 'uses' => 'AdminController@postLostpassword'));
     });
-
 
 
 //----------------------------------------------------------------------------------
 //  MUST BE LOGGED IN
 //----------------------------------------------------------------------------------
 
-    Route::group(array('before' => 'auth'), function()
+    Route::group(array('before' => 'auth'), function() use ($layout)
     {
-        
+        Route::get('logout', array('as' => 'get_logout', 'uses' => 'AdminController@getLogout'));
     });
-
-
-
-//----------------------------------------------------------------------------------
-//  MUST BE LOGGED IN AND LEGIT POST
-//----------------------------------------------------------------------------------
-
-    Route::group(array('before' => 'auth|csrf'), function()
-    {
-        
-    });
-
 
 
 //----------------------------------------------------------------------------------
@@ -213,22 +193,18 @@ $layout = View::of('layout');
     {
         Route::get('user', function()
         {
-            return Redirect::to_route('get_user_update'); // no regular profile user
+            return Redirect::route('get_user_update'); // no regular profile user
         });
-        Route::get('user/create', array('as' => 'get_user_create', 'uses' => 'admin@user_create'));
-        Route::get('user/update/{user_id?}', array('as' => 'get_user_update', 'uses' => 'admin@user_update'))
+        Route::get('user/create', array('as' => 'get_user_create', 'uses' => 'AdminController@getUserCreate'));
+        Route::get('user/update/{user_id?}', array('as' => 'get_user_update', 'uses' => 'AdminController@getUserUpdate'))
         ->where(array('user_id' => '[0-9]+'));
-
-        Route::get('logout', array('as' => 'get_logout', 'uses' => 'admin@logout'));
         
-        Route::get('profiles/create', array('as' => 'get_profile_create', 'uses' => 'admin@profile_create'));
-        Route::get('profiles/update/{id?}', array('as' => 'get_profile_update', 'uses' => 'admin@profile_update'))
+        Route::get('profiles/create', array('as' => 'get_profile_create', 'uses' => 'AdminController@getProfileCreate'));
+        Route::get('profiles/update/{id?}', array('as' => 'get_profile_update', 'uses' => 'AdminController@getProfileUpdate'))
         ->where(array('id' => '[0-9]+'));
 
-        Route::get('reports', array('as' => 'get_reports', 'uses' => 'admin@reports'));
-        Route::get('review', array('as' => 'get_review', 'uses' => 'admin@review'));
+        Route::get('reports', array('as' => 'get_reports', 'uses' => 'AdminController@getReports'));
 
-        Route::get('testadmincontroller', array('as' => 'get_testadmin_controller', 'uses' => 'discover@FeedData'));
         Route::get('test/{data?}', function($data = null) use ($layout)
         {
             /*$url = 'http://www.indiedb.com/games/minecraft';
@@ -245,8 +221,8 @@ $layout = View::of('layout');
         }));
 
         // CRAWLER
-        Route::get('crawler', array('as' => 'get_crawler_page', 'uses' => 'crawler@index'));
-        Route::get('crawler/readrss', array('as' => 'get_crawler_read_feed_urls', 'uses' => 'crawler@read_feed_urls'));
+        Route::get('crawler', array('as' => 'get_crawler_page', 'uses' => 'CrawlerController@getIndex'));
+        Route::get('crawler/readrss', array('as' => 'get_crawler_read_feed_urls', 'uses' => 'CrawlerController@getReadFeedUrls'));
     });
 
 
@@ -257,20 +233,20 @@ $layout = View::of('layout');
 
     Route::group(array('before' => 'auth|is_admin|csrf'), function()
     {
-        Route::post('user/create', array('as' => 'post_user_create', 'uses' => 'admin@user_create'));
-        Route::post('user/update', array('as' => 'post_user_update', 'uses' => 'admin@user_update'));
-        Route::post('user/updatepassword', array('as' => 'post_password_update', 'uses' => 'admin@password_update'));
+        Route::post('user/create', array('as' => 'post_user_create', 'uses' => 'AdminController@postUserCreate'));
+        Route::post('user/update', array('as' => 'post_user_update', 'uses' => 'AdminController@postUserUpdate'));
+        Route::post('user/updatepassword', array('as' => 'post_password_update', 'uses' => 'AdminController@postPasswordUpdate'));
         
-        Route::post('review', array('as' => 'post_review', 'uses' => 'admin@review'));
+        Route::post('review', array('as' => 'post_review', 'uses' => 'AdminController@review'));
 
-        Route::post('profiles/select', array('as' => 'post_profile_select', 'uses' => 'admin@profile_select'));
-        Route::post('profiles/create', array('as' => 'post_profile_create', 'uses' => 'admin@profile_create'));
-        Route::post('profiles/update', array('as' => 'post_profile_update', 'uses' => 'admin@profile_update'));
+        Route::post('profiles/select', array('as' => 'post_profile_select', 'uses' => 'AdminController@postProfileSelect'));
+        Route::post('profiles/create', array('as' => 'post_profile_create', 'uses' => 'AdminController@postProfileCreate'));
+        Route::post('profiles/update', array('as' => 'post_profile_update', 'uses' => 'AdminController@postProfileUpdate'));
        
-        Route::post('reports/update', array('as' => 'post_reports_update', 'uses' => 'admin@reports_update'));
+        Route::post('reports/update', array('as' => 'post_reports_update', 'uses' => 'AdminController@postReportsUpdate'));
 
         // CRAWLER
-        Route::post('crawler_perform_actions', array('as' => 'post_crawler_perform_actions', 'uses' => 'crawler@perform_actions'));
+        Route::post('crawler_perform_actions', array('as' => 'post_crawler_perform_actions', 'uses' => 'CrawlerController@postPerformActions'));
     });
 
 
@@ -286,13 +262,13 @@ Event::listen('laravel.query', function($sql, $bindings, $time) {
 Event::listen('404', function()
 {
     HTML::set_error(lang('common.msg.page_not_found'));
-    Log::write('error 404', 'Page not found : '.URL::current());
-    return Redirect::to_route('get_home_page');
+    // Log::write('error 404', 'Page not found : '.URL::current());
+    return Redirect::route('get_home_page');
 });
 
 Event::listen('500', function()
 {
-    Log::write('error 500', 'Error 500 have been caught.');
+    // Log::write('error 500', 'Error 500 have been caught.');
     return Response::error('500');
 });
 

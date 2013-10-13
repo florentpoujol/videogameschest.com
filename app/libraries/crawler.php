@@ -229,7 +229,7 @@ class Crawler
                                                     $found = true;
                                                 }
 
-                                                if ($found == false) Log::write('crawler text-no-fields', "Text '$platform' was not found in the 'devices' or 'operatingsystems' array fields for the game '".$profile['name']."'.");
+                                                if ($found == false) // Log::write('crawler text-no-fields', "Text '$platform' was not found in the 'devices' or 'operatingsystems' array fields for the game '".$profile['name']."'.");
                                             break;
                                         }
                                     } // end foreach $as
@@ -279,7 +279,7 @@ class Crawler
                                                 $profile['technologies'][] = $engine;
                                                 $found = true;
                                             } 
-                                            if ($found == false) Log::write('crawler text-no-fields', "Text '$engine' was not found in the 'technologies' array fields for the game '".$profile['name']."'.");
+                                            if ($found == false) // Log::write('crawler text-no-fields', "Text '$engine' was not found in the 'technologies' array fields for the game '".$profile['name']."'.");
                                             break;
                                     }
 
@@ -434,7 +434,7 @@ class Crawler
                 }
             }
 
-            if ($found == false) Log::write('crawler item-no-fields', "Item '$item' was not found in any array fields for the game '".$profile['name']."'.");
+            if ($found == false) // Log::write('crawler item-no-fields', "Item '$item' was not found in any array fields for the game '".$profile['name']."'.");
         }
 
         return $profile;

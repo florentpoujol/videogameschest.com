@@ -15,6 +15,7 @@
  */
 HTML::macro('get_messages', function($view_errors = null) 
 {
+    // return 'no messages';
     $msg = HTML::get_errors($view_errors);
     $msg .= HTML::get_success();
     $msg .= HTML::get_infos();

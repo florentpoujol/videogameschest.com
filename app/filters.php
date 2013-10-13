@@ -17,23 +17,12 @@ App::before(function($request)
 
     // check if user has the logged in cokkie
     $logged_in = Cookie::get('vgc_user_logged_in', '0');
-    if ($logged_in != '0') Auth::login((int) $logged_in);
 
-
-    $route = Request::$route;
-    // CONTROLLER is used in views/layouts/main and views/menu
-    if ($route->controller != null) { // seems to never be the case ??
-        define('CONTROLLER', $route->controller);
-
-    } else {
-        $uri = $route->uri;
-        $segments = preg_split('#/#', $route->uri);
-        
-        define('CONTROLLER', $segments[0]);
-        
-        if ( ! isset($segments[1]))
-            $segments[1] = 'index';
+    if ($logged_in != null and $logged_in != '0') {
+         var_dump((int) $logged_in);
+        Auth::loginUsingId((int) $logged_in);
     }
+
 });
 
 
@@ -57,7 +46,7 @@ Route::filter('auth', function()
 {
     if (Auth::guest()) {
         HTML::set_error(lang('common.msg.logged_in_only'));
-        return Redirect::to_route('get_login_page');
+        return Redirect::route('get_login_page');
     }
 });
 
@@ -71,11 +60,11 @@ Route::filter('is_admin', function()
 {
     if (Auth::guest()) {
         HTML::set_error(lang('common.msg.logged_in_only'));
-        return Redirect::to_route('get_login_page');
+        return Redirect::route('get_login_page');
     } else {
         if (Auth::user()->type != 'admin') {
             HTML::set_error(lang('common.msg.admin_only'));
-            return Redirect::to_route('get_home_page');
+            return Redirect::route('get_home_page');
         }
     }
 });
@@ -93,10 +82,9 @@ Route::filter('is_admin', function()
 
 Route::filter('guest', function()
 {
-	// if (Auth::check()) return Redirect::to('/');
-    if ( ! Auth::guest()) {
+    if (Auth::check()) {
         HTML::set_error(lang('common.msg.guest_only'));
-        return Redirect::to_route('get_home_page');
+        return Redirect::route('get_home_page');
     }
 });
 
