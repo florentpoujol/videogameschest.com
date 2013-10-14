@@ -53,25 +53,18 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     //----------------------------------------------------------------------------------
     // Modif for VGC below
 	
-    //----------------------------------------------------------------------------------
-    // CONSTRUCTOR
-
-    public function __construct($attributes = array(), $exists = false)
-    {
-        parent::__construct($attributes, $exists);
-    }
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = array();
 
 
     //----------------------------------------------------------------------------------
     // CRUD METHODS
 
-    /**
-     * Create a new user
-     * @param  array $input data comming from the form
-     * @return User       The user instance
-     */ 
-    public function createFromInput($input) 
-    {
+    public static function create(array $attributes = array()) {
         if (isset($input["password"]) && trim($input["password"]) != "") {
             $input["password"] = Hash::make($input["password"]);
         }        
@@ -80,29 +73,18 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
         if ( ! isset($input['type'])) $input['type'] = 'admin';
 
-        // parent::update($this->id, clean_form_input($input));
-
-        foreach( clean_form_input($input) as $key => $value ) {
-            $user->$key = $value;
-        }
-        $user->save();
+        $user = parent::create( clean_form_input( $input ) );
 
         // Log
-        HTML::set_success(lang('register.msg.register_success', array('username'=>$this->username)));
-        // Log::write('user create success', 'New user created (id='.$user->id.') (username='.$user->username.') (email='.$user->email.')');
+        HTML::set_success(lang('register.msg.register_success', array('username'=>$user->username)));
+        Log::info('user create success New user created (id='.$user->id.') (username='.$user->username.') (email='.$user->email.')');
 
-        return $this;
+        return $user;
     }
 
-    /**
-     * Update a user
-     * @param  int $id         The user id
-     * @param  array $input The user's data
-     * @return User The user instance
-     */
-    public function updateFromInput($input)
-    {
+    public function update(array $input = array()) {
         $user = $this;
+
         // checking name change
         if (isset($input['username']) && $user->username != $input['username']) { // the user want to change the dev name, must check is the name is not taken
             if (parent::whereUsername($input['username'])->first() != null) {
@@ -121,20 +103,24 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         if (isset($input['password']) && trim($input['password']) != '') $input['password'] = Hash::make($input['password']);
         else unset($input['password']);
 
-        foreach( clean_form_input($input) as $key => $value ) {
-            $user->$key = $value;
-        }
-        $user->save();
+        $update_success = parent::update( clean_form_input($input) );
+        if (! $update_success) {
+            $log_msg = "The user '".$user->username."' (id : '".$user->id."') was not updated because of an error.";
+            if ($user->id != user_id()) $html_msg = $log_msg;
+            else $html_msg = lang('user.msg.update_error');
+            HTML::set_error($html_msg);
+            Log::error('user update error ' .  $log_msg);
 
-        
+            return false;
+        }
 
         $log_msg = "The user '".$user->username."' (id : '".$user->id."') has successfully been updated.";
         if ($user->id != user_id()) $html_msg = $log_msg;
         else $html_msg = lang('user.msg.update_success');
         HTML::set_success($html_msg);
-        // Log::write('user update success', $log_msg);
+        Log::info('user update success ' . $log_msg);
 
-        return $user;
+        return true;
     }
 
 
@@ -172,7 +158,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
             // message
             HTML::set_success(lang('lostpassword.msg.new_password_success'));
-            // Log::write('user lostpassword success', 'A new password for user "'.$this->username.'" (id='.$this->id.') as successfully been generated.');
+            Log::info('user lostpassword success | A new password for user "'.$this->username.'" (id='.$this->id.') as successfully been generated.');
 
             // email
             $subject = lang('emails.lostpassword_success.subject');
@@ -189,11 +175,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
     //----------------------------------------------------------------------------------
     // GETTERS
-
-    /*public function getName()
-    {
-        return $this->get_attribute('username');
-    }*/
 
     // for Former bundle
     public function __toString()

@@ -162,8 +162,7 @@ class AdminController extends BaseController
         $validation = Validator::make($input, $rules);
         
         if ($validation->passes()) {
-            $user = new User;
-            $user->createFromInput( $input );
+            $user = User::create( $input );
             return Redirect::route('get_user_update', array($user->id));
         } else {
             Former::withErrors($validation);
@@ -200,13 +199,10 @@ class AdminController extends BaseController
         );
         $validation = Validator::make($input, $rules);
         
-        if ($validation->fails()) {
+        if ($validation->fails() || !$user->update($input)) {
             return Redirect::route('get_user_update', array($user->id))
             ->withErrors($validation)
-            ->withInput('except', array('password', 'password_confirmation', 'old_password'));
-        }
-        else {
-            $user->updateFromInput( $input );
+            ->withInput(Input::except(array('password', 'password_confirmation', 'old_password')));
         }
 
         return Redirect::route('get_user_update', array($user->id));
@@ -223,7 +219,7 @@ class AdminController extends BaseController
         // checking form
         if ($input['password'] != '') {
             $old_password_ok = true;
-            if ( ! is_admin() && ! Hash::check($input['old_password'], $user->password)) {
+            if ( ! Hash::check($input['old_password'], $user->password)) {
                 $old_password_ok = false;
                 HTML::set_error(lang('user.msg.wrong_old_password'));
             }
@@ -233,16 +229,15 @@ class AdminController extends BaseController
                 'password_confirmation' => 'required|min:5',
                 'old_password' => 'required|min:5',
             );
-            if (is_admin()) unset($rules['old_password']);
             $validation = Validator::make($input, $rules);
         
-            if ($validation->fails() || $old_password_ok == false) {
+            if (! $old_password_ok || $validation->fails()) {
                 return Redirect::route('get_user_update', array($user->id))
                 ->withErrors($validation)
-                ->withInput('except', array('password', 'password_confirmation', 'old_password'));
+                ->withInput(Input::except(array('password', 'password_confirmation', 'old_password')));
             }
 
-            User::update($input['id'], $input);
+            $user->update($input);
         }
 
         return Redirect::route('get_user_update', array($user->id));

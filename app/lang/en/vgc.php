@@ -614,6 +614,7 @@ return array(
         'msg' => array(
             'wrong_old_password' => 'The old password does not match your current password.',
             'update_success' => 'Your user account has successfully been updated.',
+            'update_error' => 'There has been an error, your user account wasn\'t updated.',
             'edituser_nametaken' => "Can't rename the user ':username' (id : :id) because the name ':newname' is already taken.",
             'user_not_found' => "Sorry the user with id ':id' has not been found.",
             'id_and_url_key_do_not_match' => 'No user account with id ":id" and url key ":url_key" has been found',
