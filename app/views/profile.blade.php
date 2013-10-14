@@ -3,7 +3,7 @@
 @endsection
 
 <div id="game" class="profile-page mini-profile">
-    <div class="row-fluid">
+    <div class="row">
         <?php
         $medias = $profile->medias;
         // dd($medias);
@@ -29,7 +29,7 @@
 
         <!-- text column -->
         <div class="span8">
-            <div class="row-fluid">
+            <div class="row">
                 <div class="span12">
                     <h4>
                         @if ( ! empty($profile->links))
@@ -41,7 +41,7 @@
                 </div>
             </div> <!-- / name row-->
 
-            <div class="row-fluid">
+            <div class="row">
                 <div class="span12">
                     <blockquote id="pitch">
                         <p>
@@ -55,7 +55,7 @@
             
 
             <!-- more links row -->
-            <div class="row-fluid">
+            <div class="row">
                 <div class="span2">
                     <!-- more info btn -->
                     <div class="dropdown">

@@ -32,10 +32,10 @@ if (isset($profile))
         <!-- /Meta -->
 
         <!-- CSS -->        
-        {{ HTML::style('css/bootstrap/bootstrap.min.css') }}
-        {{ HTML::style('css/font-awesome/font-awesome.min.css') }}
-        
+        {{ HTML::style('css/bootstrap.min.css') }}
+
         {{HTML::style('css/vgc/main.less', array('rel'=>'stylesheet/less')) }}
+        {{ HTML::script('css/chosen.css') }}
         @yield('cssfiles')
         <!-- /CSS -->
     </head>
@@ -56,7 +56,7 @@ if (isset($profile))
         <footer class="container">
             <hr>
             
-            <div class="row-fluid">
+            <div class="row">
                 <div class="span4">
                     <P class="muted copyright">Copyright &copy; 2013 VideoGamesChest.com</p>
                 </div>
@@ -75,29 +75,33 @@ if (isset($profile))
 
         <!-- JavaScript -->
         @if (Config::get('vgc.environment') == 'local')
-            {{ HTML::script('js/jquery-v1.7.1-min.js') }}
+            {{ HTML::script('js/jquery-v1.10.2-min.js') }}
         @else
             <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
         @endif
         {{ HTML::script('js/less.js') }}
         {{ HTML::script('js/bootstrap/bootstrap.min.js') }}
+        {{ HTML::script('js/bootstrap/bootstrap-responsive.min.js') }}
+        {{ HTML::script('js/chosen.jquery.min.js') }}
+
         @yield('jsfiles')
 
         <script>
           $(function () {
             // common jquery
-            $('i[rel=tooltip]').tooltip();
-            $('i[rel=popover]').popover();
+            // $('i[rel=tooltip]').tooltip();
+            // $('i[rel=popover]').popover();
 
             // suggest form link in the menu
             // $("#suggest_form_link").colorbox({iframe:true, width:"600px", height:"600px"});
-            $(".colorbox-iframe").colorbox({iframe:true, width:"600px", height:"600px"});
+            // $(".colorbox-iframe").colorbox({iframe:true, width:"600px", height:"600px"});
 
+            
             // per page jquery
             @yield('jQuery')
           })
 
-          // @yield('jscode') 
+          @yield('jscode') 
         </script> <!-- /JavaScript -->
 
         @if (Config::get('vgc.environment') == 'production')

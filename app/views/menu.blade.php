@@ -1,32 +1,19 @@
 <div class="container">
-    <div id="above-menu">
-    </div>
-
-    <div id="main-menu" class="navbar">
+    <div id="main_menu" class="navbar" >
         <div class="navbar-inner">
             <div class="brand">
                 VideoGamesChest <small class="muted">alpha</small>
             </div>
 
-            <ul class="nav pull-right">
+            <ul class="nav">
                 <!-- General menu -->
-                <?php 
-                $home = '';
-                // if (CONTROLLER == '' || CONTROLLER == 'home') 
-                    // $home = ' class="active"';
-
-                $admin = 'active';
-                if ($home != '')
-                    $admin = '';
-                ?>
                 
-                <li{{ $home }}><a href="{{ route('get_home_page') }}">{{ lang('menu.home') }}</a></li>
-                <li><a href="{{ route('get_suggest_page') }}" id="suggest_form_link">{{ lang('suggest.menu_link') }}</a></li>
+                <li><a href="{{ route('get_home_page') }}">{{ lang('menu.home') }}</a></li>
                 
                 <!-- /general menu --> 
                 @if (is_logged_in())
                     <!-- Admin menu -->
-                    <li class="dropdown {{ $admin }}">
+                    <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             {{ icon('cog') }}
                             <b class="caret"></b>
@@ -49,6 +36,6 @@
                     </li> <!-- /Admin menu -->                      
                 @endif <!-- /if logged in -->
             </ul> <!-- /ul .nav .pull-right -->
-        </div> <!-- .navbar-inner -->
+        </div>
     </div> <!-- /div #main-menu .navbar .navbar-fixed-top  -->
 </div> <!-- /.container -->

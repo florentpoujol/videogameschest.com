@@ -19,7 +19,6 @@ App::before(function($request)
     $logged_in = Cookie::get('vgc_user_logged_in', '0');
 
     if ($logged_in != null and $logged_in != '0') {
-         var_dump((int) $logged_in);
         Auth::loginUsingId((int) $logged_in);
     }
 

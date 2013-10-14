@@ -33,13 +33,13 @@ return array(
 
 
     'profiles_post_create_rules' => array(
-        'name' => 'required|alpha_dash|min:2',
-        'release_date' => 'date_format:d/m/Y',
+        'name' => 'required|min:2',
+        'release_date' => 'date_format:Y-m-d',
     ),
 
 
     'profiles_post_update_rules' => array(
-        'name' => 'required|alpha_dash|min:2',
+        'name' => 'required|min:2',
         'release_date' => 'date_format:Y-m-d',
     ),
 
@@ -398,26 +398,5 @@ return array(
         'filter',
         'briefcase',
         'fullscreen',
-
-        // font-awesome :
-        // 'twitter',
-        // 'twitter-sign',
-        // 'facebook',
-        'cogs',
-        'globe',
-        'envelope-alt',
-        'group',
-        'flag',
-        'caret-down',
-        'folder-open',
-        'briefcase',
-        'wrench',
-        'music',
-        'money',
-        'comments',
-        'comments-alt',
-        'caret-right',
-        'double-angle-right',
-
     ),
 );

@@ -259,6 +259,8 @@ class AdminController extends BaseController
         $validation = Validator::make($input, $rules);
         
         if ($validation->passes()) {
+            // dd($input);
+
             $profile = Profile::create($input);
             return Redirect::route('get_profile_update', array($profile->id));
         }
@@ -280,13 +282,13 @@ class AdminController extends BaseController
             if (Profile::find($name) === null) {
                 HTML::set_error(lang('profile.msg.profile_not_found', array(
                     'field_name' => 'id',
-                    'field_value' => $id,
+                    'field_value' => $name,
                 )));
             } else { // $id is set in an else block so that it stays null when there is an error, and user is redirected to the select form
                 $id = $name;
             }
         } else {
-            $profile = Profile::where_name($name)->first();
+            $profile = Profile::whereName($name)->first();
             
             if ($profile === null) {
                 HTML::set_error(lang('profile.msg.profile_not_found', array(
@@ -322,18 +324,18 @@ class AdminController extends BaseController
         $this->layout->nest('page_content', 'logged_in/updateprofile', array('profile_id' => $profile_id));
     }
 
-    public function posProfileUpdate() 
+    public function postProfileUpdate() 
     {
         $input = Input::all();
         
-
         // checking form
         $rules = Config::get('vgc.profiles_post_update_rules');
         $validation = Validator::make($input, $rules);
-        
-        if ( ! $validation->passes() || ! Profile::update($input['id'], $input)) {
-            Input::flash();
-            return Redirect::route('get_profile_update', array($input['id']))->withErrors($validation);
+        $profile = Profile::find($input['id']);
+
+        if ( ! $validation->passes() || ! $profile->update($input)) {
+            // Input::flash(); // 14/10 WHY ? o 
+            return Redirect::route('get_profile_update', array($input['id']))->withErrors($validation)->withInput();
         }
 
         return Redirect::route('get_profile_update', array($input['id']));

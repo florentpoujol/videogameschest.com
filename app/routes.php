@@ -84,8 +84,8 @@ $layout = View::make('layouts.main');
         
 
     //VIEW PROFILE
-    Route::get('profiles/(:num)', array('as' => 'get_profile_view', 'uses' => 'AdminController@getProfileView'));
-    
+    Route::get('profiles/{id}', array('as' => 'get_profile_view', 'uses' => 'AdminController@getProfileView'))
+    ->where('id', '[0-9]+');
     
 
     // REPORT FORM
@@ -175,6 +175,7 @@ $layout = View::make('layouts.main');
     });
 
 
+
 //----------------------------------------------------------------------------------
 //  MUST BE LOGGED IN
 //----------------------------------------------------------------------------------
@@ -182,15 +183,7 @@ $layout = View::make('layouts.main');
     Route::group(array('before' => 'auth'), function() use ($layout)
     {
         Route::get('logout', array('as' => 'get_logout', 'uses' => 'AdminController@getLogout'));
-    });
 
-
-//----------------------------------------------------------------------------------
-//  MUST BE ADMIN
-//----------------------------------------------------------------------------------
-
-    Route::group(array('before' => 'auth|is_admin'), function() use ($layout)
-    {
         Route::get('user', function()
         {
             return Redirect::route('get_user_update'); // no regular profile user
@@ -231,7 +224,7 @@ $layout = View::make('layouts.main');
 //  MUST BE ADMIN AND LEGIT POST
 //----------------------------------------------------------------------------------
 
-    Route::group(array('before' => 'auth|is_admin|csrf'), function()
+    Route::group(array('before' => 'auth|csrf'), function()
     {
         Route::post('user/create', array('as' => 'post_user_create', 'uses' => 'AdminController@postUserCreate'));
         Route::post('user/update', array('as' => 'post_user_update', 'uses' => 'AdminController@postUserUpdate'));

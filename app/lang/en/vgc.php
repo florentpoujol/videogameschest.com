@@ -297,12 +297,13 @@ return array(
 
 
 
-            'creation_success' => "The profile with name ':name' (id=:id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
+            'creation_success' => "The profile with name ':name' (id=:id) has successfully been created. It is currently private, update the profile to make it public.",
             
             'profile_not_found' => "No profile with :field_name ':field_value' was found.",
 
             'update_nametaken' => "Can't rename the profile with name ':name' (id : :id) because the name ':newname' is already taken.",
             'update_success' => "The profile with name ':name' (id=:id) has successfully been updated.",
+            'update_error' => "There has been an error, at least some of the profile with name ':name' (id=:id) wasn't updated.",
 
             'many_relationship_add_success' => "You successfully added :count :rel_profile_type profiles in the relationship with your :updated_profile_type profile ':name' (id=:id).",
 
@@ -328,7 +329,7 @@ return array(
 
     'links' => array(
         'title' => 'Links',
-        'form_help' => 'The first link is used as the "main" link, probably the one the visitor will follow, so be sure it\'s one that matters',
+        // 'form_help' => 'The first link is used as the "main" link, probably the one the visitor will follow, so be sure it\'s one that matters',
     ),
 
 // LOGIN

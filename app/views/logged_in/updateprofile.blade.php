@@ -8,6 +8,17 @@ Former::populate($profile);
 
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
+
+$tags = Tag::all();
+$tags_formatted = array();
+foreach ($tags->toArray() as $key => $value) { 
+    $tags_formatted[ $value['id'] ] = $value['name'];
+}
+
+$profile_tags = array();
+foreach ($profile->tags->toArray() as $key => $value) { 
+    $profile_tags[] = $value['id'];
+}
 ?>
 
 <div id="editgame" class="profile-form update-profile-form">
@@ -50,7 +61,7 @@ if ( ! empty($old)) Former::populate($old);
 
         <div class="row">
             <div class="span6">
-                Tags <br>
+                {{ Former::select('tags[]', 'Tags')->options($tags_formatted, $profile_tags)->id("tags")->multiple()->size(12) }}
             </div>
 
             <div class="span6">
@@ -67,9 +78,6 @@ if ( ! empty($old)) Former::populate($old);
                     ?>
                         <div class="tab-pane" id="{{ $field }}">
                             <p>
-                                @if ($field == 'links')
-                                    {{ lang('links.form_help') }} <br> <br>
-                                @endif
                                 {{ lang('common.text_url_delete_help') }}
                             </p>
 

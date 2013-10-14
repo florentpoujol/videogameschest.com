@@ -1,6 +1,6 @@
 <?php
 
-class Tag extends ExtendedEloquent
+class Tag extends Eloquent
 {
     //----------------------------------------------------------------------------------
     // CRUD METHODS

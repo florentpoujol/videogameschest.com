@@ -1,6 +1,6 @@
 <?php
 
-class Profile extends ExtendedEloquent
+class Profile extends Eloquent
 {
     // fields which data is stored as json
     public static $json_fields = array('links', 'medias');
@@ -11,23 +11,30 @@ class Profile extends ExtendedEloquent
     // text fields which data is stored as json object with a 'names' and 'urls' keys containing an array ot items
     public static $names_urls_fields = array('links', 'medias');
 
-    //----------------------------------------------------------------------------------
-    // CONSTRUCTOR
-
-    public function __construct($attributes = array(), $exists = false)
-    {
-        parent::__construct($attributes, $exists);
-    }
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = array();
 
 
     //----------------------------------------------------------------------------------
     // CRUD METHODS
 
-    public static function create($input) 
+    public static function create(array $input = array()) 
     {
         $input = clean_form_input($input);
+        $tags = $input['tags'];
+        unset($input['tags']);
+
+        $input['links'] = json_encode( clean_names_urls_array( $input['links'] ) );
+        $input['medias'] = json_encode( clean_names_urls_array( $input['medias'] ) );
+
         $profile = parent::create($input);
         
+        $profile->tags()->sync( $tags );
+
         // msg
         $msg = lang('profile.msg.creation_success', array(
             'name' => $profile->name,
@@ -35,33 +42,41 @@ class Profile extends ExtendedEloquent
         ));
 
         HTML::set_success($msg);
-        // Log::write('profile create success', "User '".user()->name."' (id=".user_id().") has created a profile with name='".$profile->name."' and id='".$profile->id."'.");
+        Log::info("profile create success User '".user()->name."' (id=".user_id().") has created a profile with name='".$profile->name."' and id='".$profile->id."'.");
         
         return $profile;
     }
 
-    public static function update($id, $input)
+    public function update(array $input = array())
     {
-        $profile = Profile::find($id);
+        $profile = $this;
         
         $input = clean_form_input($input);
+        $profile->tags()->sync($input['tags']);
+        unset($input['tags']);
 
-        foreach (static::$names_urls_fields as $field) {
-            $input[$field] = clean_names_urls_array($input[$field]);
+        $input['links'] = json_encode( clean_names_urls_array( $input['links'] ) );
+        $input['medias'] = json_encode( clean_names_urls_array( $input['medias'] ) );
+
+        $update = parent::update($input);
+        
+        if (!$update) {
+            $msg = lang('profile.msg.update_error', array(
+                'name' => $profile->name,
+                'id' => $profile->id
+            ));
+            HTML::set_success($msg);
+            Log::error("profile update error User '".user()->name."' (id=".user_id().") had trouble updating profile with name='".$profile->name."' and id='".$profile->id."'.");
+            return false;
         }
-
-        parent::update($id, $input);
-        $profile = parent::find($id);
 
         $msg = lang('profile.msg.update_success', array(
             'name' => $profile->name,
             'id' => $profile->id
         ));
-
         HTML::set_success($msg);
-
-        // Log::write('profile update success', "User '".user()->name."' (id=".user_id().") has updated the profile with name='".$profile->name."' and id='".$profile->id."'.");
-        return $profile;
+        Log::info("profile update success User '".user()->name."' (id=".user_id().") has updated the profile with name='".$profile->name."' and id='".$profile->id."'.");
+        return $update;
     }
 
     
@@ -76,7 +91,7 @@ class Profile extends ExtendedEloquent
 
     public function tags()
     {
-        return $this->belongsToMany('Tags');
+        return $this->belongsToMany('Tag');
     }
 
 
@@ -97,7 +112,7 @@ class Profile extends ExtendedEloquent
                 $value = clean_names_urls_array($value);
             }
 
-            $this->set_attribute($key, json_encode($value));
+            $this->setAttribute($key, json_encode($value));
         } else parent::__set($key, $value);
     }
 
@@ -110,7 +125,7 @@ class Profile extends ExtendedEloquent
     public function __get($key)
     {
         if (in_array($key, static::$json_fields)) {
-            $attr = $this->get_attribute($key);
+            $attr = $this->getAttribute($key);
 
             if (in_array($key, static::$array_fields) && trim($attr) == '') {
                 $attr = '[]'; // make sure $attr is a json array and not an empty string, so that json_decode return an array

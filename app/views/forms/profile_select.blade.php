@@ -2,7 +2,7 @@
 	{{ lang('profile.profile_select') }}
 @endsection
 <?php
-$profiles = Profile::all('id', 'name');
+$profiles = Profile::all(array('id', 'name'));
 ?>
 <div id="select-pofile-to-edit">
     {{ Former::open_vertical(route('post_profile_select'))->rules(array('name' => 'required')) }} 
