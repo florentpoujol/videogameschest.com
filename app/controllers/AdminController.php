@@ -26,7 +26,7 @@ class AdminController extends BaseController
         $validation = Validator::make(Input::all(), $rules);
        
         if ($validation->passes()) {
-            var_dump("valid ok");
+            //var_dump("valid ok");
              
             $username = Input::get("username", '');
             $field = "username";
@@ -42,7 +42,7 @@ class AdminController extends BaseController
                     $keep_logged_in = Input::get('keep_logged_in', '0');
 
                     if ($keep_logged_in == '1') {
-                        Cookie::make('vgc_user_logged_in', $user->id, 43200); //43200 min = 1 month
+                        Cookie::forever('vgc_user_logged_in', $user->id, 43200); //43200 min = 1 month
                     }
 
                     HTML::set_success(lang('login.msg.login_success', array(

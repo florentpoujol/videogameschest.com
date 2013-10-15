@@ -198,62 +198,16 @@ return array(
     ),
 
 
-// GAME 
-
-    'game' => array(
-        
-        'pitch' => 'The game in a few sentenses :',
-        'price_help' => 'Price in US dollars. <a href=":currency_converter_url">Convert your price in $US here</a>.',
-        
-        'release_date' => 'Release date',
-        'release_date_help' => 'Format : year-month-day',
-        'country' => 'Developer\'s nationality',
-
-
-        'add' => array(
-            'title' => 'Add a game profile',
-            'submit' => 'Submit this game profile',
-        ),
-
-        'edit' => array(
-            'title' => 'Edit a game',
-            'submit' => 'Edit this game',
-            'select_profile_placeholder' => 'Name or id',
-            'select_profile_help' => 'Select the game to edit',
-        ),
-
-        'profile' => array(
-            'title' => 'Game',
-            'screenshots_help' => 'Click on them to view in full size',
-        ),
-
-
-        'msg' => array(
-            'addgame_success' => "The game profile with name ':name' (id : :id) has successfully been created. It must be approved by an administrator before it becomes visible by everyone. You will get an email when that happens.",
-            'editgame_success' => "The game profile with name ':name' (id : :id) has successfully been updated.",
-
-            'select_editgame_id_not_found' => "No game profile with id ':id' was found.",
-            'select_editgame_name_not_found' => "No game profile with name ':name' was found.",
-
-            'profile_not_found' => "No game profile with id ':id' was found.",
-
-            'editgame_nametaken' => "Can't rename the game profile with name ':name' (id : :id) because the name ':newname' is already taken.",
-        ),
-
-    ), // end of game
 
 // PROFILE
 
     'profile' => array(
         
         'pitch' => 'The game in a few sentenses :',
-        'price_help' => 'Price in US dollars. <a href=":currency_converter_url">Convert your price in $US here</a>.',
-        
+
         'release_date' => 'Release date',
         'release_date_help' => 'Format : year-month-day',
-        'country' => 'Developer\'s nationality',
-
-
+        
         'add' => array(
             'title' => 'Add a profile',
             'submit' => 'Submit this profile',
@@ -282,6 +236,7 @@ return array(
         'more_infos' => "More infos",
         "more_links" => "More links",
         'more_medias' => "More medias",
+        "release_date" => "Out ",
 
 
         'msg' => array(

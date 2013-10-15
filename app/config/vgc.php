@@ -30,7 +30,7 @@ return array(
 
 
     'profile_pitch_length' => 500,
-
+    "profile_max_link_count" => 5,
 
     'profiles_post_create_rules' => array(
         'name' => 'required|min:2',
