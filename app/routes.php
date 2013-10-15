@@ -196,7 +196,16 @@ $layout = View::make('layouts.main');
         Route::get('profiles/update/{id?}', array('as' => 'get_profile_update', 'uses' => 'AdminController@getProfileUpdate'))
         ->where(array('id' => '[0-9]+'));
 
+        Route::get('privateprofiles', array('as' => 'get_private_profiles', function() use ($layout) {
+            return $layout->nest('page_content', 'privateprofiles');
+        }));
+        
+
         Route::get('reports', array('as' => 'get_reports', 'uses' => 'AdminController@getReports'));
+
+        // CRAWLER
+        Route::get('crawler', array('as' => 'get_crawler_page', 'uses' => 'CrawlerController@getIndex'));
+        Route::get('crawler/readrss', array('as' => 'get_crawler_read_feed_urls', 'uses' => 'CrawlerController@getReadFeedUrls'));
 
         Route::get('test/{data?}', function($data = null) use ($layout)
         {
@@ -213,9 +222,7 @@ $layout = View::make('layouts.main');
             return $layout->nest('page_content', 'test');
         }));
 
-        // CRAWLER
-        Route::get('crawler', array('as' => 'get_crawler_page', 'uses' => 'CrawlerController@getIndex'));
-        Route::get('crawler/readrss', array('as' => 'get_crawler_read_feed_urls', 'uses' => 'CrawlerController@getReadFeedUrls'));
+        
     });
 
 

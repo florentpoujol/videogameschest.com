@@ -26,9 +26,11 @@
                             <li><a href="{{ route('get_profile_update') }}">{{ icon('edit') }} {{ lang('profile.edit.title') }}</a></li>
                             <li class="divider"></li>
 
+                            <li><a href="{{ route('get_reports') }}">{{ lang('reports.title') }}</a></li>
+                            <li><a href="{{ route('get_private_profiles') }}">Private profiles</a></li>
+                            
                             <li><a href="{{ route('get_crawler_page') }}">Crawler</a></li>
                                                     
-                            <li><a href="{{ route('get_reports') }}">{{ lang('reports.title') }}</a></li>
                             <li class="divider"></li>
                             
                             <li><a href="{{ route('get_logout') }}">{{ icon('off') }} {{ lang('menu.logout') }}</a></li>

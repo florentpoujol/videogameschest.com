@@ -4,6 +4,9 @@
 
 <div id="game" class="profile-page mini-profile">
     
+    @if (is_admin())
+        <a href="{{ route('get_profile_update', array($profile->id)) }}" class="btn btn-primary">Update</a> <br> <br>
+    @endif
     <?php
     $medias = $profile->medias;
     // dd($medias);
