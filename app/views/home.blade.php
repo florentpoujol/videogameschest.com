@@ -11,6 +11,8 @@
             <div id="slogan">
                 {{ lang('vgc.home.catchphrase') }}
             </div>
+
+            @include('suggestioncreate')
         </div>
     </div>
 

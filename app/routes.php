@@ -129,23 +129,7 @@ $layout = View::make('layouts.main');
         }));
         
         // Suggest
-        Route::post('suggest', array('as' => 'post_suggest', function()
-        {
-            $url = Input::get('url');
-            $validation = Validator::make(Input::all(), array('url' => 'required|url|min:10'));
-            if ($validation->passes()) {
-                if (SuggestedProfile::where_url($url)->first() !== null) {
-                    HTML::set_error(lang('vgc.suggest.msg.url_already_suggested'));
-                } else {
-                    SuggestedProfile::create(array(
-                        'url' => $url,
-                        'source' => 'user',
-                    ));
-                }
-            }
-
-            return Redirect::back()->withInput()->withErrors($validation);
-        }));
+        Route::post('suggestion/create', array('as' => 'post_suggestion_create', 'uses' => 'AdminController@postSuggestionCreate'));
     });
 
 
@@ -204,8 +188,9 @@ $layout = View::make('layouts.main');
         Route::get('reports', array('as' => 'get_reports', 'uses' => 'AdminController@getReports'));
 
         // CRAWLER
-        Route::get('crawler', array('as' => 'get_crawler_page', 'uses' => 'CrawlerController@getIndex'));
-        Route::get('crawler/readrss', array('as' => 'get_crawler_read_feed_urls', 'uses' => 'CrawlerController@getReadFeedUrls'));
+        Route::get('suggestions', array('as' => 'get_suggestions_page', 'uses' => 'AdminController@getSuggestions'));
+        Route::get('suggestions/readfeed', array('as' => 'get_read_suggestions_feeds', 'uses' => 'AdminController@getReadSuggestionsFeeds'));
+
 
         Route::get('test/{data?}', function($data = null) use ($layout)
         {
@@ -246,7 +231,7 @@ $layout = View::make('layouts.main');
         Route::post('reports/update', array('as' => 'post_reports_update', 'uses' => 'AdminController@postReportsUpdate'));
 
         // CRAWLER
-        Route::post('crawler_perform_actions', array('as' => 'post_crawler_perform_actions', 'uses' => 'CrawlerController@postPerformActions'));
+        Route::post('suggestions/update', array('as' => 'post_suggestions_update', 'uses' => 'AdminController@postSuggestionsUpdate'));
     });
 
 

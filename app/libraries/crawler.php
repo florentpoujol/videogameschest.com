@@ -7,7 +7,7 @@ class Crawler
         'meta_description' => '\<meta name="description" content="(.*)"',
     );
     
-    public static function make($url)
+    public static function crawl($url)
     {
         if (strpos($url, "indiedb.com") !== false) {
             return static::crawl_indiedb($url);
@@ -434,7 +434,7 @@ class Crawler
                 }
             }
 
-            if ($found == false) // Log::write('crawler item-no-fields', "Item '$item' was not found in any array fields for the game '".$profile['name']."'.");
+            // if ($found == false) // Log::write('crawler item-no-fields', "Item '$item' was not found in any array fields for the game '".$profile['name']."'.");
         }
 
         return $profile;

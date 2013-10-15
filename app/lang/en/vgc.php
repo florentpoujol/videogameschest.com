@@ -252,6 +252,25 @@ return array(
 
     ), // end of profile
 
+// SUGGESTIONS
+
+    'suggestion' => array(
+        'title' => 'Suggest a game',
+        'form_help' => 'Just pass an url in the field below. It can be any link about the game you want to suggest (its website, its profile on a portal, an article about it, ...).',
+
+        'msg' => array(
+            'create_success' => 'Thank you for suggesting a game !',
+            'url_already_suggested' => 'Thanks you but this url has already been suggested.',
+
+            'delete_success' => "The suggestion with id ':id' and url ':url' has been deleted.",
+            'delete_error' => "The suggestion with id ':id' and url ':url' was not deleted.",
+        ),
+
+        'mgs' => array(
+
+        ),
+    ),
+
 // HOME
 
     'home' => array(
@@ -496,19 +515,6 @@ return array(
         ),
 
         
-    ),
-
-// SUGGEST
-
-    'suggest' => array(
-        'title' => 'Suggest a game',
-        'form_help' => 'Just pass an url in the field below. It can be any link about the game you want to suggest (its website, its profile on a portal, an article about it, ...).',
-        'menu_link' => 'Suggest a game',
-
-        'msg' => array(
-            'create_success' => 'Thank you for suggesting a game !',
-            'url_already_suggested' => 'Thanks you but this url has already been suggested.',
-        ),
     ),
 
 // USER

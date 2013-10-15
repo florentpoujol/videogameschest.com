@@ -29,7 +29,7 @@
                             <li><a href="{{ route('get_reports') }}">{{ lang('reports.title') }}</a></li>
                             <li><a href="{{ route('get_private_profiles') }}">Private profiles</a></li>
                             
-                            <li><a href="{{ route('get_crawler_page') }}">Crawler</a></li>
+                            <li><a href="{{ route('get_suggestions_page') }}">Suggestions</a></li>
                                                     
                             <li class="divider"></li>
                             
