@@ -115,6 +115,21 @@
             </p>
         </div>
     </div>
+
+    <br>
+    
+    <div class="row">
+        <div class="span12">
+            <a class="accordion-toggle" data-toggle="collapse" href="#collapse-report">
+                {{ lang('reports.form_title') }}...
+            </a>
+            <div id="collapse-report" class="collapse">
+                <div class="accordion-inner">
+                    @include('forms/postreport')
+                </div>
+            </div>
+        </div>
+    </div>
     
 </div>
 

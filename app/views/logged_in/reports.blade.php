@@ -12,13 +12,8 @@
     </p>
 
     <?php  
-    $reports = array();
-    
-    if (is_admin()) {
-        $reports = Report::order_by('created_at', 'desc')->get();
-    } else {
-        $reports = user()->reports();
-    }
+    $reports = Report::orderBy('created_at', 'desc')->get();
+    $reports = Report::all();
     ?>
 
     @if ( ! empty($reports))

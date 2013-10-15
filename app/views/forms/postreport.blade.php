@@ -2,7 +2,6 @@
     {{ Former::open_vertical(route('post_reports_create'))->rules(array('message'=>'required|min:10')) }}
         {{ Form::token() }}
         {{ Former::hidden('profile_id', $profile->id) }}
-        {{ Former::hidden('profile_type', $profile->type) }}
 
         <p>
             {{ lang('vgc.reports.help') }}

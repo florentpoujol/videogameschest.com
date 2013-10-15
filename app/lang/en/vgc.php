@@ -51,24 +51,11 @@ return array(
             'hello' => 'Hello',
         ),
 
-
         'menu' => array(      
             'add_game' => 'Add a game',
             'edit_game' => 'Edit a game',
             'edit_user_account' => 'Edit your user account',
         ),
-    ),
-
-// BROWSE
-
-    'browse' => array(
-        'title' => 'Browse',
-        'form_text_field' => 'The search ID',
-        'form_submit' => 'Browse this search',
-
-        'no_search_id_help' => 'Tell us what to browse by passing a <strong>search ID(s)</strong> in the field below.',
-
-        'submit_discover' => 'You may also <input type="submit" name="discover" class="btn btn-primary" value="Discover this search"> via Rss feed or email.'
     ),
 
 // COMMON
@@ -197,8 +184,6 @@ return array(
         ),
     ),
 
-
-
 // PROFILE
 
     'profile' => array(
@@ -266,7 +251,6 @@ return array(
         ),
 
     ), // end of profile
-
 
 // HOME
 
@@ -375,18 +359,17 @@ return array(
         'register' => 'Register',
     ),
 
-
 // REPORTS
 
     'reports' => array(
         'title' => 'Reports',
-        'form_title' => 'Report this profile',
+        'form_title' => 'Improve this profile',
 
-        'help' => 'What\'s wrong with this profile ?',
+        'help' => 'How can we improve this profile ?',
         'message' => 'At least 10 characters.',
 
         'no_report' => 'No report to display',
-        'rss_feed' => 'RSS feed for your reports.',
+        'rss_feed' => 'Reports RSS feed.',
 
         'table' => array(
             'profile' => 'Profile',
@@ -397,27 +380,6 @@ return array(
         'msg' => array(
             'create_success' => 'Thank you, the report has been issued successfully.',
             'delete_success' => 'The reports have succsessfully been deleted',
-        ),
-    ),
-
-// REVIEW
-
-    'review' => array(
-        'title' => 'Review',
-        
-        'game_title' => 'Games',
-
-        'no_profile_in_review' => 'No profile in review.',
-        'rss_feed' => 'RSS feed for new profiles in review.',
-
-        'table' => array(
-            'approve' => 'Approve',
-            'profile' => 'Profile',
-            'delete' => '',
-        ),
-
-        'msg' => array(
-            'profiles_approved' => 'Thanks you for approving :num profile(s).'
         ),
     ),
 
@@ -576,283 +538,6 @@ return array(
             'id_and_url_key_do_not_match' => 'No user account with id ":id" and url key ":url_key" has been found',
         ),
 
-    ),
-
-
-
-// LANGUAGES
-
-    'languages' => array(
-        'title' => 'Languages',
-        'help' => 'The languages the game is playable in.',
-
-        'french' => 'French',
-        'english' => 'English',
-        'german' => 'German',
-        'spanish' => 'Spanish',
-        'italian' => 'Italian',
-        'russian' => 'Russian',
-        'japonese' => 'Japonese',
-        'chinese' => 'Chinese',
-    ),
-
-// COUNTRIES
-
-    'countries' => array(
-        'title' => 'Countries',
-
-        'australia' => 'Australia',
-        'austria' => 'Austria',
-        'belgium' => 'Belgium',
-        'canada' => 'Canada',
-        'france' => 'France', 
-        'germany' => 'Germany',
-        'greece' => 'Greece',
-        'holland' => 'Holland',
-        'ireland' => 'Ireland',
-        'portugal' => 'Portugal',
-        'russia' => 'Russia',
-        'spain' => 'Spain',
-        'switzerland' => 'Switzerland',
-        'uk' => 'United Kingdom',
-        'usa' => 'United States of America',
-    ),
-
-// OPERATING SYSTEMS
-
-    'operatingsystems' => array(
-        'title' => 'OS',
-        'help' => 'The operating systems the game runs on (not applicable for most console games).',
-        'tool_help' => 'The operating systems the games built with the tool runs on.',
-
-        'android' => 'Android',
-        'blackberry' => 'BlackBerry',
-        'ios' => 'iOS',
-        'linux' => 'Linux',
-        'mac' => 'Mac OS',
-        'windowsdesktop' => 'Windows desktop',
-        'windowsdesktop_help' => 'Any Windows but Windows 8 Metro and Windows Phone',
-        'windows8metro' => 'Windows 8 Metro',
-        'windowsphone' => 'Windows Phone',
-    ),
-
-// DEVICES
-
-    'devices' => array(
-        'title' => 'Devices',
-        'help' => 'The devices the game is playable on.',
-        'tool_help' => 'The devices the games built with the tool can be played on.',
-
-        '3ds' => '3DS',
-        '3dsxl' => '3DS XL',
-        'androidtablet' => 'Android Tablet',
-        'androidsmartphone' => 'Android Smartphone',
-        'blackberrysmartphone' => 'BlackBerry Smartphone',
-        'browser' => 'Browser',
-        'ds' => 'DS',
-        'gamestick' => 'Gamestick',
-        'ipod' => 'iPod',
-        'iphone' => 'iPhone',
-        'ipad' => 'iPad',
-        'mac' => 'Mac',
-        'ouya' => 'Ouya',
-        'pc' => 'PC',
-        'ps3' => 'PlayStation 3',
-        'ps4' => 'PlayStation 4',
-        'psp' => 'PSP',
-        'psvita' => 'PS Vita',
-        'steambox' => 'Steambox',
-        'surface' => 'Surface',
-        'wii' => 'Wii',
-        'wiiu' => 'Wii U',
-        'windowstablet' => 'Windows Tablet',
-        'windowssmartphone' => 'Windows Smartphone',
-        'xbox360' => 'xBox 360',
-        'xperiaplay' => 'Xperia Play',
-        'xperiasmartphone' => 'Xperia Smartphone',
-    ),
-
-// TECHOLOGIES
-
-    'technologies' => array(
-        'title' => 'Technologies',
-        'help' => 'The technologies the game is made with.',
-
-        'blender' => 'Blender Game Engine',
-        'flash' => 'Flash',
-        'flixel' => 'Flixel',
-        'java' => 'Java',
-        'python' => 'Python',
-        'stencyl' => 'Stencyl',
-        'adventuregamestudio' => 'Adventure Games Studio',
-        'air' => 'Adobe AIR',
-        'construct' => 'Construct',
-        'cocos2d' => 'Cocos 2D',
-        'craftstudio' => 'CraftStudio',
-        'cryengine' => 'Cry Engine',
-        'custom' => 'Custom-built/In-house',
-        'gamemaker' => 'GameMaker',
-        'html5' => 'HTML5 / JS',
-        'impactjs' => 'Impact JS',
-        'ogre3d' => 'Ogre 3D',
-        'rpgmaker' => 'RPG Maker',
-        'shiva3d' => 'Shiva 3D',
-        'source' => 'Source Engine',
-        'torque' => 'Torque Engine',
-        'udk' => 'Unreal Developement Kit',
-        'unity3d' => 'Unity 3D',
-        'unrealengine' => 'Unreal Engine',
-        'xna' => 'XNA',
-        'love' => 'Löve',
-        'yna' => 'YNA',
-    ),
-
-// STORES
-
-    'stores' => array(
-        'title' => 'Stores',
-        'help' => 'The stores the game is purchasable from.',
-
-        'desura' => 'Desura',
-        'gameolith' => 'Gameolith',
-        'gamersgate' => 'Gamersgate',
-        'impulse' => 'Impulse',
-        'indiecity' => 'Indiecity',
-        'indievania' => 'Indievania',
-        'kongregate' => 'Kongregate',
-        'newsground' => 'Newsground',
-        'steam' => 'Steam',
-        'amazonmarket' => 'Amazon Marketplace',
-        'androidmarket' => 'Android Marketplace',
-        'applestore' => 'Apple Store',
-        'armorgames' => 'Armor Games',
-        'googleplay' => 'Google Play',
-        'greenmangaming' => 'GreenManGaming',
-        'website' => 'Company/Game Website',
-        'windowsstore' => 'Windows 8 Store',
-        'xbla' => 'xBox Live Arcade',
-        'xblig' => 'xBox Live Indie Games',
-    ),
-
-// Nb PLAYERS
-
-    'nbplayers' => array(
-        'title' => 'Players',
-        'help' => 'How many players can play the game at the same time.',
-
-        'singleplayer' => 'Single player',
-        'coop' => 'Co-op',
-        'coop_help' => 'Usually 1 to 4 humans vs the computer.',
-        'multiplayer' => 'Multiplayer',
-        'multiplayer_help' => 'Human(s) vs human(s), often limited to 64 (sometime a couple hundreds) players on the same server.',
-        'mmo' => 'MMO',
-        'mmo_help' => 'Massively Multiplayer Online',
-    ),
-
-
-// LOOKS
-
-    'looks' => array(
-        'title' => 'Look',
-        'help' => 'How the game looks',
-
-        'cartoon' => 'Cartoon',
-        'pixelart' => 'Pixel Art',
-        'realist' => 'Realist',
-        'minimalist' => 'Minimalist',
-        'celshading' => 'Cel Shading',
-        'horror' => 'Horror',
-        'gore' => 'Gore',
-    ),
-
-// PERIODS
-
-    'periods' => array(
-        'title' => 'Period',
-        'help' => 'When is the action supposed to take palce. No need to check any boxes if the game is timeless.',
-
-        'mythology' => 'Mythology',
-        
-        'medieval' => 'Medieval',
-        'cartoon' => 'Cartoon',
-        'futuristic' => 'Futuristic',
-        'futuristic_help' => 'Up until a hundred year or so from now. After that, Sci-fi is more appropriate.',
-        'modern' => 'Modern',
-        'sci-fi' => 'Sci-fi',
-        'western' => 'Western',
-        'twentycentury' => '20th century',
-        'twentycentury_help' => 'Include the Wold War I and WWII',
-    ),
-
-// GENRES
-
-    'genres' => array(
-        'title' => 'Genres',
-
-        'action' => 'Action',
-        'adventure' => 'Adventure',
-        'arcade' => 'Arcade',
-        'fighting' => 'Fighting',
-        'platformer' => 'Platformer',
-        'puzzle' => 'Puzzle',
-        'racing' => 'Racing',
-        'shooter' => 'Shooter',
-        'simulation' => 'Simulation',
-        'sport' => 'Sport',
-        'strategy' => 'Strategy',
-        'citybuilding' => 'City Building',
-        'party' => 'Party game',
-        'pointandclick' => 'Point-and-Click',
-        'resources' => 'Resources Management',
-        'roguelike' => 'Rogue-like',
-        'roleplaying' => 'Role playing',
-        'rts' => 'Real Time Strategy',
-        'shootemup' => 'Shoot\'Em Up',
-        'towerdefense' => 'Tower Defense',
-        'hackandslash' => 'Hack and slash',
-    ),
-
-// POINT OF VIEW
-
-    'viewpoints' => array(
-        'title' => 'Point of view',
-        'help' => '',
-
-        '2d' => '2D',
-        'firstperson' => 'First Person',
-        'isometric' => 'Isometric',
-        'isometric_help' => 'Isometric = 2.5D = most management/strategy game, whether they are in 2D or actual 3D.',
-        'thirdperson' => 'Third Person',
-        'topdown' => 'Top-Down',
-    ),
-
-// TAGS
-
-    'tags' => array(
-        'title' => 'Tags',
-
-
-        '3d' => '3D',
-        'casual' => 'Casual',
-        'crowdfunded' => 'Crowdfunded',
-        'fantasy' => 'Fantasy',
-        'fuckthisjam' => 'Fuck this Jam',
-        'fun' => 'Fun',
-        'globalgamejam' => 'Global Game Jam',
-        'hardcore' => 'Hardcore',
-        'horror' => 'Horror',
-        'leveleditor' => 'Level Editor',
-        'ludumdare' => 'Ludum Dare',
-        'mafia' => 'Mafia',
-        "onegameamonth" => 'One Game A Month',
-        'physics' => 'Physics',
-        'postapocalyptic' => 'Post-Apocalyptic',
-        'realtime' => 'Real time',
-        'sidescrolling' => 'Side-Scrolling',
-        'steampunk' => 'Steampunk',
-        'tactical' => 'Tactical',
-        'topdown' => 'Top-Down',
-        'turnbased' => 'Turn-Based',
     ),
 
 );

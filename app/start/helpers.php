@@ -1,6 +1,6 @@
 <?php
 
-function antiBot($text_name = 'captcha')
+function antiBot()
 {
     $html = '<div id="antibot">';
 

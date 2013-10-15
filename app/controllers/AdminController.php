@@ -398,7 +398,7 @@ class AdminController extends BaseController
     {
         $reports = Input::get('reports', array());
 
-        if ( ! empty($reports)) {
+        if ( ! empty($reports) ) {
             $count = 0;
             foreach ($reports as $report_id) {
                 Report::find($report_id)->delete();
@@ -406,7 +406,7 @@ class AdminController extends BaseController
             }
             
             HTML::set_success(lang('reports.msg.delete_success'));
-            // Log::write('report delete success', "User with name='".user()->name."' and id=".user_id()." deleted $count reports.");
+            Log::info("report delete success User with name='".user()->name."' and id=".user_id()." deleted $count reports.");
         }
         
         return Redirect::back();
