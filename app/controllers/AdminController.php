@@ -495,7 +495,14 @@ class AdminController extends BaseController
     {
         $input = Input::all();        
 
-        if ( isset( $input['update_status'] ) ) {
+        if (isset($input['update_displayed_status'])) {
+            if ( !isset($input['display_status']) )
+                $input['display_status'] = array();
+            // dd($input['display_status']);
+            $cookie = Cookie::forever('vgc_suggestions_status_to_display', json_encode( $input['display_status'] ));
+            return Redirect::route('get_suggestions_page')->withCookie($cookie);
+        }
+        elseif ( isset( $input['update_status'] ) ) {
             foreach ($input['status_by_ids'] as $id => $status) {
                 $suggestion = Suggestion::find($id);
 

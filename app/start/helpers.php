@@ -143,6 +143,11 @@ function get_assoc_array($array)
     return $assoc_array;
 }
 
+
+/**
+ * returns a string like   "fieldName 'fieldValue', otherFieldName 'fieldValue'"
+ * used for message "Model with id '0' has been updated with fieldName 'fieldValue'"
+ */
 function get_updated_fields_string( $input )
 {
     $updated_fields = "";

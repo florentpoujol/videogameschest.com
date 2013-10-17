@@ -6,10 +6,10 @@
     <div class="span12">
         <h2>Suggestion feeds</h1>
 
-        <a class="accordion-toggle" data-toggle="collapse" href="#collapse-report">
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapse-suggestion-feeds">
             Expand...
         </a>
-        <div id="collapse-report" class="collapse">
+        <div id="collapse-suggestion-feeds" class="collapse">
             <div class="accordion-inner">
                 {{ Former::open_vertical(route('post_suggestion_feeds_update')) }}
                     {{ Form::token() }}
@@ -63,15 +63,48 @@
             'discarded' => 'Discarded',
             'delete' => 'Delete',
         );
-        $suggestions = Suggestion::whereSource('user')->get();
-        $suggestions = $suggestions->merge( Suggestion::where('source', '!=', 'user')->get() );
+
+        $status_to_display = Cookie::get('vgc_suggestions_status_to_display', '[]');
+        if ($status_to_display === null) {
+            $status_to_display = '[]'; // an empty json array
+        }
+        
+        $status_to_display = json_decode( $status_to_display );
+        if (empty($status_to_display))
+            $status_to_display[] = 'waiting';
+
+        $suggestions = Suggestion::whereSource('user')->whereIn('status', $status_to_display)->get();
+        $suggestions = $suggestions->merge( Suggestion::where('source', '!=', 'user')->whereIn('status', $status_to_display)->get() );
         ?>
 
         {{ Former::open_vertical(route('post_suggestions_update')) }}
             {{ Form::token() }}
+            
+            <a class="accordion-toggle" data-toggle="collapse" href="#collapse-display-status">
+                Display...
+            </a>
+            <div id="collapse-display-status" class="collapse">
+                <div class="accordion-inner">
+                    <?php
+                    $checkboxes = array();
+                    foreach ($status as $key => $value) {
+                        if ($key == 'delete') continue;
+
+                        $checkboxes[$key] = array('value' => $key);
+
+                        if (in_array($key, $status_to_display))
+                            $checkboxes[$key]['checked'] = 'checked';
+                    }
+                    ?>
+                    {{ Former::checkbox('display_status[]', '')->checkboxes($checkboxes) }}
+                    {{ Former::submit("Update list")->name('update_displayed_status') }}
+
+                    <hr>
+                </div>
+            </div>
 
             <br>
-            
+
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
