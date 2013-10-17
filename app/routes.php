@@ -231,6 +231,8 @@ $layout = View::make('layouts.main');
         Route::post('reports/update', array('as' => 'post_reports_update', 'uses' => 'AdminController@postReportsUpdate'));
 
         // CRAWLER
+        Route::post('suggestionfeed/update', array('as' => 'post_suggestion_feeds_update', 'uses' => 'AdminController@postSuggestionFeedsUpdate'));
+
         Route::post('suggestions/update', array('as' => 'post_suggestions_update', 'uses' => 'AdminController@postSuggestionsUpdate'));
     });
 

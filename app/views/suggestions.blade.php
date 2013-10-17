@@ -8,9 +8,46 @@
 
         <hr>
 
-        <p>
-            <a href="{{ route('get_read_suggestions_feeds') }}" class="btn btn-primary">Read the feeds</a> <br>
-        </p>
+        <?php
+        $actions = array(
+            '' => 'Choose',
+            'update' => 'Update URL',
+            'delete' => 'Delete',
+            'read' => 'Read',
+        );
+        $feeds = SuggestionFeed::all();
+        ?>
+        {{ Former::open_vertical(route('post_suggestion_feeds_update')) }}
+            {{ Form::token() }}
+
+            {{ Former::primary_submit('Read All feeds')->name("read_all_feeds") }}
+            <hr>
+            {{ Former::text('new_feed_url', '')->placeholder('New feed') }} {{ Former::success_submit('Add this new feed')->name("add_new_feed") }}
+            <hr>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Url</th>
+                        <th>Last Read At</th>
+                        <th>{{ Former::warning_submit("Do actions")->name('do_actions') }}</th>
+                    </tr>
+                </thead>
+            @foreach ($feeds as $feed)
+                <tr>
+                    <td>
+                        {{ Former::text('feeds['.$feed->id.'][url]', '')->value($feed->url) }}
+                    </td>
+                    <td>
+                        {{ $feed->last_read_at }}
+                    </td>
+                    <td>
+                        {{ Former::select('feeds['.$feed->id.'][action]', '')->options($actions) }}
+                    </td>
+                </tr>
+            @endforeach
+            </table>
+
+        {{ Former::Close() }}
 
         <hr>
 

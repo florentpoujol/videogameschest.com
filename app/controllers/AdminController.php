@@ -421,6 +421,48 @@ class AdminController extends BaseController
         $this->layout->nest('page_content', 'suggestions');
     }
 
+
+    public function postSuggestionFeedsUpdate() 
+    {
+        $input = Input::all();
+        $feeds_to_read = array();
+
+        if (isset($input['read_all_feeds'])) {
+            $feeds_to_read = array_keys($input['feeds']);
+        }
+        elseif (isset($input['add_new_feed']) && trim($input['new_feed_url']) != '') {
+            $feed = New SuggestionFeed;
+            $feed->url = $input['new_feed_url'];
+            $feed->save();
+        }
+        elseif (isset($input['do_actions'])) {
+            foreach ($input['feeds'] as $id => $feed) {
+                
+                if ($feed['action'] == 'update') {
+                    $url = $feed['url'];
+                    $feed = SuggestionFeed::find($id);
+                    $feed->url = $url;
+                    $feed->save();
+                }
+                elseif ($feed['action'] == 'delete') {
+                    SuggestionFeed::find($id)->delete();
+                }
+                elseif ($feed['action'] == 'read') {
+                    $feeds_to_read[] = $id;
+                }
+            }
+        }
+
+        HTML::set_success('read '.count($feeds_to_read) .' feeds');
+        // foreach ($feeds_to_read as $id) {
+        //     SuggestionFeed::find($id)->read();
+        // }
+
+        return Redirect::route('get_suggestions_page');
+    }
+
+
+
     public function postSuggestionCreate()
     {
         $url = Input::get('url');
@@ -464,90 +506,4 @@ class AdminController extends BaseController
     }
 
 
-    public function getReadSuggestionsFeeds() 
-    {
-        $feed_urls = array(
-            "indiegames.com" => "http://feeds2.feedburner.com/IndependentGaming",
-            "rps" => "http://feeds.feedburner.com/RockPaperShotgun",
-            "indiedb" => "http://rss.indiedb.com/articles/feed/rss.xml",
-            "slidedb" => "http://rss.slidedb.com/articles/feed/rss.xml",
-        );
-
-        foreach ($feed_urls as $feed_name => $feed_url) {
-            $feed = RSSReader::read($feed_url);
-            if (empty($feed['items'])) {
-                HTML::set_error("No items in the feed '".$feed_name."'.");
-                continue;
-            }
-
-            $profiles_added = 0;
-
-            foreach ($feed['items'] as $item) {
-                $item_url = $item['link'];
-                if (isset($item['guid'])) $guid = $item['guid'];
-                else $guid = $item['id']; // Atom feed
-                $title = $item['title'];
-
-                if (
-                    Suggestion::whereUrl($item_url)->first() === null &&
-                    Suggestion::where_title($title)->first() === null &&
-                    Suggestion::where_guid($guid)->first() === null
-                ) {
-                    // IndieDB, SlideDB
-                    if (strpos($item_url, 'edb.com') !== false && strpos($item_url, '/news/') !== false) {
-                        // this a news from indiedb or slidedb
-                        // need to get the url of the game instead of the news
-                        $relativ_game_url = Crawler::get_indiedb_game_url_from_news($item_url);
-                        if ($relativ_game_url == '') continue; // the news was not about a game
-                        $item_url = "http://www.indiedb.com".$relativ_game_url; // all slide db profile have an indie db profile
-                        $title = ucfirst(url_to_name(rtrim(str_replace("http://www.indiedb.com/games/", "", $item_url), '/')));
-                        
-                        if (
-                            Suggestion::where_url($item_url)->first() !== null ||
-                            Suggestion::where_title($title)->first() !== null ||
-                            Game::where_name($title)->first() !== null
-                        ) continue;
-                    } 
-                    elseif ($feed_name == "indiegames.com") {
-                        // IndieGames.com
-                        $keywords = array("game pick", "trailer", "road to the igf", "release");
-                        $title = strtolower($item['title']);
-                        $suggest_article = false;
-
-                        foreach ($keywords as $word) {
-                            if (strpos($title, $word) !== false) $suggest_article = true;
-                        }
-                        
-                        if ($suggest_article == false) continue;
-                    } 
-                    elseif ($feed_name == "rps") {
-                        // RockPaperShotgun
-                        $keywords = array("wot i think", "impressions", "trailer", "live free, play hard", "kickstarter katchup");
-                        $title = strtolower($item['title']);
-                        $suggest_article = false;
-
-                        foreach ($keywords as $word) {
-                            if (strpos($title, $word) !== false) $suggest_article = true;
-                        }
-                        
-                        if ($suggest_article == false) continue;
-                    }
-
-                    $profile = new Suggestion;
-                    $profile->url = $item_url;
-                    $profile->guid = $guid;
-                    $profile->title = $title;
-                    $profile->source = 'rss';
-                    $profile->statut = 'waiting';
-                    $profile->source_feed = $feed_name;
-                    $profile->save();
-                    $profiles_added++;
-                }
-            }
-
-            HTML::set_success("$profiles_added urls added from the feed '".$feed_name."'.");
-        }
-
-        return Redirect::route('get_suggestions_page');
-    }
 } // end of Admin controller class
