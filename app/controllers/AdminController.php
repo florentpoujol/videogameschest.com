@@ -431,20 +431,15 @@ class AdminController extends BaseController
             $feeds_to_read = array_keys($input['feeds']);
         }
         elseif (isset($input['add_new_feed']) && trim($input['new_feed_url']) != '') {
-            $feed = New SuggestionFeed;
-            $feed->url = $input['new_feed_url'];
-            $feed->save();
+            SuggestionFeed::create( array( 'url' => $input['new_feed_url'] ) );
         }
         elseif (isset($input['do_actions'])) {
             foreach ($input['feeds'] as $id => $feed) {
                 
                 if ($feed['action'] == 'update') {
-                    $url = $feed['url'];
-                    $feed = SuggestionFeed::find($id);
-                    $feed->url = $url;
-                    $feed->save();
+                    $feed = SuggestionFeed::find($id)->update($feed);
                 }
-                elseif ($feed['action'] == 'delete') {
+                elseif ($feed['action'] == 'delete' || trim($feed['url']) == '') {
                     SuggestionFeed::find($id)->delete();
                 }
                 elseif ($feed['action'] == 'read') {
@@ -453,10 +448,9 @@ class AdminController extends BaseController
             }
         }
 
-        HTML::set_success('read '.count($feeds_to_read) .' feeds');
-        // foreach ($feeds_to_read as $id) {
-        //     SuggestionFeed::find($id)->read();
-        // }
+        foreach ($feeds_to_read as $id) {
+            SuggestionFeed::find($id)->read();
+        }
 
         return Redirect::route('get_suggestions_page');
     }

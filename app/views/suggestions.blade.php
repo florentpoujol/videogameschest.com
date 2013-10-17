@@ -27,6 +27,7 @@
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
+                        <th>Id</th>
                         <th>Url</th>
                         <th>Last Read At</th>
                         <th>{{ Former::warning_submit("Do actions")->name('do_actions') }}</th>
@@ -34,6 +35,9 @@
                 </thead>
             @foreach ($feeds as $feed)
                 <tr>
+                    <td>
+                        {{ $feed->id }}
+                    </td>
                     <td>
                         {{ Former::text('feeds['.$feed->id.'][url]', '')->value($feed->url) }}
                     </td>

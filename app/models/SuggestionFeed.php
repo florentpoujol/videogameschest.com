@@ -1,16 +1,60 @@
 <?php
 class SuggestionFeed extends Eloquent {
     protected $table = "suggestionfeeds";
+    protected $guarded = array();
+
+    //----------------------------------------------------------------------------------
+    // CRUD methods
+
+    public static function create(array $input = array()) 
+    {
+        $feed = parent::create( clean_form_input( $input ) );
+
+        $msg = "Suggestion feed with url '" . $feed->url . "' and id '" . $feed->id . "' has been created.";
+        HTML::set_success( $msg );
+        Log::info( 'success create suggestion feed : ' . $msg );
+    }
+
+    public function update(array $input = array())
+    {
+        $update = parent::update( array_intersect_key( $input, $this->attributes ) );
+
+        if ($update) {
+            $msg = "Suggestion feed with id '" . $this->id . "' has been updated with url '" . $this->url . "'.";
+            HTML::set_success( $msg );
+            Log::info( 'success update suggestion feed : ' . $msg );
+        } else {
+            $msg = "Suggestion feed with id '" . $this->id . "' has not been updated with url '" . $this->url . "'.";
+            HTML::set_error( $msg );
+            Log::error( 'error update suggestion feed : ' . $msg );
+        }
+    }
+
+    public function delete()
+    {
+        $delete = parent::delete();
+
+        if ($delete) {
+            $msg = "Suggestion feed with id '" . $this->id . "' has been deleted.";
+            HTML::set_success( $msg );
+            Log::info( 'success delete suggestion feed : ' . $msg );
+        } else {
+            $msg = "Suggestion feed with id '" . $this->id . "' has not been deleted.";
+            HTML::set_error( $msg );
+            Log::error( 'error delete suggestion feed : ' . $msg );
+        }
+    }
+
 
 
     public function read() {
-        $feed = RSSReader::read($feed_url);
+        $feed = RSSReader::read($this->url);
         if (empty($feed['items'])) {
-            HTML::set_error("No items in the feed '".$feed_name."'.");
-            continue;
+            HTML::set_error("No items in the feed '".$this->url."'.");
+            return;
         }
 
-        $profiles_added = 0;
+        $added_suggestions_count = 0;
 
         foreach ($feed['items'] as $item) {
             $item_url = $item['link'];
@@ -71,10 +115,10 @@ class SuggestionFeed extends Eloquent {
                 $profile->statut = 'waiting';
                 $profile->source_feed = $feed_name;
                 $profile->save();
-                $profiles_added++;
+                $added_suggestions_count++;
             }
         }
 
-        HTML::set_success("$profiles_added urls added from the feed '".$feed_name."'.");
+        HTML::set_success("$added_suggestions_count suggestions added from the feed '".$feed->url."'.");
     }
 }
