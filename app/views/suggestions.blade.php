@@ -6,56 +6,63 @@
     <div class="span12">
         <h2>Suggestion feeds</h1>
 
-        <?php
-        $actions = array(
-            'update' => 'Update or Delete (if URL modified)',
-            'read' => 'Read',
-        );
-        $feeds = SuggestionFeed::all();
-        ?>
-        {{ Former::open_vertical(route('post_suggestion_feeds_update')) }}
-            {{ Form::token() }}
+        <a class="accordion-toggle" data-toggle="collapse" href="#collapse-report">
+            Expand...
+        </a>
+        <div id="collapse-report" class="collapse">
+            <div class="accordion-inner">
+                {{ Former::open_vertical(route('post_suggestion_feeds_update')) }}
+                    {{ Form::token() }}
 
+                    {{ Former::text('new_feed_url', '')->placeholder('New RSS or Atom feed URL') }} {{ Former::success_submit('Add this new feed')->name("add_new_feed") }}
+                    <hr>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Url {{ Former::warning_submit("Update or delete")->name('update') }}</th>
+                                <th>Last Read At</th>
+                                <th>
+                                    {{ Former::info_submit("Read selected")->name('read') }}
+                                    {{ Former::primary_submit('Read all')->name("read_all_feeds") }}
+                                </th>
+                            </tr>
+                        </thead>
+                
+                    @foreach (SuggestionFeed::all() as $feed)
+                        <tr>
+                            <td>
+                                {{ $feed->id }}
+                            </td>
+                            <td>
+                                {{ Former::text('feeds['.$feed->id.'][url]', '')->value($feed->url) }}
+                            </td>
+                            <td>
+                                {{ $feed->last_read_at }}
+                            </td>
+                            <td>
+                                {{ Former::checkbox('feeds['.$feed->id.'][read]', '') }}
+                            </td>
+                        </tr>
+                    @endforeach
+                    </table>
 
-            {{ Former::text('new_feed_url', '')->placeholder('New RSS or Atom feed URL') }} {{ Former::success_submit('Add this new feed')->name("add_new_feed") }}
-            <hr>
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Url {{ Former::warning_submit("Update or delete")->name('update') }}</th>
-                        <th>Last Read At</th>
-                        <th>
-                            {{ Former::info_submit("Read selected")->name('read') }}
-                            {{ Former::primary_submit('Read all')->name("read_all_feeds") }}
-                        </th>
-                    </tr>
-                </thead>
-            @foreach ($feeds as $feed)
-                <tr>
-                    <td>
-                        {{ $feed->id }}
-                    </td>
-                    <td>
-                        {{ Former::text('feeds['.$feed->id.'][url]', '')->value($feed->url) }}
-                    </td>
-                    <td>
-                        {{ $feed->last_read_at }}
-                    </td>
-                    <td>
-                        {{ Former::checkbox('feeds['.$feed->id.'][read]', '') }}
-                    </td>
-                </tr>
-            @endforeach
-            </table>
-
-        {{ Former::Close() }}
+                {{ Former::Close() }}
+            </div>
+        </div>
 
         <hr>
 
         <h2>Suggestions</h2>
 
         <?php
+        $status = array(
+            'waiting' => 'Waiting',
+            'added-manually' => 'Added manually',
+            'added-by-crawler' => 'Added by crawler',
+            'discarded' => 'Discarded',
+            'delete' => 'Delete',
+        );
         $suggestions = Suggestion::whereSource('user')->get();
         $suggestions = $suggestions->merge( Suggestion::where('source', '!=', 'user')->get() );
         ?>
@@ -69,40 +76,39 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>url</th>
-                        <th>source</th>
-                        <th>created</th>
-
-                        <th>{{ Former::success_submit("Crawl")->name('_crawl') }}</th>
-                        <th>{{ Former::warning_submit("Delete")->name('_delete') }}</th>
+                        <th>Data</th>
+                        <th>status {{ Former::info_submit("Update")->name('update_status') }}</th>
+                        <th>{{ Former::success_submit("Crawl")->name('crawl') }}</th>
                     </tr>
                 </thead>
             @foreach ($suggestions as $suggestion)
                 <tr>
                     <td>{{ $suggestion->id }}</td>
                     <td>
-                        <a href="{{ $suggestion->url }}">
-                            {{ substr(str_replace("http://www.", "", $suggestion->url), 0, 40) }}
-                        </a>
-                        {{ Former::text('suggestions_urls_by_id['.$suggestion->id.']', '')->value($suggestion->url) }}
+                        <a href="{{ $suggestion->url }}" title="{{ $suggestion->url }}">
+                            @if ($suggestion->title != '')
+                                {{ $suggestion->title }}
+                            @else
+                                {{ $suggestion->url }}
+                            @endif                            
+                        </a> <br>
+
+                        @if( $suggestion->profile_id != 0)
+                            Profile : <a href="{{ route('get_profile_view', array($suggestion->profile->id)) }}">{{ $suggestion->profile->name }}</a> (<a href="{{ route('get_profile_update', array($suggestion->profile->id)) }}">Update</a>)<br>
+                        @endif
+
+                        Source : {{ $suggestion->source }} <br>
+
+                        @if( $suggestion->guid != '')
+                            Guid : {{ $suggestion->guid }} <br>
+                        @endif
+
+                        Created at : {{ $suggestion->created_at }}
                     </td>
                     <td>
-                        @if ( is_int( strpos($suggestion->source, 'http') ) )
-                            <?php
-                            $matches = array();
-                            preg_match("#^https?://([^/]+)#", $suggestion->source, $matches );
-                            if ( ! isset($matches[1]))
-                                $matches[1] = $suggestion->source
-                            ?>
-                            {{ $matches[1] }}
-                        @else
-                            {{ $suggestion->source }}
-                        @endif
+                        {{ Former::select('status_by_ids['.$suggestion->id.']', '')->options($status)->value($suggestion->status) }}
                     </td>
-                    <td>{{ $suggestion->created_at }}</td>
-
                     <td><input type="radio" name="suggestion_id_to_crawl" value="{{ $suggestion->id }}"></td>
-                    <td><input type="checkbox" name="suggestions_ids_to_delete[]" value="{{ $suggestion->id }}"></td>
                 </tr>
             @endforeach
             </table>

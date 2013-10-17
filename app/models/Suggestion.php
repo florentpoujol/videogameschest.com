@@ -10,6 +10,10 @@ class Suggestion extends Eloquent
      */
     protected $guarded = array();
 
+    public function profile()
+    {
+        return $this->belongsTo('Profile');
+    }
 
     //----------------------------------------------------------------------------------
     // CRUD METHODS
@@ -18,12 +22,38 @@ class Suggestion extends Eloquent
     {
         $input = clean_form_input($input);
 
+        
+        $suggestion = parent::create($input);
+
         if ($input['source'] == 'user') {
             HTML::set_success(lang('suggestion.msg.create_success'));
         }
-        $suggestion = parent::create($input);
+
+        $msg = "Suggestion width id '".$suggestion->id."', url '".$suggestion->url."', title '".$suggestion->title."' and source '".$suggestion->source."' has been created.";
+        if (is_admin()) {
+            HTML::set_success( $msg );
+        }
+        Log::info( "suggestion create success : ".$msg );
         
         return $suggestion;
+    }
+
+    public function update(array $input = array())
+    {
+        $input = array_intersect_key( $input, $this->attributes );
+        $update = parent::update( $input );
+
+        $updated_fields = get_updated_fields_string( $input );
+        
+        if ($update) {
+            $msg = "Suggestion with id '" . $this->id . "' has been updated with ".$updated_fields;
+            HTML::set_success( $msg );
+            Log::info( 'success update suggestion : ' . $msg );
+        } else {
+            $msg = "Suggestion with id '" . $this->id . "' has not been updated with ".$updated_fields;
+            HTML::set_error( $msg );
+            Log::error( 'error update suggestion : ' . $msg );
+        }
     }
 
     public function delete() {

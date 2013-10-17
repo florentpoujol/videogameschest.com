@@ -72,61 +72,75 @@ class SuggestionFeed extends Eloquent {
 
             if (
                 Suggestion::whereUrl($item_url)->first() === null &&
-                Suggestion::where_title($title)->first() === null &&
-                Suggestion::where_guid($guid)->first() === null
+                Suggestion::whereTitle($title)->first() === null &&
+                Suggestion::whereGuid($guid)->first() === null
             ) {
                 // IndieDB, SlideDB
-                if (strpos($item_url, 'edb.com') !== false && strpos($item_url, '/news/') !== false) {
+                if ( (strpos($item_url, 'indiedb.com') !== false || strpos($item_url, 'slidedb.com') !== false) && strpos($item_url, '/news/') !== false) {
                     // this a news from indiedb or slidedb
                     // need to get the url of the game instead of the news
                     $relativ_game_url = Crawler::get_indiedb_game_url_from_news($item_url);
                     if ($relativ_game_url == '') continue; // the news was not about a game
                     $item_url = "http://www.indiedb.com".$relativ_game_url; // all slide db profile have an indie db profile
+                    
+                    // transform "http://www.indiedb.com/games/the-city-nobles/" 
+                    // in "The city nobles"
                     $title = ucfirst(url_to_name(rtrim(str_replace("http://www.indiedb.com/games/", "", $item_url), '/')));
                     
                     if (
-                        Suggestion::where_url($item_url)->first() !== null ||
-                        Suggestion::where_title($title)->first() !== null ||
-                        Game::where_name($title)->first() !== null
+                        Suggestion::whereUrl($item_url)->first() !== null ||
+                        Suggestion::whereTitle($title)->first() !== null ||
+                        Profile::whereName($title)->first() !== null // the search is not case sensitive
                     ) continue;
-                } 
-                elseif ($feed_name == "indiegames.com") {
-                    // IndieGames.com
-                    $keywords = array("game pick", "trailer", "road to the igf", "release");
-                    $title = strtolower($item['title']);
-                    $suggest_article = false;
-
-                    foreach ($keywords as $word) {
-                        if (strpos($title, $word) !== false) $suggest_article = true;
-                    }
-                    
-                    if ($suggest_article == false) continue;
-                } 
-                elseif ($feed_name == "rps") {
-                    // RockPaperShotgun
-                    $keywords = array("wot i think", "impressions", "trailer", "live free, play hard", "kickstarter katchup");
-                    $title = strtolower($item['title']);
-                    $suggest_article = false;
-
-                    foreach ($keywords as $word) {
-                        if (strpos($title, $word) !== false) $suggest_article = true;
-                    }
-                    
-                    if ($suggest_article == false) continue;
                 }
 
-                $profile = new Suggestion;
-                $profile->url = $item_url;
-                $profile->guid = $guid;
-                $profile->title = $title;
-                $profile->source = 'rss';
-                $profile->statut = 'waiting';
-                $profile->source_feed = $feed_name;
-                $profile->save();
+                // indiegames.com
+                elseif ( strpos($item_url, 'IndependentGaming') !== false ) {
+                    $keywords = array("trailer", "release", "1.0", "kickstarter", "indiegogo", "pick");
+                    $title = strtolower($item['title']);
+                    $suggest_article = false;
+
+                    foreach ($keywords as $word) {
+                        if (strpos($title, $word) !== false) {
+                            HTML::set_error($word." || ".$title);
+                            $suggest_article = true;
+                        }
+                    }
+                    
+                    if ( !$suggest_article )
+                        continue;
+                } 
+
+                // rockpapershtgun.com
+                elseif ( strpos($item_url, 'RockPaperShotgun') !== false) {
+                    // RockPaperShotgun
+                    $keywords = array("trailer", "release", "1.0", "kickstarter", "indiegogo", "live free, play hard", "wot i think", "impressions", "hands on");
+                    $title = strtolower($item['title']);
+                    $suggest_article = false;
+
+                    foreach ($keywords as $word) {
+                        if (strpos($title, $word) !== false) {
+                            HTML::set_error($word." || ".$title);
+                            $suggest_article = true;
+                        }
+                    }
+                    
+                    if ( !$suggest_article ) 
+                        continue;
+                }
+
+                Suggestion::create( array(
+                    'url' => $item_url,
+                    'guid' => $guid,
+                    'title' => $title,
+                    'source' => $this->url,
+                    'status' => 'waiting',
+                ));
+                
                 $added_suggestions_count++;
             }
         }
 
-        HTML::set_success("$added_suggestions_count suggestions added from the feed '".$feed->url."'.");
+        HTML::set_success("$added_suggestions_count suggestions added from the feed '".$this->url."'.");
     }
 }

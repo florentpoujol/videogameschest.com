@@ -143,6 +143,17 @@ function get_assoc_array($array)
     return $assoc_array;
 }
 
+function get_updated_fields_string( $input )
+{
+    $updated_fields = "";
+    foreach ($input as $key => $value) {
+        if ($updated_fields != "")
+            $updated_fields .= ", ";
+        
+        $updated_fields .= $key." '".$value."'";
+    }
+    return $updated_fields;
+}
 
 
 /**

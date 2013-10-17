@@ -43,7 +43,7 @@ class RSSReader
         
         // Build the items array
         $item_count = 0;
-                
+        
         if (empty($keys)) {
             // Atom feed
             foreach ($xml->entry as $feed_item) {

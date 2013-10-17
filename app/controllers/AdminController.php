@@ -421,21 +421,24 @@ class AdminController extends BaseController
         $this->layout->nest('page_content', 'suggestions');
     }
 
-
     public function postSuggestionFeedsUpdate() 
     {
         $input = Input::all();
-        $feeds_to_read = array();
+        $feed_ids_to_read = array();
 
-        if (isset($input['read_all_feeds'])) {
-            $feeds_to_read = array_keys($input['feeds']);
-        }
-        elseif (isset($input['add_new_feed']) && trim($input['new_feed_url']) != '') {
+        if (isset($input['add_new_feed']) && trim($input['new_feed_url']) != '') {
             $validation = Validator::make( $input, array('new_feed_url' => 'url') );
             if ( $validation->passes() )
                 SuggestionFeed::create( array( 'url' => $input['new_feed_url'] ) );
             else
                 return Redirect::back()->withErrors( $validation )->withInput();
+        }
+        elseif ( ! isset($input['feeds']) ) { // no feeds, deactivate any other actions
+            HTML::set_error("No feeds to works with");
+            return Redirect::route('get_suggestions_page');
+        }
+        elseif (isset($input['read_all_feeds'])) {
+            $feed_ids_to_read = array_keys($input['feeds']);
         }
         elseif (isset($input['update'])) {
             foreach ($input['feeds'] as $id => $feed) {
@@ -456,11 +459,11 @@ class AdminController extends BaseController
         elseif (isset($input['read'])) {
             foreach ($input['feeds'] as $id => $feed) {
                 if (isset($feed['read']) && $feed['read'] == '1') // checkbox checked
-                    $feeds_to_read[] = $feed;
+                    $feed_ids_to_read[] = $id;
             }
         }
 
-        foreach ($feeds_to_read as $id) {
+        foreach ($feed_ids_to_read as $id) {
             SuggestionFeed::find($id)->read();
         }
 
@@ -472,7 +475,7 @@ class AdminController extends BaseController
     public function postSuggestionCreate()
     {
         $url = Input::get('url');
-        $validation = Validator::make(Input::all(), array('url' => 'required|url|min:10'));
+        $validation = Validator::make(Input::all(), array('url' => 'required|url'));
 
         if ($validation->passes()) {
             if ( Suggestion::whereUrl( $url )->first() !== null ) {
@@ -490,22 +493,32 @@ class AdminController extends BaseController
 
     public function postSuggestionsUpdate()
     {
-        $input = Input::all();
-        $suggestions_urls_by_id = $input['suggestions_urls_by_id']; // urls
-        // dd($input);
+        $input = Input::all();        
 
-        if ( isset( $input['_delete'] ) && isset( $input['suggestions_ids_to_delete'] ) ) {
-            foreach ($input['suggestions_ids_to_delete'] as $id) {
-                Suggestion::find($id)->delete();
+        if ( isset( $input['update_status'] ) ) {
+            foreach ($input['status_by_ids'] as $id => $status) {
+                $suggestion = Suggestion::find($id);
+
+                if ($suggestion->status != $status) {
+                    if ($status == 'delete') 
+                        $suggestion->delete();
+                    else
+                        $suggestion->update(array('status' => $status));
+                }
             }
         }
-        elseif ( isset( $input['_crawl'] ) && isset( $input['suggestion_id_to_crawl'] ) ) {
+        elseif ( isset( $input['crawl'] ) && isset( $input['suggestion_id_to_crawl'] ) ) {
             $id = $input['suggestion_id_to_crawl'];
-            $profile_data = Crawler::crawl( $suggestions_urls_by_id[ $id ] );
+            $suggestion = Suggestion::find($id);
+            HTML::set_success("crawling suggestion with id '".$suggestion->id."' and url ".$suggestion->url);
+            // $profile_data = Crawler::crawl( $suggestion->url );
             
-            $profile = Profile::create( $profile_data );
+            // $profile = Profile::create( $profile_data );
 
-            Suggestion::find($id)->delete();
+            $suggestion->update( array(
+                'status' => 'added-by-crawler'
+                // 'profile_id' => $profile->id,
+            ) );
         }
 
         return Redirect::route('get_suggestions_page');
