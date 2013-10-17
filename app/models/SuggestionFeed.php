@@ -3,6 +3,7 @@ class SuggestionFeed extends Eloquent {
     protected $table = "suggestionfeeds";
     protected $guarded = array();
 
+
     //----------------------------------------------------------------------------------
     // CRUD methods
 
@@ -35,22 +36,29 @@ class SuggestionFeed extends Eloquent {
         $delete = parent::delete();
 
         if ($delete) {
-            $msg = "Suggestion feed with id '" . $this->id . "' has been deleted.";
+            $msg = "Suggestion feed with id '" . $this->id . "' and url '" . $this->url . "' has been deleted.";
             HTML::set_success( $msg );
             Log::info( 'success delete suggestion feed : ' . $msg );
         } else {
-            $msg = "Suggestion feed with id '" . $this->id . "' has not been deleted.";
+            $msg = "Suggestion feed with id '" . $this->id . "' and url '" . $this->url . "' has not been deleted.";
             HTML::set_error( $msg );
             Log::error( 'error delete suggestion feed : ' . $msg );
         }
     }
 
 
+    //----------------------------------------------------------------------------------
 
     public function read() {
+        $this->last_read_at = new DateTime();
+        $this->save();
+
         $feed = RSSReader::read($this->url);
+
         if (empty($feed['items'])) {
-            HTML::set_error("No items in the feed '".$this->url."'.");
+            $msg = "No items in the suggestion feed with id '".$this->id."' and url '".$this->url."'.";
+            HTML::set_error( $msg );
+            Log::error( "error suggestion feed read : ".$msg );
             return;
         }
 

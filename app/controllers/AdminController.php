@@ -431,20 +431,32 @@ class AdminController extends BaseController
             $feeds_to_read = array_keys($input['feeds']);
         }
         elseif (isset($input['add_new_feed']) && trim($input['new_feed_url']) != '') {
-            SuggestionFeed::create( array( 'url' => $input['new_feed_url'] ) );
+            $validation = Validator::make( $input, array('new_feed_url' => 'url') );
+            if ( $validation->passes() )
+                SuggestionFeed::create( array( 'url' => $input['new_feed_url'] ) );
+            else
+                return Redirect::back()->withErrors( $validation )->withInput();
         }
-        elseif (isset($input['do_actions'])) {
+        elseif (isset($input['update'])) {
             foreach ($input['feeds'] as $id => $feed) {
-                
-                if ($feed['action'] == 'update') {
-                    $feed = SuggestionFeed::find($id)->update($feed);
+                $db_feed = SuggestionFeed::find($id);
+
+                if (trim($feed['url']) == '') {
+                    $db_feed->delete();
                 }
-                elseif ($feed['action'] == 'delete' || trim($feed['url']) == '') {
-                    SuggestionFeed::find($id)->delete();
+                elseif ( $db_feed->url != trim($feed['url']) ) {
+                    $validation = Validator::make( $feed, array('url' => 'url') );
+                    if ( $validation->passes() )
+                        $db_feed->update($feed);
+                    else
+                        return Redirect::back()->withErrors( $validation )->withInput();
                 }
-                elseif ($feed['action'] == 'read') {
-                    $feeds_to_read[] = $id;
-                }
+            }
+        }
+        elseif (isset($input['read'])) {
+            foreach ($input['feeds'] as $id => $feed) {
+                if (isset($feed['read']) && $feed['read'] == '1') // checkbox checked
+                    $feeds_to_read[] = $feed;
             }
         }
 

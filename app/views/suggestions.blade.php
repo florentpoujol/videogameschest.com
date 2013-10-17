@@ -4,15 +4,11 @@
 
 <div class="row">
     <div class="span12">
-        <h2>RSS feeds</h1>
-
-        <hr>
+        <h2>Suggestion feeds</h1>
 
         <?php
         $actions = array(
-            '' => 'Choose',
-            'update' => 'Update URL',
-            'delete' => 'Delete',
+            'update' => 'Update or Delete (if URL modified)',
             'read' => 'Read',
         );
         $feeds = SuggestionFeed::all();
@@ -20,17 +16,19 @@
         {{ Former::open_vertical(route('post_suggestion_feeds_update')) }}
             {{ Form::token() }}
 
-            {{ Former::primary_submit('Read All feeds')->name("read_all_feeds") }}
-            <hr>
-            {{ Former::text('new_feed_url', '')->placeholder('New feed') }} {{ Former::success_submit('Add this new feed')->name("add_new_feed") }}
+
+            {{ Former::text('new_feed_url', '')->placeholder('New RSS or Atom feed URL') }} {{ Former::success_submit('Add this new feed')->name("add_new_feed") }}
             <hr>
             <table class="table table-striped table-bordered">
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Url</th>
+                        <th>Url {{ Former::warning_submit("Update or delete")->name('update') }}</th>
                         <th>Last Read At</th>
-                        <th>{{ Former::warning_submit("Do actions")->name('do_actions') }}</th>
+                        <th>
+                            {{ Former::info_submit("Read selected")->name('read') }}
+                            {{ Former::primary_submit('Read all')->name("read_all_feeds") }}
+                        </th>
                     </tr>
                 </thead>
             @foreach ($feeds as $feed)
@@ -45,7 +43,7 @@
                         {{ $feed->last_read_at }}
                     </td>
                     <td>
-                        {{ Former::select('feeds['.$feed->id.'][action]', '')->options($actions) }}
+                        {{ Former::checkbox('feeds['.$feed->id.'][read]', '') }}
                     </td>
                 </tr>
             @endforeach
