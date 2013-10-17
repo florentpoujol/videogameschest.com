@@ -40,16 +40,20 @@ class AdminController extends BaseController
             if ($user != null) {
                 if (Auth::attempt(array('username' => $user->username, 'password' => Input::get('password')))) {
                     $keep_logged_in = Input::get('keep_logged_in', '0');
-
+                    $cookie = null;
                     if ($keep_logged_in == '1') {
-                        Cookie::forever('vgc_user_logged_in', $user->id, 43200); //43200 min = 1 month
+                        $cookie = Cookie::forever('vgc_user_logged_in', $user->id, 43200); //43200 min = 1 month
                     }
 
                     HTML::set_success(lang('login.msg.login_success', array(
                         'username' => $user->username
                     )));
-                    // Log::write('user login', 'User '.$user->username.' (id='.$user->id.') has logged in');
-                    return Redirect::route('get_home_page');
+                    Log::info('user login : User '.$user->username.' (id='.$user->id.') has logged in');
+
+                    if ($cookie != null)
+                        return Redirect::route('get_home_page')->withCookie($cookie);
+                    else
+                        return Redirect::route('get_home_page');
                 } else {
                     HTML::set_error(lang('login.msg.wrong_password', array(
                         'field' => $field,
@@ -70,14 +74,10 @@ class AdminController extends BaseController
     public function getLogout()
     {
         HTML::set_success(lang('login.msg.logout_success'));
-        var_dump("logout 1");
         $user = user();
-        // Log::write('user logout', 'User '.$user->username.' (id='.$user->id.') has logged out.');
-        var_dump("logout 2");
+        Log::info('user logout : User '.$user->username.' (id='.$user->id.') has logged out.');
         Cookie::forget('vgc_user_logged_in');
-        var_dump("logout 3");
         Auth::logout();
-        var_dump("logout 4");
         return Redirect::route('get_login_page');
     }
 
@@ -127,7 +127,7 @@ class AdminController extends BaseController
                 'url_key' => $url_key,
             ));
             HTML::set_error($msg);
-            // Log::write('user lostpassword confirmation error', $msg);
+            Log::info('user lostpassword confirmation error : '.$msg);
 
             return Redirect::route('get_home_page');
         }
