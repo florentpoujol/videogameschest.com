@@ -19,12 +19,23 @@ class Profile extends Eloquent
     protected $guarded = array();
 
 
+    public static function checkSuggestedTags( $input ) {
+        if ( isset( $input['suggested_new_tags'] ) && !empty( $input['suggested_new_tags'] ) ) {
+            $text = implode( ',', $input['suggested_new_tags'] );
+            $input['description'] = $text . "\n" . $input['description'];
+        }
+        unset( $input['suggested_new_tags'] );
+        return $input;
+    }
+
     //----------------------------------------------------------------------------------
     // CRUD METHODS
 
     public static function create(array $input = array()) 
     {
         $input = clean_form_input($input);
+        $input = static::checkSuggestedTags( $input );
+
         $tags = $input['tags'];
         unset($input['tags']);
 
@@ -33,6 +44,7 @@ class Profile extends Eloquent
 
         $profile = parent::create($input);
         
+        $tags = array_values( array_unique( $tags ) );
         $profile->tags()->sync( $tags );
 
         // msg
@@ -52,7 +64,8 @@ class Profile extends Eloquent
         $profile = $this;
         
         $input = clean_form_input($input);
-        $profile->tags()->sync($input['tags']);
+        $input['tags'] = array_values( array_unique( $input['tags'] ) );
+        $profile->tags()->sync( $input['tags'] );
         unset($input['tags']);
 
         $input['links'] = json_encode( clean_names_urls_array( $input['links'] ) );

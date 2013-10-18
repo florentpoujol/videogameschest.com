@@ -102,7 +102,7 @@ class SuggestionFeed extends Eloquent {
 
                     foreach ($keywords as $word) {
                         if (strpos($title, $word) !== false) {
-                            HTML::set_error($word." || ".$title);
+                            //HTML::set_error($word." || ".$title);
                             $suggest_article = true;
                         }
                     }
@@ -120,7 +120,7 @@ class SuggestionFeed extends Eloquent {
 
                     foreach ($keywords as $word) {
                         if (strpos($title, $word) !== false) {
-                            HTML::set_error($word." || ".$title);
+                            //HTML::set_error($word." || ".$title);
                             $suggest_article = true;
                         }
                     }

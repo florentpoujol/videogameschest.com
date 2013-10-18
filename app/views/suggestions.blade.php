@@ -81,10 +81,11 @@
             {{ Form::token() }}
             
             <a class="accordion-toggle" data-toggle="collapse" href="#collapse-display-status">
-                Display...
+                Display options...
             </a>
             <div id="collapse-display-status" class="collapse">
                 <div class="accordion-inner">
+                    Display the suggestions with theses status :
                     <?php
                     $checkboxes = array();
                     foreach ($status as $key => $value) {

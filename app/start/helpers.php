@@ -67,6 +67,8 @@ function array_to_checkboxes($field_name, $values = null, $name = null)
 }
 
 
+
+
 /**
  * Remove some keys from the $input array
  * usually called from a model to removes keys added by a form but nt needed nor wanted by the models and DB
@@ -87,7 +89,7 @@ function clean_form_input($input, $supl_attributes = array())
 
  
 /**
- * strip out empty name/url in names/urls arrays (screenshots, videos, links)
+ * strip out empty name/url in names/urls arrays as well as duplicate urls
  * then rebuilt it's index
  * @param assocarray $array
  * @return the cleaned up array
@@ -95,12 +97,18 @@ function clean_form_input($input, $supl_attributes = array())
 function clean_names_urls_array($items)
 {
     $new_items = $items;
+    $know_urls = array();
     foreach ($items as $index => $item) {
         if (
             (isset($item['name']) && trim($item['name']) == '') || 
-            (isset($item['url']) && trim($item['url']) == '')) {
-            unset($new_items[$index]);
+            (isset($item['url']) && trim($item['url']) == '') ||
+            in_array( $item['url'], $know_urls )
+        ) 
+        {
+            unset( $new_items[$index] );
         }
+        else
+            $know_urls[] = $item['url'];
     }
 
     // rebuilt indexes so that json_encode consider them as array an not as object

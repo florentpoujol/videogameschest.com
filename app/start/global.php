@@ -13,11 +13,10 @@
 
 ClassLoader::addDirectories(array(
 
-	app_path().'/commands',
-	app_path().'/controllers',
-	app_path().'/models',
-	app_path().'/database/seeds',
-
+    app_path().'/commands',
+    app_path().'/controllers',
+    app_path().'/models',
+    app_path().'/database/seeds',
     app_path().'/libraries', // added for VGC
 ));
 
@@ -89,26 +88,11 @@ require app_path().'/filters.php';
 
 include_once('helpers.php');
 include_once('macros.php');
-// include_once('libraries/simple_html_dom.php');
+include_once( app_path().'/libraries/simple_html_dom.php');
 
-
-// Asset::container('nivo-slider')->add('main-css', 'css/nivo-slider/nivo-slider.css');
-// Asset::container('nivo-slider')->add('default-theme', 'css/nivo-slider/themes/default/default.css');
-// Asset::container('nivo-slider')->add('js-pack', 'js/nivo-slider/jquery.nivo.slider.pack.js');
-// Asset::container('nivo-slider')->add('bar-theme', 'css/nivo-slider/themes/bar/bar.css');
-// Asset::container('nivo-slider')->add('dark-theme', 'css/nivo-slider/themes/dark/dark.css');
-// Asset::container('nivo-slider')->add('light-theme', 'css/nivo-slider/themes/light/light.css');
 
 // Asset::container('colorbox')->add('colorbox-css', 'css/colorbox/colorbox.css');
 // Asset::container('colorbox')->add('colorbox-js', 'js/colorbox/jquery.colorbox-min.js');
-
-// Asset::container('slidesjs')->add('slidesjs-css', 'css/slidesjs/global.css');
-// Asset::container('slidesjs')->add('slidesjs-js', 'js/slidesjs/slides.min.jquery.js');
-
-// Asset::container('coda-slider')->add('css', 'css/coda-slider.css');
-// Asset::container('coda-slider')->add('jquery-ui', 'js/jquery-ui-1.10.0.custom.min.js');
-// Asset::container('coda-slider')->add('js', 'js/jquery.coda-slider-3.0.min.js');
-
 
 // new validation rule
 

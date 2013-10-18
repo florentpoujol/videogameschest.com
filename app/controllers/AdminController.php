@@ -470,8 +470,6 @@ class AdminController extends BaseController
         return Redirect::route('get_suggestions_page');
     }
 
-
-
     public function postSuggestionCreate()
     {
         $url = Input::get('url');
@@ -517,14 +515,15 @@ class AdminController extends BaseController
         elseif ( isset( $input['crawl'] ) && isset( $input['suggestion_id_to_crawl'] ) ) {
             $id = $input['suggestion_id_to_crawl'];
             $suggestion = Suggestion::find($id);
-            HTML::set_success("crawling suggestion with id '".$suggestion->id."' and url ".$suggestion->url);
-            // $profile_data = Crawler::crawl( $suggestion->url );
             
-            // $profile = Profile::create( $profile_data );
-
+            $profile_data = Crawler::crawl( $suggestion->url );
+            HTML::set_success("crawling suggestion with id '".$suggestion->id."' and url ".$suggestion->url);
+            
+            $profile = Profile::create( $profile_data );
+            
             $suggestion->update( array(
-                'status' => 'added-by-crawler'
-                // 'profile_id' => $profile->id,
+                'status' => 'added-by-crawler',
+                'profile_id' => $profile->id,
             ) );
         }
 

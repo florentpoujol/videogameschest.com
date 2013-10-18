@@ -12,6 +12,7 @@ class Crawler
         if (strpos($url, "indiedb.com") !== false) {
             return static::crawl_indiedb($url);
         }
+
     }
 
     // find the game RELATIVE url (/games/[name]) from a game news @indiedb
@@ -53,8 +54,16 @@ class Crawler
                     'url' => $url,
                 ),
             ),
-            'screenshots' => array(),
+            'medias' => array(),
+            'tags' => array(),
+            'suggested_new_tags' => array(),
         );
+
+        $temp_tags = Tag::all(array('id', 'name'));
+        $tags = array();
+        foreach ($temp_tags as $tag) {
+            $tags[ $tag->id ] = $tag->name;
+        }
 
         // INDIE DB
         if (strpos($url, 'indiedb.com') !== false) {
@@ -67,26 +76,40 @@ class Crawler
             $body = $html->find("body", 0);
 
             $description_block = $body->find("div[class=headernormalbox normalbox] div[class=inner] div[class=body]", 0);
-            $profile['pitch'] = trim($description_block->plaintext);
+            $profile['description'] = trim($description_block->plaintext);
+
+            // get all links in the description
+            $desc_links = $description_block->find("a");
+            foreach ($desc_links as $key => $link) {
+                $profile['links'][] = array(
+                    'name' => $link->plaintext,
+                    'url' => $link->href,
+                );
+            }
 
             $sidecolumn = $body->find("div[class=sidecolumn]", 0);
             $boxes = $sidecolumn->find("div[class=normalbox]");
-            
+            // the boxes are the "Profile", "News", "Related Games" boxes in the side bar
+            // only looking for Profile and Style
+
             foreach ($boxes as $box) {
                 $heading = $box->find('span[class=heading]', 0);
                 if ($heading !== null && in_array(trim($heading->plaintext), array('Profile', 'Style'))) {
                     
                     $rows = $box->find("div[class=clear]");
+                    // $rows = each rows in the box "Icon", "Platform", "Developed By", ...
                     foreach ($rows as $row) {
                         $h5 = $row->find("h5", 0);
 
                         if ($h5 !== null) {
                             $row_title = trim(strtolower($h5->plaintext));
+                            $row_text = trim(strtolower( $row->find('span', 0)->plaintext ));
+                            
                             $links = $row->find("a");
                             if (isset($links[0])) $link = $links[0];
 
                             switch ($row_title) {
-                                case "developer" :
+                                /*case "developer" :
                                 case "developed by":
                                 case "developer &amp; publisher":
                                     $profile["developer_name"] = $link->plaintext;
@@ -112,7 +135,7 @@ class Crawler
                                         }
                                         
                                     }
-                                    break;
+                                    break;*/
 
 
                                 case "official page" :
@@ -130,222 +153,176 @@ class Crawler
                                     // Coming Q1 2013
                                     // Released Apr 15, 2013
                                     // DateTime::createFromFormat ('M j, Y', 'Nov 7, 2011')
-                                    $rd = $text;
+                                    
+                                    $rd = $row_text;
                                     
                                     if ($rd != 'tbd') {
-                                        $rd = str_replace('Coming ', '', $rd);
-                                        $rd = str_replace('Released ', '', $rd);
+                                        $rd = str_replace('coming ', '', $rd);
+                                        $rd = str_replace('released ', '', $rd);
 
                                         $date = DateTime::createFromFormat('M j, Y', $rd);
                                         if ($date === false) $date = DateTime::createFromFormat('M Y', $rd);
 
                                         if ($date !== false) {
-                                            $profile['release_date'] = $date->format(Config::get('vgc.date_formats.datetime_sql'));
+                                            $profile['release_date'] = $date->format(Config::get('vgc.date_formats.date_sql'));
                                         }
                                     }
                                     break;
 
-                                /*case "boxshot" :
-                                    $profile["screenshots"][] = array(
-                                        'name' => "Boxshot",
-                                        'url' => $row->find("img", 0)->src
-                                    );
-                                    break;*/
-
                                 case "platforms":
                                     $as = $row->find('span[class=summary] a');
-                                    $profile['operatingsystems'] = array();
-                                    $profile['devices'] = array();
 
                                     foreach ($as as $a) {
                                         $platform = trim(strtolower(str_replace("/platforms/set/", "", $a->href)));
                                         
                                         switch ($platform) {
-                                            case "pc":
-                                                $profile['devices'][] = "pc";
-                                                $profile['operatingsystems'][] = "windowsdesktop";
-                                            break;
-
-                                            case "mac":
-                                                $profile['devices'][] = "mac";
-                                                $profile['operatingsystems'][] = "mac";
-                                            break;
-
                                             case "linux":
-                                                $profile['devices'][] = "pc";
-                                                $profile['operatingsystems'][] = "linux";
+                                                $profile['tags'][] = "linux";
+                                                $profile['tags'][] = "pc";
                                             break;
 
-                                            // flash
                                             case "web":
-                                                $profile['devices'][] = "browser";
+                                                $profile['tags'][] = "browser";
                                             break;
 
                                             case "iphone":
-                                                $profile['devices'][] = "iphone";
-                                                $profile['operatingsystems'][] = "ios";
+                                                $profile['tags'][] = "iphone";
+                                                $profile['tags'][] = "ios";
                                             break;
 
                                             case "ipad":
-                                                $profile['devices'][] = "ipad";
-                                                $profile['operatingsystems'][] = "ios";
+                                                $profile['tags'][] = "ipad";
+                                                $profile['tags'][] = "ios";
                                             break;
 
                                             case "android":
-                                                $profile['devices'][] = "adroidsmartphone";
-                                                $profile['operatingsystems'][] = "android";
+                                                $profile['tags'][] = "smartphone";
+                                                $profile['tags'][] = "android";
                                             break;
 
                                             case "androidtab":
-                                                $profile['devices'][] = "androidtablet";
-                                                $profile['operatingsystems'][] = "android";
+                                                $profile['tags'][] = "tablet";
+                                                $profile['tags'][] = "android";
                                             break;
 
                                             case "androidconsole":
-                                                $profile['devices'][] = "ouya";
-                                                $profile['operatingsystems'][] = "android";
+                                                $profile['tags'][] = "console";
+                                                $profile['tags'][] = "android";
                                             break;
 
                                             case "metro":
-                                                $profile['devices'][] = "pc";
-                                                $profile['operatingsystems'][] = "windows8metro";
+                                                $profile['tags'][] = "pc";
+                                                $profile['tags'][] = "windows8";
                                             break;
 
                                             case "vita":
-                                                $profile['devices'][] = "psvita";
+                                                $profile['tags'][] = "psvita";
                                             break;
 
                                             case "x360":
-                                                $profile['devices'][] = "xbox360";
+                                                $profile['tags'][] = "xbox360";
                                             break;
 
                                             default:
-                                                $found = false;
-                                                if (in_array($platform, Config::get('vgc.devices'))) {
-                                                    $profile['devices'][] = $platform;
-                                                    $found = true;
-                                                } elseif (in_array($platform, Config::get('vgc.operatingsystems'))) {
-                                                    $profile['operatingsystems'][] = $platform;
-                                                    $found = true;
+                                                if (in_array($platform, $tags)) {
+                                                    $profile['tags'][] = $platform;
                                                 }
-
-                                                if ($found == false) // Log::write('crawler text-no-fields', "Text '$platform' was not found in the 'devices' or 'operatingsystems' array fields for the game '".$profile['name']."'.");
+                                                else
+                                                    $profile['suggested_new_tags'][] = $platform;
                                             break;
                                         }
-                                    } // end foreach $as
+                                    } // end foreach platforms links
 
                                     break;
 
                                 case "engine":
                                     $engine = trim(strtolower(str_replace("/engines/", "", $link->href)));
-                                    $profile['technologies'] = array();
                                     
                                     switch ($engine) {
+                                        case 'construct-2':
+                                            $profile['tags'][] = 'construct';
+                                            break;
+
                                         case 'custom-built':
-                                            $profile['technologies'][] = 'custom';
+                                            $profile['tags'][] = 'custom-engine';
                                             break;
 
                                         case 'cryengine-3':
-                                            $profile['technologies'][] = 'cryengine';
+                                            $profile['tags'][] = 'cry-engine';
                                             break;
 
                                         case 'unity':
-                                            $profile['technologies'][] = 'unity3d';
-                                            break;
-
-                                        case 'unreal-development-kit':
-                                            $profile['technologies'][] = 'udk';
+                                            $profile['tags'][] = 'unity-3d';
                                             break;
 
                                         case 'ogre-engine':
-                                            $profile['technologies'][] = 'ogre3d';
+                                            $profile['tags'][] = 'ogre-3d';
                                             break;
 
                                         case 'blender-game-engine':
-                                            $profile['technologies'][] = 'blender';
+                                            $profile['tags'][] = 'blender';
                                             break;
 
                                         case 'torque-3d':
-                                            $profile['technologies'][] = 'torque';
+                                            $profile['tags'][] = 'torque-engine';
                                             break;
 
                                         case 'shiva3d-19':
-                                            $profile['technologies'][] = 'shiva3d';
+                                            $profile['tags'][] = 'shiva-3d';
                                             break;
-                                                                            
+
+                                        case 'unknow': // do nothing
+                                        break;
+                                        
                                         default:
-                                            $found = false;
-                                            if (in_array($engine, Config::get('vgc.technologies'))) {
-                                                $profile['technologies'][] = $engine;
-                                                $found = true;
-                                            } 
-                                            if ($found == false) // Log::write('crawler text-no-fields', "Text '$engine' was not found in the 'technologies' array fields for the game '".$profile['name']."'.");
-                                            break;
+                                            if (strpos($engine, 'rpg-maker') !== false) $profile['tags'][] = "rpg-maker";
+                                            elseif (strpos($engine, 'unreal-engine') !== false) $profile['tags'][] = "unreal-engine";
+                                            elseif (strpos($engine, 'torque') !== false) $profile['tags'][] = "torque-engine";
+                                            elseif (strpos($engine, 'cocos2d') !== false) $profile['tags'][] = "cocos-2d";
+
+                                            elseif (in_array($engine, $tags)) {
+                                                $profile['tags'][] = $platform;
+                                            }
+                                            else
+                                                $profile['suggested_new_tags'][] = $engine;
+                                        break;
                                     }
 
-                                    if (strpos($engine, 'rpg-maker') !== false) $profile['technologies'][] = "rpgmaker";
-                                    elseif (strpos($engine, 'unreal-engine') !== false) $profile['technologies'][] = "unrealengine";
-                                    elseif (strpos($engine, 'construct') !== false) $profile['technologies'][] = "construct";
-                                    elseif (strpos($engine, 'torque') !== false) $profile['technologies'][] = "torque";
-                                    elseif (strpos($engine, 'cocos2d') !== false) $profile['technologies'][] = "cocos2d";
-                                    break;
-                            } // end switch($h5_name)
+                                break;
+                            } // end switch($row_title)
 
-                            // working on the $text
-                            $span = $row->find("span", 0);
-                            $text = trim(strtolower($span->plaintext));
-                            $profile_field_items = array($text, str_replace(" ", "", $text));
+                            // working on the $row_text
+                            foreach ($tags as $id => $tag) {
+                                if (strpos($row_text, $tag) !== false && ! in_array($tag, $profile['tags']))
+                                    $profile['tags'][] = $tag;
+                            }
+
+                            if ( strpos( $row_text, "massively multiplayer" ) !== false ) { 
+                                $profile['tags'][] = "mmo";
+                            }
+                            elseif ( strpos( $row_text, 'single &amp; multiplayer' ) !== false ) {
+                                $profile['tags'][] = 'single-player';
+                                $profile['tags'][] = 'multi-player';
+                            }
+                            elseif ( strpos( $row_text, 'single &amp; co-op' ) !== false ) {
+                                $profile['tags'][] = 'single-player';
+                                $profile['tags'][] = 'coop';
+                            }
+                            elseif ( strpos( $row_text, "comedy" ) !== false ) {
+                                $profile['tags'][] = "cartoon";
+                            }
+                            elseif ( strpos( $row_text, "Hack 'n' Slash" ) !== false ) {
+                                $profile['tags'][] = "hack-and-slash";
+                            }
+                            elseif ( strpos( $row_text, "fighter" ) !== false ) {
+                                $profile['tags'][] = "fighting";
+                            }
                             
-                            $some_items = array('strategy', 'real time', 'turn based', 'tactical', 'shooter', 'first person', 'puzzle', 'futuristic', 'combat', 'sim');
-                            foreach ($some_items as $item) {
-                                if (strpos($text, $item) !== false) { // ei: 'strategy' is found in 'real time strategy'
-                                    if ($item == 'sim') $item == 'simulation';
-
-                                    $profile_field_items[] = str_replace(" ", "", $item); // ie: 'first person' become 'firstperson'
-                                }
-                            }
-
-                            // other cases
-                            switch ($text) {                                                         
-                                case "massively multiplayer": 
-                                    $profile_field_items[] = "mmo";
-                                    break;
-
-                                case 'single &amp; multiplayer':
-                                    $profile_field_items[] = 'singleplayer';
-                                    $profile_field_items[] = 'multiplayer';
-                                    break;
-
-                                case 'single &amp; co-op':
-                                    $profile_field_items[] = 'singleplayer';
-                                    $profile_field_items[] = 'coop';
-                                    break;
-
-                                case "comedy": 
-                                    $profile_field_items[] = "cartoon";
-                                    break;
-
-                                case "Hack 'n' Slash":
-                                    $profile_field_items[] = "hackandslash";
-                                    break;
-
-                                case "fighter":
-                                    $profile_field_items[] = "fighting";
-                            }
-
-                            $profile = static::register_field_items($profile_field_items, $profile);
-                        } // end $h5 !== null
+                        } // end $h5 !== null   the row has a title
                     } // end foreach ($rows as $row) {
-                } // end heading !== null
+                } // end heading !== null    The box has a title
             } // end foreach ($boxes as $box) {
-
-            // remove double entries in the array fields
-            foreach (Game::$array_fields as $field) {
-                if (isset($profile[$field])) {
-                    $profile[$field] = array_values(array_unique($profile[$field]));
-                }
-            }
-            
+           
             // twitter
             $box = $sidecolumn->find("#twitterfeed", 0);
             if ($box !== null) {
@@ -360,8 +337,8 @@ class Crawler
             $images_html = file_get_html($url.'/images');
             $imgs = $images_html->find('#imagebox img');
             foreach($imgs as $img) {
-                $profile['screenshots'][] = array(
-                    'name' => $img->parent->title,
+                $profile['medias'][] = array(
+                    'name' => str_replace( "View ", "", $img->parent->title ),
                     'url' => $img->src,
                 );
             }
@@ -378,12 +355,13 @@ class Crawler
 
                 if (isset($video_url[1])) {
                     $profile['videos'][] = array(
-                        'name' => $a->title,
+                        'name' => str_replace( "View ", "", $a->title ),
                         'url' => $video_url[1],
                     );
                 }
             }
 
+            
             // price (in a banner for Desura)
             $desura_banner = $body->find("#desuraisawesome", 0);
             if ($desura_banner !== null) {
@@ -396,13 +374,16 @@ class Crawler
                 // Only 3,99€
                 // 50% off - now 3,99€
                 // The easiest way to play => free
+                $tag = "";
+
 
                 if (strpos($price, "The easiest way to play") !== false) {
-                    $profile['price'] = 0;
+                    $tags = 'free';
                 } 
                 elseif (strpos($price, "Only") !== false) {
                     preg_match("#([0-9,]+)#", $price, $price);
-                    if (isset($price[1])) $profile['price'] = $price[1];
+                    if (isset($price[1])) 
+                        $price = $price[1];
                 } 
                 elseif (strpos($price, "now") !== false) {
                     preg_match("#([0-9]+)%#", $price, $percentage);
@@ -410,35 +391,51 @@ class Crawler
 
                     if (isset($percentage[1]) && isset($price[1])) {
                         $percentage = (int)$percentage[1] / 100.0;
-                        $profile['price'] = (float)str_replace(',', '.', $price[1]) / $percentage;
+                        $price = (float)str_replace(',', '.', $price[1]) / $percentage;
                     }
                 }
-            }
-        } // end Indie DB
 
-        return $profile;
-    }
-
-
-    public static function register_field_items($items, $profile)
-    {
-        if (is_string($items)) $items = array($items);
-
-        foreach ($items as $item) {
-            $found = false;
-            foreach (Game::$array_fields as $field) {
-                if (in_array($item, Config::get('vgc.'.$field))) {
-                    if ( ! isset($profile[$field])) $profile[$field] = array();
-                    $profile[$field][] = $item;
-                    $found = true;
+                if (is_numeric($price)) {
+                    $tag = "price:";
+                    if ( $price > 0 && $price<= 5 )
+                        $tag .= "0-5";
+                    elseif ( $price > 5 && $price <= 10 )
+                        $tag .= "5-10";
+                    elseif ( $price > 10 && $price <= 15 )
+                        $tag .= "10-15";
+                    elseif ( $price > 15 && $price <= 20 )
+                        $tag .= "15-20";
+                    elseif ( $price > 20 && $price <= 25 )
+                        $tag .= "20-25";
+                    elseif ( $price > 25 && $price <= 30 )
+                        $tag .= "25-30";
+                    elseif ( $price > 30 )
+                        $tag .= "30+";
                 }
-            }
 
-            // if ($found == false) // Log::write('crawler item-no-fields', "Item '$item' was not found in any array fields for the game '".$profile['name']."'.");
+                if ($tag != "")
+                    $profile['tags'][] = $tag;
+            }
         }
 
+
+        // fix some suggested tags
+        /*foreach ($profile['suggested_new_tags'] as $key => $value) {
+            switch( $value ){
+                case 'mobile':
+                    $profile['tags'][] = "smartphone";
+                    unset( $profile['suggested_new_tags'] );
+                break;
+
+                case 'androidtab'
+            }
+            
+        }*/
+
+        //$profile['links'] = clean_names_urls_array( $profile['links'] );
+        dd( $profile );
         return $profile;
-    }
+    } // end Indie DB
 }
 
 
