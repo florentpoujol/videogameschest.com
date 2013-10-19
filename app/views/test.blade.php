@@ -15,5 +15,16 @@ $("#theid").colorbox({iframe:true, width:"400px", height:"200px"});
 // var_dump($game);
 
 // var_dump( Profile::whereName("profile name2")->first());
+function cclean( $name )
+{
+    return ;
+}
+
+
+foreach (Tag::all() as $tag) {
+    $tag->update(
+        array( 'name' => ucfirst( str_replace("-", " ", $tag->name)) )
+    );
+}
 
 ?>

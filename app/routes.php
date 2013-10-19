@@ -187,9 +187,12 @@ $layout = View::make('layouts.main');
 
         Route::get('reports', array('as' => 'get_reports', 'uses' => 'AdminController@getReports'));
 
+        Route::get('tags', array('as' => 'get_tags_page', 'uses' => 'AdminController@getTags'));
+        
         // CRAWLER
         Route::get('suggestions', array('as' => 'get_suggestions_page', 'uses' => 'AdminController@getSuggestions'));
         Route::get('suggestions/readfeed', array('as' => 'get_read_suggestions_feeds', 'uses' => 'AdminController@getReadSuggestionsFeeds'));
+
 
 
         Route::get('test/{data?}', function($data = null) use ($layout)
@@ -229,6 +232,8 @@ $layout = View::make('layouts.main');
         Route::post('profiles/update', array('as' => 'post_profile_update', 'uses' => 'AdminController@postProfileUpdate'));
        
         Route::post('reports/update', array('as' => 'post_reports_update', 'uses' => 'AdminController@postReportsUpdate'));
+
+        Route::post('tags', array('as' => 'post_tags_update', 'uses' => 'AdminController@postTagsUpdate'));
 
         // CRAWLER
         Route::post('suggestionfeed/update', array('as' => 'post_suggestion_feeds_update', 'uses' => 'AdminController@postSuggestionFeedsUpdate'));

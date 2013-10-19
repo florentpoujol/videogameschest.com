@@ -530,5 +530,37 @@ class AdminController extends BaseController
         return Redirect::route('get_suggestions_page');
     }
 
+    //----------------------------------------------------------------------------------
+    // TAGS
 
+    public function getTags()
+    {
+        $this->layout->nest('page_content', 'tags');
+    }
+
+    public function postTagsUpdate() 
+    {
+        $input = Input::all();
+
+        if ( trim($input['new_tags']) != '' ) {
+            $tags = explode( ",", $input['new_tags'] );
+            foreach ( $tags as $tag ) {
+                $tag = trim($tag);
+                if ($tag != '')
+                    Tag::create( array( 'name' => $tag ) );
+            }
+        }
+
+        foreach ($input['tags'] as $id => $name) {
+            $tag = Tag::find($id);
+            $name = trim($name);
+
+            if ($name == '')
+                $tag->delete();
+            elseif ( $tag->name != $name )
+                $tag->update( array( 'name'=>$name ) );
+        }
+        
+        return Redirect::route('get_tags_page');
+    }
 } // end of Admin controller class

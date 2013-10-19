@@ -17,22 +17,6 @@ function antiBot()
 
 
 /**
- * Create an assoc array from an array where keys = values
- * @param  array $array The input array
- * @return array        The output array
- */
-function array_set_values_as_keys($array) 
-{
-    $new_array = array();
-    foreach ($array as $key => $value) {
-        $new_array[$value] = $value;
-    }
-
-    return $new_array;
-}
-
-
-/**
  * return a list of checkboxes
  * @param  string $field_name The array field name
  * @param  array  $values     The values to be checked comming from the DB or the old form
@@ -115,40 +99,6 @@ function clean_names_urls_array($items)
     $new_items = array_values($new_items);
 
     return $new_items;
-}
-
-
-/**
- * Return an array whose keys are provided in the first argument and the corresponding values are the corresponding localized string
- * @param  array $array_keys Array containing localization keys
- * @param  string $lang_key  A prefix to the localization key
- * @return assoc array       The assoc array containing the keys/localization strings
- */
-function get_array_lang($array_keys, $lang_key)
-{
-    $array = array();
-
-    foreach ($array_keys as $key) {
-        $array[$key] = lang("$lang_key$key");
-    }
-
-    asort($array);
-    return $array;
-}
-
-
-/**
- * Turn an array to an associative array where keys = value
- * @param the array
- * @return the associative array
- */
-function get_assoc_array($array)
-{
-    $assoc_array = array();
-    foreach ($array as $value) {
-        $assoc_array[$value] = $value;
-    }
-    return $assoc_array;
 }
 
 
@@ -254,59 +204,9 @@ function name_to_url($name)
 }
 
 
-/**
- * Pick random entries in array and return the new array
- * @param [type] $array [description]
- * @param [type] $count [description]
- */
-function PickAtRandomInArray($array, $count)
-{
-    $new_array = array();
-    shuffle($array);
-
-    if ($count > count($array)) $count = count($array);
-
-    $keys = array_rand($array, $count);
-
-    if (is_array($keys)) {
-        foreach ($keys as $key) {
-            $new_array[] = $array[$key];
-        }
-    } else return $array[$keys];
-
-    return $new_array;
-}
-
-
 function popover($text, $data_placement = 'top')
 {
     return '<i class="icon-question-sign" rel="popover" data-placement="'.$data_placement.'" title="'.$text.'"></i>';
-}
-
-
-/**
- * Removes profiles in the blacklist from the provided profiles
- */
-function ProcessBlacklist($profiles, $user_id = null) 
-{
-    $user = User::find($user_id);
-
-    if (is_null($user)) {
-        // Log::write('blacklist error', 'Tried to process blacklist of an unknow user id='.$user_id);
-        return $profiles;
-    }
-
-    $blacklist = $user->blacklist;
-
-    for ($i = 0; $i < count($profiles); $i++) {
-        $profile = $profiles[$i];
-
-        if (in_array($profile->id, $blacklist[$profile->class_name.'s'])) {
-            unset($profiles[$i]);
-        }
-    }
-
-    return $profiles;
 }
 
 
