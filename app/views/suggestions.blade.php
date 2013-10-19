@@ -1,5 +1,5 @@
 @section('page_title')
-    Crawler
+    Suggestions
 @endsection
 
 <div class="row">
