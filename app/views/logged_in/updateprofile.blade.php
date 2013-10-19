@@ -4,21 +4,26 @@
 <?php
 
 $profile = Profile::find($profile_id);
-Former::populate($profile);
+$temp_profile = $profile->toArray();
+unset($temp_profile['links']) ;
+unset($temp_profile['medias']);
+// 19/10/2013  Former::Populate causes empty links and media fields to be filled with (n-1) ", "
+// where n is the number of items in the links or media array 
+// the $temp_profile hack resolve that
+Former::populate($temp_profile);
+
 
 $old = Input::old();
 if ( ! empty($old)) Former::populate($old);
 
 $tags = Tag::all();
 $tags_formatted = array();
-foreach ($tags->toArray() as $key => $value) { 
-    $tags_formatted[ $value['id'] ] = $value['name'];
-}
+foreach (Tag::all() as $tag)
+    $tags_formatted[ $tag->id ] = $tag->name;
 
-$profile_tags = array();
-foreach ($profile->tags->toArray() as $key => $value) { 
-    $profile_tags[] = $value['id'];
-}
+$profile_tag_ids = array();
+foreach ($profile->tags as $tag) 
+    $profile_tag_ids[] = $tag->id;
 ?>
 
 <div id="editgame" class="profile-form update-profile-form">
@@ -61,7 +66,7 @@ foreach ($profile->tags->toArray() as $key => $value) {
 
         <div class="row">
             <div class="span6">
-                {{ Former::select('tags[]', 'Tags')->options($tags_formatted, $profile_tags)->id("tags")->multiple()->size(12) }}
+                {{ Former::select('tags[]', 'Tags')->options($tags_formatted, $profile_tag_ids)->id("tags")->multiple()->size(12) }}
             </div>
 
             <div class="span6">
@@ -73,8 +78,7 @@ foreach ($profile->tags->toArray() as $key => $value) {
 
                 <div class="tab-content">
                     <?php
-                    $nu_text = array('links', 'medias');
-                    foreach ($nu_text as $field):
+                    foreach (array('links', 'medias') as $field):
                     ?>
                         <div class="tab-pane" id="{{ $field }}">
                             <p>
@@ -88,7 +92,6 @@ foreach ($profile->tags->toArray() as $key => $value) {
                             $length = count($values);
                             for ($i = 0; $i < $length; $i++):
                             ?>
-
                                 <div class="control-group-inline">
                                     {{ Former::text($field.'['.$i.'][name]', '')->value($values[$i]['name'])->placeholder(lang('common.title')) }} 
                                     {{ Former::url($field.'['.$i.'][url]', '')->value($values[$i]['url'])->placeholder(lang('common.url')) }}
@@ -97,8 +100,8 @@ foreach ($profile->tags->toArray() as $key => $value) {
 
                             @for ($i = $length; $i < $length+4; $i++)
                                 <div class="control-group-inline">
-                                    {{ Former::text($field.'['.$i.'][name]', '')->placeholder(lang('common.title')) }} 
-                                    {{ Former::url($field.'['.$i.'][url]', '')->placeholder(lang('common.url')) }}
+                                    {{ Former::text($field.'['.$i.'][names]', '')->placeholder(lang('common.title')) }} 
+                                    {{ Former::url($field.'['.$i.'][urls]', '')->placeholder(lang('common.url')) }}
                                 </div>
                             @endfor
                         </div>

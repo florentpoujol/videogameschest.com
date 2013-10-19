@@ -28,7 +28,7 @@
 
                             <li><a href="{{ route('get_reports') }}">{{ lang('reports.title') }}</a></li>
                             <li><a href="{{ route('get_private_profiles') }}">Private profiles</a></li>
-                            
+                            <li><a href="{{ route('get_tags_page') }}">Tags</a></li>
                             <li><a href="{{ route('get_suggestions_page') }}">Suggestions</a></li>
                                                     
                             <li class="divider"></li>
